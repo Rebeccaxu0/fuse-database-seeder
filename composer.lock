@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12779395b430357b768d58fca0e0ed5f",
+    "content-hash": "b2193e6bceb46f3f425c21c01be3631a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2314,6 +2314,126 @@
                 }
             ],
             "time": "2020-08-18T17:17:46+00:00"
+        },
+        {
+            "name": "selfsimilar/drupal7_password_hasher",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/selfsimilar/drupal7_password_hasher.git",
+                "reference": "3247adc17e793aa89f1ed62953a6eb252633746b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/selfsimilar/drupal7_password_hasher/zipball/3247adc17e793aa89f1ed62953a6eb252633746b",
+                "reference": "3247adc17e793aa89f1ed62953a6eb252633746b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Selfsimilar\\D7PasswordHasher\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Sheaff",
+                    "email": "colin@sheaff.net",
+                    "homepage": "https://github.com/selfsimilar/drupal7_password_hasher"
+                }
+            ],
+            "description": "Drupal 7 password hasher wrapped in a properly namespaced class wrapper.",
+            "homepage": "http://github.com/selfsimilar/drupal7_password_hasher/",
+            "keywords": [
+                "crypt",
+                "drupal",
+                "hasher",
+                "password",
+                "security"
+            ],
+            "support": {
+                "issues": "https://github.com/selfsimilar/drupal7_password_hasher/issues",
+                "source": "https://github.com/selfsimilar/drupal7_password_hasher/tree/main"
+            },
+            "time": "2020-11-03T00:00:00+00:00"
+        },
+        {
+            "name": "selfsimilar/laravel-d7-password",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/selfsimilar/laravel-d7-password.git",
+                "reference": "f8f1ddbe5ff9d17b7476dc26903eeda6e1a1e706"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/selfsimilar/laravel-d7-password/zipball/f8f1ddbe5ff9d17b7476dc26903eeda6e1a1e706",
+                "reference": "f8f1ddbe5ff9d17b7476dc26903eeda6e1a1e706",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.0.0",
+                "php": ">=5.3.0",
+                "selfsimilar/drupal7_password_hasher": "dev-main"
+            },
+            "replace": {
+                "selfsimilar/laravel-drupal7-password": "self.version"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "laravel-package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Selfsimilar\\D7Password\\D7PasswordProvider"
+                    ],
+                    "aliases": {
+                        "D7Password": "Selfsimilar\\D7Password\\Facades\\D7Password"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Selfsimilar\\D7Password\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin Sheaff",
+                    "email": "colin-sheaff@northwestern.edu",
+                    "homepage": "http://colin.sheaff.net"
+                }
+            ],
+            "description": "Laravel package that checks and creates Drupal 7 password hashes",
+            "homepage": "https://github.com/selfsimilar/laravel-d7-password",
+            "keywords": [
+                "drupal",
+                "hashing",
+                "laravel",
+                "password"
+            ],
+            "support": {
+                "issues": "https://github.com/selfsimilar/laravel-d7-password/issues",
+                "source": "https://github.com/selfsimilar/laravel-d7-password/tree/0.1.2"
+            },
+            "time": "2020-11-05T15:21:22+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
