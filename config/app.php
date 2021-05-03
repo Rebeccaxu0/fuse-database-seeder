@@ -166,6 +166,8 @@ return [
          * Package Service Providers...
          */
 
+        Selfsimilar\D7Password\D7PasswordProvider::class,
+
         /*
          * Application Service Providers...
          */
