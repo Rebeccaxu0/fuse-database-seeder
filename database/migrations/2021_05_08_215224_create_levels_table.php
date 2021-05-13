@@ -16,9 +16,9 @@ class CreateLevelsTable extends Migration
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('challenge_id')->constrained();
+            $table->foreignId('challenge_version_id')->constrained();
             $table->unsignedTinyInteger('level_number')->comment('Level number must be unique per challenge');
-            $table->unique(['challenge_id', 'level_number']);
+            $table->unique(['challenge_version_id', 'level_number']);
         });
     }
 

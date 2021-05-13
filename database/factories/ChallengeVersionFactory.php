@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Challenge;
+use App\Models\ChallengeVersion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ChallengeFactory extends Factory
+class ChallengeVersionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Challenge::class;
+    protected $model = ChallengeVersion::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class ChallengeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(3, true)
+            //
         ];
     }
 }

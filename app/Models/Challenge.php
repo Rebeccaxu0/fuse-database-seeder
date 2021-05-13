@@ -10,10 +10,18 @@ class Challenge extends Model
     use HasFactory;
 
     /**
-     * Get the levels.
+     * The challenge versions associated with this challenge.
      */
-    public function levels()
+    public function challengeVersions()
     {
-      return $this->hasMany(Level::class);
+      return $this->hasMany(ChallengeVersion::class);
+    }
+
+    /**
+     * The packages that this challenge is included in.
+     */
+    public function packages()
+    {
+      return $this->belongsToMany(Package::class);
     }
 }
