@@ -20,8 +20,14 @@ class CreatePackagesTable extends Migration
         });
 
         Schema::create('challenge_package', function (Blueprint $table) {
-            $table->foreignId('challenge_id')->constrained();
-            $table->foreignId('package_id')->constrained();
+          $table->foreignId('challenge_id')
+                ->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
+          $table->foreignId('package_id')
+                ->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('restrict');
         });
     }
 
