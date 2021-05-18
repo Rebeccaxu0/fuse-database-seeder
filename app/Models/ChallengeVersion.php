@@ -24,4 +24,26 @@ class ChallengeVersion extends Model
     {
       return $this->hasMany(Level::class);
     }
+
+    /**
+     * Order the associated levels.
+     *
+     * @param array $order
+     * Array where key is level id and value is order number.
+     */
+    public function set_levels_order(array $order)
+    {
+      $ids = array_keys($order);
+      $case_update_q = 'CASE id ';
+      foreach ($order as $id => $level_number) {
+        $case_update_q .= "WHEN {$id} THEN {$level_number} ";
+      }
+      $case_update_q .= 'END';
+      $nulls = \DB::table('levels')
+        ->whereIn('id', $ids)
+        ->update(['level_number' => null]);
+      $reordered = \DB::table('levels')
+        ->whereIn('id', $ids)
+        ->update(['level_number' => \DB::raw($case_update_q)]);
+    }
 }
