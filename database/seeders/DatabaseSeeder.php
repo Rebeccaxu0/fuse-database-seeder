@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         ChallengeAndLevelSeeder::class,
         PackageSeeder::class,
         RoleSeeder::class,
+        ArtifactSeeder::class,
       ]);
       $challenges = \App\Models\Challenge::all();
       $packages = \App\Models\Package::all();

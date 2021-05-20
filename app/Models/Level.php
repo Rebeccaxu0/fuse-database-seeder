@@ -16,11 +16,19 @@ class Level extends Model
     protected $guarded = ['level_number'];
 
     /**
-     * Get the levels.
+     * Get the associated ChallengeVersion.
      */
     public function challenge()
     {
-      return $this->belongsTo(Challenge::class);
+      return $this->belongsTo(ChallengeVersion::class);
+    }
+
+    /**
+     * Get the artifacts on this level.
+     */
+    public function artifacts()
+    {
+      return $this->hasMany(Artifact::class);
     }
 
     public function setChallengeVersionIDAttribute($value) {

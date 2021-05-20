@@ -67,4 +67,11 @@ class User extends Authenticatable
       return $this->belongsToMany(Role::class);
     }
 
+    /**
+     * The artifacts created by this user.
+     */
+    public function artifacts()
+    {
+      return $this->belongsToMany(Artifact::class, 'teams');
+    }
 }
