@@ -16,7 +16,8 @@ class CreateChallengeVersionsTable extends Migration
         Schema::create('challenge_versions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('challenge_id')->constrained();
+            $table->foreignId('challenge_id')
+                  ->constrained();
             $table->string('name');
         });
     }
