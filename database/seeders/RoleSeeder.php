@@ -26,10 +26,14 @@ class RoleSeeder extends Seeder
     public function run()
     {
       foreach ($this->defaults as $name) {
-        Role::factory()
-          ->create([
-            'name' => $name,
-          ]);
+        $role = Role::factory();
+        if ($name == 'Student') {
+          $users = \App\Models\User::all();
+          $role->hasAttached($users);
+        }
+        $role->create([
+          'name' => $name,
+        ]);
       }
     }
 }

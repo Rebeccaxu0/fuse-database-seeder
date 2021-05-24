@@ -17,9 +17,9 @@ class CreateArtifactsTable extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('level_id')
-                  ->constrained()
                   ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onUpdate('restrict')
+                  ->constrained();
             $table->string('type', 63)
                   ->default('Complete')
                   ->comment("Valid values: 'Save', 'Complete'");
@@ -33,13 +33,13 @@ class CreateArtifactsTable extends Migration
 
         Schema::create('teams', function (Blueprint $table) {
           $table->foreignId('artifact_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
           $table->foreignId('user_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
         });
     }
 

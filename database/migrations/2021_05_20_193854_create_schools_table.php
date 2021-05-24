@@ -18,11 +18,11 @@ class CreateSchoolsTable extends Migration
             $table->timestamps();
             $table->string('name', 1023);
             $table->foreignId('district_id')
-                  ->constrained()
-                  ->nullable();
+                  ->nullable()
+                  ->constrained();
             $table->foreignId('package_id')
-                  ->constrained()
-                  ->nullable();
+                  ->nullable()
+                  ->constrained();
             $table->string('salesforce_acct_id', 1023)
                   ->unique()
                   ->nullable();
@@ -31,13 +31,13 @@ class CreateSchoolsTable extends Migration
 
         Schema::create('school_user', function (Blueprint $table) {
           $table->foreignId('school_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
           $table->foreignId('user_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
         });
     }
 

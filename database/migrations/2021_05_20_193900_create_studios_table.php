@@ -18,11 +18,11 @@ class CreateStudiosTable extends Migration
             $table->timestamps();
             $table->string('name', 1023);
             $table->foreignId('school_id')
-                  ->constrained()
-                  ->nullable();
+                  ->nullable()
+                  ->constrained();
             $table->foreignId('package_id')
-                  ->constrained()
-                  ->nullable();
+                  ->nullable()
+                  ->constrained();
             $table->boolean('active')
                   ->default(true);
             $table->boolean('require_email')
@@ -43,13 +43,13 @@ class CreateStudiosTable extends Migration
 
         Schema::create('studio_user', function (Blueprint $table) {
           $table->foreignId('studio_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
           $table->foreignId('user_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
         });
     }
 

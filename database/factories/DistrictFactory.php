@@ -22,7 +22,7 @@ class DistrictFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => 'D' . $this->faker->unique()->randomNumber(2, true),
         ];
     }
 }

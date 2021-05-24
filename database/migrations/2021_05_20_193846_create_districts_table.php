@@ -19,21 +19,22 @@ class CreateDistrictsTable extends Migration
             $table->string('name', 1023)
                   ->unique();
             $table->foreignId('package_id')
+                  ->nullable()
                   ->constrained();
             $table->string('salesforce_acct_id', 1023)
-                  ->unique()
-                  ->nullable();
+                  ->nullable()
+                  ->unique();
         });
 
         Schema::create('district_user', function (Blueprint $table) {
           $table->foreignId('district_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
           $table->foreignId('user_id')
-                ->constrained()
                 ->onDelete('cascade')
-                ->onUpdate('restrict');
+                ->onUpdate('restrict')
+                ->constrained();
         });
     }
 

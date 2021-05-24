@@ -21,7 +21,9 @@ class PackageSeeder extends Seeder
     public function run()
     {
       foreach ($this->defaults as $name) {
+        $challenges = \App\Models\Challenge::all()->random(5);
         Package::factory()
+          ->hasAttached($challenges)
           ->create([
             'name' => $name,
           ]);

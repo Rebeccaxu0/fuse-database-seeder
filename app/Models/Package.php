@@ -16,4 +16,28 @@ class Package extends Model
     {
       return $this->belongsToMany(Challenge::class);
     }
+
+    /**
+     * The districts associated with this package.
+     */
+    public function districts()
+    {
+      return $this->belongsToMany(District::class);
+    }
+
+    /**
+     * The schools associated with this package.
+     */
+    public function schools()
+    {
+      return $this->belongsToMany(School::class);
+    }
+
+    /**
+     * The studios associated with this package.
+     */
+    public function studios()
+    {
+      return $this->belongsToMany(Studio::class);
+    }
 }
