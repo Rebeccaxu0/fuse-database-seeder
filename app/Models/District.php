@@ -26,6 +26,16 @@ class District extends Model
     }
 
     /**
+     * The superfacilitators associated with this school.
+     */
+    public function superFacilitators()
+    {
+      return $this->belongsToMany(User::class)->whereHas('roles', function($q) {
+        $q->where('name', '=', 'Super Facilitator');
+      });
+    }
+
+    /**
      * The Schools associated with this district.
      */
     public function schools()

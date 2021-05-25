@@ -26,6 +26,16 @@ class School extends Model
     }
 
     /**
+     * The facilitators associated with this school.
+     */
+    public function facilitators()
+    {
+      return $this->belongsToMany(User::class)->whereHas('roles', function($q) {
+        $q->where('name', '=', 'Facilitator');
+      });
+    }
+
+    /**
      * The district above this school.
      */
     public function district()

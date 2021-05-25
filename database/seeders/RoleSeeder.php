@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -27,13 +28,11 @@ class RoleSeeder extends Seeder
     {
       foreach ($this->defaults as $name) {
         $role = Role::factory();
-        if ($name == 'Student') {
-          $users = \App\Models\User::all();
-          $role->hasAttached($users);
-        }
         $role->create([
           'name' => $name,
         ]);
       }
+      $student_role = Role::where('name', 'Student')->first();
+      $student_role->users()->attach(User::all());
     }
 }

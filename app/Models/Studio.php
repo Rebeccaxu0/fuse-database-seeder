@@ -26,6 +26,16 @@ class Studio extends Model
     }
 
     /**
+     * The students associated with this studio.
+     */
+    public function students()
+    {
+      return $this->belongsToMany(User::class)->whereHas('roles', function($q) {
+        $q->where('name', '=', 'Student');
+      });
+    }
+
+    /**
      * The school above with this studio.
      */
     public function school()

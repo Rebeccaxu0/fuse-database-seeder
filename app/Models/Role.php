@@ -10,7 +10,7 @@ class Role extends Model
     use HasFactory;
 
     /**
-     * The users that have this role.
+     * The users associated with this role.
      */
     public function users()
     {
