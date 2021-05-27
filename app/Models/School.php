@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
@@ -10,19 +11,14 @@ class School extends Model
     use HasFactory;
 
     /**
-     * The Package associated with this school.
+     * The Package associated with this school, or parent District.
      */
-    public function package()
+    public function deFactoPackage()
     {
-      return $this->has(Package::class);
-    }
-
-    /**
-     * The users associated with this school.
-     */
-    public function users()
-    {
-      return $this->belongsToMany(User::class);
+      if ($this->package()->count() > 0) {
+        return $this->package();
+      }
+      return $this->district()->first()->package();
     }
 
     /**
@@ -30,9 +26,38 @@ class School extends Model
      */
     public function facilitators()
     {
-      return $this->belongsToMany(User::class)->whereHas('roles', function($q) {
-        $q->where('name', '=', 'Facilitator');
-      });
+      return $this->users()
+                  ->whereHas('roles', function(Builder $query) {
+                    $query->where('name', '=', 'Facilitator');
+                  });
+    }
+
+    /**
+     * The students associated with the child studios of this school.
+     */
+    public function students()
+    {
+      $studios = $this->studios()->get()->pluck('id');
+      return User::whereHas('studios', function(Builder $query) use ($studios) {
+        $query->whereIn('id', $studios);
+      })
+        ->whereHas('roles', function(Builder $query) {
+          $query->where('name', '=', 'Student');
+        });
+    }
+
+    /**
+     * The super facilitators associated with the parent district of this school.
+     */
+    public function superFacilicators()
+    {
+      $district = $this->district()->first();
+      return User::whereHas('districts', function(Builder $query) use ($district) {
+        $query->where('id', '=', $district->id);
+      })
+        ->whereHas('roles', function(Builder $query) {
+          $query->where('name', '=', 'Super Facilitator');
+        });
     }
 
     /**

@@ -3,26 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Studio extends Model
+class Studio extends Organization
 {
     use HasFactory;
 
     /**
-     * The Package associated with this studio.
+     * The Package associated with this studio or the parent School/District.
      */
-    public function package()
+    public function deFactoPackage()
     {
-      return $this->has(Package::class);
-    }
-
-    /**
-     * The users associated with this studio.
-     */
-    public function users()
-    {
-      return $this->belongsToMany(User::class);
+      if ($this->package()->count() > 0) {
+        return $this->package();
+      }
+      return $this->school()->first()->deFactoPackage();
     }
 
     /**
@@ -30,16 +26,50 @@ class Studio extends Model
      */
     public function students()
     {
-      return $this->belongsToMany(User::class)->whereHas('roles', function($q) {
-        $q->where('name', '=', 'Student');
+      return $this->users()->whereHas('roles', function(Builder $query) {
+        $query->where('name', '=', 'Student');
       });
     }
 
     /**
-     * The school above with this studio.
+     * The facilitators associated with this studio's parent org (school).
+     */
+    public function facilitators()
+    {
+      return User::whereHas('schools', function(Builder $query) {
+        $query->where('id', '=', $this->school()->first()->id);
+      })
+        ->whereHas('roles', function(Builder $query) {
+          $query->where('name', '=', 'Facilitator');
+        });
+    }
+
+    /**
+     * The super facilitators associated with this studio's grandparent org (district).
+     */
+    public function superFacilitators()
+    {
+      return User::whereHas('districts', function(Builder $query) {
+        $query->where('id', '=', $this->school()->first()->district()->first()->id);
+      })
+        ->whereHas('roles', function(Builder $query) {
+          $query->where('name', '=', 'Super Facilitator');
+        });
+    }
+
+    /**
+     * The parent org (school) above this studio.
      */
     public function school()
     {
       return $this->belongsTo(School::class);
+    }
+
+    /**
+     * The grandparent org (district) above this studio.
+     */
+    public function district()
+    {
+      return $this->school()->first()->district();
     }
 }
