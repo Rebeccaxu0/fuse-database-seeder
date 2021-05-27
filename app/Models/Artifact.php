@@ -22,11 +22,16 @@ class Artifact extends Model
       return $this->belongsToMany(User::class, 'teams');
     }
 
-    /**
-     * The associated level.
-     */
-    public function level()
+    public function comments()
     {
-      return $this->belongsTo(Level::class);
+      return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the parent artifactable model (level or idea).
+     */
+    public function artifactable()
+    {
+      return $this->morphTo();
     }
 }

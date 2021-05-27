@@ -16,10 +16,7 @@ class CreateArtifactsTable extends Migration
         Schema::create('artifacts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignId('level_id')
-                  ->onDelete('restrict')
-                  ->onUpdate('restrict')
-                  ->constrained();
+            $table->morphs('artifactable');
             $table->string('type', 63)
                   ->default('Complete')
                   ->comment("Valid values: 'Save', 'Complete'");

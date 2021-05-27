@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Artifact;
+use App\Models\Level;
 use Illuminate\Database\Seeder;
 
 class ArtifactSeeder extends Seeder
@@ -16,11 +17,19 @@ class ArtifactSeeder extends Seeder
     {
       $users = \App\Models\User::all();
       foreach ($users as $user) {
-        $team = \App\Models\User::all()->random(rand(0, 2))->push($user);
-        Artifact::factory()
-          ->count(5)
-          ->hasAttached($team)
-          ->create();
+        $artifact_count = rand(1, 10);
+        for ($i = 0; $i < $artifact_count; $i++) {
+          $team = \App\Models\User::all()
+            ->random(rand(0, 2))
+            ->push($user);
+          Artifact::factory()
+            ->hasComments(3)
+            ->hasAttached($team)
+            ->for(
+              Level::all()->random(), 'artifactable'
+            )
+            ->create();
+        }
       }
     }
 }

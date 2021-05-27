@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Artifact;
+use App\Models\Idea;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ArtifactFactory extends Factory
+class IdeaFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Artifact::class;
+    protected $model = Idea::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class ArtifactFactory extends Factory
     public function definition()
     {
         return [
-          //
+            //
         ];
     }
 }

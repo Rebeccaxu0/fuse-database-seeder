@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Artifact;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ArtifactFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Artifact::class;
+    protected $model = Comment::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,8 @@ class ArtifactFactory extends Factory
     public function definition()
     {
         return [
-          //
+            'user_id' => \App\Models\User::all()->random()->id,
+            'body' => $this->faker->paragraph(),
         ];
     }
 }

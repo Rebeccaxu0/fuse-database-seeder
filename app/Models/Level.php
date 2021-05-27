@@ -28,7 +28,7 @@ class Level extends Model
      */
     public function artifacts()
     {
-      return $this->hasMany(Artifact::class);
+      return $this->morphMany(Artifact::class, 'artifactable');
     }
 
     public function setChallengeVersionIDAttribute($value) {
