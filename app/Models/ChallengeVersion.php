@@ -26,6 +26,14 @@ class ChallengeVersion extends Model
     }
 
     /**
+     * The Ideas inspired by this challenge.
+     */
+    public function ideas()
+    {
+      return $this->belongsToMany(Idea::class, 'idea_inspirations');
+    }
+
+    /**
      * Order the associated levels.
      *
      * @param array $order

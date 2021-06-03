@@ -72,7 +72,15 @@ class User extends Authenticatable
      */
     public function artifacts()
     {
-      return $this->belongsToMany(Artifact::class, 'teams');
+      return $this->morphedByMany(Artifact::class, 'teamable', 'teams');
+    }
+
+    /**
+     * The ideas created by this user.
+     */
+    public function ideas()
+    {
+      return $this->morphedByMany(Idea::class, 'teamable', 'teams');
     }
 
     /**

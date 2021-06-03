@@ -20,6 +20,17 @@ class CreateIdeasTable extends Migration
             $table->text('body')
               ->nullable();
         });
+
+        Schema::create('idea_inspirations', function (Blueprint $table) {
+          $table->foreignId('idea_id')
+                ->onDelete('cascade')
+                ->onUpdate('restrict')
+                ->constrained();
+          $table->foreignId('challenge_version_id')
+                ->onDelete('cascade')
+                ->onUpdate('restrict')
+                ->constrained();
+        });
     }
 
     /**

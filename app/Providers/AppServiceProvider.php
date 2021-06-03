@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
       Relation::morphMap([
         'artifact' => 'App\Models\Artifact',
         'idea' => 'App\Models\Idea',
+        'level' => 'App\Models\Level',
       ]);
     }
 }

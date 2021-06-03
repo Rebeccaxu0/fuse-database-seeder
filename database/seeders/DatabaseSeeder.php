@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         RoleSeeder::class,
         ArtifactSeeder::class,
         DistrictSeeder::class,
+        IdeaSeeder::class,
       ]);
     }
 }
