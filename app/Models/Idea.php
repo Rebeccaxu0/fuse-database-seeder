@@ -10,6 +10,14 @@ class Idea extends Model
     use HasFactory;
 
     /**
+     * Users who thought of or own this idea.
+     */
+    public function team()
+    {
+      return $this->morphToMany(User::class, 'teamable', 'teams');
+    }
+
+    /**
      * Get the artifacts on this idea.
      */
     public function artifacts()

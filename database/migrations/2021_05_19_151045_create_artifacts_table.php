@@ -27,17 +27,6 @@ class CreateArtifactsTable extends Migration
             $table->string('url', 2048)->nullable();
             $table->string('url_title', 255)->nullable();
         });
-
-        Schema::create('teams', function (Blueprint $table) {
-          $table->foreignId('artifact_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
-          $table->foreignId('user_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
-        });
     }
 
     /**
@@ -48,6 +37,5 @@ class CreateArtifactsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('artifacts');
-        Schema::dropIfExists('teams');
     }
 }

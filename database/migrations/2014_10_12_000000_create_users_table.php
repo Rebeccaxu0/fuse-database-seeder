@@ -24,6 +24,14 @@ class CreateUsersTable extends Migration
             $table->text('profile_photo_path')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('teams', function (Blueprint $table) {
+          $table->morphs('teamable');
+          $table->foreignId('user_id')
+                ->onDelete('cascade')
+                ->onUpdate('restrict')
+                ->constrained();
+        });
     }
 
     /**
@@ -34,5 +42,6 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+        Schema::dropIfExists('teams');
     }
 }

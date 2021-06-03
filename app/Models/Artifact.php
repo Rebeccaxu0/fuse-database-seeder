@@ -19,7 +19,7 @@ class Artifact extends Model
 
     public function team()
     {
-      return $this->belongsToMany(User::class, 'teams');
+      return $this->morphToMany(User::class, 'teamable', 'teams');
     }
 
     public function comments()

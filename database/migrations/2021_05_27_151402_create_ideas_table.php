@@ -17,6 +17,8 @@ class CreateIdeasTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->text('body')
+              ->nullable();
         });
     }
 
