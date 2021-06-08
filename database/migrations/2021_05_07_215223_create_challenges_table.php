@@ -17,6 +17,9 @@ class CreateChallengesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
+            $table->text('description')
+              ->nullable();
+            $table->unsignedBigInteger('d7_id');
         });
     }
 
