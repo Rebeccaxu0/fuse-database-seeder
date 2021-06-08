@@ -19,6 +19,8 @@ class CreateChallengeVersionsTable extends Migration
             $table->foreignId('challenge_id')
                   ->constrained();
             $table->string('name');
+            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_challenge_id');
         });
     }
 
