@@ -15,7 +15,8 @@ class CreateSchoolsTable extends Migration
     {
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->string('name', 1023);
             $table->foreignId('district_id')
                   ->nullable()
@@ -27,6 +28,10 @@ class CreateSchoolsTable extends Migration
                   ->unique()
                   ->nullable();
             $table->unique(['name', 'district_id']);
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_district_id');
+            $table->unsignedBigInteger('d7_package_id');
         });
 
         Schema::create('school_user', function (Blueprint $table) {
@@ -38,6 +43,9 @@ class CreateSchoolsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_school_id');
+            $table->unsignedBigInteger('d7_uid');
         });
     }
 

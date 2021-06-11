@@ -15,12 +15,16 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->foreignId('artifact_id')
                   ->constrained();
             $table->foreignId('user_id')
                   ->constrained();
             $table->longText('body');
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_artifact_id');
+            $table->unsignedBigInteger('d7_uid');
         });
 
         Schema::create('comment_seen', function (Blueprint $table) {
@@ -28,8 +32,12 @@ class CreateCommentsTable extends Migration
                   ->constrained();
             $table->foreignId('user_id')
                   ->constrained();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->primary(['comment_id', 'user_id']);
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_comment_id');
+            $table->unsignedBigInteger('d7_uid');
         });
     }
 

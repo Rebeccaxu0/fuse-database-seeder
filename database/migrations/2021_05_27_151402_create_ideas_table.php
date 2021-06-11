@@ -15,7 +15,8 @@ class CreateIdeasTable extends Migration
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->string('name');
             $table->text('body')
               ->nullable();
@@ -30,6 +31,9 @@ class CreateIdeasTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_idea_id');
+            $table->unsignedBigInteger('d7_challenge_version_id');
         });
     }
 

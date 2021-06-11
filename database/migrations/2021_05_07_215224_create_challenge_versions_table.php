@@ -15,10 +15,12 @@ class CreateChallengeVersionsTable extends Migration
     {
         Schema::create('challenge_versions', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->foreignId('challenge_id')
                   ->constrained();
             $table->string('name');
+            // Migration Columns.
             $table->unsignedBigInteger('d7_id');
             $table->unsignedBigInteger('d7_challenge_id');
         });

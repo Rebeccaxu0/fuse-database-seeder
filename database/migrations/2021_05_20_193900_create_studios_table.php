@@ -15,7 +15,8 @@ class CreateStudiosTable extends Migration
     {
         Schema::create('studios', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->string('name', 1023);
             $table->foreignId('school_id')
                   ->nullable()
@@ -39,6 +40,10 @@ class CreateStudiosTable extends Migration
                   ->default(true);
             $table->boolean('demo_studio')
                   ->default(false);
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_school_id');
+            $table->unsignedBigInteger('d7_package_id');
         });
 
         Schema::create('studio_user', function (Blueprint $table) {
@@ -50,6 +55,9 @@ class CreateStudiosTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_school_id');
+            $table->unsignedBigInteger('d7_uid');
         });
     }
 

@@ -15,13 +15,17 @@ class CreateLevelsTable extends Migration
     {
         Schema::create('levels', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->foreignId('challenge_version_id')
                   ->constrained();
             $table->unsignedTinyInteger('level_number')
                   ->nullable()
                   ->comment('Level number must be unique per challenge. To update level number, first set any affected other level number values to NULL, then set them in bulk with `UPDATE levels SET level_number CASE id WHEN <id> THEN <order> [...] END WHERE id in (<id>, ...)`');
             $table->unique(['challenge_version_id', 'level_number']);
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_challenge_version_id');
         });
     }
 
