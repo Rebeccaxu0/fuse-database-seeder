@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+Use Spatie\Translatable\HasTranslations;
 
 class ChallengeVersion extends Model
 {
     use HasFactory;
+    use HasTranslations;
+
+    public $translatable = ['facilitator_notes'];
 
     /**
      * The challenge that owns this challenge version.

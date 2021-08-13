@@ -14,7 +14,8 @@
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.0",
-        "selfsimilar/laravel-d7-password": "^0.1.2"
+        "selfsimilar/laravel-d7-password": "^0.1.2",
+        "spatie/laravel-translatable": "^5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
