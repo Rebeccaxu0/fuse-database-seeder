@@ -24,8 +24,6 @@ class LevelFactory extends Factory
         return [
           'id' => $this->faker->randomDigit(),
           'challenge_version_id' => $this->faker->randomDigit(),
-          'd7_id' => 1,
-          'd7_challenge_version_id' => 1,
         ];
     }
 }
