@@ -38,6 +38,14 @@ class ChallengeVersion extends Model
     }
 
     /**
+     * The category this Challenge version is tagged with.
+     */
+    public function category()
+    {
+      return $this->belongsTo(ChallengeCategory::class, 'challenge_category_id');
+    }
+
+    /**
      * Order the associated levels.
      *
      * @param array $order
