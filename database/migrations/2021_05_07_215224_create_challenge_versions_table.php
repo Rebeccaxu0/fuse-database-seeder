@@ -13,16 +13,6 @@ class CreateChallengeVersionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('challenge_categories', function (Blueprint $table) {
-            $table->id();
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->string('name');
-            $table->text('description');
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
-        });
-
         Schema::create('challenge_versions', function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
