@@ -26,8 +26,6 @@ class ChallengeCategoryFactory extends Factory
             'd7_id' => $this->faker->randomDigit(),
             'name' => $this->faker->word(),
             'description' => $this->faker->words(5, true),
-            'created_at' => $this->faker->unixTime(),
-            'updated_at' => $this->faker->unixTime(),
         ];
     }
 }

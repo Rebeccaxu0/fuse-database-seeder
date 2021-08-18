@@ -23,8 +23,6 @@ class ChallengeVersionFactory extends Factory
     {
         return [
             'id' => $this->faker->randomDigit(),
-            'created_at' => $this->faker->unixTime(),
-            'updated_at' => $this->faker->unixTime(),
             'challenge_id' => 1,
             'challenge_category_id' => 1,
             'name' => "{\"en\": \"{$this->faker->words(3, true)}\"}",
