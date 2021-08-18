@@ -7,7 +7,6 @@ use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
 use App\Models\Package;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-// use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -15,11 +14,16 @@ class ChallengeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testChallengeTableHasExpectedColumns()
+    public function testChallengesTableHasExpectedColumns()
     {
         $this->assertTrue(
           Schema::hasColumns('challenges', [
-            'id','name', 'description', 'created_at', 'updated_at', 'd7_id'
+            'id',
+            'name',
+            'description',
+            'created_at',
+            'updated_at',
+            'd7_id',
         ]), 1);
     }
 
