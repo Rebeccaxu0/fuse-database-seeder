@@ -33,8 +33,10 @@ class CreatePackagesTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-          $table->unsignedBigInteger('d7_challenge_id');
-          $table->unsignedBigInteger('d7_package_id');
+          $table->unsignedBigInteger('d7_challenge_id')
+                ->default(0);
+          $table->unsignedBigInteger('d7_package_id')
+                ->default(0);
         });
     }
 

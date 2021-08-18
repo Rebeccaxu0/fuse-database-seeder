@@ -12,7 +12,7 @@ class ChallengeCategory extends Model
     /**
      * Challenges tagged with with category.
      */
-    public function challenge_versions()
+    public function challengeVersions()
     {
       return $this->hasMany(ChallengeVersion::class);
     }

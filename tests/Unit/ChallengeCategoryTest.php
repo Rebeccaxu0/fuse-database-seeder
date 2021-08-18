@@ -14,8 +14,7 @@ class ChallengeCategoryTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /** @test  */
-    public function test_challenge_categories_table_has_expected_columns()
+    public function testChallengeCategoriesTableHasExpectedColumns()
     {
         $this->assertTrue(
           Schema::hasColumns('challenge_categories', [
@@ -23,17 +22,18 @@ class ChallengeCategoryTest extends TestCase
         ]), 1);
     }
 
-    public function test_category_has_many_challenge_versions()
+    public function testCategoryHasManyChallengeVersions()
     {
         $challenge = Challenge::factory()->create();
-        $challenge_category = ChallengeCategory::factory()->create();
-        $challenge_version = ChallengeVersion::factory()->create(
+        $challengeCategory = ChallengeCategory::factory()->create();
+        $challengeVersion = ChallengeVersion::factory()->create(
           [
             'challenge_id' => $challenge->id,
-            'challenge_category_id' => $challenge_category->id,
+            'challenge_category_id' => $challengeCategory->id,
           ]);
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $challenge_category->challenge_versions());
-        $this->assertEquals(1, $challenge_category->challenge_versions->count());
-        $this->assertTrue($challenge_category->challenge_versions->contains($challenge_version));
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $challengeCategory->challengeVersions);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $challengeCategory->challengeVersions());
+        $this->assertEquals(1, $challengeCategory->challengeVersions->count());
+        $this->assertTrue($challengeCategory->challengeVersions->contains($challengeVersion));
     }
 }
