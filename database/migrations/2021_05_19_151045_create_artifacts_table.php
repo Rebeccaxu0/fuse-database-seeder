@@ -28,7 +28,8 @@ class CreateArtifactsTable extends Migration
             $table->string('url', 2048)->nullable();
             $table->string('url_title', 255)->nullable();
             // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_id')
+                  ->default(0);
         });
     }
 

@@ -6,13 +6,15 @@ use App\Models\Challenge;
 use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
 use App\Models\Level;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class ChallengeVersionTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function testChallengeVersionsTableHasExpectedColumns()
     {
@@ -41,44 +43,29 @@ class ChallengeVersionTest extends TestCase
         ]), 1);
     }
 
-    public function testChallengeVersionBelongsToAChallenge()
+   public function testChallengeVersionBelongsToAChallenge()
     {
-        $challenge = Challenge::factory()->create();
-        $challengeCategory = ChallengeCategory::factory()->create();
-        $challengeVersion = ChallengeVersion::factory()->create(
-          [
-            'challenge_id' => $challenge->id,
-            'challenge_category_id' => $challengeCategory->id,
-          ]);
-        $this->assertInstanceOf($challenge::class, $challengeVersion->challenge);
+        $challengeVersion = ChallengeVersion::factory()->make();
+
+        $this->assertInstanceOf(BelongsTo::class, $challengeVersion->challenge());
+        $this->assertInstanceOf(Challenge::class, $challengeVersion->challenge()->getRelated());
     }
 
     public function testChallengeVersionBelongsToAChallengeCategory()
     {
-        $challenge = Challenge::factory()->create();
-        $challengeCategory = ChallengeCategory::factory()->create();
-        $challengeVersion = ChallengeVersion::factory()->create(
-          [
-            'challenge_id' => $challenge->id,
-            'challenge_category_id' => $challengeCategory->id,
-          ]);
-        $this->assertInstanceOf($challengeCategory::class, $challengeVersion->challengeCategory);
+        $challengeVersion = ChallengeVersion::factory()->make();
+
+        $this->assertInstanceOf(BelongsTo::class, $challengeVersion->challengeCategory());
+        $this->assertInstanceOf(ChallengeCategory::class, $challengeVersion->challengeCategory()->getRelated());
     }
 
     public function testChallengeVersionHasManyLevels()
     {
-        $challenge = Challenge::factory()->create();
-        $challengeCategory = ChallengeCategory::factory()->create();
-        $challengeVersion = ChallengeVersion::factory()->create(
-          [
-            'challenge_id' => $challenge->id,
-            'challenge_category_id' => $challengeCategory->id,
-          ]);
-        $level = Level::factory()->create(['challenge_version_id' => $challengeVersion->id]);
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $challengeVersion->levels);
-        $this->assertInstanceOf('Illuminate\Database\Eloquent\Relations\HasMany', $challengeVersion->levels());
-        $this->assertEquals(1, $challengeVersion->levels->count());
-        $this->assertTrue($challengeVersion->levels->contains($level));
+        $challengeVersion = ChallengeVersion::factory()->make();
+
+        $this->assertInstanceOf(Collection::class, $challengeVersion->levels);
+        $this->assertInstanceOf(HasMany::class, $challengeVersion->levels());
+        $this->assertInstanceOf(Level::class, $challengeVersion->levels()->getRelated());
     }
 
 }

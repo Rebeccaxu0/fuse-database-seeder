@@ -22,7 +22,6 @@ class LevelFactory extends Factory
     public function definition()
     {
         return [
-          'id' => $this->faker->randomDigit(),
           'challenge_version_id' => $this->faker->randomDigit(),
         ];
     }

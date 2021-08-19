@@ -18,7 +18,7 @@ class Level extends Model
     /**
      * Get the associated ChallengeVersion.
      */
-    public function challenge()
+    public function challengeVersion()
     {
       return $this->belongsTo(ChallengeVersion::class);
     }

@@ -22,7 +22,8 @@ class ArtifactFactory extends Factory
     public function definition()
     {
         return [
-          //
+          'artifactable_type' => 'level',
+          'artifactable_id' => $this->faker->randomDigit(),
         ];
     }
 }
