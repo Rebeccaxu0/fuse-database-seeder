@@ -2,16 +2,25 @@
 
 namespace Tests\Unit;
 
-use App\Models\Level;
-
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class LevelTest extends TestCase
 {
+    private $level;
+
+    protected function setUp(): void
+    {
+      parent::setUp();
+      $this->level = \App\Models\Level::factory()->make();
+    }
+
+    protected function tearDown(): void
+    {
+      parent::tearDown();
+      unset($this->level);
+    }
+
     public function testLevelsTableHasExpectedColumns()
     {
         $this->assertTrue(
@@ -28,19 +37,13 @@ class LevelTest extends TestCase
 
     public function testLevelBelongsToAChallengeVersion()
     {
-        $level = Level::factory()->make();
-
-        $this->assertInstanceOf(BelongsTo::class, $level->challengeVersion());
-        $this->assertInstanceOf('App\Models\ChallengeVersion', $level->challengeVersion()->getRelated());
+        $this->assertBelongsTo($this->level, 'challengeVersion');
 
     }
 
-    public function testLevelHasManyArtifacts()
+    public function testLevelMorphManyArtifacts()
     {
-        $level = Level::factory()->make();
-        $this->assertInstanceOf(MorphMany::class, $level->artifacts());
-        $this->assertInstanceOf(Collection::class, $level->artifacts);
-        $this->assertInstanceOf('App\Models\Artifact', $level->artifacts()->getRelated());
+        $this->assertMorphMany($this->level, 'artifacts');
     }
 
 }

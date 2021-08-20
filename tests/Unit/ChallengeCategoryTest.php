@@ -2,18 +2,24 @@
 
 namespace Tests\Unit;
 
-use App\Models\ChallengeCategory;
-
-use App\Models\ChallengeVersion;
-
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class ChallengeCategoryTest extends TestCase
 {
+    private $challengeCategory;
+
+    protected function setUp(): void
+    {
+      parent::setUp();
+      $this->challengeCategory = \App\Models\ChallengeCategory::factory()->make();
+    }
+
+    protected function tearDown(): void
+    {
+      parent::tearDown();
+      unset($this->challengeCategory);
+    }
 
     public function testChallengeCategoriesTableHasExpectedColumns()
     {
@@ -30,9 +36,6 @@ class ChallengeCategoryTest extends TestCase
 
     public function testCategoryHasManyChallengeVersions()
     {
-        $challengeCategory = ChallengeCategory::factory()->make();
-        $this->assertInstanceOf(Collection::class, $challengeCategory->challengeVersions);
-        $this->assertInstanceOf(HasMany::class, $challengeCategory->challengeVersions());
-        $this->assertInstanceOf(ChallengeVersion::class, $challengeCategory->challengeVersions()->getRelated());
+        $this->assertHasMany($this->challengeCategory, 'challengeVersions');
     }
 }

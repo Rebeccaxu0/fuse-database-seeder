@@ -2,17 +2,25 @@
 
 namespace Tests\Unit;
 
-use App\Models\Artifact;
-
-use App\Models\Idea;
-use App\Models\Level;
-
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class ArtifactTest extends TestCase
 {
+
+    private $artifact;
+
+    protected function setUp(): void
+    {
+      parent::setUp();
+      $this->artifact = \App\Models\Artifact::factory()->make();
+    }
+
+    protected function tearDown(): void
+    {
+      parent::tearDown();
+      unset($this->artifact);
+    }
 
     public function testArtifactTableHasExpectedColumns(): void
     {
@@ -34,18 +42,19 @@ class ArtifactTest extends TestCase
         ]), 1);
     }
 
-    public function testArtifactBelongsToALevelOrIdea(): void
+    public function testArtifactMorphToALevel(): void
     {
-        $artifact = Artifact::factory()->make();
-
-        $this->assertInstanceOf(MorphTo::class, $artifact->artifactable());
-        $this->assertEquals(Level::class, $artifact->artifactable()->morphMap()['level']);
-        $this->assertEquals(Idea::class, $artifact->artifactable()->morphMap()['idea']);
+        $this->assertMorphTo($this->artifact, 'artifactable');
     }
 
-    // public function testArtifactHasManyUsers(): void
-    // {
-    //     $this->assertTrue(false);
-    // }
+    public function testArtifactHasManyComments(): void
+    {
+        $this->assertHasMany($this->artifact, 'comments');
+    }
+
+    public function testArtifactMorphToManyUsers(): void
+    {
+        $this->assertMorphToMany($this->artifact, 'users');
+    }
 
 }

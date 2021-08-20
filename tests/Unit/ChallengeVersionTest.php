@@ -2,19 +2,25 @@
 
 namespace Tests\Unit;
 
-use App\Models\Challenge;
-use App\Models\ChallengeCategory;
-use App\Models\ChallengeVersion;
-use App\Models\Level;
-
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class ChallengeVersionTest extends TestCase
 {
+    private $challengeVersion;
+
+    protected function setUp(): void
+    {
+      parent::setUp();
+      $this->challengeVersion = \App\Models\ChallengeVersion::factory()->make();
+    }
+
+    protected function tearDown(): void
+    {
+      parent::tearDown();
+      unset($this->challengeVersion);
+    }
+
 
     public function testChallengeVersionsTableHasExpectedColumns()
     {
@@ -45,27 +51,17 @@ class ChallengeVersionTest extends TestCase
 
    public function testChallengeVersionBelongsToAChallenge()
     {
-        $challengeVersion = ChallengeVersion::factory()->make();
-
-        $this->assertInstanceOf(BelongsTo::class, $challengeVersion->challenge());
-        $this->assertInstanceOf(Challenge::class, $challengeVersion->challenge()->getRelated());
+        $this->assertBelongsTo($this->challengeVersion, 'challenge');
     }
 
     public function testChallengeVersionBelongsToAChallengeCategory()
     {
-        $challengeVersion = ChallengeVersion::factory()->make();
-
-        $this->assertInstanceOf(BelongsTo::class, $challengeVersion->challengeCategory());
-        $this->assertInstanceOf(ChallengeCategory::class, $challengeVersion->challengeCategory()->getRelated());
+        $this->assertBelongsTo($this->challengeVersion, 'challengeCategory');
     }
 
     public function testChallengeVersionHasManyLevels()
     {
-        $challengeVersion = ChallengeVersion::factory()->make();
-
-        $this->assertInstanceOf(Collection::class, $challengeVersion->levels);
-        $this->assertInstanceOf(HasMany::class, $challengeVersion->levels());
-        $this->assertInstanceOf(Level::class, $challengeVersion->levels()->getRelated());
+        $this->assertHasMany($this->challengeVersion, 'levels');
     }
 
 }
