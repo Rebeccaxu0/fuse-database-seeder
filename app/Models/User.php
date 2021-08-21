@@ -76,6 +76,14 @@ class User extends Authenticatable
     }
 
     /**
+     * The comments created by this user.
+     */
+    public function comments()
+    {
+      return $this->hasMany(Comment::class);
+    }
+
+    /**
      * The ideas created by this user.
      */
     public function ideas()

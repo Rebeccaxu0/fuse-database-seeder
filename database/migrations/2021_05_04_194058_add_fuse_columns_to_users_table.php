@@ -19,7 +19,8 @@ class AddFuseColumnsToUsersTable extends Migration
             $table->string('language', 12)->default('en_US')->comment("Users's preferred language");
             $table->string('reporting_id', 128)->nullable()->comment("Anonymized reporting ID");
             // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
+            $table->unsignedBigInteger('d7_id')
+              ->default(1);
         });
     }
 

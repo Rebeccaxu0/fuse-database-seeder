@@ -59,6 +59,18 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Assert that the provided class is morphed by the provided relation.
+     *
+     * @param  mixed   $class
+     * @param  string  $relation
+     * @return void
+     */
+    public function assertMorphedByMany($class, $relation)
+    {
+        $this->assertRelationship($class, $relation, 'morphedByMany');
+    }
+
+    /**
      * Assert that the provided class morphs to the provided relation.
      *
      * @param  mixed   $class
@@ -141,21 +153,21 @@ abstract class TestCase extends BaseTestCase
      * @return array
      */
     public function getRelationshipArguments($class, $relationship, $type) {
-        $mocked = Mockery::mock("{$class}[{$type}]")
-            ->shouldIgnoreMissing()
-            ->asUndefined();
-
         $args = [];
 
-        $mocked->shouldReceive($type)
-            ->once()
-            ->andReturnUsing(function() use (&$args)
-            {
-                $args = func_get_args();
-                return Mockery::self();
-            });
+        $closure = function() use (&$args) {
+            $args = func_get_args();
+            return Mockery::self();
+        };
 
-        $mocked->$relationship();
+        $mock = Mockery::mock("{$class}[{$type}]");
+        $mock->shouldIgnoreMissing()
+            ->asUndefined()
+            ->shouldReceive($type)
+            ->once()
+            ->andReturnUsing($closure);
+
+        $mock->$relationship();
 
         return $args;
     }
