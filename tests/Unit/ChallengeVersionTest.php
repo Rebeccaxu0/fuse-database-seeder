@@ -51,17 +51,17 @@ class ChallengeVersionTest extends TestCase
 
    public function testChallengeVersionBelongsToAChallenge()
     {
-        $this->assertBelongsTo($this->challengeVersion, 'challenge');
+        $this->assertRelationship($this->challengeVersion, 'challenge', 'belongsTo');
     }
 
     public function testChallengeVersionBelongsToAChallengeCategory()
     {
-        $this->assertBelongsTo($this->challengeVersion, 'challengeCategory');
+        $this->assertRelationship($this->challengeVersion, 'challengeCategory', 'belongsTo');
     }
 
     public function testChallengeVersionHasManyLevels()
     {
-        $this->assertHasMany($this->challengeVersion, 'levels');
+        $this->assertRelationship($this->challengeVersion, 'levels', 'hasMany');
     }
 
 }

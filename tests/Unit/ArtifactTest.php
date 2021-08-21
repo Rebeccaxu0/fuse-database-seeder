@@ -42,19 +42,19 @@ class ArtifactTest extends TestCase
         ]), 1);
     }
 
-    public function testArtifactMorphToALevel(): void
+    public function testArtifactBelongsToALevel(): void
     {
-        $this->assertMorphTo($this->artifact, 'artifactable');
+        $this->assertRelationship($this->artifact, 'artifactable', 'morphTo');
     }
 
     public function testArtifactHasManyComments(): void
     {
-        $this->assertHasMany($this->artifact, 'comments');
+        $this->assertRelationship($this->artifact, 'comments', 'hasMany');
     }
 
-    public function testArtifactMorphToManyUsers(): void
+    public function testArtifactBelongsToManyUsers(): void
     {
-        $this->assertMorphToMany($this->artifact, 'users');
+        $this->assertRelationship($this->artifact, 'users', 'morphToMany');
     }
 
 }

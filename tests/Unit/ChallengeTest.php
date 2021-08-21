@@ -36,11 +36,11 @@ class ChallengeTest extends TestCase
 
     public function testChallengeHasManyChallengeVersions()
     {
-        $this->assertHasMany($this->challenge, 'challengeVersions');
+        $this->assertRelationship($this->challenge, 'challengeVersions', 'hasMany');
     }
 
     public function testChallengeBelongsToManyPackages()
     {
-        $this->assertBelongsToMany($this->challenge, 'packages');
+        $this->assertRelationship($this->challenge, 'packages', 'belongsToMany');
     }
 }

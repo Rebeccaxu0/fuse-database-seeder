@@ -62,37 +62,37 @@ class UserTest extends TestCase
 
     public function testUserBelongsToManyRoles(): void
     {
-        $this->assertBelongsToMany($this->user, 'roles');
+      $this->assertRelationship($this->user, 'roles', 'belongsToMany');
     }
 
     public function testUserBelongsToManyDistricts(): void
     {
-        $this->assertBelongsToMany($this->user, 'districts');
+        $this->assertRelationship($this->user, 'districts', 'belongsToMany');
     }
 
     public function testUserBelongsToManySchools(): void
     {
-        $this->assertBelongsToMany($this->user, 'schools');
+        $this->assertRelationship($this->user, 'schools', 'belongsToMany');
     }
 
     public function testUserBelongsToManyStudios(): void
     {
-        $this->assertBelongsToMany($this->user, 'studios');
+        $this->assertRelationship($this->user, 'studios', 'belongsToMany');
     }
 
     public function testUserHasManyComments(): void
     {
-        $this->assertHasMany($this->user, 'comments');
+        $this->assertRelationship($this->user, 'comments', 'hasMAny');
     }
 
     public function testUserHasManyArtifacts(): void
     {
-        $this->assertMorphedByMany($this->user, 'artifacts');
+        $this->assertRelationship($this->user, 'artifacts', 'morphedByMany');
     }
 
     public function testUserHasManyIdeas(): void
     {
-        $this->assertMorphedByMany($this->user, 'ideas');
+        $this->assertRelationship($this->user, 'ideas', 'morphedByMany');
     }
 
 }

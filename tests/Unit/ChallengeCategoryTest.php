@@ -36,6 +36,6 @@ class ChallengeCategoryTest extends TestCase
 
     public function testCategoryHasManyChallengeVersions()
     {
-        $this->assertHasMany($this->challengeCategory, 'challengeVersions');
+        $this->assertRelationship($this->challengeCategory, 'challengeVersions', 'hasMany');
     }
 }

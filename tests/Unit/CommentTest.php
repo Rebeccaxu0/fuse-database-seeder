@@ -39,12 +39,12 @@ class CommentTest extends TestCase
 
     public function testCommentBelongsArtifact(): void
     {
-        $this->assertBelongsTo($this->comment, 'artifact');
+        $this->assertRelationship($this->comment, 'artifact', 'belongsTo');
     }
 
     public function testCommentBelongsToUser(): void
     {
-      $this->assertBelongsTo($this->comment, 'user');
+      $this->assertRelationship($this->comment, 'user', 'belongsTo');
     }
 
 }

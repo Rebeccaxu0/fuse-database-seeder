@@ -37,13 +37,13 @@ class LevelTest extends TestCase
 
     public function testLevelBelongsToAChallengeVersion()
     {
-        $this->assertBelongsTo($this->level, 'challengeVersion');
+        $this->assertRelationship($this->level, 'challengeVersion', 'belongsTo');
 
     }
 
-    public function testLevelMorphManyArtifacts()
+    public function testLevelHasManyArtifacts()
     {
-        $this->assertMorphMany($this->level, 'artifacts');
+        $this->assertRelationship($this->level, 'artifacts', 'morphMany');
     }
 
 }
