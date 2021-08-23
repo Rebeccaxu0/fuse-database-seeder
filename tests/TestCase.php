@@ -11,19 +11,6 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     /**
-     * Assert that the provided object has the provided method.
-     *
-     * @param  mixed   $class
-     * @param  mixed   $method
-     * @param  string  $message
-     * @return void
-     */
-    public function assertRespondsTo($class, $method, $message = 'Expected class to have method.')
-    {
-        $this->assertTrue(method_exists($class, $method), $message);
-    }
-
-    /**
      * Assert that the provided relationship of type exists on the provided
      * class.
      *
@@ -32,10 +19,10 @@ abstract class TestCase extends BaseTestCase
      * @param  string  $type
      * @return void
      */
-    public function assertRelationship($class, $relationship, $type)
+    public function assertRelationship($class, $relationship, $type): void
     {
         $class = is_string($class) ? $class : $class::class;
-        $this->assertRespondsTo($class, $relationship);
+        $this->assertTrue(method_exists($class, $relationship), 'Expected class to have method.');
         $args = $this->getRelationshipArguments($class, $relationship, $type);
         $class = Mockery::mock("{$class}[{$type}]")
                         ->shouldIgnoreMissing()
