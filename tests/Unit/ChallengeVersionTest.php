@@ -64,4 +64,14 @@ class ChallengeVersionTest extends TestCase
         $this->assertRelationship($this->challengeVersion, 'levels', 'hasMany');
     }
 
+    public function testChallengeVersionBelongsToManyIdeas()
+    {
+        $this->assertRelationship($this->challengeVersion, 'ideas', 'belongsToMany');
+    }
+
+    public function testChallengeVersionHasOnePrerequisiteChallenveVersion()
+    {
+        $this->assertRelationship($this->challengeVersion, 'prerequisiteChallengeVersion', 'hasOne');
+    }
+
 }

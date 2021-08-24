@@ -46,6 +46,14 @@ class ChallengeVersion extends Model
     }
 
     /**
+     * Prerequisite ChallengeVersion, if any, usually previous level in sequence.
+     */
+    public function prerequisiteChallengeVersion()
+    {
+      return $this->hasOne(ChallengeCategory::class, 'prerequisite_challenge_version_id');
+    }
+
+    /**
      * Order the associated levels.
      *
      * @param array $order

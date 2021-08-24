@@ -10,4 +10,4 @@ In this phase we identify all primary data types from the Drupal application tha
 
 ## Phase II - Gather details
 
-In this phase we return to the Drupal application to add any data columns, as well as SQL code to migrate Drupal data to the new application.
+In this phase we return to the Drupal application to add any data columns, as well as SQL code to migrate Drupal data to the new application. Drupal tends to create lots of unnecessary tables, so this will likely require migrating data from multiple tables into a single Laravel table.
