@@ -50,7 +50,7 @@ class ChallengeVersion extends Model
      */
     public function prerequisiteChallengeVersion()
     {
-      return $this->hasOne(ChallengeCategory::class, 'prerequisite_challenge_version_id');
+      return $this->hasOne(ChallengeVersion::class, 'prerequisite_challenge_version_id');
     }
 
     /**
