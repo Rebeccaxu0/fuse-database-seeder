@@ -18,7 +18,12 @@ class CreateRolesTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name');
-            $table->unsignedBigInteger('d7_id');
+            $table->string('description')
+                  ->nullable();
+
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_id')
+                  ->default(1);
         });
 
         Schema::create('role_user', function (Blueprint $table) {
@@ -30,6 +35,7 @@ class CreateRolesTable extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
+
             // Migration Columns.
             $table->unsignedBigInteger('d7_uid');
             $table->unsignedBigInteger('d7_rid');

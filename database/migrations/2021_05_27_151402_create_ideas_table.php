@@ -20,6 +20,10 @@ class CreateIdeasTable extends Migration
             $table->string('name');
             $table->text('body')
               ->nullable();
+
+            // Migration Columns.
+            $table->unsignedBigInteger('d7_id')
+              ->default(1);
         });
 
         Schema::create('idea_inspirations', function (Blueprint $table) {
