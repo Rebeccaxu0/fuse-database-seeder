@@ -57,21 +57,8 @@ abstract class TestCase extends BaseTestCase
     public function assertRelationshipSchemaExists($class, $relationship, $args): void
     {
         $tests = [];
-        // Test schemas based on relationship type.
-        // ~~belongsTo~~
-        // ~~belongsToMany~~
-        // ~~hasMany~~
-        // ~~hasManyThrough~~
-        // ~~hasOne~~
-        // ~~hasOneThrough~~
-        // morphMany
-        // morphByMany
-        // morphOne
-        // morphToMany
 
         if (in_array($relationship, ['morphedByMany', 'morphToMany'])) {
-        }
-        if ($relationship == 'morphToMany') {
             [
                 $related,
                 $name,
@@ -88,11 +75,6 @@ abstract class TestCase extends BaseTestCase
                 $morphToMany->getForeignPivotKeyName(),
                 $morphToMany->getRelatedPivotKeyName(),
             ];
-            // $this->assertTrue(Schema::hasColumns($morphToMany->getTable(),
-            //     [
-            //         $morphToMany->getForeignPivotKeyName(),
-            //         $morphToMany->getRelatedPivotKeyName(),
-            //     ]));
         }
 
         // `morphOne` and `morphMany` are simple inverses of `morphTo` from a
@@ -110,18 +92,16 @@ abstract class TestCase extends BaseTestCase
             [$name, $type, $id, $ownerKey] = array_pad($args, 4, null);
 
             $morphTo = (new $class)->morphTo($name, $type, $id, $ownerKey);
-            foreach ($morphTo->morphMap() as $k => $v) {
-              if ($v != $class) {
-                $morph = new $v;
+            foreach ($morphTo->morphMap() as $morphClass) {
+              if ($morphClass != $class) {
+                $morph = new $morphClass;
                 $tables[$morph->getTable()] = [$morph->getKeyName()];
-                // $this->assertTrue(Schema::hasColumn($morph->getTable(), $morph->getKeyName()));
               }
             }
             $tables[$morphTo->getChild()->getTable()] = [
               $morphTo->getMorphType(),
               $morphTo->getForeignKeyName(),
             ];
-            // $this->assertTrue(Schema::hasColumns($table, $columns));
         }
 
         // `hasOneThrough` and `hasManyThrough` schemas are just two `belongsTo`
