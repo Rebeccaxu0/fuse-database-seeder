@@ -56,6 +56,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function assertRelationshipSchemaExists($class, $relationship, $args): void
     {
+        $tests = [];
         // Test schemas based on relationship type.
         // ~~belongsTo~~
         // ~~belongsToMany~~
@@ -83,13 +84,19 @@ abstract class TestCase extends BaseTestCase
             ] = array_pad($args, 8, null);
 
             $morphToMany = (new $class)->morphToMany($related, $name, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $inverse);
-            $this->assertTrue(Schema::hasColumns($morphToMany->getTable(),
-                [
-                    $morphToMany->getForeignPivotKeyName(),
-                    $morphToMany->getRelatedPivotKeyName(),
-                ]));
+            $tables[$morphToMany->getTable()] = [
+                $morphToMany->getForeignPivotKeyName(),
+                $morphToMany->getRelatedPivotKeyName(),
+            ];
+            // $this->assertTrue(Schema::hasColumns($morphToMany->getTable(),
+            //     [
+            //         $morphToMany->getForeignPivotKeyName(),
+            //         $morphToMany->getRelatedPivotKeyName(),
+            //     ]));
         }
 
+        // `morphOne` and `morphMany` are simple inverses of `morphTo` from a
+        // schema perspective. Swap the values and passthrough to `morphTo`.
         if (in_array($relationship, ['morphMany', 'morphOne'])) {
             $class = $args[0];
             $classableFunction = $args[1];
@@ -100,55 +107,65 @@ abstract class TestCase extends BaseTestCase
         }
 
         if ($relationship == 'morphTo') {
-            [
-              $name,
-              $type,
-              $id,
-              $ownerKey
-            ] = array_pad($args, 4, null);
+            [$name, $type, $id, $ownerKey] = array_pad($args, 4, null);
 
             $morphTo = (new $class)->morphTo($name, $type, $id, $ownerKey);
-            $table = $morphTo->getChild()->getTable();
-            $columns = [
+            foreach ($morphTo->morphMap() as $k => $v) {
+              if ($v != $class) {
+                $morph = new $v;
+                $tables[$morph->getTable()] = [$morph->getKeyName()];
+                // $this->assertTrue(Schema::hasColumn($morph->getTable(), $morph->getKeyName()));
+              }
+            }
+            $tables[$morphTo->getChild()->getTable()] = [
               $morphTo->getMorphType(),
               $morphTo->getForeignKeyName(),
             ];
-            $this->assertTrue(Schema::hasColumns($table, $columns));
+            // $this->assertTrue(Schema::hasColumns($table, $columns));
         }
 
         // `hasOneThrough` and `hasManyThrough` schemas are just two `belongsTo`
         // relationships chained.
         if (in_array($relationship, ['hasOneThrough', 'hasManyThrough'])) {
-            $relatedClassName = $args[0];
-            $throughClassName = $args[1];
-            $classForeignKey ??= array_pad($args, 3, null)[2]
-                ?? (new $class)->getForeignKey();
-            $throughForeignKey ??= array_pad($args, 3, null)[3]
-                ?? (new $throughClassName)->getForeignKey();
-            $classLocalKey ??= array_pad($args, 3, null)[4]
-                ?? (new $class)->getKeyName();
-            $throughClassLocalKey ??= array_pad($args, 3, null)[5]
-                ?? (new $throughClassName)->getKeyName();
+            [
+                $relatedClassName,
+                $throughClassName,
+                $classForeignKey,
+                $throughForeignKey,
+                $classLocalKey,
+                $throughClassLocalKey,
+            ] = array_pad($args, 6, null);
+            $classForeignKey ??= (new $class)->getForeignKey();
+            $throughForeignKey ??= (new $throughClassName)->getForeignKey();
+            $classLocalKey ??= (new $class)->getKeyName();
+            $throughClassLocalKey ??= (new $throughClassName)->getKeyName();
+
             $this->assertRelationshipSchemaExists(
                 (new $relatedClassName),
                 'belongsTo',
                 [$throughClass, $throughForeignKey, $throughClassLocalKey]
             );
-            $this->assertRelationshipSchemaExists((new $throughClassName), 'belongsTo', [$class::class, $classForeignKey, $classLocalKey]);
+            $this->assertRelationshipSchemaExists(
+                (new $throughClassName),
+                'belongsTo',
+                [$class::class, $classForeignKey, $classLocalKey]
+            );
             return;
         }
+
         // `hasOne` and `hasMany` are simple inverses of `belongsTo` from a
         // schema perspective. Swap the values and passthrough to `belongsTo`.
         if (in_array($relationship, ['hasOne', 'hasMany'])) {
-            $relationship = 'belongTo';
-            $relatedClassName = $args[0];
-            $childTable = (new $relatedClassName)->getTable();
-            $parentTable = (new $class)->getTable();
-            $foreignKey ??= array_pad($args, 3, null)[1] ?? (new $relatedClassName)->getForeignKey();
-            $localKey ??= array_pad($args, 3, null)[2] ?? (new $relatedClassName)->getKeyName();
-            $tmp = $foreignKey;
-            $foreignKey = $localKey;
-            $localKey = $tmp;
+            [
+              $related,
+              $foreignKey,
+              $localKey,
+            ] = array_pad($args, 3, null);
+            $foreignKey ??= (new $class)->getForeignKey();
+            $localKey ??= (new $class)->getKeyName();
+            $newArgs = [$class, $foreignKey, $localKey];
+            $this->assertRelationshipSchemaExists($args[0], 'belongsTo', $newArgs);
+            return;
         }
 
         // Regardless of the inverse relationship it's attached to, `belongsTo`
@@ -156,13 +173,15 @@ abstract class TestCase extends BaseTestCase
         // key (FK). Therefore we only need to assert the child has the FK, and
         // the parent has the local key as defined by the call in the model.
         if ($relationship == 'belongsTo') {
-            $relatedClassName = $args[0];
-            $childTable ??= (new $class)->getTable();
-            $parentTable ??= (new $relatedClassName)->getTable();
-            $foreignKey ??= array_pad($args, 3, null)[1] ?? (new $relatedClassName)->getForeignKey();
-            $localKey ??= array_pad($args, 3, null)[2] ?? (new $relatedClassName)->getKeyName();
-            $this->assertTrue(Schema::hasColumn($childTable, $foreignKey));
-            $this->assertTrue(Schema::hasColumn($parentTable, $localKey));
+            [$related, $foreignKey, $ownerKey, $relation] = array_pad($args, 4, null);
+            $foreignKey ??= (new $related)->getForeignKey();
+            $belongsTo = (new $class)->belongsTo($related, $foreignKey, $ownerKey, $relation);
+            $childTable = $belongsTo->getChild()->getTable();
+            $ownerTable = $belongsTo->getRelated()->getTable();
+            $ownerKey = $belongsTo->getOwnerKeyName();
+
+            $tests[$childTable] = [$foreignKey];
+            $tests[$ownerTable] = [$ownerKey];
         }
 
         if ($relationship == 'belongsToMany') {
@@ -170,7 +189,13 @@ abstract class TestCase extends BaseTestCase
             $pivotTable ??= (new $class)->joiningTable($relatedClassName);
             $classForeignKey ??= (new $class)->getForeignKey();
             $relatedClassForeignKey ??= (new $relatedClassName)->getForeignKey();
-            $this->assertTrue(Schema::hasColumns($pivotTable, [$classForeignKey, $relatedClassForeignKey]));
+            $tests[$pivotTable] = [$classForeignKey, $relatedClassForeignKey];
+            $tables[(new $class)->getTable()] = [(new $class)->getKeyName()];
+            $tables[(new $relatedClassName)->getTable()] = [(new $relatedClassName)->getKeyName()];
+        }
+
+        foreach ($tests as $table => $columns) {
+          $this->assertTrue(Schema::hasColumns($table, $columns));
         }
     }
 
