@@ -28,10 +28,6 @@ class CreateSchoolsTable extends Migration
                   ->unique()
                   ->nullable();
             $table->unique(['name', 'district_id']);
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
-            $table->unsignedBigInteger('d7_district_id');
-            $table->unsignedBigInteger('d7_package_id');
         });
 
         Schema::create('school_user', function (Blueprint $table) {
@@ -43,9 +39,6 @@ class CreateSchoolsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_school_id');
-            $table->unsignedBigInteger('d7_uid');
         });
     }
 
@@ -56,7 +49,7 @@ class CreateSchoolsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schools');
         Schema::dropIfExists('school_user');
+        Schema::dropIfExists('schools');
     }
 }

@@ -20,10 +20,6 @@ class CreateIdeasTable extends Migration
             $table->string('name');
             $table->text('body')
               ->nullable();
-
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id')
-              ->default(1);
         });
 
         Schema::create('idea_inspirations', function (Blueprint $table) {
@@ -35,9 +31,6 @@ class CreateIdeasTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_idea_id');
-            $table->unsignedBigInteger('d7_challenge_version_id');
         });
     }
 
@@ -48,6 +41,7 @@ class CreateIdeasTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('idea_inspirations');
         Schema::dropIfExists('ideas');
     }
 }

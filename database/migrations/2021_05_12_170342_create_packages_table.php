@@ -21,7 +21,6 @@ class CreatePackagesTable extends Migration
             $table->text('description')
                 ->nullable();
             $table->boolean('student_activity_tab_access');
-            $table->unsignedBigInteger('d7_id');
         });
 
         Schema::create('challenge_package', function (Blueprint $table) {
@@ -33,10 +32,6 @@ class CreatePackagesTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-          $table->unsignedBigInteger('d7_challenge_id')
-                ->default(0);
-          $table->unsignedBigInteger('d7_package_id')
-                ->default(0);
         });
     }
 
@@ -47,7 +42,7 @@ class CreatePackagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packages');
         Schema::dropIfExists('challenge_package');
+        Schema::dropIfExists('packages');
     }
 }

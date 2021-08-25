@@ -25,9 +25,6 @@ class CreateDistrictsTable extends Migration
             $table->string('salesforce_acct_id', 1023)
                   ->nullable()
                   ->unique();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
-            $table->unsignedBigInteger('d7_package_id');
         });
 
         Schema::create('district_user', function (Blueprint $table) {
@@ -39,9 +36,6 @@ class CreateDistrictsTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_district_id');
-            $table->unsignedBigInteger('d7_uid');
         });
     }
 
@@ -52,7 +46,7 @@ class CreateDistrictsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('districts');
         Schema::dropIfExists('district_user');
+        Schema::dropIfExists('districts');
     }
 }

@@ -49,12 +49,6 @@ class CreateChallengeVersionsTable extends Migration
             $table->string('info_article_url')
                   ->nullable()
                   ->comment('ZenDesk Article URL for facilitators');
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
-            $table->unsignedBigInteger('d7_challenge_id');
-            $table->unsignedBigInteger('d7_challenge_category_id');
-            $table->unsignedBigInteger('d7_prereq_challenge_id')
-                  ->nullable();
         });
     }
 

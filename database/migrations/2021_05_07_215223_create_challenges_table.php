@@ -20,8 +20,6 @@ class CreateChallengesTable extends Migration
             $table->string('name');
             $table->text('description')
               ->nullable();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
         });
     }
 

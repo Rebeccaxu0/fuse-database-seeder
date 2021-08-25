@@ -22,9 +22,6 @@ class CreateCommentsTable extends Migration
             $table->foreignId('user_id')
                   ->constrained();
             $table->longText('body');
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_artifact_id');
-            $table->unsignedBigInteger('d7_uid');
         });
 
         Schema::create('comment_seen', function (Blueprint $table) {
@@ -35,9 +32,6 @@ class CreateCommentsTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->primary(['comment_id', 'user_id']);
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_comment_id');
-            $table->unsignedBigInteger('d7_uid');
         });
     }
 
@@ -48,6 +42,7 @@ class CreateCommentsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('comment_seen');
         Schema::dropIfExists('comments');
     }
 }

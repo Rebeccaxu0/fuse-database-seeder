@@ -20,10 +20,6 @@ class CreateRolesTable extends Migration
             $table->string('name');
             $table->string('description')
                   ->nullable();
-
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id')
-                  ->default(1);
         });
 
         Schema::create('role_user', function (Blueprint $table) {
@@ -35,10 +31,6 @@ class CreateRolesTable extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
-
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_uid');
-            $table->unsignedBigInteger('d7_rid');
         });
     }
 
@@ -49,7 +41,7 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
         Schema::dropIfExists('role_user');
+        Schema::dropIfExists('roles');
     }
 }

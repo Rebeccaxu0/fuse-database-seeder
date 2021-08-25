@@ -75,4 +75,12 @@ class School extends Organization
     {
       return $this->hasMany(Studio::class);
     }
+
+    /**
+     * The partner associated with this school.
+     */
+    public function partner()
+    {
+      return $this->belongsTo(Partner::class);
+    }
 }

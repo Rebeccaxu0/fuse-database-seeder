@@ -19,8 +19,6 @@ class CreateChallengeCategoriesTable extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name');
             $table->text('description');
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
         });
     }
 

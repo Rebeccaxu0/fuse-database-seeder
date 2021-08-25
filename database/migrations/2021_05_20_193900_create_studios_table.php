@@ -40,10 +40,6 @@ class CreateStudiosTable extends Migration
                   ->default(true);
             $table->boolean('demo_studio')
                   ->default(false);
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_id');
-            $table->unsignedBigInteger('d7_school_id');
-            $table->unsignedBigInteger('d7_package_id');
         });
 
         Schema::create('studio_user', function (Blueprint $table) {
@@ -55,9 +51,6 @@ class CreateStudiosTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
-            // Migration Columns.
-            $table->unsignedBigInteger('d7_school_id');
-            $table->unsignedBigInteger('d7_uid');
         });
     }
 
@@ -68,7 +61,7 @@ class CreateStudiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('studios');
         Schema::dropIfExists('studio_user');
+        Schema::dropIfExists('studios');
     }
 }

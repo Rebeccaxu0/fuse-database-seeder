@@ -5,26 +5,26 @@ namespace Tests\Unit;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
-class RoleTest extends TestCase
+class PartnerTest extends TestCase
 {
-    private $role;
+    private $partner;
 
     protected function setUp(): void
     {
       parent::setUp();
-      $this->role = \App\Models\Role::factory()->make();
+      $this->partner = \App\Models\Partner::factory()->make();
     }
 
     protected function tearDown(): void
     {
       parent::tearDown();
-      unset($this->role);
+      unset($this->partner);
     }
 
-    public function testRoleTableHasExpectedColumns()
+    public function testPartnerTableHasExpectedColumns()
     {
         $this->assertTrue(
-          Schema::hasColumns('roles', [
+          Schema::hasColumns('partners', [
             'id',
             'created_at',
             'updated_at',
@@ -34,8 +34,8 @@ class RoleTest extends TestCase
           ]), 1);
     }
 
-    public function testRoleBelongsToManyUsers()
+    public function testPartnerBelongsToManySchools()
     {
-        $this->assertRelationship($this->role, 'users', 'belongsToMany');
+        $this->assertRelationship($this->parter, 'schools', 'belongsToMany');
     }
 }
