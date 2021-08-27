@@ -35,11 +35,11 @@ class CreatePartnersTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumns('schools', ['partner_id', 'd7_partner_id'])) {
+        if (Schema::hasColumns('schools', ['partner_id'])) {
           Schema::table('schools', function(Blueprint $table) {
             $table->dropForeign(['partner_id']);
           });
-            Schema::dropColumns('schools', ['partner_id', 'd7_partner_id']);
+            Schema::dropColumns('schools', ['partner_id']);
         }
         Schema::dropIfExists('partners');
     }
