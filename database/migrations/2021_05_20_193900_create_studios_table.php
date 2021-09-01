@@ -52,6 +52,14 @@ class CreateStudiosTable extends Migration
                 ->onUpdate('restrict')
                 ->constrained();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('current_studio')
+                  ->nullable()
+                  ->comment("The studio a student is currently active within. This is used to determine contents of the challenge gallery among other things.");
+            $table->foreign('current_studio')
+                  ->references('id')->on('studios');
+        });
     }
 
     /**
@@ -61,6 +69,10 @@ class CreateStudiosTable extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+          $table->dropForeign(['current_studio']);
+          $table->dropColumn(['current_studio']);
+        });
         Schema::dropIfExists('studio_user');
         Schema::dropIfExists('studios');
     }

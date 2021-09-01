@@ -264,6 +264,104 @@ WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l 
 UPDATE fuse_laravel_test.levels levels SET levels.level_number = 9
 WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l WHERE l.level_number = 8);
 
+-- Users
+
+-- Clean up data import source.
+-- First, blank emails should be NULL.
+UPDATE fuse.users SET mail = NULL WHERE mail = '';
+
+-- Next, if an account is linked to Google SSO, we regard that account as the
+-- true owner of that email address. Remove that email address from all other
+-- accounts (duplicates).
+UPDATE fuse.users u SET u.mail = NULL
+WHERE u.uid IN (
+  -- Remove entries that have the linked Google SSO account.
+  SELECT u.uid FROM fuse.users u LEFT JOIN fuse.fuse_sso sso ON sso.uid = u.uid
+  WHERE ISNULL(sso.google_id)
+  AND u.mail IN (
+    -- Narrow duplicates to only those where at least one has a linked Google SSO account.
+    SELECT u.mail FROM fuse.users u LEFT JOIN fuse.fuse_sso sso ON sso.uid = u.uid
+    WHERE NOT ISNULL(sso.google_id)
+    AND u.mail IN (
+      -- Get list of duplicate email addresses.
+      SELECT mail FROM fuse.users group by mail having count(mail) > 1
+    )
+  )
+);
+
+-- Remove known fake addresses.
+UPDATE fuse.users u SET u.mail = NULL
+WHERE u.mail IN (
+  '1234567@brevardschools.org', '12345@district65.net', 'makers@madatech.org.il',
+  'stonestudent@gmail.com', 'sphillips@ssttx.org', 'anne@fusestudio.net',
+  'cbeals@windwardschool.org', 'siltamaen.ala.aste@gmail.com', 'skoglundc@district65.net',
+  'lberghoff@dist113.org', 'lanamyers@sd54.org', 'christinawhitten@sd54.org',
+  'brigitte.williams@cslocal.org'
+);
+
+-- Remove email address from accounts that are not the most recently logged in.
+UPDATE fuse.users SET mail = NULL
+WHERE mail IN (
+  -- Get dupes.
+  SELECT mail FROM fuse.users
+  WHERE NOT ISNULL(mail)
+  group by mail having count(mail) > 1
+)
+AND uid NOT IN (
+  -- Get UID of most recently logged in dupe.
+  Select u.uid FROM fuse.users u
+  INNER JOIN (
+    SELECT mail, MAX(login) as login
+    FROM fuse.users
+    WHERE NOT ISNULL(mail)
+    group by mail having count(mail) > 1
+  ) login
+  ON u.mail = login.mail AND u.login = login.login
+);
+
+-- The Strange case of `kyraclark888@gmail.com`
+UPDATE fuse.users SET mail = NULL WHERE uid = 207096;
+
+INSERT INTO fuse_laravel_test.users (name, full_name, email, password,
+  created_at, status, timezone, login, access, language, d7_id, gender,
+  ethnicity, csv_header, csv_values, current_studio)
+SELECT u.name, fullname.field_full_name_value, u.mail, u.pass,
+  FROM_UNIXTIME(u.created), u.status, u.timezone,
+  IF(u.login = 0, NULL, FROM_UNIXTIME(u.login))as login,
+  IF(u.access = 0, NULL, FROM_UNIXTIME(u.access)) as access,
+  u.language, u.uid, gender.field_gender_value,
+  ethnicity.field_ethnicity_value, csv_header.field_csv_header_value,
+  csv_values.field_csv_values_value, l_studios.id
+FROM fuse.users u
+LEFT JOIN fuse.profile profile ON profile.uid = u.uid AND profile.type = 'student'
+LEFT JOIN fuse.field_data_field_full_name fullname
+  ON fullname.entity_id = profile.uid AND fullname.entity_type = 'user' AND fullname.bundle = 'user'
+LEFT JOIN fuse.field_data_field_gender gender
+  ON gender.entity_id = profile.uid AND gender.entity_type = 'profile2' AND gender.bundle = 'student'
+LEFT JOIN fuse.field_data_field_ethnicity ethnicity
+  ON ethnicity.entity_id = profile.uid AND ethnicity.entity_type = 'profile2' AND ethnicity.bundle = 'student'
+LEFT JOIN fuse.field_data_field_csv_header csv_header
+  ON csv_header.entity_id = profile.uid AND csv_header.entity_type = 'profile2' AND csv_header.bundle = 'student'
+LEFT JOIN fuse.field_data_field_csv_values csv_values
+  ON csv_values.entity_id = profile.uid AND csv_values.entity_type = 'profile2' AND csv_values.bundle = 'student'
+LEFT JOIN fuse.field_data_field_current_location d_studio ON d_studio.entity_id = u.uid AND d_studio.entity_type = 'user' AND d_studio.bundle = 'user'
+LEFT JOIN fuse_laravel_test.studios l_studios ON l_studios.d7_id = d_studio.field_current_location_nid
+WHERE u.uid <> 0
+ORDER BY u.uid;
+
+-- Remove bad ethnicity data.
+UPDATE fuse_laravel_test.users SET ethnicity = NULL
+WHERE
+  ethnicity IS NOT NULL
+  AND ethnicity NOT IN (
+    'rather_not_say','caucasian','african_american','hispanic_latino','asian',
+    'multiracial','international','indigenous_american','middle_eastern',
+    'pacific_islander');
+
+-- UPDATE fuse_laravel_test.users lu
+-- LEFT JOIN fuse.users du ON du.uid=lu.d7_id AND du.mail != ''
+-- SET lu.email = du.mail;
+
 --Drop temp D7 migration columns.
 -- ALTER TABLE fuse_laravel_test.users DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.challenge_categories DROP d7_id;

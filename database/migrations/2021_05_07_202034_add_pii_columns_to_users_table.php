@@ -15,19 +15,21 @@ class AddPiiColumnsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // PII
-            $table->boolean('full_name')
+            $table->string('full_name', 255)
                 ->nullable();
             $table->string('gender', 2)
                   ->default('U')
                   ->comment("Allowed values: 'M', 'F', 'NB' (non-binary), 'U' (prefer not to say)")
+                  ->nullable()
                   ->index();
-            $table->string('ethnicity', 32)
+            $table->string('ethnicity', 64)
                   ->default('rather_not_say')
                   ->comment("Allowed values: african_american, asian, hispanic_latino, middle_eastern, indigenous_american, pacific_islander, caucasian, multiracial, rather_not_say, international (added for Finland)")
+                  ->nullable()
                   ->index();
             // If created by CSV import, the mapping and values.
-            $table->string('csv_header', 12)->nullable();
-            $table->string('csv_values', 12)->nullable();
+            $table->string('csv_header', 1023)->nullable();
+            $table->string('csv_values', 1023)->nullable();
         });
     }
 
