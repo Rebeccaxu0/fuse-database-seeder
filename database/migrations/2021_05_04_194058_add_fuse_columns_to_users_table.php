@@ -26,6 +26,11 @@ class AddFuseColumnsToUsersTable extends Migration
             $table->string('reporting_id', 128)
                   ->nullable()
                   ->comment("Anonymized reporting ID");
+            $table->string('avatar_config', 255)
+                  ->nullable()
+                  ->comment("FUSE Avatar configuration/generator");
+            $table->boolean('seen_idea_trailer')
+                  ->default(0);
             $table->timestamp('access')
                   ->nullable()
                   ->index();

@@ -27,6 +27,10 @@ class AddPiiColumnsToUsersTable extends Migration
                   ->comment("Allowed values: african_american, asian, hispanic_latino, middle_eastern, indigenous_american, pacific_islander, caucasian, multiracial, rather_not_say, international (added for Finland)")
                   ->nullable()
                   ->index();
+            $table->date('birthday')
+                  ->comment("Date of Birth")
+                  ->nullable()
+                  ->index();
             // If created by CSV import, the mapping and values.
             $table->string('csv_header', 1023)->nullable();
             $table->string('csv_values', 1023)->nullable();

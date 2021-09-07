@@ -1,46 +1,87 @@
 -- Run search and replace on target database `fuse_laravel_test` if necessary.
 -- Add temp D7 migration columns.
 ALTER TABLE fuse_laravel_test.users ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX users_d7_id_IDX USING BTREE ON fuse_laravel_test.users (d7_id);
+-- ALTER TABLE fuse_laravel_test.users ADD d7_current_studio BIGINT UNSIGNED DEFAULT 1;
+-- CREATE INDEX users_d7_current_studio_IDX USING BTREE ON fuse_laravel_test.users (d7_current_studio);
 ALTER TABLE fuse_laravel_test.challenge_categories ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_categories_d7_id_IDX USING BTREE ON fuse_laravel_test.challenge_categories (d7_id);
 ALTER TABLE fuse_laravel_test.challenges ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenges_d7_id_IDX USING BTREE ON fuse_laravel_test.challenges (d7_id);
 ALTER TABLE fuse_laravel_test.challenge_versions ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_versions_d7_id_IDX USING BTREE ON fuse_laravel_test.challenge_versions (d7_id);
 ALTER TABLE fuse_laravel_test.challenge_versions ADD d7_challenge_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_versions_d7_challenge_id_IDX USING BTREE ON fuse_laravel_test.challenge_versions (d7_challenge_id);
 ALTER TABLE fuse_laravel_test.challenge_versions ADD d7_challenge_category_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_versions_d7_challenge_category_id_idX USING BTREE ON fuse_laravel_test.challenge_versions (d7_challenge_category_id);
 ALTER TABLE fuse_laravel_test.challenge_versions ADD d7_prereq_challenge_id BIGINT UNSIGNED NULL;
+CREATE INDEX challenge_versions_d7_prereq_challenge_id_IDX USING BTREE ON fuse_laravel_test.challenge_versions (d7_prereq_challenge_id);
 ALTER TABLE fuse_laravel_test.levels ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX levels_d7_id_IDX USING BTREE ON fuse_laravel_test.levels (d7_id);
 ALTER TABLE fuse_laravel_test.levels ADD d7_challenge_version_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX levels_d7_challenge_version_id_IDX USING BTREE ON fuse_laravel_test.levels (d7_challenge_version_id);
 ALTER TABLE fuse_laravel_test.levels ADD d7_prereq_level_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX levels_d7_prereq_level_id_IDX USING BTREE ON fuse_laravel_test.levels (d7_prereq_level_id);
 ALTER TABLE fuse_laravel_test.packages ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX packages_d7_id_IDX USING BTREE ON fuse_laravel_test.packages (d7_id);
 ALTER TABLE fuse_laravel_test.challenge_package ADD d7_challenge_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_package_d7_challenge_id_IDX USING BTREE ON fuse_laravel_test.challenge_package (d7_challenge_id);
 ALTER TABLE fuse_laravel_test.challenge_package ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX challenge_package_d7_package_id_IDX USING BTREE ON fuse_laravel_test.challenge_package (d7_package_id);
 ALTER TABLE fuse_laravel_test.roles ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX roles_d7_id_IDX USING BTREE ON fuse_laravel_test.roles (d7_id);
 ALTER TABLE fuse_laravel_test.role_user ADD d7_rid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX role_user_d7_rid_IDX USING BTREE ON fuse_laravel_test.role_user (d7_rid);
 ALTER TABLE fuse_laravel_test.role_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX role_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.role_user (d7_uid);
 ALTER TABLE fuse_laravel_test.artifacts ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX artifacts_d7_id_IDX USING BTREE ON fuse_laravel_test.artifacts (d7_id);
 ALTER TABLE fuse_laravel_test.districts ADD d7_id BIGINT UNSIGNED DEFAULT 1;
-ALTER TABLE fuse_laravel_test.districts ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX districts_d7_id_IDX USING BTREE ON fuse_laravel_test.districts (d7_id);
 ALTER TABLE fuse_laravel_test.district_user ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX district_user_d7_district_id_IDX USING BTREE ON fuse_laravel_test.district_user (d7_district_id);
 ALTER TABLE fuse_laravel_test.district_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX district_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.district_user (d7_uid);
 ALTER TABLE fuse_laravel_test.schools ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX schools_d7_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_id);
 ALTER TABLE fuse_laravel_test.schools ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX schools_d7_district_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_district_id);
 ALTER TABLE fuse_laravel_test.schools ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX schools_d7_package_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_package_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_school_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX school_user_d7_school_id_IDX USING BTREE ON fuse_laravel_test.school_user (d7_school_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX school_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.school_user (d7_uid);
 ALTER TABLE fuse_laravel_test.studios ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX studios_d7_id_IDX USING BTREE ON fuse_laravel_test.studios (d7_id);
 ALTER TABLE fuse_laravel_test.studios ADD d7_school_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX studios_d7_school_id_IDX USING BTREE ON fuse_laravel_test.studios (d7_school_id);
 ALTER TABLE fuse_laravel_test.studios ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX studios_d7_package_id_IDX USING BTREE ON fuse_laravel_test.studios (d7_package_id);
 ALTER TABLE fuse_laravel_test.studio_user ADD d7_studio_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX studio_user_d7_studio_id_IDX USING BTREE ON fuse_laravel_test.studio_user (d7_studio_id);
 ALTER TABLE fuse_laravel_test.studio_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX studio_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.studio_user (d7_uid);
 ALTER TABLE fuse_laravel_test.ideas ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX ideas_d7_id_IDX USING BTREE ON fuse_laravel_test.ideas (d7_id);
 ALTER TABLE fuse_laravel_test.idea_inspirations ADD d7_idea_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX idea_inspirations_d7_idea_id_IDX USING BTREE ON fuse_laravel_test.idea_inspirations (d7_idea_id);
 ALTER TABLE fuse_laravel_test.idea_inspirations ADD d7_challenge_version_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX idea_inspirations_d7_challenge_version_id_IDX USING BTREE ON fuse_laravel_test.idea_inspirations (d7_challenge_version_id);
 ALTER TABLE fuse_laravel_test.comments ADD d7_artifact_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX comments_d7_artifact_id_IDX USING BTREE ON fuse_laravel_test.comments (d7_artifact_id);
 ALTER TABLE fuse_laravel_test.comments ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX comments_d7_uid_IDX USING BTREE ON fuse_laravel_test.comments (d7_uid);
 ALTER TABLE fuse_laravel_test.comment_seen ADD d7_comment_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX comment_seen_d7_comment_id_IDX USING BTREE ON fuse_laravel_test.comment_seen (d7_comment_id);
 ALTER TABLE fuse_laravel_test.comment_seen ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX comment_seen_d7_uid_IDX USING BTREE ON fuse_laravel_test.comment_seen (d7_uid);
 ALTER TABLE fuse_laravel_test.partners ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX partners_d7_id_IDX USING BTREE ON fuse_laravel_test.partners (d7_id);
 ALTER TABLE fuse_laravel_test.schools ADD d7_partner_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX schools_d7_partner_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_partner_id);
 ALTER TABLE fuse_laravel_test.grade_levels ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX grade_levels_d7_id_IDX USING BTREE ON fuse_laravel_test.grade_levels (d7_id);
 
 -- Insert Challenge Taxonomy Terms
 INSERT INTO fuse_laravel_test.challenges (name, description, d7_id)
@@ -264,6 +305,76 @@ WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l 
 UPDATE fuse_laravel_test.levels levels SET levels.level_number = 9
 WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l WHERE l.level_number = 8);
 
+-- Studios/Schools/Districts
+
+INSERT INTO fuse_laravel_test.districts (created_at, updated_at, name, status, package_id, salesforce_acct_id, d7_id)
+SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), n.title, n.status,
+  packages.id,
+  IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
+FROM fuse.node AS n
+LEFT JOIN fuse.field_data_field_organization_type AS fdfot ON
+  (fdfot.entity_type = 'node'
+  AND fdfot.bundle = 'organization'
+  AND fdfot.entity_id = n.nid)
+LEFT JOIN fuse.field_data_field_package AS fdfp ON
+  (fdfp.entity_type = 'node'
+  AND fdfp.bundle = 'organization'
+  AND fdfp.entity_id = n.nid)
+LEFT JOIN fuse_laravel_test.packages packages ON
+  (packages.d7_id = fdfp.field_package_target_id)
+LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
+  (fdfsai.entity_type = 'node'
+  AND fdfsai.bundle = 'organization'
+  AND fdfsai.entity_id = n.nid)
+WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 161;
+
+INSERT INTO fuse_laravel_test.schools (created_at, updated_at, name, status, district_id, package_id, salesforce_acct_id, d7_id)
+SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
+  n.title, n.status, districts.id as district, packages.id,
+  IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
+FROM fuse.node AS n
+LEFT JOIN fuse.field_data_field_organization_type AS fdfot ON
+  (fdfot.entity_type = 'node'
+  AND fdfot.bundle = 'organization'
+  AND fdfot.entity_id = n.nid)
+LEFT JOIN fuse.field_data_field_package AS fdfp ON
+  (fdfp.entity_type = 'node'
+  AND fdfp.bundle = 'organization'
+  AND fdfp.entity_id = n.nid)
+LEFT JOIN fuse_laravel_test.packages packages ON
+  (packages.d7_id = fdfp.field_package_target_id)
+LEFT JOIN fuse.og_membership om ON
+  (om.entity_type = 'node'
+  AND om.etid = n.nid)
+LEFT JOIN fuse_laravel_test.districts districts ON
+  (districts.d7_id = om.gid)
+LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
+  (fdfsai.entity_type = 'node'
+  AND fdfsai.bundle = 'organization'
+  AND fdfsai.entity_id = n.nid)
+WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 166;
+
+INSERT INTO fuse_laravel_test.studios (created_at, updated_at, name, status, school_id, package_id, d7_id)
+SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
+  n.title, n.status, schools.id, packages.id as package_id, n.nid
+FROM fuse.node AS n
+LEFT JOIN fuse.field_data_field_package AS fdfp ON
+  (fdfp.entity_type = 'node'
+  AND fdfp.bundle = 'space'
+  AND fdfp.entity_id = n.nid)
+LEFT JOIN fuse_laravel_test.packages packages ON
+  (packages.d7_id = fdfp.field_package_target_id)
+LEFT JOIN fuse.og_membership om ON
+  (om.entity_type = 'node'
+  AND om.etid = n.nid)
+LEFT JOIN fuse_laravel_test.schools schools ON
+  (schools.d7_id = om.gid)
+LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
+  (fdfsai.entity_type = 'node'
+  AND fdfsai.bundle = 'space'
+  AND fdfsai.entity_id = n.nid)
+WHERE n.type = 'space';
+
 -- Users
 
 -- Clean up data import source.
@@ -322,30 +433,52 @@ AND uid NOT IN (
 -- The Strange case of `kyraclark888@gmail.com`
 UPDATE fuse.users SET mail = NULL WHERE uid = 207096;
 
-INSERT INTO fuse_laravel_test.users (name, full_name, email, password,
-  created_at, status, timezone, login, access, language, d7_id, gender,
-  ethnicity, csv_header, csv_values, current_studio)
-SELECT u.name, fullname.field_full_name_value, u.mail, u.pass,
-  FROM_UNIXTIME(u.created), u.status, u.timezone,
-  IF(u.login = 0, NULL, FROM_UNIXTIME(u.login))as login,
+INSERT INTO fuse_laravel_test.users
+  (name, full_name, email, password,
+  created_at, status, timezone, seen_idea_trailer,
+  login,
+  access,
+  language, d7_id, reporting_id,
+  avatar_config,
+  gender, ethnicity,
+  birthday,
+  csv_header, csv_values,
+  current_studio, current_level)
+SELECT
+  u.name, fullname.field_full_name_value as fullname, u.mail, u.pass,
+  FROM_UNIXTIME(u.created) as created, u.status, u.timezone,
+  IF(ISNULL(d_seen_idea_trailer.field_seen_idea_trailer_value), 0, d_seen_idea_trailer.field_seen_idea_trailer_value),
+  IF(u.login = 0, NULL, FROM_UNIXTIME(u.login)) as login,
   IF(u.access = 0, NULL, FROM_UNIXTIME(u.access)) as access,
-  u.language, u.uid, gender.field_gender_value,
-  ethnicity.field_ethnicity_value, csv_header.field_csv_header_value,
-  csv_values.field_csv_values_value, l_studios.id
+  u.language, u.uid, d_reporting_id.field_reporting_id_value as reporting_id,
+  d_avatar_configuration.field_avatar_configuration_value as avatar_config,
+  gender.field_gender_value as gender, ethnicity.field_ethnicity_value as ethnicity,
+  DATE(birthday.field_birthday_value) as birthday,
+  csv_header.field_csv_header_value as csv_header, csv_values.field_csv_values_value as csv,
+  studio.id, COALESCE(current_level.id, last_level.id)
 FROM fuse.users u
 LEFT JOIN fuse.profile profile ON profile.uid = u.uid AND profile.type = 'student'
 LEFT JOIN fuse.field_data_field_full_name fullname
   ON fullname.entity_id = profile.uid AND fullname.entity_type = 'user' AND fullname.bundle = 'user'
 LEFT JOIN fuse.field_data_field_gender gender
-  ON gender.entity_id = profile.uid AND gender.entity_type = 'profile2' AND gender.bundle = 'student'
+  ON gender.entity_id = profile.pid AND gender.entity_type = 'profile2' AND gender.bundle = 'student'
 LEFT JOIN fuse.field_data_field_ethnicity ethnicity
-  ON ethnicity.entity_id = profile.uid AND ethnicity.entity_type = 'profile2' AND ethnicity.bundle = 'student'
+  ON ethnicity.entity_id = profile.pid AND ethnicity.entity_type = 'profile2' AND ethnicity.bundle = 'student'
+LEFT JOIN fuse.field_data_field_birthday birthday
+  ON birthday.entity_id = profile.pid AND birthday.entity_type = 'profile2' AND birthday.bundle = 'student'
 LEFT JOIN fuse.field_data_field_csv_header csv_header
-  ON csv_header.entity_id = profile.uid AND csv_header.entity_type = 'profile2' AND csv_header.bundle = 'student'
+  ON csv_header.entity_id = profile.pid AND csv_header.entity_type = 'profile2' AND csv_header.bundle = 'student'
 LEFT JOIN fuse.field_data_field_csv_values csv_values
-  ON csv_values.entity_id = profile.uid AND csv_values.entity_type = 'profile2' AND csv_values.bundle = 'student'
+  ON csv_values.entity_id = profile.pid AND csv_values.entity_type = 'profile2' AND csv_values.bundle = 'student'
+LEFT JOIN fuse.field_data_field_reporting_id d_reporting_id ON d_reporting_id.entity_id = u.uid AND d_reporting_id.entity_type = 'user' AND d_reporting_id.bundle = 'user'
+LEFT JOIN fuse.field_data_field_avatar_configuration d_avatar_configuration ON d_avatar_configuration.entity_id = u.uid AND d_avatar_configuration.entity_type = 'user' AND d_avatar_configuration.bundle = 'user'
+LEFT JOIN fuse.field_data_field_seen_idea_trailer d_seen_idea_trailer ON d_seen_idea_trailer.entity_id = u.uid AND d_seen_idea_trailer.entity_type = 'user' AND d_seen_idea_trailer.bundle = 'user'
 LEFT JOIN fuse.field_data_field_current_location d_studio ON d_studio.entity_id = u.uid AND d_studio.entity_type = 'user' AND d_studio.bundle = 'user'
-LEFT JOIN fuse_laravel_test.studios l_studios ON l_studios.d7_id = d_studio.field_current_location_nid
+LEFT JOIN fuse_laravel_test.studios studio ON studio.d7_id = d_studio.field_current_location_nid
+LEFT JOIN fuse.field_data_field_current_level d_current_level ON d_current_level.entity_id = u.uid AND d_current_level.entity_type = 'user' AND d_current_level.bundle = 'user'
+LEFT JOIN fuse_laravel_test.levels current_level ON current_level.d7_id = d_current_level.field_current_level_nid
+LEFT JOIN fuse.field_data_field_last_level d_last_level ON d_last_level.entity_id = u.uid AND d_last_level.entity_type = 'user' AND d_last_level.bundle = 'user'
+LEFT JOIN fuse_laravel_test.levels last_level ON last_level.d7_id = d_last_level.field_last_level_nid
 WHERE u.uid <> 0
 ORDER BY u.uid;
 

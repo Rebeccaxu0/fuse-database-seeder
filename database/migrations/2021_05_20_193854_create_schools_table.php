@@ -18,15 +18,18 @@ class CreateSchoolsTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name', 1023);
+            $table->boolean('status')
+                  ->default(true);
             $table->foreignId('district_id')
                   ->nullable()
                   ->constrained();
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();
-            $table->string('salesforce_acct_id', 1023)
+            $table->char('salesforce_acct_id', 255)
                   ->unique()
-                  ->nullable();
+                  ->nullable()
+                  ->collation('utf8mb4_bin');
             $table->unique(['name', 'district_id']);
         });
 

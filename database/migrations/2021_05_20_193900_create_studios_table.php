@@ -18,6 +18,8 @@ class CreateStudiosTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name', 1023);
+            $table->boolean('status')
+                  ->default(true);
             $table->foreignId('school_id')
                   ->nullable()
                   ->constrained();

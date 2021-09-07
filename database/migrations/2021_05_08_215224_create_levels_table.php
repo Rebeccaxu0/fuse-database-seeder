@@ -37,11 +37,6 @@ class CreateLevelsTable extends Migration
                   ->comment("The level a student is currently working on.");
             $table->foreign('current_level')
                   ->references('id')->on('levels');
-            $table->unsignedBigInteger('previous_level')
-                  ->nullable()
-                  ->comment("The level a student was previously working on.");
-            $table->foreign('previous_level')
-                  ->references('id')->on('levels');
         });
     }
 
@@ -54,8 +49,7 @@ class CreateLevelsTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
           $table->dropForeign(['current_level']);
-          $table->dropForeign(['previous_level']);
-          $table->dropColumn(['current_level', 'previous_level']);
+          $table->dropColumn(['current_level']);
         });
         Schema::dropIfExists('levels');
     }
