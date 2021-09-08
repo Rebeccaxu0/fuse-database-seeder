@@ -443,6 +443,9 @@ INSERT INTO fuse_laravel_test.users
   avatar_config,
   gender, ethnicity,
   birthday,
+  guardian, email_of_guardian, irb_consent, photo_consent,
+  guardian_irb_consent, guardian_photo_consent,
+  consent_email_last_sent, allow_survey,
   csv_header, csv_values,
   current_studio, current_level)
 SELECT
@@ -465,6 +468,13 @@ SELECT
   d_avatar_configuration.field_avatar_configuration_value as avatar_config,
   gender.field_gender_value as gender, ethnicity.field_ethnicity_value as ethnicity,
   DATE(birthday.field_birthday_value) as birthday,
+  parent_guardian.field_parent_guardian_value as guardian, parent_guardians_email.field_parent_guardians_email_email as guardian_email,
+  personal_irb_consent.field_personal_irb_consent_value as irb_consent,
+  personal_photo_consent.field_personal_photo_consent_value as photo_consent,
+  p_g_irb_consent.field_p_g_irb_consent_value as guardian_irb_consent,
+  p_g_photo_consent.field_p_g_photo_consent_value as guardian_photo_consent,
+  DATE(consent_email_last_sent.field_consent_email_last_sent_value) as consent_email_last_sent,
+  allow_survey.field_allow_survey_value as allow_survey,
   csv_header.field_csv_header_value as csv_header, csv_values.field_csv_values_value as csv,
   studio.id as studio, COALESCE (current_level.id, last_level.id) as current_level
 FROM fuse.users u
@@ -487,6 +497,33 @@ LEFT JOIN fuse.field_data_field_csv_header csv_header
 LEFT JOIN fuse.field_data_field_csv_values csv_values
   ON csv_values.entity_id = profile.pid AND csv_values.entity_type = 'profile2'
   AND csv_values.bundle = 'student' AND csv_values.deleted = 0
+LEFT JOIN fuse.field_data_field_parent_guardian parent_guardian
+  ON parent_guardian.entity_id = profile.pid AND parent_guardian.entity_type = 'profile2'
+  AND parent_guardian.bundle = 'student' AND parent_guardian.deleted = 0
+LEFT JOIN fuse.field_data_field_parent_guardians_email parent_guardians_email
+  ON parent_guardians_email.entity_id = profile.pid AND parent_guardians_email.entity_type = 'profile2'
+  AND parent_guardians_email.bundle = 'student' AND parent_guardians_email.deleted = 0
+LEFT JOIN fuse.field_data_field_personal_irb_consent personal_irb_consent
+  ON personal_irb_consent.entity_id = profile.pid AND personal_irb_consent.entity_type = 'profile2'
+  AND personal_irb_consent.bundle = 'student' AND personal_irb_consent.deleted = 0
+LEFT JOIN fuse.field_data_field_personal_photo_consent personal_photo_consent
+  ON personal_photo_consent.entity_id = profile.pid AND personal_photo_consent.entity_type = 'profile2'
+  AND personal_photo_consent.bundle = 'student' AND personal_photo_consent.deleted = 0
+LEFT JOIN fuse.field_data_field_p_g_irb_consent p_g_irb_consent
+  ON p_g_irb_consent.entity_id = profile.pid AND p_g_irb_consent.entity_type = 'profile2'
+  AND p_g_irb_consent.bundle = 'student' AND p_g_irb_consent.deleted = 0
+LEFT JOIN fuse.field_data_field_p_g_photo_consent p_g_photo_consent
+  ON p_g_photo_consent.entity_id = profile.pid AND p_g_photo_consent.entity_type = 'profile2'
+  AND p_g_photo_consent.bundle = 'student' AND p_g_photo_consent.deleted = 0
+LEFT JOIN fuse.field_data_field_consent_email_last_sent consent_email_last_sent
+  ON consent_email_last_sent.entity_id = profile.pid AND consent_email_last_sent.entity_type = 'profile2'
+  AND consent_email_last_sent.bundle = 'student' AND consent_email_last_sent.deleted = 0
+LEFT JOIN fuse.field_data_field_opt_out_date opt_out_date
+  ON opt_out_date.entity_id = profile.pid AND opt_out_date.entity_type = 'profile2'
+  AND opt_out_date.bundle = 'student' AND opt_out_date.deleted = 0
+LEFT JOIN fuse.field_data_field_allow_survey allow_survey
+  ON allow_survey.entity_id = profile.pid AND allow_survey.entity_type = 'profile2'
+  AND allow_survey.bundle = 'student' AND allow_survey.deleted = 0
 LEFT JOIN fuse.field_data_field_reporting_id d_reporting_id
   ON d_reporting_id.entity_id = u.uid AND d_reporting_id.entity_type = 'user'
   AND d_reporting_id.bundle = 'user'  AND d_reporting_id.deleted = 0

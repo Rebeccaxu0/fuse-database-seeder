@@ -16,7 +16,7 @@ class AddPiiColumnsToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             // PII
             $table->string('full_name', 255)
-                ->nullable();
+                  ->nullable();
             $table->string('gender', 2)
                   ->default('U')
                   ->comment("Allowed values: 'M', 'F', 'NB' (non-binary), 'U' (prefer not to say)")
@@ -34,6 +34,15 @@ class AddPiiColumnsToUsersTable extends Migration
             // If created by CSV import, the mapping and values.
             $table->string('csv_header', 1023)->nullable();
             $table->string('csv_values', 1023)->nullable();
+            // IRB/Consent data.
+            $table->string('guardian', 255)->nullable();
+            $table->string('email_of_guardian')->nullable();
+            $table->string('irb_consent', 255)->nullable();
+            $table->string('photo_consent', 255)->nullable();
+            $table->string('guardian_irb_consent', 255)->nullable();
+            $table->string('guardian_photo_consent', 255)->nullable();
+            $table->date('consent_email_last_sent')->nullable();
+            $table->boolean('allow_survey')->nullable();
         });
     }
 
