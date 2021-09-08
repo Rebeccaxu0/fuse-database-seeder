@@ -24,6 +24,7 @@ class AddFuseColumnsToUsersTable extends Migration
                   ->default('en_US')
                   ->comment("Users's preferred language");
             $table->string('reporting_id', 128)
+                  ->unique()
                   ->nullable()
                   ->comment("Anonymized reporting ID");
             $table->string('avatar_config', 255)

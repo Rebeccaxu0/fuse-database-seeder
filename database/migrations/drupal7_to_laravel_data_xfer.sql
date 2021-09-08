@@ -438,7 +438,8 @@ INSERT INTO fuse_laravel_test.users
   created_at, status, timezone, seen_idea_trailer,
   login,
   access,
-  language, d7_id, reporting_id,
+  language, d7_id,
+  reporting_id,
   avatar_config,
   gender, ethnicity,
   birthday,
@@ -446,39 +447,70 @@ INSERT INTO fuse_laravel_test.users
   current_studio, current_level)
 SELECT
   u.name, fullname.field_full_name_value as fullname, u.mail, u.pass,
-  FROM_UNIXTIME(u.created) as created, u.status, u.timezone,
-  IF(ISNULL(d_seen_idea_trailer.field_seen_idea_trailer_value), 0, d_seen_idea_trailer.field_seen_idea_trailer_value),
-  IF(u.login = 0, NULL, FROM_UNIXTIME(u.login)) as login,
-  IF(u.access = 0, NULL, FROM_UNIXTIME(u.access)) as access,
-  u.language, u.uid, d_reporting_id.field_reporting_id_value as reporting_id,
+  FROM_UNIXTIME(u.created) as created, u.status,
+  IF (NOT ISNULL(u.timezone) AND u.timezone != '', u.timezone, 'America/Chicago') as timezone,
+  IF (
+    ISNULL(d_seen_idea_trailer.field_seen_idea_trailer_value),
+    0, d_seen_idea_trailer.field_seen_idea_trailer_value
+  ) as seen_trailer,
+  IF (NOT ISNULL(u.login) AND u.login != 0, FROM_UNIXTIME(u.login), NULL) as login,
+  IF (NOT ISNULL(u.access) AND u.access != 0, FROM_UNIXTIME(u.access), NULL) as access,
+  IF (NOT ISNULL(u.language) AND u.language != '', u.language, 'en') as language, u.uid,
+  IF (
+    NOT ISNULL(d_reporting_id.field_reporting_id_value)
+    AND d_reporting_id.field_reporting_id_value != '0'
+    AND d_reporting_id.field_reporting_id_value != '',
+    d_reporting_id.field_reporting_id_value, NULL
+  ) as reporting_id,
   d_avatar_configuration.field_avatar_configuration_value as avatar_config,
   gender.field_gender_value as gender, ethnicity.field_ethnicity_value as ethnicity,
   DATE(birthday.field_birthday_value) as birthday,
   csv_header.field_csv_header_value as csv_header, csv_values.field_csv_values_value as csv,
-  studio.id, COALESCE(current_level.id, last_level.id)
+  studio.id as studio, COALESCE (current_level.id, last_level.id) as current_level
 FROM fuse.users u
 LEFT JOIN fuse.profile profile ON profile.uid = u.uid AND profile.type = 'student'
 LEFT JOIN fuse.field_data_field_full_name fullname
-  ON fullname.entity_id = profile.uid AND fullname.entity_type = 'user' AND fullname.bundle = 'user'
+  ON fullname.entity_id = profile.uid AND fullname.entity_type = 'user'
+  AND fullname.bundle = 'user' AND fullname.deleted = 0
 LEFT JOIN fuse.field_data_field_gender gender
-  ON gender.entity_id = profile.pid AND gender.entity_type = 'profile2' AND gender.bundle = 'student'
+  ON gender.entity_id = profile.pid AND gender.entity_type = 'profile2'
+  AND gender.bundle = 'student' AND gender.deleted = 0
 LEFT JOIN fuse.field_data_field_ethnicity ethnicity
-  ON ethnicity.entity_id = profile.pid AND ethnicity.entity_type = 'profile2' AND ethnicity.bundle = 'student'
+  ON ethnicity.entity_id = profile.pid AND ethnicity.entity_type = 'profile2'
+  AND ethnicity.bundle = 'student' AND ethnicity.deleted = 0
 LEFT JOIN fuse.field_data_field_birthday birthday
-  ON birthday.entity_id = profile.pid AND birthday.entity_type = 'profile2' AND birthday.bundle = 'student'
+  ON birthday.entity_id = profile.pid AND birthday.entity_type = 'profile2'
+  AND birthday.bundle = 'student' AND birthday.deleted = 0
 LEFT JOIN fuse.field_data_field_csv_header csv_header
-  ON csv_header.entity_id = profile.pid AND csv_header.entity_type = 'profile2' AND csv_header.bundle = 'student'
+  ON csv_header.entity_id = profile.pid AND csv_header.entity_type = 'profile2'
+  AND csv_header.bundle = 'student' AND csv_header.deleted = 0
 LEFT JOIN fuse.field_data_field_csv_values csv_values
-  ON csv_values.entity_id = profile.pid AND csv_values.entity_type = 'profile2' AND csv_values.bundle = 'student'
-LEFT JOIN fuse.field_data_field_reporting_id d_reporting_id ON d_reporting_id.entity_id = u.uid AND d_reporting_id.entity_type = 'user' AND d_reporting_id.bundle = 'user'
-LEFT JOIN fuse.field_data_field_avatar_configuration d_avatar_configuration ON d_avatar_configuration.entity_id = u.uid AND d_avatar_configuration.entity_type = 'user' AND d_avatar_configuration.bundle = 'user'
-LEFT JOIN fuse.field_data_field_seen_idea_trailer d_seen_idea_trailer ON d_seen_idea_trailer.entity_id = u.uid AND d_seen_idea_trailer.entity_type = 'user' AND d_seen_idea_trailer.bundle = 'user'
-LEFT JOIN fuse.field_data_field_current_location d_studio ON d_studio.entity_id = u.uid AND d_studio.entity_type = 'user' AND d_studio.bundle = 'user'
-LEFT JOIN fuse_laravel_test.studios studio ON studio.d7_id = d_studio.field_current_location_nid
-LEFT JOIN fuse.field_data_field_current_level d_current_level ON d_current_level.entity_id = u.uid AND d_current_level.entity_type = 'user' AND d_current_level.bundle = 'user'
-LEFT JOIN fuse_laravel_test.levels current_level ON current_level.d7_id = d_current_level.field_current_level_nid
-LEFT JOIN fuse.field_data_field_last_level d_last_level ON d_last_level.entity_id = u.uid AND d_last_level.entity_type = 'user' AND d_last_level.bundle = 'user'
-LEFT JOIN fuse_laravel_test.levels last_level ON last_level.d7_id = d_last_level.field_last_level_nid
+  ON csv_values.entity_id = profile.pid AND csv_values.entity_type = 'profile2'
+  AND csv_values.bundle = 'student' AND csv_values.deleted = 0
+LEFT JOIN fuse.field_data_field_reporting_id d_reporting_id
+  ON d_reporting_id.entity_id = u.uid AND d_reporting_id.entity_type = 'user'
+  AND d_reporting_id.bundle = 'user'  AND d_reporting_id.deleted = 0
+LEFT JOIN fuse.field_data_field_avatar_configuration d_avatar_configuration
+  ON d_avatar_configuration.entity_id = u.uid AND d_avatar_configuration.entity_type = 'user'
+  AND d_avatar_configuration.bundle = 'user' AND d_avatar_configuration.deleted = 0
+LEFT JOIN fuse.field_data_field_seen_idea_trailer d_seen_idea_trailer
+  ON d_seen_idea_trailer.entity_id = u.uid AND d_seen_idea_trailer.entity_type = 'user'
+  AND d_seen_idea_trailer.bundle = 'user' AND d_seen_idea_trailer.deleted = 0
+LEFT JOIN fuse.field_data_field_current_location d_studio
+  ON d_studio.entity_id = u.uid AND d_studio.entity_type = 'user'
+  AND d_studio.bundle = 'user' AND d_studio.deleted = 0
+LEFT JOIN fuse_laravel_test.studios studio
+  ON studio.d7_id = d_studio.field_current_location_nid
+LEFT JOIN fuse.field_data_field_current_level d_current_level
+  ON d_current_level.entity_id = u.uid AND d_current_level.entity_type = 'user'
+  AND d_current_level.bundle = 'user' AND d_current_level.deleted = 0
+LEFT JOIN fuse_laravel_test.levels current_level
+  ON current_level.d7_id = d_current_level.field_current_level_nid
+LEFT JOIN fuse.field_data_field_last_level d_last_level
+  ON d_last_level.entity_id = u.uid AND d_last_level.entity_type = 'user'
+  AND d_last_level.bundle = 'user' AND d_last_level.deleted = 0
+LEFT JOIN fuse_laravel_test.levels last_level
+  ON last_level.d7_id = d_last_level.field_last_level_nid
 WHERE u.uid <> 0
 ORDER BY u.uid;
 
