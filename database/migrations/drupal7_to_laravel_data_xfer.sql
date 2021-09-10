@@ -665,6 +665,59 @@ WHERE NOT ISNULL(districts.id);
 
 -- TODO: Artifacts
 
+-- Level Saves
+-- Exclude Saves from deleted users.
+INSERT INTO fuse_laravel_test.artifacts (
+  type, artifactable_type, artifactable_id,
+  name, d7_id
+)
+SELECT
+  'save', 'level', levels.id,
+  n.title, n.nid
+FROM fuse.node n
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
+RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
+LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+WHERE n.`type` = 'student_progress_save' AND n.uid != 0
+ORDER BY fdfcl.field_child_levels_nid;
+
+-- Level Completes
+-- Exclude Completes from deleted users.
+INSERT INTO fuse_laravel_test.artifacts (
+  type, artifactable_type, artifactable_id,
+  name, d7_id
+)
+SELECT
+  'complete', 'level', levels.id,
+  n.title, n.nid
+FROM fuse.node n
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
+RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
+LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+WHERE n.`type` = 'student_progress_save' AND n.uid != 0
+ORDER BY fdfcl.field_child_levels_nid;
+
+-- TODO: Idea Saves
+-- TODO: Idea Completes
+
+-- Attach teams.
+-- First Drupal node owners.
+INSERT INTO fuse_laravel_test.teams (teamable_type, teamable_id, user_id)
+SELECT 'artifact', a.id as artifact_id, u.id as user_id
+FROM fuse_laravel_test.artifacts a
+LEFT JOIN fuse.node n ON n.nid = a.d7_id
+LEFT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid;
+
+-- Then the rest of the team.
+INSERT INTO fuse_laravel_test.teams (teamable_type, teamable_id, user_id)
+SELECT 'artifact', a.id as artifact_id, u.id as user_id
+FROM fuse_laravel_test.artifacts a
+RIGHT JOIN fuse.field_data_field_teammates fdft ON fdft.entity_type = 'node' AND fdft.entity_id = a.d7_id
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = fdft.field_teammates_target_id
+WHERE !ISNULL(a.d7_id);
+
 -- TODO: Comments
 
 -- TODO: Comment Seen

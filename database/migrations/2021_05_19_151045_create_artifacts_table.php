@@ -17,7 +17,11 @@ class CreateArtifactsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
-            $table->morphs('artifactable');
+            // $table->morphs('artifactable');
+            // Cannot use the above if we wish to add a comment.
+            $table->string('artifactable_type')
+                  ->comment("Valid artifactible types are 'level' and 'idea'");
+            $table->unsignedBigInteger('artifactable_id');
             $table->string('type', 63)
                   ->default('Complete')
                   ->comment("Valid values: 'Save', 'Complete'");
