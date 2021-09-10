@@ -36,7 +36,10 @@ class CreateLevelsTable extends Migration
                   ->nullable()
                   ->comment("The level a student is currently working on.");
             $table->foreign('current_level')
-                  ->references('id')->on('levels');
+                  ->references('id')
+                  ->on('levels')
+                  ->cascadeOnUpdate()
+                  ->nullOnDelete();
         });
     }
 

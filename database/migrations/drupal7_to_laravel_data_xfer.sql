@@ -45,10 +45,6 @@ ALTER TABLE fuse_laravel_test.district_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1
 CREATE INDEX district_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.district_user (d7_uid);
 ALTER TABLE fuse_laravel_test.schools ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX schools_d7_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_id);
--- ALTER TABLE fuse_laravel_test.schools ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
--- CREATE INDEX schools_d7_district_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_district_id);
--- ALTER TABLE fuse_laravel_test.schools ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
--- CREATE INDEX schools_d7_package_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_package_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_school_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX school_user_d7_school_id_IDX USING BTREE ON fuse_laravel_test.school_user (d7_school_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
@@ -624,6 +620,8 @@ LEFT JOIN fuse.field_data_field_last_level d_last_level
 LEFT JOIN fuse_laravel_test.levels last_level
   ON last_level.d7_id = d_last_level.field_last_level_nid
 WHERE u.uid <> 0
+-- Do not import 'oggo', uid = 96176
+AND u.uid != 96176
 ORDER BY u.uid;
 
 -- Remove bad ethnicity data.
@@ -635,11 +633,35 @@ WHERE
     'multiracial','international','indigenous_american','middle_eastern',
     'pacific_islander');
 
--- TODO: Studio Membership (Students)
+-- Studio Membership (Students)
+INSERT INTO fuse_laravel_test.studio_user (user_id, studio_id)
+SELECT u.id, studios.id
+FROM fuse_laravel_test.users u
+LEFT JOIN fuse.og_membership om ON
+  (om.entity_type = 'user'
+  AND om.etid = u.d7_id)
+LEFT JOIN fuse_laravel_test.studios ON studios.d7_id = om.gid
+WHERE NOT ISNULL(studios.id);
 
--- TODO: School Membership (Facilitators)
+-- School Membership (Facilitators)
+INSERT INTO fuse_laravel_test.school_user (user_id, school_id)
+SELECT u.id, schools.id
+FROM fuse_laravel_test.users u
+LEFT JOIN fuse.og_membership om ON
+  (om.entity_type = 'user'
+  AND om.etid = u.d7_id)
+LEFT JOIN fuse_laravel_test.schools ON schools.d7_id = om.gid
+WHERE NOT ISNULL(schools.id);
 
--- TODO: District Membership (Super Facilitators)
+-- District Membership (Super Facilitators)
+INSERT INTO fuse_laravel_test.district_user (user_id, district_id)
+SELECT u.id, districts.id
+FROM fuse_laravel_test.users u
+LEFT JOIN fuse.og_membership om ON
+  (om.entity_type = 'user'
+  AND om.etid = u.d7_id)
+LEFT JOIN fuse_laravel_test.districts ON districts.d7_id = om.gid
+WHERE NOT ISNULL(districts.id);
 
 -- TODO: Artifacts
 
@@ -659,6 +681,7 @@ WHERE
 -- ALTER TABLE fuse_laravel_test.levels DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.levels DROP d7_challenge_version_id;
 -- ALTER TABLE fuse_laravel_test.levels DROP d7_prereq_level_id;
+-- ALTER TABLE fuse_laravel_test.l_t_i_platforms DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.packages DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.challenge_package DROP d7_challenge_id;
 -- ALTER TABLE fuse_laravel_test.challenge_package DROP d7_package_id;
@@ -667,12 +690,9 @@ WHERE
 -- ALTER TABLE fuse_laravel_test.role_user DROP d7_uid;
 -- ALTER TABLE fuse_laravel_test.artifacts DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.districts DROP d7_id;
--- ALTER TABLE fuse_laravel_test.districts DROP d7_package_id;
 -- ALTER TABLE fuse_laravel_test.district_user DROP d7_district_id;
 -- ALTER TABLE fuse_laravel_test.district_user DROP d7_uid;
 -- ALTER TABLE fuse_laravel_test.schools DROP d7_id;
--- ALTER TABLE fuse_laravel_test.schools DROP d7_district_id;
--- ALTER TABLE fuse_laravel_test.schools DROP d7_package_id;
 -- ALTER TABLE fuse_laravel_test.school_user DROP d7_school_id;
 -- ALTER TABLE fuse_laravel_test.school_user DROP d7_uid;
 -- ALTER TABLE fuse_laravel_test.studios DROP d7_id;
