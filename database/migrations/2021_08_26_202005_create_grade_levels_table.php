@@ -21,6 +21,17 @@ class CreateGradeLevelsTable extends Migration
             $table->text('description')
               ->nullable();
         });
+
+        Schema::create('grade_level_school', function (Blueprint $table) {
+          $table->foreignId('school_id')
+                ->onDelete('cascade')
+                ->onUpdate('restrict')
+                ->constrained();
+          $table->foreignId('grade_level_id')
+                ->onDelete('cascade')
+                ->onUpdate('restrict')
+                ->constrained();
+        });
     }
 
     /**
@@ -30,6 +41,7 @@ class CreateGradeLevelsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('grade_level_school');
         Schema::dropIfExists('grade_levels');
     }
 }

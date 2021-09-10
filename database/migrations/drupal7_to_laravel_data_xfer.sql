@@ -22,6 +22,7 @@ ALTER TABLE fuse_laravel_test.levels ADD d7_challenge_version_id BIGINT UNSIGNED
 CREATE INDEX levels_d7_challenge_version_id_IDX USING BTREE ON fuse_laravel_test.levels (d7_challenge_version_id);
 ALTER TABLE fuse_laravel_test.levels ADD d7_prereq_level_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX levels_d7_prereq_level_id_IDX USING BTREE ON fuse_laravel_test.levels (d7_prereq_level_id);
+ALTER TABLE fuse_laravel_test.l_t_i_platforms ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 ALTER TABLE fuse_laravel_test.packages ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX packages_d7_id_IDX USING BTREE ON fuse_laravel_test.packages (d7_id);
 ALTER TABLE fuse_laravel_test.challenge_package ADD d7_challenge_id BIGINT UNSIGNED DEFAULT 1;
@@ -44,10 +45,10 @@ ALTER TABLE fuse_laravel_test.district_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1
 CREATE INDEX district_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.district_user (d7_uid);
 ALTER TABLE fuse_laravel_test.schools ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX schools_d7_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_id);
-ALTER TABLE fuse_laravel_test.schools ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
-CREATE INDEX schools_d7_district_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_district_id);
-ALTER TABLE fuse_laravel_test.schools ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
-CREATE INDEX schools_d7_package_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_package_id);
+-- ALTER TABLE fuse_laravel_test.schools ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
+-- CREATE INDEX schools_d7_district_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_district_id);
+-- ALTER TABLE fuse_laravel_test.schools ADD d7_package_id BIGINT UNSIGNED DEFAULT 1;
+-- CREATE INDEX schools_d7_package_id_IDX USING BTREE ON fuse_laravel_test.schools (d7_package_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_school_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX school_user_d7_school_id_IDX USING BTREE ON fuse_laravel_test.school_user (d7_school_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
@@ -118,6 +119,24 @@ FROM fuse.taxonomy_vocabulary taxonomy_vocabulary
 WHERE (taxonomy_vocabulary.machine_name = 'partnership')
 )
 ORDER BY name;
+
+-- Insert LTI Platforms
+INSERT INTO fuse_laravel_test.l_t_i_platforms (
+  domain, client_id,
+  auth_login_url, auth_token_url,
+  key_set_url, private_key,
+  deployment_json, lineitems, scope,
+  api_token, api_secret, api_endpoint,
+  d7_id
+)
+SELECT
+  domain, client_id,
+  auth_login_url, auth_token_url,
+  key_set_url, private_key,
+  deployment, lineitems, scope,
+  api_token, api_secret, api_endpoint,
+  id
+FROM fuse.l3_platform;
 
 -- Insert Packages
 INSERT INTO fuse_laravel_test.packages (created_at, updated_at, name, description, student_activity_tab_access, d7_id)
@@ -307,7 +326,12 @@ WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l 
 
 -- Studios/Schools/Districts
 
-INSERT INTO fuse_laravel_test.districts (created_at, updated_at, name, status, package_id, salesforce_acct_id, d7_id)
+-- Districts
+INSERT INTO fuse_laravel_test.districts (
+  created_at, updated_at, name, status,
+  package_id,
+  salesforce_acct_id, d7_id
+)
 SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), n.title, n.status,
   packages.id,
   IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
@@ -328,9 +352,13 @@ LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
   AND fdfsai.entity_id = n.nid)
 WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 161;
 
-INSERT INTO fuse_laravel_test.schools (created_at, updated_at, name, status, district_id, package_id, salesforce_acct_id, d7_id)
+-- Schools
+INSERT INTO fuse_laravel_test.schools (
+  created_at, updated_at, name, status, district_id, package_id, partner_id,
+  salesforce_acct_id, d7_id
+)
 SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
-  n.title, n.status, districts.id as district, packages.id,
+  n.title, n.status, districts.id as district, packages.id, partners.id,
   IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
 FROM fuse.node AS n
 LEFT JOIN fuse.field_data_field_organization_type AS fdfot ON
@@ -343,6 +371,12 @@ LEFT JOIN fuse.field_data_field_package AS fdfp ON
   AND fdfp.entity_id = n.nid)
 LEFT JOIN fuse_laravel_test.packages packages ON
   (packages.d7_id = fdfp.field_package_target_id)
+LEFT JOIN fuse.field_data_field_partnership AS d_partnership ON
+  (d_partnership.entity_type = 'node'
+  AND d_partnership.bundle = 'organization'
+  AND d_partnership.entity_id = n.nid)
+LEFT JOIN fuse_laravel_test.partners partners ON
+  (partners.d7_id = d_partnership.field_partnership_tid)
 LEFT JOIN fuse.og_membership om ON
   (om.entity_type = 'node'
   AND om.etid = n.nid)
@@ -354,6 +388,15 @@ LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
   AND fdfsai.entity_id = n.nid)
 WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 166;
 
+-- Grade Levels
+INSERT INTO fuse_laravel_test.grade_level_school (school_id, grade_level_id)
+SELECT school.id, grade_level.id
+FROM fuse.field_data_field_grade_level_term fdfglt
+LEFT JOIN fuse_laravel_test.grade_levels grade_level ON grade_level.d7_id = fdfglt.field_grade_level_term_tid
+LEFT JOIN fuse_laravel_test.schools school ON school.d7_id = fdfglt.entity_id
+WHERE fdfglt.entity_type = 'node' AND fdfglt.bundle = 'organization';
+
+-- Studios
 INSERT INTO fuse_laravel_test.studios (created_at, updated_at, name, status, school_id, package_id, d7_id)
 SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
   n.title, n.status, schools.id, packages.id as package_id, n.nid
@@ -374,6 +417,38 @@ LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
   AND fdfsai.bundle = 'space'
   AND fdfsai.entity_id = n.nid)
 WHERE n.type = 'space';
+
+-- LTI Platform associations
+INSERT INTO fuse_laravel_test.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
+SELECT lti_platforms.id, studios.id, 'studio'
+FROM fuse.field_data_field_l3_platforms fdflp
+LEFT JOIN fuse_laravel_test.l_t_i_platforms as lti_platforms ON
+  lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+LEFT JOIN fuse_laravel_test.studios as studios ON
+  studios.d7_id = fdflp.entity_id
+WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'space';
+
+INSERT INTO fuse_laravel_test.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
+SELECT lti_platforms.id, schools.id, 'school'
+FROM fuse.field_data_field_l3_platforms fdflp
+LEFT JOIN fuse_laravel_test.l_t_i_platforms as lti_platforms ON
+  lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+LEFT JOIN fuse_laravel_test.schools as schools ON
+  schools.d7_id = fdflp.entity_id
+RIGHT JOIN fuse.field_data_field_organization_type fdfot ON
+  fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 166
+WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'organization';
+
+INSERT INTO fuse_laravel_test.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
+SELECT lti_platforms.id, districts.id, 'district'
+FROM fuse.field_data_field_l3_platforms fdflp
+LEFT JOIN fuse_laravel_test.l_t_i_platforms as lti_platforms ON
+  lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+LEFT JOIN fuse_laravel_test.districts as districts ON
+  districts.d7_id = fdflp.entity_id
+RIGHT JOIN fuse.field_data_field_organization_type fdfot ON
+  fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 161
+WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'organization';
 
 -- Users
 
@@ -560,9 +635,18 @@ WHERE
     'multiracial','international','indigenous_american','middle_eastern',
     'pacific_islander');
 
--- UPDATE fuse_laravel_test.users lu
--- LEFT JOIN fuse.users du ON du.uid=lu.d7_id AND du.mail != ''
--- SET lu.email = du.mail;
+-- TODO: Studio Membership (Students)
+
+-- TODO: School Membership (Facilitators)
+
+-- TODO: District Membership (Super Facilitators)
+
+-- TODO: Artifacts
+
+-- TODO: Comments
+
+-- TODO: Comment Seen
+
 
 --Drop temp D7 migration columns.
 -- ALTER TABLE fuse_laravel_test.users DROP d7_id;
