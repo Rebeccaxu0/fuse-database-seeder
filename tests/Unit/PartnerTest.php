@@ -36,6 +36,6 @@ class PartnerTest extends TestCase
 
     public function testPartnerBelongsToManySchools()
     {
-        $this->assertRelationship($this->parter, 'schools', 'belongsToMany');
+        $this->assertRelationship($this->partner, 'schools', 'hasMany');
     }
 }

@@ -32,9 +32,6 @@ class SchoolTest extends TestCase
             'district_id',
             'package_id',
             'salesforce_acct_id',
-            'd7_id',
-            'd7_district_id',
-            'd7_package_id',
           ]), 1);
     }
 

@@ -31,8 +31,6 @@ class DistrictTest extends TestCase
             'name',
             'package_id',
             'salesforce_acct_id',
-            'd7_id',
-            'd7_package_id',
           ]), 1);
     }
 
