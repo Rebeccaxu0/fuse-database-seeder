@@ -693,10 +693,10 @@ SELECT
   n.title, n.nid
 FROM fuse.node n
 RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
-RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
 RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
-WHERE n.`type` = 'student_progress_save' AND n.uid != 0
+WHERE n.`type` = 'level_completion_proof' AND n.uid != 0
 ORDER BY fdfcl.field_child_levels_nid;
 
 -- TODO: Idea Saves
