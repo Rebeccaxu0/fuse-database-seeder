@@ -61,10 +61,6 @@ ALTER TABLE fuse_laravel_test.studio_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX studio_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.studio_user (d7_uid);
 ALTER TABLE fuse_laravel_test.ideas ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX ideas_d7_id_IDX USING BTREE ON fuse_laravel_test.ideas (d7_id);
-ALTER TABLE fuse_laravel_test.idea_inspirations ADD d7_idea_id BIGINT UNSIGNED DEFAULT 1;
-CREATE INDEX idea_inspirations_d7_idea_id_IDX USING BTREE ON fuse_laravel_test.idea_inspirations (d7_idea_id);
-ALTER TABLE fuse_laravel_test.idea_inspirations ADD d7_challenge_version_id BIGINT UNSIGNED DEFAULT 1;
-CREATE INDEX idea_inspirations_d7_challenge_version_id_IDX USING BTREE ON fuse_laravel_test.idea_inspirations (d7_challenge_version_id);
 ALTER TABLE fuse_laravel_test.comments ADD d7_artifact_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX comments_d7_artifact_id_IDX USING BTREE ON fuse_laravel_test.comments (d7_artifact_id);
 ALTER TABLE fuse_laravel_test.comments ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
@@ -699,10 +695,50 @@ LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_le
 WHERE n.`type` = 'level_completion_proof' AND n.uid != 0
 ORDER BY fdfcl.field_child_levels_nid;
 
+-- Ideas
+INSERT INTO fuse_laravel_test.ideas (
+  created_at, updated_at,
+  name, body, copied_from_level, d7_id
+)
+SELECT
+  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  n.title, fdb.body_value, l.id, n.nid
+FROM fuse.node n
+LEFT JOIN fuse.field_data_body fdb ON fdb.entity_id = n.nid AND fdb.entity_type = 'node' AND fdb.bundle = 'idea_level'
+LEFT JOIN fuse.field_data_field_level_copied fdflc ON fdflc.entity_id = n.nid AND fdflc.entity_type = 'node' AND fdflc.bundle = 'idea_level'
+LEFT JOIN fuse_laravel_test.levels l ON l.d7_id = fdflc.field_level_copied_target_id
+WHERE n.`type` = 'idea_level' AND n.uid != 0;
+
+-- Idea inspirations
+INSERT INTO fuse_laravel_test.idea_inspirations (idea_id, challenge_version_id)
+SELECT
+  i.id, cv.id
+FROM fuse.field_data_field_inspiration fdfi
+LEFT JOIN fuse_laravel_test.ideas i ON i.d7_id = fdfi.entity_id
+LEFT JOIN fuse_laravel_test.challenge_versions cv ON cv.d7_id = fdfi.field_inspiration_target_id
+WHERE fdfi.entity_type = 'node' AND fdfi.bundle = 'idea_level';
+
+-- Attach teams to ideas.
+-- First Drupal node owners.
+INSERT INTO fuse_laravel_test.teams (teamable_type, teamable_id, user_id)
+SELECT 'idea', i.id as idea_id, u.id as user_id
+FROM fuse_laravel_test.ideas i
+LEFT JOIN fuse.node n ON n.nid = i.d7_id
+LEFT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
+WHERE NOT ISNULL(u.id);
+
+-- Then the rest of the team.
+INSERT INTO fuse_laravel_test.teams (teamable_type, teamable_id, user_id)
+SELECT 'idea', i.id as idea_id, u.id as user_id
+FROM fuse_laravel_test.ideas i
+RIGHT JOIN fuse.field_data_field_teammates fdft ON fdft.entity_type = 'node' AND fdft.entity_id = i.d7_id
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = fdft.field_teammates_target_id
+WHERE !ISNULL(i.d7_id);
+
 -- TODO: Idea Saves
 -- TODO: Idea Completes
 
--- Attach teams.
+-- Attach teams to artifacts.
 -- First Drupal node owners.
 INSERT INTO fuse_laravel_test.teams (teamable_type, teamable_id, user_id)
 SELECT 'artifact', a.id as artifact_id, u.id as user_id

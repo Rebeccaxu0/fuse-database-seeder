@@ -19,18 +19,23 @@ class CreateIdeasTable extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name');
             $table->text('body')
-              ->nullable();
+                  ->nullable();
+            $table->unsignedBigInteger('copied_from_level')
+                  ->nullable();
+            $table->foreign('copied_from_level')
+                  ->references('id')
+                  ->on('levels');
         });
 
         Schema::create('idea_inspirations', function (Blueprint $table) {
-          $table->foreignId('idea_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
-          $table->foreignId('challenge_version_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
+            $table->foreignId('idea_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+            $table->foreignId('challenge_version_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
         });
     }
 
