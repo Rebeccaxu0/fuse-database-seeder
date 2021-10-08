@@ -30,7 +30,6 @@ class ChallengeCategoryTest extends TestCase
             'description',
             'created_at',
             'updated_at',
-            'd7_id',
           ]), 1);
     }
 

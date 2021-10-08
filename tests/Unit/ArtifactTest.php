@@ -38,7 +38,6 @@ class ArtifactTest extends TestCase
             'request_feedback_complete',
             'url',
             'url_title',
-            'd7_id',
         ]), 1);
     }
 

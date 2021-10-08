@@ -40,7 +40,6 @@ class UserTest extends TestCase
             'timezone',
             'language',
             'reporting_id',
-            'd7_id',
             // PII Columns
             'full_name',
             'gender',

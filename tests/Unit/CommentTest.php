@@ -32,8 +32,6 @@ class CommentTest extends TestCase
             'artifact_id',
             'user_id',
             'body',
-            'd7_uid',
-            'd7_artifact_id',
         ]), 1);
     }
 

@@ -30,7 +30,6 @@ class RoleTest extends TestCase
             'updated_at',
             'name',
             'description',
-            'd7_id',
           ]), 1);
     }
 

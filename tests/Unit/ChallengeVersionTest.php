@@ -42,10 +42,6 @@ class ChallengeVersionTest extends TestCase
             'slug',
             'prerequisite_challenge_version_id',
             'info_article_url',
-            'd7_id',
-            'd7_challenge_id',
-            'd7_challenge_category_id',
-            'd7_prereq_challenge_id',
         ]), 1);
     }
 

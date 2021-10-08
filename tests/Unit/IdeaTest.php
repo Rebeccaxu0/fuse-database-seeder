@@ -30,7 +30,6 @@ class IdeaTest extends TestCase
             'updated_at',
             'name',
             'body',
-            'd7_id',
         ]), 1);
     }
 

@@ -30,8 +30,6 @@ class LevelTest extends TestCase
             'updated_at',
             'challenge_version_id',
             'level_number',
-            'd7_id',
-            'd7_challenge_version_id',
         ]), 1);
     }
 

@@ -31,7 +31,6 @@ class PackageTest extends TestCase
             'created_at',
             'updated_at',
             'student_activity_tab_access',
-            'd7_id',
           ]), 1);
     }
 

@@ -39,9 +39,6 @@ class StudioTest extends TestCase
             'research_site',
             'in_school',
             'demo_studio',
-            'd7_id',
-            'd7_school_id',
-            'd7_package_id',
           ]), 1);
     }
 
