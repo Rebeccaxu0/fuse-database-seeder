@@ -736,7 +736,37 @@ RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = fdft.field_teammates_target_id
 WHERE !ISNULL(i.d7_id);
 
 -- TODO: Idea Saves
+INSERT INTO fuse_laravel_test.artifacts (
+  type, artifactable_type, artifactable_id,
+  name, d7_id
+)
+SELECT
+  'save', 'idea', levels.id,
+  n.title, n.nid
+FROM fuse.node n
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
+RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'idea'
+LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+WHERE n.`type` = 'student_progress_save' AND n.uid != 0
+ORDER BY fdfcl.field_child_levels_nid;
+
 -- TODO: Idea Completes
+-- Exclude Completes from deleted users.
+INSERT INTO fuse_laravel_test.artifacts (
+  type, artifactable_type, artifactable_id,
+  name, d7_id
+)
+SELECT
+  'complete', 'level', levels.id,
+  n.title, n.nid
+FROM fuse.node n
+RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
+RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
+RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
+LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+WHERE n.`type` = 'level_completion_proof' AND n.uid != 0
+ORDER BY fdfcl.field_child_levels_nid;
 
 -- Attach teams to artifacts.
 -- First Drupal node owners.
