@@ -22,7 +22,7 @@ class AddPiiColumnsToUsersTable extends Migration
                   ->comment("Allowed values: 'M', 'F', 'NB' (non-binary), 'U' (prefer not to say)")
                   ->nullable()
                   ->index();
-            $table->string('ethnicity', 64)
+            $table->string('ethnicity', 63)
                   ->default('rather_not_say')
                   ->comment("Allowed values: african_american, asian, hispanic_latino, middle_eastern, indigenous_american, pacific_islander, caucasian, multiracial, rather_not_say, international (added for Finland)")
                   ->nullable()
