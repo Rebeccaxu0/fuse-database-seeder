@@ -9,10 +9,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ mix('js/app.js') }}" defer></script>
     
-
-    <!-- <link rel="stylesheet" href="/css/flickity.min.css">
-    <script src="/js/flickity.pkgd.min.js"></script> -->
-    
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -21,11 +17,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+
 </head>
 
     <body class="bg-gradient-to-t from-fuse-dk-teal to-fuse-teal">
-        <header class="bg-fuse-dk-teal p-2 h-18">
+        <header class="bg-fuse-dk-teal p-2 h-20">
   
         <div class="container relative p-0" style="min-height: 2rem;">
     
@@ -53,14 +49,14 @@
 
         <input id="nav-toggle" type=checkbox class="hidden">
         <label id="show-button" for="nav-toggle"
-            class="mt-3 ml-4 text-gray-300 hover:text-white">
+            class="mt-8 ml-4 text-gray-300 hover:text-white">
             <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <title>Menu Open</title>
                 <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z" />
             </svg>
         </label>
         <label id="hide-button" for="nav-toggle"
-            class="ml-4 hidden text-gray-300 hover:text-white">
+            class="mt-8 ml-4 hidden text-gray-300 hover:text-white">
             <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                 <title>Menu Close</title>
                 <polygon points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
@@ -104,17 +100,19 @@
   </div>
 
 </header><main class="container mx-auto flex-shrink flex-grow lg:px-4 py-16">
+
 <article>
     <div class="mx-auto my-auto">
 <div class="min-w-screen min-h-screen">
+
 <div class="">
     <div class="lg:flex mx-auto my-auto w-2/3 lg:w-2/3 bg-gradient-to-t from-fuse-teal-100 to-white rounded-lg shadow-lg border p-8 sm:px-12">
     <div class="lg:flex-1">
     <img class="min-h-8 max-h-36 md:max-h-48 lg:max-h-72 lg:pr-12 lg:pt-24 xl:pt-16" src="/fuse-logo.svg">
     </div>
     <div class="lg:flex-1">
-    <h2 class="text-display">Sign In</h2>
-    <div class="grid grid-cols-1 gap-6 max-w-full">
+    <h2 class="mt-6 text-fuse-dk-teal text-2xl font-semibold font-display">Sign In</h2>
+    <div class="mt-8 grid grid-cols-1 gap-6 max-w-full">
         <form method="POST" action="{{ route('login') }}">
             @csrf
             <div>
