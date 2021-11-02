@@ -2,8 +2,60 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@layer utilities {
-  input {
-    border-color: red;
+@layer components {
+  h1 { @apply font-display font-extrabold text-fuse-dk-teal mt-12 mb-6 leading-tight }
+  h2, h3, h4 { @apply font-display font-bold text-fuse-dk-teal mt-16 leading-tight }
+  h1 { @apply text-5xl }
+  h1.alt, h1.fuse { @apply font-normal text-gray-600 }
+  h2 { @apply  text-4xl font-bold text-fuse-teal text-center }
+  h2.left { @apply text-3xl font-bold mt-3 text-left text-gray-500 }
+  h2.t { @apply mt-0 }
+  h2.lt, h2.fuse { @apply font-light text-gray-700 }
+  h3 { @apply text-2xl font-semibold text-gray-700 mt-8 mb-4 }
+  h3.lt, h3.fuse { @apply font-semibold }
+  h4.cg { @apply mt-2 mb-0}
+  h4 { @apply text-xl text-gray-700 mt-8 mb-4 }
+  a {
+    @apply text-fuse-teal no-underline
+  }
+  p { @apply prose font-sans text-gray-700 leading-normal max-w-prose my-4 text-lg }
+
+  li { @apply prose ml-8 mt-3 leading-snug list-disc}
+  table { @apply table-auto }
+  table thead tr { @apply bg-fuse-teal font-display text-white tracking-wide border-white font-bold text-left rounded-t }
+  table thead tr th { @apply px-4 py-2 }
+  table tbody tr { @apply border border-gray-300 bg-white text-gray-700 font-medium }
+  table tbody tr:nth-child(even) { @apply bg-gray-100 }
+  table tbody tr td { @apply text-sm pl-4 pr-2 py-3 border-l border-r leading-tight }
+
+  .btn { @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2 }
+  .btn:focus { @apply outline-none ring; }
+  .btn:hover{ @apply bg-green-700; }
+  .btn:active, .btn:visited { @apply bg-green-900; }
+
+  .carousel-cell { @apply h-full w-full ml-12 mt-4 xl:mx-16 px-8 xl:px-16; }
+
+  .challenge-tile { @apply bg-white shadow-xl rounded-xl p-2 }
+
+  @screen sm {
+    .btn { @apply text-base }
+  }
+
+  /* Input styles */
+  input { @apply
+    block w-full
+    rounded-md border-gray-300 shadow-sm
+    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+  }
+  input[type~="email"],
+  input[type~="required"],
+  input[type~="password"],
+  input[type~="text"]
+    { @apply h-8 mt-1 mb-3 rounded-md }
+  label { @apply
+    text-sm
+    pt-6
+    mb-2
+    text-gray-700
   }
 }
