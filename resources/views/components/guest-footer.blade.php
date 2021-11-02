@@ -1,7 +1,7 @@
 <footer class="align-bottom bg-fuse-teal-500 md:grid md:grid-cols-2 px-20 py-10 max-w-screen">
   <div class="md:px-4 lg:px-10">
     <h3 class="text-white font-extrabold text-4xl pb-10 font-display">
-      {{ __(':count students', ['count' => '30,000']) }}
+      {{ __(':count students', ['count' => $students]) }}
     </h3>
     <ul class="leading-loose font-semibold">
       <li><a href="https://www.fusestudio.net/privacy">{{ __('Privacy Policy') }}</a></li>
@@ -12,7 +12,7 @@
   </div>
   <div class="md:px-4 lg:px-10">
     <h3 class="text-white font-extrabold text-4xl pb-10 font-display">
-      {{ __(':count schools', ['count' => '200']) }}
+      {{ __(':count schools', ['count' => $schools]) }}
     </h3>
     <p>{{ __('Translation') }}</p>
   </div>
