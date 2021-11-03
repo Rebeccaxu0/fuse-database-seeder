@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('dotenv').config();
 
 /*
  |--------------------------------------------------------------------------
@@ -20,3 +21,7 @@ mix.js('resources/js/app.js', 'public/js')
 if (mix.inProduction()) {
     mix.version();
 }
+mix.browserSync({
+  proxy: process.env.APP_URL,
+  files: ["public/css/*.css", "public/js/*.js", "resources/views/**/*"]
+});
