@@ -13,7 +13,7 @@ class ChallengeVersionFactory extends Factory
      * @var string
      */
     protected $model = ChallengeVersion::class;
-    protected $fillable = ['challenge_ategory_id'];
+    protected $fillable = ['challenge_category_id', 'name'];
 
     /**
      * Define the model's default state.
@@ -23,7 +23,7 @@ class ChallengeVersionFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->unique()->randomDigit,
+            //'id' => $this->faker->randomDigit,
             'challenge_id' => 1,
             'challenge_category_id' => 1,
             'name' => "{\"en\": \"{$this->faker->words(3, true)}\"}",
