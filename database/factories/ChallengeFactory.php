@@ -22,9 +22,8 @@ class ChallengeFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->randomDigit(),
+            'id' => $this->faker->unique()->randomDigit,
             'name' => $this->faker->words(3, true),
-            'd7_id' => 1,
         ];
     }
 }

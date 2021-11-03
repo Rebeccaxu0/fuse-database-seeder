@@ -22,8 +22,7 @@ class ChallengeCategoryFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->randomDigit(),
-            'd7_id' => $this->faker->randomDigit(),
+            'id' => $this->faker->unique()->randomDigit,
             'name' => $this->faker->word(),
             'description' => $this->faker->words(5, true),
         ];
