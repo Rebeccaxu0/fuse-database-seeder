@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\DistrictController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,16 +19,16 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+  Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+  })->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
 | admin routes
 |--------------------------------------------------------------------------
 */
-
-Route::get('admin/packages', [PackageController::class, 'index']);
-Route::get('admin/districts', 'DistrictController@index');
-
+  Route::get('admin/packages', [PackageController::class, 'index'])->name('packages');
+  Route::get('admin/districts', [DistrictController::class, '@index'])->name('districts');
+});
