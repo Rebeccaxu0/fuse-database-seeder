@@ -31,6 +31,9 @@ class CreateRolesTable extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
+            $table->unique(['user_id', 'role_id']);
+            $table->index('user_id');
+            $table->index('role_id');
         });
     }
 
