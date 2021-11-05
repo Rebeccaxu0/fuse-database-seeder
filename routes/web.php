@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PackageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +23,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 /*
 |--------------------------------------------------------------------------
-| fuse_admin routes
+| admin routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('fuse_admin/packages', [PackageController::class, 'index']);
-Route::get('fuse_admin/districts', 'DistrictController@index');
+Route::get('admin/packages', [PackageController::class, 'index']);
+Route::get('admin/districts', 'DistrictController@index');
 

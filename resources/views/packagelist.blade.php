@@ -14,11 +14,12 @@
                         <h3 class="mt-2 mb-2"> {{$item->name}} </h3>
                         <label class="text-xs"> {{$item->description}} </label>
                         @foreach ($item->challenges as $challenge)
-                        <label> 
-                            <li>
-                                <label class="text-xs text-fuse-teal"> {{$challenge->name}} </label>
-                            </li>
-                        </label>
+                            <details>
+                                <summary>{{$item->challenges()->count()}} challenges</summary>
+                                <ol>
+                                    <li><label class="text-xs text-fuse-teal"> {{$challenge->name}} </label></li>
+                                </ol>
+                            </details>
                         @endforeach
                     <label class="text-xs"> Used by {{$item->districts()->count()}} districts, {{$item->schools()->count()}} schools, and {{$item->studios()->count()}} studios</label>
                     </tr>
