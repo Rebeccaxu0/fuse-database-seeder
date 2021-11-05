@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Challenge;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
@@ -14,8 +15,8 @@ class PackageController extends Controller
      */
     public function index()
     {
-        $data = Package::all();
-        return view('adminlist', ['data' => $data]);
+        $packages = Package::all();
+        return view('adminlist', ['data' => $packages]);
     }
 
     /**
