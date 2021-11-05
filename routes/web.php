@@ -24,11 +24,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     return view('dashboard');
   })->name('dashboard');
 
-/*
-|--------------------------------------------------------------------------
-| admin routes
-|--------------------------------------------------------------------------
-*/
-  Route::get('admin/packages', [PackageController::class, 'index'])->name('packages');
-  Route::get('admin/districts', [DistrictController::class, '@index'])->name('districts');
+  /*
+  |------------------------------------------------------------------------
+  | admin routes
+  |------------------------------------------------------------------------
+  */
+  Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+    Route::get('/packages', [PackageController::class, 'index'])->name('packages');
+    Route::get('/districts', [DistrictController::class, 'index'])->name('districts');
+  });
 });
