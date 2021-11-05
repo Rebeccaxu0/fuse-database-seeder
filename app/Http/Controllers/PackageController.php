@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(Package::class, 'package');
+    }
+
     /**
      * Display a listing of the resource.
      *

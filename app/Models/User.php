@@ -114,4 +114,21 @@ class User extends Authenticatable
     {
       return $this->belongsToMany(Studio::class);
     }
+
+    public function is_admin()
+    {
+      return $this->has_role(2);
+    }
+
+    /**
+     * User has a given role.
+     *
+     * @param int $role_id
+     *
+     * @return boolean
+     */
+    public function has_role($role_id)
+    {
+      return $this->roles()->where('role_id', $role_id)->get()->count();
+    }
 }
