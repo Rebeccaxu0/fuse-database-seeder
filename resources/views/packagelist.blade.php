@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-admin-layout>
 <article>
     <div class="mx-auto my-auto py-16">
     <div class="min-w-screen min-h-screen">
@@ -30,5 +30,5 @@
     </div>
     </div>
 </article>
-</x-guest-layout>
+</x-admin-layout>
 
