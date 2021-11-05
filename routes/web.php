@@ -17,8 +17,15 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('fuse_admin/packages', 'PackageController@index');
-
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| fuse_admin routes
+|--------------------------------------------------------------------------
+*/
+Route::get('fuse_admin/packages', 'PackageController@index');
+Route::get('fuse_admin/districts', 'DistrictController@index');
+

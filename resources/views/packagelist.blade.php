@@ -12,6 +12,7 @@
                     @foreach($data as $item)
                     <tr>
                         <h3 class="mt-2 mb-2"> {{$item->name}} </h3>
+                        <label class="text-xs"> {{$item->description}} </label>
                         @foreach ($item->challenges as $challenge)
                         <label> 
                             <li>
