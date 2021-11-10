@@ -2,6 +2,7 @@
   <article class="mx-auto my-auto py-16 min-w-screen min-h-screen">
     <div class="mx-auto my-auto w-2/3 lg:w-2/3 bg-gradient-to-t from-fuse-teal-100 to-white rounded-lg shadow-lg border p-8 sm:px-12">
       <h2 class="mt-6 text-fuse-dk-teal text-center text-2xl font-semibold font-display">{{ __('Packages') }}</h2>
+      <a href="{{ route('login') }}" class="text-sm text-fuse-green">Add package</a> <!-- need to change link -->
       <div class="overflow-x-auto mt-6">
         @foreach($data as $item)
         <h3 class="mt-2 mb-2">{{ $item->name }}</h3>

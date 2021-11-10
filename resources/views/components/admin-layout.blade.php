@@ -26,6 +26,7 @@
             </style>
     </head>
     <body>
+    <x-admin-nav/>
     <div class="bg-gradient-to-t from-fuse-green to-fuse-green-500">
           {{ $slot }}
       </div>

@@ -29,7 +29,7 @@ services:
         volumes:
             - '/dev/shm:/dev/shm'
         networks:
-            - sail   
+            - sail  
     mariadb:
         image: 'mariadb:10'
         ports:
