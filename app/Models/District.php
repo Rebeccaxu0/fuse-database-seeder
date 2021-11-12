@@ -63,4 +63,12 @@ class District extends Organization
     {
       return $this->hasManyThrough(Studio::class, School::class);
     }
+
+    /**
+     * The package associated with this district.
+     */
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
+    }
 }

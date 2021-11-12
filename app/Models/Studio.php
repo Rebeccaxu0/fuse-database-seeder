@@ -18,7 +18,7 @@ class Studio extends Organization
       if ($this->package()->count() > 0) {
         return $this->package();
       }
-      return $this->school()->first()->deFactoPackage();
+      return $this->school->deFactoPackage();
     }
 
     /**
@@ -71,5 +71,13 @@ class Studio extends Organization
     public function district()
     {
       return $this->school()->first()->district();
+    }
+
+    /**
+     * The package associated with this district.
+     */
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
     }
 }

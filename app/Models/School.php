@@ -18,7 +18,7 @@ class School extends Organization
       if ($this->package()->count() > 0) {
         return $this->package();
       }
-      return $this->district()->first()->package();
+      return $this->district->package();
     }
 
     /**
@@ -82,5 +82,13 @@ class School extends Organization
     public function partner()
     {
       return $this->belongsTo(Partner::class);
+    }
+
+    /**
+     * The package associated with this district.
+     */
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
     }
 }
