@@ -2,14 +2,21 @@
   <article class="mx-auto my-auto py-16 min-w-screen min-h-screen">
     <div class="mx-auto my-auto w-2/3 lg:w-2/3 bg-gradient-to-t from-fuse-teal-100 to-white rounded-lg shadow-lg border p-8 sm:px-12">
       <h2 class="mt-6 text-fuse-dk-teal text-center text-2xl font-semibold font-display">{{ __('Packages') }}</h2>
-      <button onclick="location.href='{{ url('/admin/addpackage') }}'" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
+      <a href="{{ route('admin.package.add') }}">
+        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
+      </a>
         @foreach($data as $item)
         <h3 class="mt-2 mb-2">{{ $item->name }}
-          <span class="pl-2"> 
-            <button id="edit" onclick="location.href='/admin/{{ $item->id }}/editpackage'">
-            <img class="h-6 w-6" src="/editpencil.png"></button>
-            <button id="delete"><img class="h-6 w-6" src="/deletetrash.png"></button>
-          </span> 
+          <span class="pl-2">
+            <a href="{{ route('admin.package.edit', $item->id) }}">
+              <button><img class="h-6 w-6" src="/editpencil.png"></button>
+            </a>
+            <form method="post" action="{{ route('admin.package.delete', $item->id) }}" class="inline-block">
+              @method('delete')
+              @csrf
+              <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
+            </form>
+          </span>
         </h3>
         <label class="text-xs">{{ $item->description }}</label>
         <details>
