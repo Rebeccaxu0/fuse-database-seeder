@@ -5,6 +5,15 @@
                 <div class="col-12 pt-2">
                     <div class="rounded mt-5 pl-4 pr-4 pt-4 pb-4">
                         <h2 class="mt-6 text-fuse-dk-teal text-center text-2xl font-semibold font-display">Create Package</h2>
+                        @if ($errors->any())
+                        <div class="bg-red-300 rounded border-2 border-red-500 p-4">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                         <form class="w-full max-w-lg mt-6" action="/admin/addpackage" method="POST">
                             @csrf
                             <div class="flex flex-wrap -mx-3 mb-6">
