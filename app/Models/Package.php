@@ -18,8 +18,8 @@ class Package extends Model
     protected $fillable = [
       'name',
       'description',
-      'student_activity_tab_access' 
-  ];
+      'student_activity_tab_access',
+    ];
 
 
     /**
