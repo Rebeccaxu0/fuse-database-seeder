@@ -14,7 +14,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form class="w-full max-w-lg mt-6" action="/admin/addpackage" method="POST">
+                        <form class="w-full max-w-lg mt-6" action="{{ route('admin.package.add') }}" method="POST">
                             @csrf
                             <div class="flex flex-wrap -mx-3 mb-6">
                                 <label class="block">
