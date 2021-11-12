@@ -41,7 +41,7 @@ class PackagePolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin();
     }
 
     /**
@@ -53,7 +53,7 @@ class PackagePolicy
      */
     public function update(User $user, Package $package)
     {
-        //
+        return $user->is_admin();
     }
 
     /**
@@ -65,7 +65,7 @@ class PackagePolicy
      */
     public function delete(User $user, Package $package)
     {
-        //
+        return $user->is_admin();
     }
 
     /**

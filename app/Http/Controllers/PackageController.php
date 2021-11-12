@@ -37,7 +37,8 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        $challenges = Challenge::all();
+        return view('addpackage',['challenges' => $challenges]);
     }
 
     /**
@@ -48,7 +49,14 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newPackage = Package::create([
+            'name' => $request->title,
+            'description' => $request->description,
+            'package_id' => 1,
+            'student_activity_tab_access' => 0
+        ])->save();
+
+        return redirect('admin/packages');
     }
 
     /**
@@ -70,7 +78,10 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        $challenges = Challenge::all();
+        return view('editpackage',[
+            'challenges' => $challenges,
+            ‘package’ => $package]);
     }
 
     /**
@@ -82,7 +93,14 @@ class PackageController extends Controller
      */
     public function update(Request $request, Package $package)
     {
-        //
+        $package->update([
+            'name' => $request->title,
+            'description' => $request->description,
+            'package_id' => 1,
+            'student_activity_tab_access' => 0
+        ]);
+
+        return redirect('admin/packages');
     }
 
     /**
@@ -93,6 +111,8 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        //
+        $package->delete();
+        return redirect('admin/packages');
+
     }
 }

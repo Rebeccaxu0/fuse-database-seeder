@@ -9,6 +9,19 @@ class Package extends Model
 {
     use HasFactory;
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+      'name',
+      'description',
+      'student_activity_tab_access' 
+  ];
+
+
     /**
      * The challenges associated with this package.
      */
