@@ -30,19 +30,19 @@
                                             </div>
                                             <div class="ml-3">
                                                 <p class="text-gray-900 whitespace-no-wrap">
-                                                    {{$item->name}}
+                                                    {{ $item->name }}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                                {{$item->package->name}}
+                                        {{ $item->package->name ?? __('No package set') }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                        {{$item->schools()->count()}}
+                                        {{ $item->schools()->count() }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -50,7 +50,7 @@
                                             <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full">
                                             </span>
                                             <span class="relative">
-                                                {{$item->status}}
+                                                {{ $item->status }}
                                             </span>
                                         </span>
                                     </td>
