@@ -20,9 +20,35 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+  /*
+  |------------------------------------------------------------------------
+  | student routes
+  |------------------------------------------------------------------------
+  */
+  Route::get('/challenges', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('challenges');
+  Route::get('/help_finder', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('help_finder');
   Route::get('/dashboard', function () {
     return view('dashboard');
   })->name('dashboard');
+  Route::get('/mystuff', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('gallery');
+
+  /*
+  |------------------------------------------------------------------------
+  | facilitator routes
+  |------------------------------------------------------------------------
+  */
+  Route::get('/facilitator', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('facilitator');
+  Route::get('/support', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('support');
 
   /*
   |------------------------------------------------------------------------
