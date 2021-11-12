@@ -115,9 +115,20 @@ class User extends Authenticatable
       return $this->belongsToMany(Studio::class);
     }
 
+    /**
+     * Check if user has admin role.
+     */
     public function is_admin()
     {
       return $this->has_role(2);
+    }
+
+    /**
+     * Check if user has facilitator role.
+     */
+    public function is_facilitator()
+    {
+      return $this->has_role(6);
     }
 
     /**
