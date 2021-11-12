@@ -102,7 +102,7 @@ class PackageController extends Controller
             'student_activity_tab_access' => 0,
         ]);
 
-        return redirect('admin/packages');
+        return redirect(route('admin.packages'));
     }
 
     /**
@@ -114,7 +114,7 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->delete();
-        return redirect('admin/packages');
+        return redirect(route('admin.packages'));
 
     }
 }
