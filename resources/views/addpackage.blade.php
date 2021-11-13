@@ -23,13 +23,13 @@
                                     <input type="text" name="title" class="form-input form-text-required mt-1 block w-full rounded">
                                 </label>
                             </div>
-                            <div class=" -mx-3 mb-6">
+                            <div class="-mx-3 mb-6">
                                 <label class="block">
                                     <span class="text-gray-700">Description</span>
                                     <textarea class="form-textarea mt-1 block w-full rounded" name="description" rows="3"></textarea>
                                 </label>
                             </div>
-                            <div class= "-mx-3 mb-2">
+                            <div class="-mx-3 mb-2">
                                 <label class="text-gray-700 mb-2 form-required">Allowed Challenges</label>
                             </div>
                             @foreach($challenges as $item)
