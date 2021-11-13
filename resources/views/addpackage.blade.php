@@ -38,12 +38,12 @@
                             <div class="-mx-3 mb-2">
                                 <label class="text-gray-700 mb-2 form-required">Allowed Challenges</label>
                             </div>
-                            @foreach($challenges as $item)
+                            @foreach($challenges as $challenge)
                             <div>
-                            <label class="inline-flex items-center mb-2">
-                                <input type="checkbox" class="form-checkbox">
-                                <span class="ml-2" name="chal[]">{{ $item->name }}</span>
-                            </label>
+                                <label class="inline-flex items-center mb-2">
+                                    <input type="checkbox" class="form-checkbox">
+                                    <span class="ml-2" name="challenge_id_{{ $challenge->id }}">{{ $challenge->name }}</span>
+                                </label>
                             </div>
                             @endforeach
                             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
