@@ -5,36 +5,36 @@
       <a href="{{ route('admin.package.add') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
       </a>
-        @foreach($data as $item)
-        <h3 class="mt-2 mb-2">{{ $item->name }}
-          <span class="pl-2">
-            <a href="{{ route('admin.package.edit', $item->id) }}">
-              <button><img class="h-6 w-6" src="/editpencil.png"></button>
-            </a>
-            <form method="post" action="{{ route('admin.package.delete', $item->id) }}" class="inline-block">
-              @method('delete')
-              @csrf
-              <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
-            </form>
-          </span>
-        </h3>
-        <label class="text-xs">{{ $item->description }}</label>
-        <details>
-          <summary>{{ __(':count challenges', ['count' => $item->challenges()->count()]) }}</summary>
-          <ol>
-            @foreach ($item->challenges as $challenge)
-            <li><label class="text-xs text-fuse-teal">{{ $challenge->name }}</label></li>
-            @endforeach
-          </ol>
-        </details>
-        <label class="text-xs">{{ __('Used by :district_count districts, :school_count schools, and :studio_count studios',
-          [
-          'district_count' => $item->districts()->count(),
-          'school_count' => $item->schools()->count(),
-          'studio_count' => $item->studios()->count()
-          ]) }}</label>
-        @endforeach
-      </div>
+      @foreach($data as $package)
+      <h3 class="mt-2 mb-2">{{ $package->name }}
+        <span class="pl-2">
+          <a href="{{ route('admin.package.edit', $package->id) }}">
+            <button><img class="h-6 w-6" src="/editpencil.png"></button>
+          </a>
+          <form method="post" action="{{ route('admin.package.delete', $package->id) }}" class="inline-block">
+            @method('delete')
+            @csrf
+            <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
+          </form>
+        </span>
+      </h3>
+      <label class="text-xs">{{ $package->description }}</label>
+      <details>
+        <summary>{{ __(':count challenges', ['count' => $package->challenges()->count()]) }}</summary>
+        <ol>
+          @foreach ($package->challenges as $challenge)
+          <li><label class="text-xs text-fuse-teal">{{ $challenge->name }}</label></li>
+          @endforeach
+        </ol>
+      </details>
+      <label class="text-xs">{{ __('Used by :district_count districts, :school_count schools, and :studio_count studios',
+        [
+        'district_count' => $package->districts()->count(),
+        'school_count' => $package->schools()->count(),
+        'studio_count' => $package->studios()->count()
+        ]) }}</label>
+      @endforeach
+    </div>
     </div>
   </article>
 </x-admin-layout>
