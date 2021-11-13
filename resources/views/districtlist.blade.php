@@ -1,4 +1,10 @@
-<x-admin-layout>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Districts') }}
+        </h2>
+    </x-slot>
+
     <article>
         <div class="container mx-auto px-4 sm:px-8 max-w-3xl">
             <div class="py-8">
@@ -63,4 +69,4 @@
             </div>
         </div>
     </article>
-</x-admin-layout>
+</x-app-layout>
