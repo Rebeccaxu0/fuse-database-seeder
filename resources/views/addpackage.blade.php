@@ -47,12 +47,6 @@
                             </div>
                             @endforeach
                             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
-                                <label class="block">
-                                    <span class="text-gray-700">Author</span>
-                                    <input type="text" class="form-input mt-1 block w-full rounded" id="author" value="user">
-                                </label>
-                            </div>
-                            <div class="flex flex-wrap mt-4 -mx-3 mb-2">
                                 <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
                                     Create Package
                                 </button>
