@@ -47,16 +47,18 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-      $validated = $request->validate([
-        'name' => 'required|unique:packages|max:255',
-        'description' => 'max:1024',
-      ]);
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:packages|max:255',
+        ]);
 
-        $newPackage = Package::create([
-            'name' => $request->title,
+        $package = Package::create([
+            'name' => $request->name,
             'description' => $request->description,
-            'student_activity_tab_access' => 0,
-        ])->save();
+            'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
+        ]);
+        $package->save();
+        $package->challenges()->attach($request->challenges);
 
         return redirect(route('admin.packages.index'));
     }
