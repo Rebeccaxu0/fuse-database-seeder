@@ -58,17 +58,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
-    Route::get('/packages', [PackageController::class, 'index'])->name('packages');
-    Route::prefix('package')
-      ->name('package.')
-      ->group(function() {
-        Route::get('/add', [PackageController::class, 'create'])->name('add');
-        Route::post('/add', [PackageController::class, 'store']);
-        Route::get('/{package:id}', [PackageController::class, 'show'])->name('view');
-        Route::get('/{package:id}/edit', [PackageController::class, 'edit'])->name('edit');
-        Route::put('{package:id}/edit', [PackageController::class, 'update']);
-        Route::delete('{package:id}/delete', [PackageController::class, 'destroy'])->name('delete');
-      });
-    Route::get('/districts', [DistrictController::class, 'index'])->name('districts');
-  });
+      Route::resource('packages', PackageController::class);
+      Route::resource('districts', DistrictController::class);
+    });
 });

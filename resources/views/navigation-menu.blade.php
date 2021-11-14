@@ -45,7 +45,7 @@
                 @endif
                 @if (Auth::user()->is_admin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-jet-nav-link href="{{ route('admin.packages') }}" :active="request()->routeIs('admin.packages')">
+                    <x-jet-nav-link href="{{ route('admin.packages.index') }}" :active="request()->routeIs('admin.packages.index')">
                         {{ __('Packages') }}
                     </x-jet-nav-link>
                 </div>
