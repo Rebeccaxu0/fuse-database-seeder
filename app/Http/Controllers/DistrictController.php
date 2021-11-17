@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Package;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class DistrictController extends Controller
@@ -14,8 +16,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $districts = District::all();
-        return view('districtlist', ['data' => $districts]);
+        return view('district.index', ['data' => District::all()]);
     }
 
     /**
@@ -25,7 +26,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        //
+        return view('district.create', ['packages' => Package::all()]);
     }
 
     /**
@@ -36,7 +37,21 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:districts|max:255',
+        ]);
+
+        $district = District::create([
+            'name' => $request->name,
+            'package' => $request->package, //dropdown
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+
+        ]);
+        $district->save();
+        //$district->schools()->attach($request->schools);
+
+        return redirect(route('admin.districts.index'));
     }
 
     /**
@@ -58,7 +73,10 @@ class DistrictController extends Controller
      */
     public function edit(District $district)
     {
-        //
+        return view('district.edit', [
+            'packages' => Package::all(),
+            'district' => $district,
+        ]);
     }
 
     /**
@@ -70,7 +88,14 @@ class DistrictController extends Controller
      */
     public function update(Request $request, District $district)
     {
-        //
+        $district->update([
+            'name' => $request->name,
+            'package' => $request->package, //dropdown
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+        ]);
+        $district->save();
+        //$district->schools()->attach($request->schools);
+        return redirect(route('admin.districts.index'));
     }
 
     /**
@@ -81,6 +106,8 @@ class DistrictController extends Controller
      */
     public function destroy(District $district)
     {
-        //
+        $district->delete();
+        return redirect(route('admin.districts.index'));
+        //not really a thing
     }
 }

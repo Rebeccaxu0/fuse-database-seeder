@@ -10,6 +10,17 @@ class District extends Organization
 {
     use HasFactory;
 
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+      'name',
+      'salesforce_acct_id',
+      'package_id'
+    ];
+
     /**
      * The super facilitators associated with this district.
      */
