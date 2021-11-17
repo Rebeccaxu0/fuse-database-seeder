@@ -26,7 +26,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        return view('packagelist', ['data' => Package::all()]);
+        return view('package.index', ['data' => Package::all()]);
     }
 
     /**
@@ -36,7 +36,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        return view('addpackage', ['challenges' => Challenge::all()]);
+        return view('package.create', ['challenges' => Challenge::all()]);
     }
 
     /**
@@ -82,7 +82,7 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        return view('editpackage', [
+        return view('package.edit', [
             'challenges' => Challenge::all(),
             'package' => $package,
         ]);
@@ -98,11 +98,11 @@ class PackageController extends Controller
     public function update(Request $request, Package $package)
     {
         $package->update([
-            'name' => $request->title,
+            'name' => $request->name,
             'description' => $request->description,
-            'package_id' => 1,
-            'student_activity_tab_access' => 0,
+            'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
         ]);
+        $package->challenges()->sync($request->challenges);
 
         return redirect(route('admin.packages.index'));
     }
