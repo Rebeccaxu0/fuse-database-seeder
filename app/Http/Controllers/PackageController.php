@@ -26,7 +26,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        return view('package.index', ['data' => Package::all()]);
+        return view('admin.package.index', ['data' => Package::all()]);
     }
 
     /**
@@ -36,7 +36,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        return view('package.create', ['challenges' => Challenge::all()]);
+        return view('admin.package.create', ['challenges' => Challenge::all()]);
     }
 
     /**
@@ -82,7 +82,7 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        return view('package.edit', [
+        return view('admin.package.edit', [
             'challenges' => Challenge::all(),
             'package' => $package,
         ]);

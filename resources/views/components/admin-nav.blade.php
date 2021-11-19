@@ -6,7 +6,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav.link href="{{ route('admin.districts.index') }}" :active="request()->routeIs('challenges')">
+                    <x-nav.link href="{{ route('admin.districts.index') }}" :active="request()->routeIs('admin.challenges.index')">
                         {{ __('Districts') }}
                     </x-nav.link>
                 </div>

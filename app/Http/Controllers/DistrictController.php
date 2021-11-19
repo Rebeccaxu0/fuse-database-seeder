@@ -16,7 +16,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        return view('district.index', ['data' => District::all()]);
+        return view('admin.district.index', ['data' => District::all()]);
     }
 
     /**
@@ -26,7 +26,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        return view('district.create', ['packages' => Package::all()]);
+        return view('admin.district.create', ['packages' => Package::all()]);
     }
 
     /**
@@ -73,7 +73,7 @@ class DistrictController extends Controller
      */
     public function edit(District $district)
     {
-        return view('district.edit', [
+        return view('admin.district.edit', [
             'packages' => Package::all(),
             'district' => $district,
         ]);
