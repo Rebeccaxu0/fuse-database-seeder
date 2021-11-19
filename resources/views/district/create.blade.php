@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
   <article class="mx-auto my-auto py-16 min-w-screen min-h-screen">
     <div class="container rounded mx-auto my-auto w-2/3 lg:w-2/3 bg-gradient-to-t from-fuse-teal-100 to-white">
       <div class="row">
@@ -37,4 +37,4 @@
       </div>
     </div>
   </article>
-</x-admin-layout>
+</x-app-layout>

@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
   <article class="mx-auto my-auto py-16 min-w-screen min-h-screen">
     <div class="mx-auto my-auto w-2/3 lg:w-2/3 bg-gradient-to-t from-fuse-teal-100 to-white rounded-lg shadow-lg border p-8 sm:px-12">
       <h2 class="mt-6 text-fuse-dk-teal text-center text-2xl font-semibold font-display">{{ __('Districts') }}</h2>
@@ -85,4 +85,4 @@
             </div>
         </div>
     </article>
-</x-admin-layout>
+</x-app-layout>
