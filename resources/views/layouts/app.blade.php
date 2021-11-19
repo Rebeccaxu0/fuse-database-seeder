@@ -31,9 +31,11 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body>
-        <x-jet-banner />
-
         <div class="min-h-screen bg-gray-100">
+            @if ( Auth::user()->is_admin())
+            <x-admin-nav/>
+            @endif
+
             @livewire('navigation-menu')
 
             <!-- Page Heading -->
