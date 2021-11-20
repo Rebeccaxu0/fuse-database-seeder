@@ -120,7 +120,7 @@ class User extends Authenticatable
      */
     public function is_admin()
     {
-      return $this->has_role(2);
+      return $this->has_role(Role::ADMIN_ID);
     }
 
     /**
@@ -128,7 +128,15 @@ class User extends Authenticatable
      */
     public function is_facilitator()
     {
-      return $this->has_role(6);
+      return $this->has_role(Role::FACILITATOR_ID);
+    }
+
+    /**
+     * Check if user has student role.
+     */
+    public function is_student()
+    {
+      return $this->has_role(Role::STUDENT_ID);
     }
 
     /**

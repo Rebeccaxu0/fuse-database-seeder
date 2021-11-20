@@ -27,7 +27,7 @@ class Studio extends Organization
     public function students()
     {
       return $this->users()->whereHas('roles', function(Builder $query) {
-        $query->where('name', '=', 'Student');
+        $query->where('id', '=', Role::STUDENT_ID);
       });
     }
 
@@ -36,11 +36,8 @@ class Studio extends Organization
      */
     public function facilitators()
     {
-      return User::whereHas('schools', function(Builder $query) {
-        $query->where('id', '=', $this->school()->first()->id);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Facilitator');
+      return $this->users()->whereHas('roles', function(Builder $query) {
+          $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
 
@@ -49,12 +46,9 @@ class Studio extends Organization
      */
     public function superFacilitators()
     {
-      return User::whereHas('districts', function(Builder $query) {
-        $query->where('id', '=', $this->school()->first()->district()->first()->id);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Super Facilitator');
-        });
+      return $this->users()->whereHas('roles', function(Builder $query) {
+        $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
+      });
     }
 
     /**
@@ -70,7 +64,7 @@ class Studio extends Organization
      */
     public function district()
     {
-      return $this->school()->first()->district();
+      return $this->school()->first() ? $this->school()->first()->district() : null;
     }
 
     /**

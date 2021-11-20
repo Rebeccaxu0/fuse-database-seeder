@@ -8,13 +8,23 @@ use Illuminate\Http\Request;
 class SchoolController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(School::class, 'school');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('admin.school.index', ['schools' => School::orderBy('name')->paginate(20)]);
     }
 
     /**

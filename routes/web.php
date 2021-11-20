@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudioController;
+use App\Http\Controllers\ChallengeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,5 +63,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
     ->group(function () {
       Route::resource('packages', PackageController::class);
       Route::resource('districts', DistrictController::class);
+      Route::resource('schools', SchoolController::class);
+      Route::resource('studios', StudioController::class);
+      Route::resource('challenges', ChallengeController::class);
     });
 });
