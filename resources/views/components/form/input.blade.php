@@ -1,8 +1,8 @@
-@props(['name', 'required' => false])
+@props(['name', 'label', 'required'=>false])
 
 <div class="mb-6">
   <label class="block" for="{{ $name }}">
-    <span class="text-gray-700 form-required">{{ ucwords($name) }}</span>
+    <span class="text-gray-700 form-required">{{ $label }}</span>
     @if($required)
     <span class="form-required" title="This field is required.">*</span>
     @endif
@@ -14,8 +14,7 @@
          required
          @endif
          class="form-input form-text-required mt-1 block w-full rounded"
-         {{ $attributes(['value' => old($name)]) }}
-  >
+         {{ $attributes(['value' => old($name)]) }}>
   @error($name)
   <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
   @enderror

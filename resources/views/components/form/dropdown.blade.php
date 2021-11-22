@@ -1,7 +1,13 @@
-@props(['package', 'selected', 'required' => false])
-<!--WIP-->
+@props(['name', 'label', 'list', 'value'])
+
+<div class="mb-2">
+  <label class="text-gray-700 mb-2 form-required">{{$label}}</label>
+</div>
 <div class="mb-6">
-  <select class="border block w-full rounded text-gray-700 h-10 bg-white hover:border-gray-400 focus:outline-none">
-  {{ $slot }}
-  </select>
+<select name="{{$name}}" id="{{$name}}" {!! $attributes->merge(['class' => 'mt-1 block w-full rounded']) !!}>
+    <option> </option>
+    @foreach ($list as $item)
+    <option value="{{ $item->id}}" @if ($item->id == $value) selected @endif>{{ $item->name }}</option> 
+    @endforeach
+</select>
 </div>

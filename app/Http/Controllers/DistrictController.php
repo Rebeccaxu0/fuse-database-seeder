@@ -54,7 +54,7 @@ class DistrictController extends Controller
 
         $district = District::create([
             'name' => $request->name,
-            'package' => $request->package, //dropdown
+            'package_id' => $request->get('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
 
         ]);
@@ -100,7 +100,7 @@ class DistrictController extends Controller
     {
         $district->update([
             'name' => $request->name,
-            'package' => $request->package, //dropdown
+            'package' => $request->get('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
         ]);
         $district->save();

@@ -5,10 +5,10 @@
         <div class="col-12 pt-2">
           <div class="rounded mt-5 pl-4 pr-4 pt-4 pb-4">
             <h2 class="mt-6 text-fuse-dk-teal text-center text-2xl font-semibold font-display">Create Package</h2>
-
             <form class="w-full max-w-lg mt-6" action="{{ route('admin.packages.store') }}" method="POST">
               @csrf
               <x-form.input
+                label="Title"
                 name="name"
                 required="true" />
               <x-form.textarea
