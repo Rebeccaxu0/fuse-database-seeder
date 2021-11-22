@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | admin routes
   |------------------------------------------------------------------------
   */
+  Route::view('/admin', 'admin')->name('admin');
   Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
