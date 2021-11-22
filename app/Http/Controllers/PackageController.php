@@ -26,7 +26,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        return view('admin.package.index', ['data' => Package::all()]);
+        return view('admin.package.index', ['packages' => Package::all()]);
     }
 
     /**

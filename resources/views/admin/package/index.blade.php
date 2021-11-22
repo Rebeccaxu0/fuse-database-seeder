@@ -5,7 +5,7 @@
       <a href="{{ route('admin.packages.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
       </a>
-      @foreach($data as $package)
+      @foreach($packages as $package)
       <h3 class="mt-2 mb-2">{{ $package->name }}
         <span class="pl-2">
           <a href="{{ route('admin.packages.edit', $package->id) }}">
