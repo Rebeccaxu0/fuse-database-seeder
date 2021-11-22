@@ -26,6 +26,14 @@
                 label="Active Studio License"
                 name="active_studio_license"
                 :checked="old('status', 0)"/>
+            <div>
+                <label class="text-gray-700 mb-2"> Current Schools </label>
+                @foreach ($district->schools as $item)
+                    <p class="text-gray-900 text-sm whitespace-no-wrap">
+                        {{ $item->name }}
+                    </p>
+                @endforeach
+            </div>
             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
                 <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
                   Update District
