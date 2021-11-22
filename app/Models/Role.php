@@ -9,6 +9,7 @@ class Role extends Model
 {
     use HasFactory;
 
+    public const ROOT_ID              = 1;
     public const ADMIN_ID             = 2;
     public const REPORT_VIEWER_ID     = 3;
     public const CHALLENGE_AUTHOR_ID  = 4;

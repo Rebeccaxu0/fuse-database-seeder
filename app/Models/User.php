@@ -140,6 +140,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has anonymous student role.
+     */
+    public function is_anonymous_student()
+    {
+      return $this->has_role(Role::ANONYMOUS_STUDENT_ID);
+    }
+
+    /**
      * User has a given role.
      *
      * @param int $role_id
