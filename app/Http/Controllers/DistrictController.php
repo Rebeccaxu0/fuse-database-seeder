@@ -100,11 +100,11 @@ class DistrictController extends Controller
     {
         $district->update([
             'name' => $request->name,
-            'package' => $request->get('package'),
+            'package' => $request->input('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
         ]);
+        //WIP! $district->schools()->dissociate($request->schoolsremove);
         $district->save();
-        //$district->schools()->attach($request->schools);
         return redirect(route('admin.districts.index'));
     }
 
