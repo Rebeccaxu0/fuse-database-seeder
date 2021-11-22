@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\PackageController;
+use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LTIPlatformController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
-use App\Http\Controllers\ChallengeController;
 use Illuminate\Support\Facades\Route;
 
 /*
