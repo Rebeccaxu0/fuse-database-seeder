@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\ChallengeController;
@@ -66,5 +67,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
       Route::resource('schools', SchoolController::class);
       Route::resource('studios', StudioController::class);
       Route::resource('challenges', ChallengeController::class);
+      Route::resource('lti_platforms', LTIPlatformController::class);
     });
 });
