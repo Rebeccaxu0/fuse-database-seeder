@@ -17,6 +17,7 @@ class CreateLTIPlatformsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->string('domain', 1023);
             $table->string('client_id', 255);
             $table->string('auth_login_url', 255);

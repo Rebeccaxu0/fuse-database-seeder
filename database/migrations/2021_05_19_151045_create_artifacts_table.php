@@ -17,6 +17,7 @@ class CreateArtifactsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             // $table->morphs('artifactable');
             // Cannot use the above if we wish to add a comment.
             $table->string('artifactable_type')

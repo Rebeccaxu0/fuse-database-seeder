@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->foreignId('artifact_id')
                   ->constrained();
             $table->foreignId('user_id')

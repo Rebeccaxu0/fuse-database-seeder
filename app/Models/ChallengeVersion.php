@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 Use Spatie\Translatable\HasTranslations;
 
 class ChallengeVersion extends Model
 {
     use HasFactory;
     use HasTranslations;
+    use SoftDeletes;
 
     public $translatable = ['facilitator_notes'];
 

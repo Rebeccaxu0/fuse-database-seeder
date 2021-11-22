@@ -17,6 +17,7 @@ class CreateLevelsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->foreignId('challenge_version_id')
                   ->constrained()
                   ->comment('Parent Challenge Version');

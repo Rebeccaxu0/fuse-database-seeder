@@ -17,6 +17,7 @@ class CreateStudiosTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->string('name', 1023);
             $table->boolean('status')
                   ->default(true);
