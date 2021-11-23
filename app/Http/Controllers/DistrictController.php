@@ -26,7 +26,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        return view('admin.district.index', ['data' => District::all()]);
+        return view('admin.district.index', ['districts' => District::with('schools')->with('package')->get()]);
     }
 
     /**

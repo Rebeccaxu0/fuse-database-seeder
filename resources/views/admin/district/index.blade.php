@@ -30,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($data as $item)
+                                @foreach($districts as $district)
                                 <tr>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <div class="flex items-center">
@@ -38,25 +38,25 @@
                                             </div>
                                             <div class="ml-3">
                                                 <p class="text-gray-900 whitespace-no-wrap">
-                                                    {{ $item->name }}
+                                                {{ $district->name }}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ $item->package->name ?? __('No package set') }}
+                                        {{ $district->package->name ?? __('No package set') }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">
                                         <details>
-                                            <summary>{{ __(':count', ['count' => $item->schools()->count()]) }}</summary>
-                                                <ol>
-                                                @foreach ($item->schools as $school)
-                                                    <li><label class="text-xs text-fuse-teal">{{ $school->name }}</label></li>
+                                            <summary>{{ __(':count', ['count' => count($district->schools)]) }}</summary>
+                                            <ol>
+                                                @foreach ($district->schools as $school)
+                                                <li><label class="text-xs text-fuse-teal">{{ $school->name }}</label></li>
                                                 @endforeach
-                                                </ol>
+                                            </ol>
                                         </details>
                                         </p>
                                     </td>
@@ -66,13 +66,13 @@
                                             </div>
                                             <div class="ml-3">
                                                 <p class="text-gray-900 whitespace-no-wrap">
-                                                    {{ $item->salesforce_acct_id ?? __('No ID')}}
+                                                {{ $district->salesforce_acct_id ?? __('No ID')}}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-5 py-5 border-b border-gray-200 bg-white">
-                                        <a href="{{ route('admin.districts.edit', $item->id) }}">
+                                        <a href="{{ route('admin.districts.edit', $district->id) }}">
                                             <button><img class="h-6 w-6" src="/editpencil.png"></button>
                                         </a>
                                     </td>
