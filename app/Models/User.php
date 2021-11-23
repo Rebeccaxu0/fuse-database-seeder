@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -122,7 +123,9 @@ class User extends Authenticatable
      */
     public function is_admin()
     {
-      return $this->has_role(Role::ADMIN_ID);
+      return Cache::remember("u{$this->id}_is_admin", 3600, function () {
+        return $this->has_role(Role::ADMIN_ID);
+      });
     }
 
     /**
