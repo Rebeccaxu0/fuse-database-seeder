@@ -20,7 +20,7 @@
       </h3>
       <label class="text-xs">{{ $package->description }}</label>
       <details>
-        <summary>{{ __(':count challenges', ['count' => $package->challenges()->count()]) }}</summary>
+        <summary>{{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
         <ol>
           @foreach ($package->challenges as $challenge)
           <li><label class="text-xs text-fuse-teal">{{ $challenge->name }}</label></li>
@@ -29,9 +29,9 @@
       </details>
       <label class="text-xs">{{ __('Used by :district_count districts, :school_count schools, and :studio_count studios',
         [
-        'district_count' => $package->districts()->count(),
-        'school_count' => $package->schools()->count(),
-        'studio_count' => $package->studios()->count()
+        'district_count' => count($package->districts),
+        'school_count' => count($package->schools),
+        'studio_count' => count($package->studios),
         ]) }}</label>
       @endforeach
     </div>

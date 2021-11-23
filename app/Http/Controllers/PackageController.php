@@ -26,7 +26,7 @@ class PackageController extends Controller
      */
     public function index()
     {
-        return view('admin.package.index', ['packages' => Package::all()]);
+        return view('admin.package.index', ['packages' => Package::with(['challenges', 'districts', 'schools', 'studios'])->get()]);
     }
 
     /**
