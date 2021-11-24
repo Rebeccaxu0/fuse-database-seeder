@@ -9,14 +9,16 @@ use Illuminate\Database\Seeder;
 class RoleSeeder extends Seeder
 {
     private $defaults = [
-      'Root',
-      'FUSE Administrator',
-      'FUSE Report Viewer',
-      'FUSE Challenge Author',
-      'Super Facilitator',
-      'Facilitator',
-      'Student',
-      'Anonymous Student',
+      1 => 'Root',
+      2 => 'Administrator',
+      3 => 'Report Viewer',
+      4 => 'Challenge Author',
+      5 => 'Super Facilitator',
+      5 => 'Pre-Super Facilitator',
+      6 => 'Facilitator',
+      7 => 'Pre-facilitator',
+      8 => 'Student',
+      9 => 'Anonymous Student',
     ];
 
     /**
@@ -26,9 +28,10 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-      foreach ($this->defaults as $name) {
+      foreach ($this->defaults as $id => $name) {
         $role = Role::factory();
         $role->create([
+          'id'   => $id,
           'name' => $name,
         ]);
       }
