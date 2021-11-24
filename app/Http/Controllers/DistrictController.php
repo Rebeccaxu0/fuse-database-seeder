@@ -62,8 +62,7 @@ class DistrictController extends Controller
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'license_status' => $request->boolean('license_status')
         ]);
-        $district->save();
-        //$district->schools()->attach($request->schools);
+        // $district->schools()->saveMany($request->schools);
 
         return redirect(route('admin.districts.index'));
     }
@@ -108,8 +107,12 @@ class DistrictController extends Controller
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'license_status' => $request->boolean('license_status'),
         ]);
-        //WIP! $district->schools()->dissociate($request->schoolsremove);
-        // $district->save();
+        foreach ($district->schools as $school) {
+            if (in_array($school->id, $request->schoolsremove)) {
+              $school->district()->dissociate();
+              $school->save();
+            }
+        }
         return redirect(route('admin.districts.index'));
     }
 
