@@ -24,7 +24,11 @@ class StudioController extends Controller
      */
     public function index()
     {
-        return view('admin.studio.index', ['studios' => Studio::orderBy('name')->paginate(20)]);
+        $studios = Studio
+            ::with(['school', 'students', 'facilitators'])
+            ->orderBy('name')
+            ->paginate(20);
+        return view('admin.studio.index', ['studios' => $studios]);
     }
 
     /**

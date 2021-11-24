@@ -26,7 +26,9 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        return view('admin.district.index', ['districts' => District::with('schools')->with('package')->get()]);
+      $districts = District::with(['schools', 'package'])
+        ->get()->sortBy('name');
+      return view('admin.district.index', ['districts' => $districts]);
     }
 
     /**
@@ -36,7 +38,9 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        return view('admin.district.create', ['packages' => Package::all()]);
+      return view('admin.district.create', [
+        'packages' => Package::all()->sortBy('name'),
+      ]);
     }
 
     /**
@@ -84,7 +88,7 @@ class DistrictController extends Controller
     public function edit(District $district)
     {
         return view('admin.district.edit', [
-            'packages' => Package::all(),
+            'packages' => Package::all()->sortBy('name'),
             'district' => $district,
         ]);
     }

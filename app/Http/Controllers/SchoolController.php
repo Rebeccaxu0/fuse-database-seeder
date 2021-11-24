@@ -24,7 +24,10 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        return view('admin.school.index', ['schools' => School::orderBy('name')->paginate(20)]);
+        $schools = School::with(['district', 'studios'])
+            ->orderBy('name')
+            ->paginate(20);
+        return view('admin.school.index', ['schools' => $schools]);
     }
 
     /**
