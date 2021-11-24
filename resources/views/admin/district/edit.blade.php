@@ -16,8 +16,8 @@
                   name="salesforce_acct_id"
                   :value="old('salesforce_acct_id', $district->salesforce_acct_id)"/>
     <x-form.checkbox label="Active Studio License"
-                     name="active_studio_license"
-                     :checked="old('active_studio_license', $district->active_studio_license)"/>
+                     name="license_status"
+                     :checked="old('license_status', $district->license_status)"/>
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Schools</label>
       <p class="text-bold text-sm"> Mark for removal</p>

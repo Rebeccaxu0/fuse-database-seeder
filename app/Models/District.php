@@ -19,8 +19,9 @@ class District extends Organization
      */
     protected $fillable = [
       'name',
+      'package_id',
       'salesforce_acct_id',
-      'package_id'
+      'license_status',
     ];
 
     /**

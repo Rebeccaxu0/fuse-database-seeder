@@ -12,8 +12,8 @@
     <x-form.input label="Salesforce Account ID"
                   name="salesforce_acct_id"/>
     <x-form.checkbox label="Active Studio License"
-                     name="active_studio_license"
-                     :checked="old('status', 0)"/>
+                     name="license_status"
+                     :checked="old('license_status', 0)"/>
       <div class="flex flex-wrap mt-4 -mx-3 mb-2">
         <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
           Create District

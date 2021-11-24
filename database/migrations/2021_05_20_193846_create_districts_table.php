@@ -21,8 +21,9 @@ class CreateDistrictsTable extends Migration
             $table->string('name', 1023);
             // Current bug in MariaDB prevents inserts when unique constraint is added.
             //       ->unique();
-            $table->boolean('status')
-                  ->default(true);
+            $table->boolean('license_status')
+                  ->default(true)
+                  ->comment('Active License');
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();

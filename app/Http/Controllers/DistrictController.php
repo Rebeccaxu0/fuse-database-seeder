@@ -60,7 +60,7 @@ class DistrictController extends Controller
             'name' => $request->name,
             'package_id' => $request->get('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
-
+            'license_status' => $request->boolean('license_status')
         ]);
         $district->save();
         //$district->schools()->attach($request->schools);
@@ -104,11 +104,12 @@ class DistrictController extends Controller
     {
         $district->update([
             'name' => $request->name,
-            'package' => $request->input('package'),
+            'package_id' => $request->package,
             'salesforce_acct_id' => $request->salesforce_acct_id,
+            'license_status' => $request->boolean('license_status'),
         ]);
         //WIP! $district->schools()->dissociate($request->schoolsremove);
-        $district->save();
+        // $district->save();
         return redirect(route('admin.districts.index'));
     }
 
