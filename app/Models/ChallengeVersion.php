@@ -56,6 +56,13 @@ class ChallengeVersion extends Model
     }
 
     /**
+     * The Studios this challenge is active in.
+     */
+    public function studios() {
+      return $this->belongsToMany(Studio::class);
+    }
+
+    /**
      * Order the associated levels.
      *
      * @param array $order

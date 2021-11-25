@@ -48,11 +48,22 @@ class CreateStudiosTable extends Migration
         Schema::create('studio_user', function (Blueprint $table) {
           $table->foreignId('studio_id')
                 ->onDelete('cascade')
-                ->onUpdate('restrict')
+                ->onUpdate('cascade')
                 ->constrained();
           $table->foreignId('user_id')
                 ->onDelete('cascade')
-                ->onUpdate('restrict')
+                ->onUpdate('cascade')
+                ->constrained();
+        });
+
+        Schema::create('challenge_version_studio', function (Blueprint $table) {
+          $table->foreignId('challenge_version_id')
+                ->onDelete('cascade')
+                ->onUpdate('cascade')
+                ->constrained();
+          $table->foreignId('studio_id')
+                ->onDelete('cascade')
+                ->onUpdate('cascade')
                 ->constrained();
         });
 

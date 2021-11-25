@@ -76,4 +76,12 @@ class Studio extends Organization
     {
       return $this->belongsTo(Package::class);
     }
+
+    /**
+     * The Challenges a student is allowed to view/start.
+     * Always a subset of the challenges in the defacto package.
+     */
+    public function challengeVersions() {
+      return $this->belongsToMany(ChallengeVersion::class);
+    }
 }

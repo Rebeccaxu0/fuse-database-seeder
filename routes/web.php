@@ -29,9 +29,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | student routes
   |------------------------------------------------------------------------
   */
-  Route::get('/challenges', function () {
-    return '<h1>' . __('TODO') . '</h1>';
-  })->name('challenges');
+  Route::get('/challenges', [App\Http\Controllers\ChallengeVersionController::class, 'student_index'])->name('challenges');
   Route::get('/help_finder', function () {
     return '<h1>' . __('TODO') . '</h1>';
   })->name('help_finder');
