@@ -129,6 +129,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has super facilitator role.
+     */
+    public function is_super_facilitator()
+    {
+      return $this->has_role(Role::SUPER_FACILITATOR_ID);
+    }
+
+    /**
      * Check if user has facilitator role.
      */
     public function is_facilitator()

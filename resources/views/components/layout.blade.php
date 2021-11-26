@@ -38,6 +38,8 @@
 
     @livewire('navigation-menu')
 
+    <x-facilitator-nav/>
+
     {{ $slot }}
 
     @stack('modals')

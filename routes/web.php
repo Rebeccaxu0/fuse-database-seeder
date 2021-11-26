@@ -1,7 +1,14 @@
 <?php
 
 use App\Http\Controllers\ChallengeController;
+use App\Http\Controllers\ChallengeVersionController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\FacilitatorActivityController;
+use App\Http\Controllers\FacilitatorAnnouncementsController;
+use App\Http\Controllers\FacilitatorChallengesController;
+use App\Http\Controllers\FacilitatorCommentsController;
+use App\Http\Controllers\FacilitatorSettingsController;
+use App\Http\Controllers\FacilitatorStudioMembersController;
 use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
@@ -29,7 +36,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | student routes
   |------------------------------------------------------------------------
   */
-  Route::get('/challenges', [App\Http\Controllers\ChallengeVersionController::class, 'student_index'])->name('challenges');
+  Route::get('/challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
   Route::get('/help_finder', function () {
     return '<h1>' . __('TODO') . '</h1>';
   })->name('help_finder');
@@ -45,9 +52,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | facilitator routes
   |------------------------------------------------------------------------
   */
-  Route::get('/facilitator', function () {
-    return '<h1>' . __('TODO') . '</h1>';
-  })->name('facilitator');
+  Route::prefix('facilitator')
+    ->name('facilitator.')
+    ->group(function () {
+      Route::redirect('/', 'facilitator/people')->name('index');
+      Route::get('people', [FacilitatorStudioMembersController::class, 'index'])->name('people');
+      Route::get('activity', [FacilitatorActivityController::class, 'index'])->name('activity');
+      Route::get('challenges', [FacilitatorChallengesController::class, 'index'])->name('challenges');
+      Route::get('comments', [FacilitatorCommentsController::class, 'index'])->name('comments');
+      Route::get('settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
+      Route::get('announcements', [FacilitatorAnnouncementsController::class, 'index'])->name('announcements');
+    });
   Route::get('/support', function () {
     return '<h1>' . __('TODO') . '</h1>';
   })->name('support');

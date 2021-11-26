@@ -31,9 +31,9 @@
                         {{ __('My Stuff') }}
                     </x-nav.link>
                 </div>
-                @if (Auth::user()->is_facilitator())
+                @if (Auth::user()->is_facilitator() || Auth::user()->is_admin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav.link href="{{ route('facilitator') }}" :active="request()->routeIs('facilitator')">
+                    <x-nav.link href="{{ route('facilitator.index') }}" :active="request()->routeIs('facilitator.index')">
                         {{ __('Toolkit') }}
                     </x-nav.link>
                 </div>
@@ -145,9 +145,9 @@
                 {{ __('My Stuff') }}
             </x-nav.responsive-link>
         </div>
-        @if (Auth::user()->is_facilitator())
+        @if (Auth::user()->is_facilitator() || Auth::user()->is_admin())
         <div class="pt-2 pb-3 space-y-1">
-            <x-nav.responsive-link href="{{ route('facilitator') }}" :active="request()->routeIs('facilitator')">
+            <x-nav.responsive-link href="{{ route('facilitator.index') }}" :active="request()->routeIs('facilitator.index')">
                 {{ __('Toolkit') }}
             </x-nav.responsive-link>
         </div>
