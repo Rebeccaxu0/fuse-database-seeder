@@ -54,13 +54,14 @@ class ChallengeAndLevelSeeder extends Seeder
      *
      * @return void
      */
+
     public function run()
     {
       foreach ($this->defaults as $name) {
         Challenge::factory()
           ->has(
             ChallengeVersion::factory()
-              ->state(['name' => "{$name} v1"])
+              ->state(['name' => json_encode(["en" => "{$name} v1"])])
               ->has(
                 Level::factory()->count(3)
               )

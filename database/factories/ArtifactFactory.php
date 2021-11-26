@@ -23,7 +23,7 @@ class ArtifactFactory extends Factory
     {
         return [
           'artifactable_type' => 'level',
-          'artifactable_id' => $this->faker->randomDigit(),
+          //'artifactable_id' => $this->faker->randomDigit(),
         ];
     }
 }

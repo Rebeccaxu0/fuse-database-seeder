@@ -17,6 +17,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->string('name');
             $table->string('description')
                   ->nullable();
@@ -31,6 +32,9 @@ class CreateRolesTable extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
+            $table->unique(['user_id', 'role_id']);
+            $table->index('user_id');
+            $table->index('role_id');
         });
     }
 

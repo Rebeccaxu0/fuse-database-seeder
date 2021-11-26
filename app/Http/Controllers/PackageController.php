@@ -3,10 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use App\Models\Challenge;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(Package::class, 'package');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,11 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $packages = Package
+            ::with(['challenges', 'districts', 'schools', 'studios'])
+            ->orderBy('name')
+            ->get();
+        return view('admin.package.index', ['packages' => $packages]);
     }
 
     /**
@@ -24,7 +40,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.package.create', ['challenges' => Challenge::all()]);
     }
 
     /**
@@ -35,7 +51,20 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:packages|max:255',
+        ]);
+
+        $package = Package::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
+        ]);
+        $package->save();
+        $package->challenges()->attach($request->challenges);
+
+        return redirect(route('admin.packages.index'));
     }
 
     /**
@@ -57,7 +86,10 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('admin.package.edit', [
+            'challenges' => Challenge::all(),
+            'package' => $package,
+        ]);
     }
 
     /**
@@ -69,7 +101,14 @@ class PackageController extends Controller
      */
     public function update(Request $request, Package $package)
     {
-        //
+        $package->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
+        ]);
+        $package->challenges()->sync($request->challenges);
+
+        return redirect(route('admin.packages.index'));
     }
 
     /**
@@ -80,6 +119,8 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        //
+        $package->delete();
+        return redirect(route('admin.packages.index'));
+
     }
 }

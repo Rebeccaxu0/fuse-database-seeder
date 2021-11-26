@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LevelException extends \Exception { }
 
 class Level extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     // Level number (level order) can only be set via the parent Challenge's
     // `reorder_levels()` method.

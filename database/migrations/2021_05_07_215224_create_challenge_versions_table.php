@@ -17,6 +17,7 @@ class CreateChallengeVersionsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->foreignId('challenge_id')
                   ->constrained();
             $table->foreignId('challenge_category_id')

@@ -3,10 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Package;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class DistrictController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(District::class, 'district');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,9 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        //
+      $districts = District::with(['schools', 'package'])
+        ->get()->sortBy('name');
+      return view('admin.district.index', ['districts' => $districts]);
     }
 
     /**
@@ -24,7 +38,9 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        //
+      return view('admin.district.create', [
+        'packages' => Package::all()->sortBy('name'),
+      ]);
     }
 
     /**
@@ -35,7 +51,20 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:districts|max:255',
+        ]);
+
+        $district = District::create([
+            'name' => $request->name,
+            'package_id' => $request->get('package'),
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+            'license_status' => $request->boolean('license_status')
+        ]);
+        // $district->schools()->saveMany($request->schools);
+
+        return redirect(route('admin.districts.index'));
     }
 
     /**
@@ -57,7 +86,10 @@ class DistrictController extends Controller
      */
     public function edit(District $district)
     {
-        //
+        return view('admin.district.edit', [
+            'packages' => Package::all()->sortBy('name'),
+            'district' => $district,
+        ]);
     }
 
     /**
@@ -69,7 +101,19 @@ class DistrictController extends Controller
      */
     public function update(Request $request, District $district)
     {
-        //
+        $district->update([
+            'name' => $request->name,
+            'package_id' => $request->package,
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+            'license_status' => $request->boolean('license_status'),
+        ]);
+        foreach ($district->schools as $school) {
+            if (in_array($school->id, $request->schoolsremove)) {
+              $school->district()->dissociate();
+              $school->save();
+            }
+        }
+        return redirect(route('admin.districts.index'));
     }
 
     /**
@@ -80,6 +124,8 @@ class DistrictController extends Controller
      */
     public function destroy(District $district)
     {
-        //
+        $district->delete();
+        return redirect(route('admin.districts.index'));
+        //not really a thing
     }
 }

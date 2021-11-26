@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\ChallengeController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\LTIPlatformController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +23,49 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+  /*
+  |------------------------------------------------------------------------
+  | student routes
+  |------------------------------------------------------------------------
+  */
+  Route::get('/challenges', [App\Http\Controllers\ChallengeVersionController::class, 'student_index'])->name('challenges');
+  Route::get('/help_finder', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('help_finder');
+  Route::get('/dashboard', function () {
     return view('dashboard');
-})->name('dashboard');
+  })->name('dashboard');
+  Route::get('/mystuff', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('gallery');
+
+  /*
+  |------------------------------------------------------------------------
+  | facilitator routes
+  |------------------------------------------------------------------------
+  */
+  Route::get('/facilitator', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('facilitator');
+  Route::get('/support', function () {
+    return '<h1>' . __('TODO') . '</h1>';
+  })->name('support');
+
+  /*
+  |------------------------------------------------------------------------
+  | admin routes
+  |------------------------------------------------------------------------
+  */
+  Route::view('/admin', 'admin.index')->name('admin');
+  Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+      Route::resource('packages', PackageController::class);
+      Route::resource('districts', DistrictController::class);
+      Route::resource('schools', SchoolController::class);
+      Route::resource('studios', StudioController::class);
+      Route::resource('challenges', ChallengeController::class);
+      Route::resource('lti_platforms', LTIPlatformController::class);
+    });
+});

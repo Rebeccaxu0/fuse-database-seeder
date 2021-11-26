@@ -17,11 +17,13 @@ class CreateDistrictsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->string('name', 1023);
             // Current bug in MariaDB prevents inserts when unique constraint is added.
             //       ->unique();
-            $table->boolean('status')
-                  ->default(true);
+            $table->boolean('license_status')
+                  ->default(true)
+                  ->comment('Active License');
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();

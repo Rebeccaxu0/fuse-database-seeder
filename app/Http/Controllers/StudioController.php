@@ -8,13 +8,27 @@ use Illuminate\Http\Request;
 class StudioController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(Studio::class, 'studio');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $studios = Studio
+            ::with(['school', 'students', 'facilitators'])
+            ->orderBy('name')
+            ->paginate(20);
+        return view('admin.studio.index', ['studios' => $studios]);
     }
 
     /**

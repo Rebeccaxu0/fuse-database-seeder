@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Studio extends Organization
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * The Package associated with this studio or the parent School/District.
@@ -18,7 +20,7 @@ class Studio extends Organization
       if ($this->package()->count() > 0) {
         return $this->package();
       }
-      return $this->school()->first()->deFactoPackage();
+      return $this->school->deFactoPackage();
     }
 
     /**
@@ -27,7 +29,7 @@ class Studio extends Organization
     public function students()
     {
       return $this->users()->whereHas('roles', function(Builder $query) {
-        $query->where('name', '=', 'Student');
+        $query->where('id', '=', Role::STUDENT_ID);
       });
     }
 
@@ -36,11 +38,8 @@ class Studio extends Organization
      */
     public function facilitators()
     {
-      return User::whereHas('schools', function(Builder $query) {
-        $query->where('id', '=', $this->school()->first()->id);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Facilitator');
+      return $this->users()->whereHas('roles', function(Builder $query) {
+          $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
 
@@ -49,12 +48,9 @@ class Studio extends Organization
      */
     public function superFacilitators()
     {
-      return User::whereHas('districts', function(Builder $query) {
-        $query->where('id', '=', $this->school()->first()->district()->first()->id);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Super Facilitator');
-        });
+      return $this->users()->whereHas('roles', function(Builder $query) {
+        $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
+      });
     }
 
     /**
@@ -70,6 +66,22 @@ class Studio extends Organization
      */
     public function district()
     {
-      return $this->school()->first()->district();
+      return $this->school()->first() ? $this->school()->first()->district() : null;
+    }
+
+    /**
+     * The package associated with this district.
+     */
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * The Challenges a student is allowed to view/start.
+     * Always a subset of the challenges in the defacto package.
+     */
+    public function challengeVersions() {
+      return $this->belongsToMany(ChallengeVersion::class);
     }
 }

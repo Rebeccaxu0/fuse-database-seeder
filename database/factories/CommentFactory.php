@@ -22,7 +22,7 @@ class CommentFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->unique()->randomDigit(),
+            //'user_id' => $this->faker->unique()->randomDigit(),
             'body' => $this->faker->paragraph(),
         ];
     }

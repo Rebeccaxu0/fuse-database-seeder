@@ -22,10 +22,10 @@ class PackageFactory extends Factory
     public function definition()
     {
         return [
-          'id' => $this->faker->randomDigit(),
+          //'id' => $this->faker->randomDigit(),
           'name' => $this->faker->words(3, true),
           'student_activity_tab_access' => 0,
-          'd7_id' => 1,
+          //'d7_id' => 1,
         ];
     }
 }

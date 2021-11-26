@@ -23,7 +23,7 @@ class ArtifactSeeder extends Seeder
             ->random(rand(0, 2))
             ->push($user);
           Artifact::factory()
-            ->hasComments(3)
+            //->hasComments(3)
             ->hasAttached($team)
             ->for(
               Level::all()->random(), 'artifactable'

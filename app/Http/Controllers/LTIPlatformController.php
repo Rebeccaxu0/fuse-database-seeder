@@ -8,13 +8,23 @@ use Illuminate\Http\Request;
 class LTIPlatformController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(LTIPlatform::class, 'lti_platform');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('admin.lti_platform.index', ['lti_platform' => LTIPlatform::all()]);
     }
 
     /**

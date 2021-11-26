@@ -3,10 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChallengeVersion;
+use App\Models\Studio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChallengeVersionController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function student_index()
+    {
+        $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
+        return view('challenges', ['challenges' => $challenges]);
+    }
+
     /**
      * Display a listing of the resource.
      *

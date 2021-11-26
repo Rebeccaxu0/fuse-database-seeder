@@ -2,13 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class District extends Organization
 {
     use HasFactory;
+    use SoftDeletes;
+
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+      'name',
+      'package_id',
+      'salesforce_acct_id',
+      'license_status',
+    ];
 
     /**
      * The super facilitators associated with this district.
@@ -62,5 +76,13 @@ class District extends Organization
     public function studios()
     {
       return $this->hasManyThrough(Studio::class, School::class);
+    }
+
+    /**
+     * The package associated with this district.
+     */
+    public function package()
+    {
+      return $this->belongsTo(Package::class);
     }
 }

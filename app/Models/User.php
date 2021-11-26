@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,6 +19,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -113,5 +116,51 @@ class User extends Authenticatable
     public function studios()
     {
       return $this->belongsToMany(Studio::class);
+    }
+
+    /**
+     * Check if user has admin role.
+     */
+    public function is_admin()
+    {
+      return Cache::remember("u{$this->id}_is_admin", 3600, function () {
+        return $this->has_role(Role::ADMIN_ID);
+      });
+    }
+
+    /**
+     * Check if user has facilitator role.
+     */
+    public function is_facilitator()
+    {
+      return $this->has_role(Role::FACILITATOR_ID);
+    }
+
+    /**
+     * Check if user has student role.
+     */
+    public function is_student()
+    {
+      return $this->has_role(Role::STUDENT_ID);
+    }
+
+    /**
+     * Check if user has anonymous student role.
+     */
+    public function is_anonymous_student()
+    {
+      return $this->has_role(Role::ANONYMOUS_STUDENT_ID);
+    }
+
+    /**
+     * User has a given role.
+     *
+     * @param int $role_id
+     *
+     * @return boolean
+     */
+    public function has_role($role_id)
+    {
+      return $this->roles()->where('role_id', $role_id)->get()->count();
     }
 }

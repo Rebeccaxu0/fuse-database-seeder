@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
       \App\Models\User::factory(100)->create();
       $this->call([
+        ChallengeCategorySeeder::class,
         ChallengeAndLevelSeeder::class,
         PackageSeeder::class,
         RoleSeeder::class,

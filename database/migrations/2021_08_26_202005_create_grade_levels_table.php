@@ -17,6 +17,7 @@ class CreateGradeLevelsTable extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
+            $table->softDeletes();
             $table->string('name');
             $table->text('description')
               ->nullable();
