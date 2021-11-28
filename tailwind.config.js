@@ -13,9 +13,8 @@ module.exports = {
     darkMode: false,
     theme: {
         fontFamily: {
-            /* display: "'Montserrat','Calibri',Arial,sans-serif", */
-            'sans': ['Inter', 'Helvetica', 'Arial', 'sans-serif'],
-            'display': ['"Titillium Web"','sans-serif']
+            'display': ['Montserrat', 'Calibri', 'Arial', 'sans-serif'],
+            'sans': ['Inter', 'Helvetica', 'Arial', 'sans-serif']
         },
         extend: {
             colors: {
