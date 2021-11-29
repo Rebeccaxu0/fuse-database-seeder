@@ -26,7 +26,7 @@ class AdminNav extends Component
     {
       $view = null;
       if (Auth::user()->is_admin()) {
-        $view = view('components.admin-nav');
+        $view = view('admin.admin-nav');
       }
       return $view;
     }
