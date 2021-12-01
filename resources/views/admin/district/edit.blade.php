@@ -20,14 +20,20 @@
                      :checked="old('license_status', $district->license_status)"/>
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Schools</label>
-      <p class="text-bold text-sm"> Mark for removal</p>
+      <p class="text-bold text-xs"> Mark for removal</p>
     </div>
     @foreach($district->schools as $school)
     <x-form.checkbox_array name="schoolsremove"
                            :value="$school->id"
                            :label="$school->name" />
     @endforeach
-    <livewire:user-search-bar/>
+    <div class="mb-4">
+      <label class="text-gray-700 mb-4">Current Facilitators</label>
+      <p class="text-bold text-xs"> Search to add</p>
+    </div>
+    <div>
+      @livewire('user-search-bar', ['district' => $district])
+    </div>
     <div class="flex flex-wrap mt-4 -mx-3 mb-2">
       <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
         Update District

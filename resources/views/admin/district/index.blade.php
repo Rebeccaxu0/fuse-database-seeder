@@ -77,5 +77,4 @@
       @endforeach
     </tbody>
   </table>
-@livewireAssets 
 </x-admin-layout>
