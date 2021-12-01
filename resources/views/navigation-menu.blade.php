@@ -4,52 +4,31 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
+                <div class="flex-shrink-0 flex items-center z-10">
                     <a href="{{ route('dashboard') }}" class="-ml-4 -mb-4">
                         <img src="/logo.png" alt="logo" class="w-20">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden sm:-my-px sm:ml-10 sm:flex">
                     <x-nav.link href="{{ route('challenges') }}" :active="request()->routeIs('challenges')">
                         {{ __('Challenges') }}
                     </x-nav.link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav.link href="{{ route('help_finder') }}" :active="request()->routeIs('help_finder')">
                         {{ __('Help Finder') }}
                     </x-nav.link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav.link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav.link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav.link href="{{ route('gallery') }}" :active="request()->routeIs('gallery')">
                         {{ __('My Stuff') }}
                     </x-nav.link>
-                </div>
-                @if (Auth::user()->is_facilitator() || Auth::user()->is_admin())
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav.link href="{{ route('facilitator.index') }}" :active="request()->routeIs('facilitator.index')">
-                        {{ __('Toolkit') }}
-                    </x-nav.link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav.link href="{{ route('support') }}" :active="request()->routeIs('support')">
-                        {{ __('Support') }}
-                    </x-nav.link>
-                </div>
-                @endif
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
                   <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
                     <x-dropdown-link href="{{ route('logout') }}"
-                                         onclick="event.preventDefault();
-                                         this.closest('form').submit();">
+                                     onclick="event.preventDefault(); this.closest('form').submit();">
                       {{ __('Log Out') }}
                     </x-dropdown-link>
                   </form>

@@ -123,9 +123,7 @@ class User extends Authenticatable
      */
     public function is_admin()
     {
-      return Cache::remember("u{$this->id}_is_admin", 3600, function () {
-        return $this->has_role(Role::ADMIN_ID);
-      });
+      return $this->has_role(Role::ADMIN_ID);
     }
 
     /**
@@ -169,6 +167,8 @@ class User extends Authenticatable
      */
     public function has_role($role_id)
     {
-      return $this->roles()->where('role_id', $role_id)->get()->count();
+      return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
+        return $this->roles()->where('role_id', $role_id)->get()->count();
+      });
     }
 }

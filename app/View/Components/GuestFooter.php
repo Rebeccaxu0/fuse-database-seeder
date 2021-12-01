@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
 
 class GuestFooter extends Component
@@ -28,8 +29,14 @@ class GuestFooter extends Component
      *
      * @return void
      */
-    public function __construct($students, $schools)
+    public function __construct()
     {
+        $students = Cache::remember('student_count', 3600, function () {
+          return \App\Models\User::count();
+        });
+        $schools = Cache::remember('school_count', 3600, function () {
+          return \App\Models\School::count();
+        });
         $ordinal = \NumberFormatter::create(\App::currentLocale(), \NumberFormatter::DEFAULT_STYLE);
         $this->students = $ordinal->format($students);
         $this->schools = $ordinal->format($schools);

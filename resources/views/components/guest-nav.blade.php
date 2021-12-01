@@ -1,5 +1,5 @@
 <div>
-  <header class="bg-fuse-dk-teal p-2 h-18">
+  <header class="bg-fuse-teal-dk p-2 h-18">
     <div class="container relative p-0" style="min-height: 3rem;">
       <a href="/" class="absolute left-0"><img src="/logo.png" alt="logo" class="w-20"></a>
       <nav class="flex justify-between text-xs lg:text-sm mx-auto pl-20">
@@ -17,27 +17,13 @@
           </svg>
         </label>
         <ul id="nav-menu" class="hidden absolute items-center top-0 left-20 z-10 text-auto bg-fuse-dk-teal">
-          <li class="lg:inline-block items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/how-fuse-works/" class="w-full h-full px-2 py-4">How Fuse Works</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="/get-started/" class="w-full h-full px-2 py-4">Get Started</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/challenges/" class="w-full h-full px-2 py-4">Challenges</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/locations/" class="w-full h-full px-2 py-4">Our Network</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/research/" class="w-full h-full px-2 py-4">Research</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/about/" class="w-full h-full px-2 py-4">About</a>
-          </li>
-          <li class="items-center rounded-sm mx-1 px-2 uppercase font-semibold text-white hover:bg-fuse-teal">
-            <a class="text-white hover:no-underline" href="https://fusestudio.net/blog" class="w-full h-full px-2 py-4">Blog</a>
-          </li>
+          <x-nav.guest href="https://fusestudio.net/how-fuse-works/">{{ __('How FUSE Works') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/get-started/">{{ __('Get Started') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/challenges/">{{ __('Challenges') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/locations/">{{ __('Our Network') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/research/">{{ __('Research') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/about/">{{ __('About') }}</x-nav.guest>
+          <x-nav.guest href="https://fusestudio.net/blog/">{{ __('Blog') }}</x-nav.guest>
         </ul>
       </nav>
     </div>

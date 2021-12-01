@@ -32,7 +32,7 @@
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
   </head>
-  <body>
+  <body class="bg-fuse-background">
 
     <x-admin-nav/>
 
@@ -45,5 +45,7 @@
     @stack('modals')
 
     @livewireScripts
+
+    @stack('scripts')
   </body>
 </html>

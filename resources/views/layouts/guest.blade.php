@@ -27,9 +27,9 @@
     </head>
     <body>
       <x-guest-nav/>
-      <div class="bg-gradient-to-t from-fuse-dk-teal to-fuse-teal">
+      <div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
           {{ $slot }}
       </div>
-      <x-guest-footer students="30000" schools="250" />
+      <x-guest-footer />
     </body>
 </html>

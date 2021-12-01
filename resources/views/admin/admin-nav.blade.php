@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-black border-b text-white border-gray-100">
     <!-- Admin Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-8">
             <div class="flex">
 
                 <!-- Navigation Links -->

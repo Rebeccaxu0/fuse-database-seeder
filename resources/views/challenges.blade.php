@@ -4,8 +4,8 @@
 
   <x-slot name="header">{{ __('Challenges') }}</x-slot>
 
-  @forelse($challenges as $challenge)
-  <!-- TODO: make a challenge gallery tile component and render here -->
+  @forelse ($challenges as $challenge)
+    <x-challenge-tile :challenge="$challenge" />
   @empty
     <p>{{ __('No Challenges. Please ask your facilitator to allow challenges.') }}</p>
   @endforelse
