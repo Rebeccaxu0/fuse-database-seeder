@@ -22,6 +22,16 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use SoftDeletes;
     use Impersonate;
+    use Search;
+
+    /**
+     * The attributes that are searchable.
+     *
+     * @var array
+     */
+    protected $searchable = [
+      'name',
+    ];
 
     /**
      * The attributes that are mass assignable.
