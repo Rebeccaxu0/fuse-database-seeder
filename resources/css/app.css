@@ -4,7 +4,7 @@
 
 @layer base {
   h1, h2, h3, h4 {
-    @apply font-bold font-display leading-tight mt-16 text-fuse-dk-teal;
+    @apply font-bold font-display leading-tight mt-16 text-fuse-teal-dk;
   }
   h1 {
     @apply text-5xl mb-6;
