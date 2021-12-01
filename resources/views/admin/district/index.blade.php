@@ -11,18 +11,18 @@
     <thead>
       <tr>
         <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-          <h1> Name </h1>
+          <h3>Name </h3>
         </th>
         <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-          <h4> Package </h4>
+          <h3>Package </h3>
         </th>
         <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-          <h3> Schools </h3>
+          <h3>Schools </h3>
         </th>
         <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-          <h3> Salesforce Account ID </h3>
+          <h3>Salesforce Account ID </h3>
         </th>
-        <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
+        <th scope="col" class="ml-6 px-5 py-3 bg-white  border-b border-gray-200 text-left">
         </th>
       </tr>
     </thead>
@@ -62,7 +62,7 @@
             <div class="flex-shrink-0">
             </div>
             <div class="ml-3">
-              <p class="text-gray-900 whitespace-no-wrap">
+              <p class="text-gray whitespace-no-wrap">
               {{ $district->salesforce_acct_id ?? __('No ID')}}
               </p>
             </div>
