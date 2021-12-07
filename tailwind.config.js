@@ -31,6 +31,7 @@ module.exports = {
                 'fuse-green-100':      '#dff4d3',
                 'fuse-green-500':      '#b6dd9f',
                 'fuse-green':          '#6cb306',
+                'fuse-green-900':      '#497c00',
                 'fuse-link-violet':    '#6666ff',
                 'fuse-lt-blue':        '#81edf8',
                 'fuse-ml-grey':        '#bfc8cc',
@@ -50,6 +51,8 @@ module.exports = {
                 'fuse-teal-500':       '#60b5cc',
                 'fuse-teal-dk':        '#086384',
                 'fuse-teal-dk-100':    '#e4edef',
+                'fuse-teal-dk-200':    '#c7dce1',
+                'fuse-teal-dk-300':    '#aacad2',
                 'fuse-teal-dk-500':    '#6fa6b5',
                 'fuse-yellow':         '#f7e70b'
             },
@@ -59,10 +62,10 @@ module.exports = {
             container: {
                 padding: {
                     DEFAULT: '1rem',
-                    sm: '2rem',
-                    lg: '3rem',
-                    xl: '3rem',
-                    '2xl': '6rem'
+                    sm:      '2rem',
+                    lg:      '3rem',
+                    xl:      '3rem',
+                    '2xl':   '6rem'
                 },
                 center: true,
             }

@@ -1,6 +1,6 @@
 @props(['title' => ''])
 
-<x-layout :title="$title ? 'Admin - ' . $title : ''" >
+<x-base-layout :title="$title ? 'Admin - ' . $title : ''" >
 
   <div class="min-h-screen bg-gray-100">
     <!-- Page Heading -->
@@ -30,4 +30,4 @@
     </main>
   </div>
 
-</x-layout>
+</x-base-layout>

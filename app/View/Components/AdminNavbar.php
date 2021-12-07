@@ -2,24 +2,18 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class NavLink extends Component
+class AdminNavbar extends Component
 {
-    /**
-     * Is menu item active.
-     * @var bool
-     */
-    public $active;
-
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($active)
+    public function __construct()
     {
-      $this->active = $active;
     }
 
     /**
@@ -29,6 +23,10 @@ class NavLink extends Component
      */
     public function render()
     {
-        return view('components.nav-link');
+      $view = null;
+      if (Auth::user()->is_admin()) {
+        $view = view('admin.navbar');
+      }
+      return $view;
     }
 }

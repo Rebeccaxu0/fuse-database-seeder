@@ -14,7 +14,9 @@ class ChallengeController extends Controller
      */
     public function index()
     {
-        //
+      $challenges = Challenge::all()->sortBy('name');
+      return view('admin.challenge.index', ['challenges' => $challenges]);
+      //
     }
 
     /**

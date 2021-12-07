@@ -36,16 +36,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | student routes
   |------------------------------------------------------------------------
   */
-  Route::get('/challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
-  Route::get('/help_finder', function () {
-    return '<h1>' . __('TODO') . '</h1>';
-  })->name('help_finder');
-  Route::get('/dashboard', function () {
-    return view('dashboard');
-  })->name('dashboard');
-  Route::get('/mystuff', function () {
-    return '<h1>' . __('TODO') . '</h1>';
-  })->name('gallery');
+  Route::name('student.')
+    ->group(function () {
+      Route::get('/challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
+      Route::get('/help_finder', function () {
+        return '<h1>' . __('TODO') . '</h1>';
+      })->name('help_finder');
+      Route::get('/dashboard', function () {
+        return view('dashboard');
+      })->name('dashboard');
+      Route::get('/mystuff', function () {
+        return '<h1>' . __('TODO') . '</h1>';
+      })->name('portfolio');
+    });
 
   /*
   |------------------------------------------------------------------------

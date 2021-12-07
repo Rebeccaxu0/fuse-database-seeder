@@ -32,6 +32,20 @@
     @apply prose ml-8 mt-3 leading-snug list-disc;
   }
 
+  button {
+    @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
+  }
+  button:focus {
+    @apply outline-none ring;
+  }
+  button:hover {
+    @apply bg-green-700;
+  }
+  button:active, button:visited {
+    @apply bg-green-900;
+  }
+
+
   table {
     @apply table-auto;
   }
@@ -69,33 +83,17 @@
 }
 
 @layer components {
-  h1.alt, h1.fuse {
+  .desaturate {
     @apply font-normal text-gray-600;
   }
-  h2.left {
+  .left {
     @apply text-3xl mt-3 text-left text-gray-500;
   }
-  h2.lt, h2.fuse {
+  .lt {
+    @apply font-semibold;
+  }
+  .xlt {
     @apply font-light text-gray-700;
-  }
-  h3.lt, h3.fuse {
-  @apply font-semibold;
-}
-  h4.cg {
-    @apply mt-2 mb-0;
-  }
-
-  .btn {
-    @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
-  }
-  .btn:focus {
-    @apply outline-none ring;
-  }
-  .btn:hover {
-    @apply bg-green-700;
-  }
-  .btn:active, .btn:visited {
-    @apply bg-green-900;
   }
 
   .carousel-cell {
@@ -104,6 +102,89 @@
 
   .challenge-tile {
     @apply bg-white shadow-xl rounded-xl p-2;
+  }
+
+  nav {
+    @apply md:h-8 border-b border-fuse-teal-dk-500 bg-fuse-teal-dk relative;
+    min-height: 2rem;
+  }
+  nav li {
+    @apply flex-1 md:p-0 m-0 list-none md:h-full max-w-none border-fuse-teal-dk-500;
+    @apply border-t last:border-b md:border-b-0 md:border-t-0 md:border-r first:md:border-l last:md:border-b-0;
+  }
+  nav li a {
+    @apply h-full py-2;
+  }
+  nav li:first-child {
+    @apply border-t-0;
+  }
+  nav li a.active {
+    @apply text-gray-900 font-bold bg-fuse-teal-dk-200;
+  }
+  nav li a:hover {
+    @apply bg-fuse-teal-dk-500;
+  }
+
+  nav#student {
+    @apply md:h-12;
+    min-height: 4rem;
+  }
+  nav#student.docked {
+    min-height: 2rem;
+  }
+  nav#student li a {
+    @apply text-xl md:text-sm lg:text-base;
+  }
+  nav#student .burger-wrapper {
+    @apply h-16;
+  }
+
+  nav#admin {
+    @apply bg-gray-900 border-gray-500;
+  }
+  nav#admin li {
+    @apply border-gray-500;
+  }
+  nav#admin li a.active {
+    @apply bg-gray-300;
+  }
+  nav#admin li a:hover {
+    @apply bg-gray-600;
+  }
+
+  nav#facilitator {
+    @apply bg-fuse-green-900 border-fuse-green-500;
+  }
+  nav#facilitator li {
+    @apply border-fuse-green-500;
+  }
+  nav#facilitator li a.active {
+    @apply bg-fuse-green-100;
+  }
+  nav#facilitator li a:hover {
+    @apply bg-fuse-green;
+  }
+
+  nav li a {
+    @apply flex justify-center items-center;
+    @apply no-underline h-full w-full uppercase text-lg;
+    @apply font-medium text-gray-300 whitespace-nowrap transition;
+  }
+  nav li a:hover {
+    @apply text-gray-100 border-gray-300;
+  }
+  nav li a:focus {
+    @apply outline-none text-gray-700 border-gray-300;
+  }
+  @screen md {
+    nav li a {
+      @apply text-xs;
+    }
+  }
+  @screen lg {
+    nav li a {
+      @apply text-sm;
+    }
   }
 
   @screen sm {

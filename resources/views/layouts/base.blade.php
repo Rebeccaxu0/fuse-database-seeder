@@ -34,11 +34,13 @@
   </head>
   <body class="bg-fuse-background">
 
-    <x-admin-nav/>
+    <div class="z-10 md:sticky md:top-0">
+      <x-admin-navbar />
 
-    @livewire('navigation-menu')
+      <x-student-navbar />
 
-    <x-facilitator-nav/>
+      <x-facilitator-navbar />
+    </div>
 
     {{ $slot }}
 

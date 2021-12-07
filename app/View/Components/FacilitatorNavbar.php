@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class AdminNav extends Component
+class FacilitatorNavbar extends Component
 {
     /**
      * Create a new component instance.
@@ -14,7 +14,9 @@ class AdminNav extends Component
      */
     public function __construct()
     {
-        //
+
+        // parent::__construct('facilitator', $links, 'fuse-green', '#136b23');
+
     }
 
     /**
@@ -25,8 +27,10 @@ class AdminNav extends Component
     public function render()
     {
       $view = null;
-      if (Auth::user()->is_admin()) {
-        $view = view('admin.admin-nav');
+      if (Auth::user()->is_facilitator()
+       || Auth::user()->is_super_facilitator()
+       || Auth::user()->is_admin()) {
+        $view = view('facilitator.navbar');
       }
       return $view;
     }
