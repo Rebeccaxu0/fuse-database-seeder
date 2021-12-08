@@ -27,10 +27,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->intended('dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function() {
+  Route::impersonate();
+
   /*
   |------------------------------------------------------------------------
   | student routes

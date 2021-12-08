@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Listeners\SaveImpersonatorPassword;
+use App\Listeners\RestoreImpersonatorPassword;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Lab404\Impersonate\Events\TakeImpersonation;
+use Lab404\Impersonate\Events\LeaveImpersonation;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        TakeImpersonation::class => [
+            SaveImpersonatorPassword::class,
+        ],
+        LeaveImpersonation::class => [
+            RestoreImpersonatorPassword::class,
+        ]
     ];
 
     /**
@@ -27,6 +37,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      //
     }
 }

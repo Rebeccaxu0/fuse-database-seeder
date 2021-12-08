@@ -166,6 +166,7 @@ return [
          * Package Service Providers...
          */
 
+        Lab404\Impersonate\ImpersonateServiceProvider::class,
         Selfsimilar\D7Password\D7PasswordProvider::class,
 
         /*

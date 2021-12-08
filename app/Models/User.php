@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Lab404\Impersonate\Models\Impersonate;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,6 +21,7 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use SoftDeletes;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.
@@ -170,5 +172,19 @@ class User extends Authenticatable
       return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
         return $this->roles()->where('role_id', $role_id)->get()->count();
       });
+    }
+    /**
+     * @return bool
+     */
+    function canImpersonate()
+    {
+      return $this->is_admin();
+    }
+    /**
+     * @return bool
+     */
+    function canBeImpersonated()
+    {
+      return !$this->is_admin();
     }
 }
