@@ -35,7 +35,7 @@ class UserSearchBar extends Component
                                                         $q->where('name', 'Super Facilitator'); //super facilitator for district?
                                                     })
                                                     #->where(->districts()->id, '!=', $this->district->id)
-            ->getAll();
+            ->get();
     }
  
     public function render()
