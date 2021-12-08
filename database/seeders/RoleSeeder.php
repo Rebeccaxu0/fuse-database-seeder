@@ -14,11 +14,11 @@ class RoleSeeder extends Seeder
       3 => 'Report Viewer',
       4 => 'Challenge Author',
       5 => 'Super Facilitator',
-      5 => 'Pre-Super Facilitator',
-      6 => 'Facilitator',
-      7 => 'Pre-facilitator',
-      8 => 'Student',
-      9 => 'Anonymous Student',
+      6 => 'Pre-Super Facilitator',
+      7 => 'Facilitator',
+      8 => 'Pre-facilitator',
+      9 => 'Student',
+      10 => 'Anonymous Student',
     ];
 
     /**

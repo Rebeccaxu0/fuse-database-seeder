@@ -28,8 +28,13 @@
                            :label="$school->name" />
     @endforeach
     <div class="mb-4">
-      <label class="text-gray-700 mb-4">Current Facilitators</label>
-      <p class="text-bold text-xs"> Search to add</p>
+      <label class="text-gray-700 mb-4">Current Super Facilitators</label>
+      <p class="text-bold text-xs"> Mark for removal</p>
+    @foreach($district->superFacilitators as $user)
+    <x-form.checkbox_array name="facilitatorsremove"
+                           :value="$user->id"
+                           :label="$user->name" />
+    @endforeach
     </div>
     <div>
       @livewire('user-search-bar', ['district' => $district])

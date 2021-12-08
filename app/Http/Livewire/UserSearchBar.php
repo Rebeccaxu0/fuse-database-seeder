@@ -8,23 +8,22 @@ use Livewire\Component;
 class UserSearchBar extends Component
 {
     public $district;
-
     public $query;
     public $users;
-    public $selected;
+    public $selectedusers =[];
 
 
     public function mount($district) {
         $this->district= $district;
     }
 
-    public function selectUser()
+    public function addUsers()
     {
-        $user = $this->users[$this->selected] ?? null;
-        $district = $this->district;
-        if ($user) {
-            $user->$district->associate();
-            $user->save();
+        foreach ($selectedusers as $user) {
+            if (in_array($user->id)) {
+              #$user->district()->dissociate(); can sf be in more
+              $this->district->$user->associate();
+            }
         }
         $this->reset();
     }
@@ -33,14 +32,15 @@ class UserSearchBar extends Component
     {
         $this->users = \App\Models\User::where('name', 'like', '%' . $this->query . '%')
                                         ->whereHas('roles', function($q){
-                                                        $q->where('name', 'Facilitator'); //super facilitator for district?
+                                                        $q->where('name', 'Super Facilitator'); //super facilitator for district?
                                                     })
-            ->get()
-            ->toArray();
+                                                    #->where(->districts()->id, '!=', $this->district->id)
+            ->getAll();
     }
  
     public function render()
     {
+        sleep(1);
         return view('livewire.user-search-bar');
     }
 }

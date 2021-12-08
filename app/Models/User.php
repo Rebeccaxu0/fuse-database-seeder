@@ -23,6 +23,7 @@ class User extends Authenticatable
     use SoftDeletes;
     use Impersonate;
     use Search;
+    use Impersonate;
 
     /**
      * The attributes that are searchable.
