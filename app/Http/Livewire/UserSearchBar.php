@@ -10,22 +10,22 @@ class UserSearchBar extends Component
     public $district;
     public $query;
     public $users;
-    public $selectedusers =[];
+    public $selectedusers = [];
 
 
-    public function mount($district) {
+    public function mount($district, $selectedusers) {
         $this->district= $district;
+        $this->selectedusers = $selectedusers;
     }
 
     public function addUsers()
     {
-        foreach ($selectedusers as $user) {
+        foreach ($this->selectedusers as $user) {
             if (in_array($user->id)) {
               #$user->district()->dissociate(); can sf be in more
-              $this->district->$user->associate();
+              $district->$user->attach();
             }
         }
-        $this->reset();
     }
  
     public function updatedQuery()

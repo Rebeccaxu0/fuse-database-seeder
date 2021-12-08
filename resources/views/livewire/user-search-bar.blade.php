@@ -30,6 +30,6 @@
         </div>
     @endif
     <div class="relative">
-        <button class="text-xs" wire:click.self="addUsers"> Add facilitators</button>
+        <button  type="button" class="text-xs" wire:click="addUsers"> Add facilitators</button>
     </div>
 </div>

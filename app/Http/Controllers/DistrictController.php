@@ -118,7 +118,7 @@ class DistrictController extends Controller
         if ($request->facilitatorsremove){
           foreach ($district->superFacilitators as $user) {
             if (in_array($user->id, $request->facilitatorsremove)) {
-              $user->district()->dissociate();
+              $user->districts()->detach();
               if(!$user->districts()){
                 $user->save();
               }
