@@ -37,7 +37,7 @@ class RoleSeeder extends Seeder
       }
       //$student_role = Role::where('name', 'Student')->first();
       //$student_role->users()->attach(User::all());
-      $admin_role = Role::where('name', 'FUSE Administrator')->first();
-      $admin_role->users()->attach(User::all());
+      // $admin_role = Role::where('name', 'FUSE Administrator')->first();
+      // $admin_role->users()->attach(User::all());
     }
 }
