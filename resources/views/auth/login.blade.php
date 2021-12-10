@@ -19,7 +19,7 @@
               @csrf
               <x-jet-label for="name" value="{{ __('Username') }}" class="text-base" />
               <x-jet-input id="name" type="text" name="name" :value="old('name')"
-                           class="border-none" required autofocus />
+                           class="border-none" required autofocus autocomplete="username" />
               <x-jet-label for="password" value="{{ __('Password') }}" class="text-base mt-1" />
               <x-jet-input id="password" type="password" name="password"
                            class="border-none" required autocomplete="current-password" />
