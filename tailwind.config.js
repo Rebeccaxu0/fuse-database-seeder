@@ -1,16 +1,13 @@
-//const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
     mode: 'jit',
-    purge: [
+    content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/**/*.blade.php',
         './resources/**/*.js',
-        './config/*.php',
+        './config/*.php'
     ],
-
-    darkMode: false,
     theme: {
         fontFamily: {
             'display': ['Montserrat', 'Calibri', 'Arial', 'sans-serif'],
@@ -67,7 +64,7 @@ module.exports = {
                     xl:      '3rem',
                     '2xl':   '6rem'
                 },
-                center: true,
+                center: true
             }
         }
     },
@@ -75,7 +72,7 @@ module.exports = {
     plugins: [
         require('tailwindcss'),
         require('autoprefixer'),
-        require('@tailwindcss/typography'),
         require('@tailwindcss/forms'),
+        require('@tailwindcss/typography')
     ]
 }
