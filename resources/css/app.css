@@ -32,16 +32,17 @@
     @apply ml-8 mt-3 leading-snug list-disc;
   }
 
-  button {
+  button, [type='button'], [type='reset'], [type='submit'] {
     @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
-  button:focus {
+  button:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
     @apply outline-none ring;
   }
-  button:hover {
+  button:hover, [type='button']:hover, [type='reset']:hover, [type='submit']:hover {
     @apply bg-green-700;
   }
-  button:active, button:visited {
+  button:active, [type='button']:active, [type='reset']:active, [type='submit']:active,
+  button:visited, [type='button']:visited, [type='reset']:visited, [type='submit']:visited {
     @apply bg-green-900;
   }
 
