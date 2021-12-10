@@ -21,7 +21,7 @@
   }
 
   p {
-    @apply prose font-sans text-gray-700 leading-normal max-w-prose my-4 text-lg;
+    @apply font-sans text-gray-700 leading-normal max-w-prose my-4 text-lg;
   }
 
   a {
@@ -29,7 +29,7 @@
   }
 
   li {
-    @apply prose ml-8 mt-3 leading-snug list-disc;
+    @apply ml-8 mt-3 leading-snug list-disc;
   }
 
   button {
