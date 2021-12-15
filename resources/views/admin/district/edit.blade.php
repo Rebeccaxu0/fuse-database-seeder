@@ -23,7 +23,7 @@
       <p class="text-bold text-xs"> Mark for removal</p>
     </div>
     @foreach($district->schools as $school)
-    <x-form.checkbox_array name="schoolsremove"
+    <x-form.checkbox_array name="schoolsToRemove"
                            :value="$school->id"
                            :label="$school->name" />
     @endforeach
@@ -31,13 +31,13 @@
       <label class="text-gray-700 mb-4">Current Super Facilitators</label>
       <p class="text-bold text-xs"> Mark for removal</p>
     @foreach($district->superFacilitators as $user)
-    <x-form.checkbox_array name="facilitatorsremove"
+    <x-form.checkbox_array name="facilitatorsToRemove"
                            :value="$user->id"
                            :label="$user->name" />
     @endforeach
     </div>
     <div>
-      @livewire('user-search-bar', ['district' => $district])
+      @livewire('add-super-facilitator')
     </div>
     <div class="flex flex-wrap mt-4 -mx-3 mb-2">
       <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
