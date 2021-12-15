@@ -1,6 +1,15 @@
+@push('scripts')
+<script type="text/javascript">
+  window.onscroll = function() {
+    document.getElementById('student-navbar').classList.
+    toggle('docked', document.documentElement.scrollTop > 50);
+  };
+</script>
+@endpush
+
 <x-navbar id="student">
   <!-- Logo -->
-  <div class="absolute t-0 l-0 z-10 -mt-1 md:-ml-4">
+  <div class="absolute t-0 l-0 z-10 mt-3">
     <a href="{{ route('student.dashboard') }}">
       <img src="/logo.png" alt="logo" class="w-20">
     </a>
@@ -31,7 +40,7 @@
       </form>
     </li>
   </x-navbar-ul>
-  <div class="h-16 flex flex-col justify-center absolute top-0 right-0 mr-16 md:mr-4">
-    <div class="border-white border-2 rounded-full h-10 w-10 bg-yellow-500"></div>
+  <div id="profile-env" class="h-16 flex flex-col justify-center absolute top-0 right-0 mr-16 md:mr-4">
+    <div id="profile-pic" class="border-white border-2 rounded-full h-10 w-10 bg-yellow-500"></div>
   </div>
 </x-navbar>

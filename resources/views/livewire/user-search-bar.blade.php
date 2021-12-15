@@ -26,6 +26,6 @@
         </div>
     @endif
     @foreach ($selectedusers as $id => $user)
-    <div><input type="hidden" name="sf-add[]" value="{{ $id }}">{{$user['full_name']}} ({{ $user['name'] }}) <span wire:click="removeUser({{ $id }})">remove</span></div>
+    <div><input type="hidden" name="addSuperFacilitator[]" value="{{ $id }}">{{$user['full_name']}} ({{ $user['name'] }}) <span wire:click="removeUser({{ $id }})">remove</span></div>
     @endforeach
 </div>

@@ -106,7 +106,7 @@
   }
 
   nav {
-    @apply md:h-8 border-b border-fuse-teal-dk-500 bg-fuse-teal-dk relative;
+    @apply md:h-8 bg-fuse-teal-dk relative;
     min-height: 2rem;
   }
   nav li {
@@ -120,50 +120,76 @@
     @apply border-t-0;
   }
   nav li a.active {
-    @apply text-gray-900 font-bold bg-fuse-teal-dk-200;
+    @apply font-bold bg-fuse-teal-dk-700;
   }
   nav li a:hover {
-    @apply bg-fuse-teal-dk-500;
+    @apply bg-fuse-teal-dk-700;
   }
 
-  nav#student {
-    @apply md:h-12;
+  nav#student-navbar {
+    @apply transition-all duration-300 md:h-12;
     min-height: 4rem;
   }
-  nav#student.docked {
+  nav#student-navbar.docked {
     min-height: 2rem;
+    max-height: 2rem;
   }
-  nav#student li a {
+  nav#student-navbar.docked:hover {
+    min-height: 4rem;
+    max-height: 4rem;
+  }
+  nav#student-navbar.docked #profile-env {
+    @apply transition-all duration-300 h-8;
+  }
+  nav#student-navbar.docked #profile-pic {
+    @apply transition-all duration-300 h-7 w-7;
+  }
+  nav#student-navbar.docked:hover #profile-env {
+    @apply h-16;
+  }
+  nav#student-navbar.docked:hover #profile-pic {
+    @apply h-10 w-10;
+  }
+  nav#student-navbar li a {
     @apply text-xl md:text-sm lg:text-base;
   }
-  nav#student .burger-wrapper {
+  nav#student-navbar .burger-wrapper {
     @apply h-16;
   }
 
-  nav#admin {
-    @apply bg-gray-900 border-gray-500;
+  nav#admin-navbar {
+    @apply bg-slate-800 border-slate-500;
   }
-  nav#admin li {
-    @apply border-gray-500;
+  nav#admin-navbar ul {
+    @apply md:ml-16;
   }
-  nav#admin li a.active {
-    @apply bg-gray-300;
+  nav#admin-navbar li {
+    @apply border-slate-500;
   }
-  nav#admin li a:hover {
-    @apply bg-gray-600;
+  nav#admin-navbar li a.active {
+    @apply bg-slate-900;
+  }
+  nav#admin-navbar li a:hover {
+    @apply bg-slate-900;
   }
 
-  nav#facilitator {
-    @apply bg-fuse-green-900 border-fuse-green-500;
+  nav#facilitator-navbar {
+    @apply bg-stone-100 border-stone-600;
   }
-  nav#facilitator li {
-    @apply border-fuse-green-500;
+  nav#facilitator-navbar ul {
+    @apply md:ml-16;
   }
-  nav#facilitator li a.active {
-    @apply bg-fuse-green-100;
+  nav#facilitator-navbar li {
+    @apply border-stone-500;
   }
-  nav#facilitator li a:hover {
-    @apply bg-fuse-green;
+  nav#facilitator-navbar li a {
+    @apply text-stone-500;
+  }
+  nav#facilitator-navbar li a.active {
+    @apply text-stone-900 bg-stone-300;
+  }
+  nav#facilitator-navbar li a:hover {
+    @apply text-stone-900 bg-stone-300;
   }
 
   nav li a {

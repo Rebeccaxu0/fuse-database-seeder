@@ -51,6 +51,7 @@ module.exports = {
                 'fuse-teal-dk-200':    '#c7dce1',
                 'fuse-teal-dk-300':    '#aacad2',
                 'fuse-teal-dk-500':    '#6fa6b5',
+                'fuse-teal-dk-700':    '#0a485f',
                 'fuse-yellow':         '#f7e70b'
             },
             spacing: {
