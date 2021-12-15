@@ -15,9 +15,6 @@
     <x-form.input label="Salesforce Account ID"
                   name="salesforce_acct_id"
                   :value="old('salesforce_acct_id', $district->salesforce_acct_id)"/>
-    <x-form.checkbox label="Active Studio License"
-                     name="license_status"
-                     :checked="old('license_status', $district->license_status)"/>
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Schools</label>
       <p class="text-bold text-xs"> Mark for removal</p>
@@ -38,6 +35,34 @@
     </div>
     <div>
       @livewire('add-super-facilitator')
+    </div>
+    <div class="mb-4">
+      <label class="text-gray-700 mb-4">Current Schools</label>
+      <p class="text-bold text-xs"> Mark for removal</p>
+    @foreach($district->schools as $school)
+    <x-form.checkbox_array name="schoolsToRemove"
+                           :value="$school->id"
+                           :label="$school->name" />
+    @endforeach
+    </div>
+    <div>
+      @livewire('add-school')
+    </div>
+    <div x-data="{active: true}">
+      <input type="checkbox" name="license_status" x-model="active">
+        <label>
+          <span class="mx-2 text-gray-700"> Active Studio License </span><br>
+          <span class="mx-2 text-xs text-gray-700"> Unchecking this will deactivate all schools in the district and move all associated students/facilitators into the Alumni Studio. </span>
+        </label><br>
+      <input type="checkbox" name="anonymize" :disabled="active">
+        <label>
+          <span class="mx-2 text-gray-700"> Anonymize studio members </span><br>
+          <span class="mx-2 text-xs text-gray-700"> WARNING: This is a destructive operation and cannot be undone. </span>
+        </label>
+    </div>
+    <div x-data="{active: true}">
+      <input type="checkbox" x-model="active">
+      <input type="checkbox" x-bind:disabled="active">
     </div>
     <div class="flex flex-wrap mt-4 -mx-3 mb-2">
       <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
