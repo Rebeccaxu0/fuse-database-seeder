@@ -85,4 +85,59 @@ class District extends Organization
     {
       return $this->belongsTo(Package::class);
     }
+
+    /*
+     * Remove schools from a District.
+     *
+     * @param int[] $schools_to_remove
+     *  List of school ids.
+     */
+    public function removeSchools(array $schools_to_remove)
+    {
+      foreach ($this->schools as $school) {
+        if (in_array($school->id, $schools_to_remove)) {
+          $school->district()->dissociate();
+          $school->save();
+        }
+      }
+    }
+
+    /*
+     * Add superfacilitators to a District.
+     *
+     * @param int[] $super_facilitator_ids
+     *  List of super facilitator ids.
+     */
+    public function addSuperFacilitators(array $super_facilitator_ids)
+    {
+      foreach ($super_facilitator_ids as $sf_id) {
+        $user = User::find($sf_id);
+        // If user is not a member of the District, add them.
+        // Remove the user from all schools and studios that are
+        // descendants of the current district.
+        // TODO: emit event to say a user associations have changed.
+        // event listener: “Oh now you’re a member of a district, but you’re not a super facilitator?
+        // Then I guess you are now."
+        // Update cache of User::is_super_facilitator();
+        }
+    }
+
+    /*
+     * Remove superfacilitators from a District.
+     *
+     * @param int[] $super_facilitators
+     *  List of super facilitator ids.
+     */
+    public function removeSuperFacilitators(array $super_facilitator_ids)
+    {
+      foreach ($this->superFacilitators as $sf) {
+        if (in_array($sf->id, $super_facilitator_ids)) {
+          $sf->district()->dissociate();
+          $sf->save();
+          // TODO: emit event to say a user associations have changed.
+          // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
+          // Then I guess you’re not a super facilitator anymore”
+        }
+      }
+    }
 }
