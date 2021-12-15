@@ -7,25 +7,12 @@ use Livewire\Component;
 
 class UserSearchBar extends Component
 {
-    public $district;
     public $query;
-    public $selectedusers = [];
 
-
-    public function mount($district) {
-        $this->district = $district;
-    }
-
-    public function addUser($id)
+    public function selectUser($id)
     {
-      $user = User::find($id);
-      $this->selectedusers[$id] = ['name' => $user->name, 'full_name' => $user->full_name];
+      $this->emitUp('userSelected', $id);
       $this->query = '';
-    }
-
-    public function removeUser($id)
-    {
-      unset($this->selectedusers[$id]);
     }
 
     public function updatedQuery()
