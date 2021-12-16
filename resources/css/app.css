@@ -156,6 +156,9 @@
   nav#student-navbar .burger-wrapper {
     @apply h-16;
   }
+  nav#student-navbar.docked .burger-wrapper {
+    @apply h-8;
+  }
 
   nav#admin-navbar {
     @apply bg-slate-800 border-slate-500;

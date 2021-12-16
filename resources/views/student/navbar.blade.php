@@ -14,21 +14,21 @@
       <img src="/logo.png" alt="logo" class="w-20">
     </a>
   </div>
-  <x-navbar-ul id="student-menu" class="md:pl-16 md:pr-20">
-    <li class="md:-ml-3" style="border-left-width:0">
-      <a {{ (request()->routeIs('student.challenges') ? 'class=active' : '') }}
+  <x-navbar-ul id="student-menu" class="md:pl-3 md:pr-20 md:ml-16">
+    <li class="md:-ml-3">
+      <a class="px-2 {{ (request()->routeIs('student.challenges') ? 'active' : '') }}"
         href="{{ route('student.challenges')}}">{{ __('Challenges') }}</a>
     </li>
     <li>
-      <a {{ (request()->routeIs('student.help_finder') ? 'class=active' : '') }}
+      <a class="px-2 {{ (request()->routeIs('student.help_finder') ? 'active' : '') }}"
         href="{{ route('student.help_finder')}}">{{ __('Help Finder') }}</a>
     </li>
     <li>
-      <a {{ (request()->routeIs('student.dashboard') ? 'class=active' : '') }}
+      <a class="px-2 {{ (request()->routeIs('student.dashboard') ? 'active' : '') }}"
         href="{{ route('student.dashboard')}}">{{ __('Dashboard') }}</a>
     </li>
     <li>
-      <a {{ (request()->routeIs('student.portfolio') ? 'class=active' : '') }}
+      <a class="px-2 {{ (request()->routeIs('student.portfolio') ? 'active' : '') }}"
         href="{{ route('student.portfolio')}}">{{ __('My Stuff') }}</a>
     </li>
     <li>
