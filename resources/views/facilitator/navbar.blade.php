@@ -1,4 +1,4 @@
-<x-navbar id="facilitator">
+<x-navbar id="facilitator" hamburger-color="text-black">
   <x-navbar-ul id="facilitator-menu">
     <li>
       <a {{ (request()->routeIs('facilitator.activity') ? 'class=active' : '') }}

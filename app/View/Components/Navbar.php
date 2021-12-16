@@ -14,13 +14,23 @@ class Navbar extends Component
     public $id;
 
     /**
+     * Hamburger color.
+     *
+     * @var string
+     */
+    public $hamburgerColor;
+
+    /**
      * Create a new component instance.
      *
+     * @param string $id
+     * @param string $hamburgerColor
      * @return void
      */
-    public function __construct($id)
+    public function __construct($id, $hamburgerColor = 'text-white')
     {
         $this->id = $id;
+        $this->hamburgerColor = $hamburgerColor;
     }
 
     /**
