@@ -50,19 +50,11 @@
     </div>
     <div x-data="{active: true}">
       <input type="checkbox" name="license_status" x-model="active">
-        <label>
           <span class="mx-2 text-gray-700"> Active Studio License </span><br>
-          <span class="mx-2 text-xs text-gray-700"> Unchecking this will deactivate all schools in the district and move all associated students/facilitators into the Alumni Studio. </span>
-        </label><br>
-      <input type="checkbox" name="anonymize" :disabled="active">
-        <label>
-          <span class="mx-2 text-gray-700"> Anonymize studio members </span><br>
-          <span class="mx-2 text-xs text-gray-700"> WARNING: This is a destructive operation and cannot be undone. </span>
-        </label>
-    </div>
-    <div x-data="{active: true}">
-      <input type="checkbox" x-model="active">
-      <input type="checkbox" x-bind:disabled="active">
+          <span class="mx-2 text-xs text-gray-700"> Unchecking this will deactivate all schools in the district and move all associated students/facilitators into the Alumni Studio. </span><br>
+      <input type="checkbox" id="anonymize" name="anonymize" :disabled="active" :checked="!active">
+          <span class="mx-2 text-gray-700" :class="{ 'text-gray-400': active}"> Anonymize studio members </span><br>
+          <span class="mx-2 text-xs text-gray-700 " :class="{ 'text-gray-400': active}"> WARNING: This is a destructive operation and cannot be undone. </span><br>
     </div>
     <div class="flex flex-wrap mt-4 -mx-3 mb-2">
       <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
