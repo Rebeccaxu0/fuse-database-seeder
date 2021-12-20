@@ -16,15 +16,6 @@
                   name="salesforce_acct_id"
                   :value="old('salesforce_acct_id', $district->salesforce_acct_id)"/>
     <div class="mb-4">
-      <label class="text-gray-700 mb-4">Current Schools</label>
-      <p class="text-bold text-xs"> Mark for removal</p>
-    </div>
-    @foreach($district->schools as $school)
-    <x-form.checkbox_array name="schoolsToRemove"
-                           :value="$school->id"
-                           :label="$school->name" />
-    @endforeach
-    <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Super Facilitators</label>
       <p class="text-bold text-xs"> Mark for removal</p>
     @foreach($district->superFacilitators as $user)
@@ -48,11 +39,16 @@
     <div>
       @livewire('add-school')
     </div>
+    
+    <script>
+      function checkBoxes(){
+      if($('#license_status').is(":checked")) $('#anonymize').prop("disabled", true).prop("checked", false);}
+    </script>
     <div x-data="{active: true}">
-      <input type="checkbox" name="license_status" x-model="active">
+      <input type="checkbox" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
           <span class="mx-2 text-gray-700"> Active Studio License </span><br>
           <span class="mx-2 text-xs text-gray-700"> Unchecking this will deactivate all schools in the district and move all associated students/facilitators into the Alumni Studio. </span><br>
-      <input type="checkbox" id="anonymize" name="anonymize" :disabled="active" :checked="!active">
+      <input type="checkbox" id="anonymize" name="anonymize" :disabled="active">
           <span class="mx-2 text-gray-700" :class="{ 'text-gray-400': active}"> Anonymize studio members </span><br>
           <span class="mx-2 text-xs text-gray-700 " :class="{ 'text-gray-400': active}"> WARNING: This is a destructive operation and cannot be undone. </span><br>
     </div>
@@ -67,5 +63,6 @@
     @csrf
     <button class="btn btn-danger">Delete</button>
     </form> -->
+
 
 </x-admin-layout>
