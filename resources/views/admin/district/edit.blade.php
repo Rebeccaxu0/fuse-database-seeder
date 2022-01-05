@@ -19,7 +19,7 @@
       <label class="text-gray-700 mb-4">Current Super Facilitators</label>
       <p class="text-xs"> Mark for removal</p>
     @foreach($district->superFacilitators as $user)
-    <x-form.checkbox_array name="facilitatorsToRemove"
+    <x-form.checkbox_array name="superFacilitatorsToRemove"
                            :value="$user->id"
                            :label="$user->name" />
     @endforeach

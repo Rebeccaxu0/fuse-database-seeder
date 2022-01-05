@@ -113,18 +113,18 @@ class DistrictController extends Controller
         }
 
         if (!empty($request->schoolsToAdd)) {
-          $district->addSchools($request->schoolToAdd);
+          $district->addSchools($request->schoolsToAdd);
         }
 
-        if (!empty($request->superFacilitatorssToRemove)) {
-          $district->removeSuperFacilitators($request->superFacilitatorssToRemove);
+        if (!empty($request->superFacilitatorsToRemove)) {
+          $district->removeSuperFacilitators($request->superFacilitatorsToRemove);
         }
 
         if (!empty($request->superFacilitatorsToAdd)) {
           $district->addSuperFacilitators($request->superFacilitatorsToAdd);
         }
 
-        if (!empty($request->anonymize)){
+        if (!$request->boolean('license_status')){
           destroy($district);
         }
 
