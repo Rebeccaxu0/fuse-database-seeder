@@ -63,7 +63,6 @@ class DistrictController extends Controller
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'license_status' => $request->boolean('license_status')
         ]);
-        // $district->schools()->saveMany($request->schools);
 
         return redirect(route('admin.districts.index'));
     }
@@ -109,12 +108,12 @@ class DistrictController extends Controller
             'license_status' => $request->boolean('license_status'),
         ]);
 
-        if (!empty($request->schoolsToAdd)) {
-          $district->addSchools($request->schoolToAdd);
-        }
-
         if (!empty($request->schoolsToRemove)) {
           $district->removeSchools($request->schoolsToRemove);
+        }
+
+        if (!empty($request->schoolsToAdd)) {
+          $district->addSchools($request->schoolToAdd);
         }
 
         if (!empty($request->superFacilitatorssToRemove)) {
@@ -123,6 +122,10 @@ class DistrictController extends Controller
 
         if (!empty($request->superFacilitatorsToAdd)) {
           $district->addSuperFacilitators($request->superFacilitatorsToAdd);
+        }
+
+        if (!empty($request->anonymize)){
+          destroy($district);
         }
 
         return redirect(route('admin.districts.index'));

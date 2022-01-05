@@ -17,33 +17,30 @@
                   :value="old('salesforce_acct_id', $district->salesforce_acct_id)"/>
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Super Facilitators</label>
-      <p class="text-bold text-xs"> Mark for removal</p>
+      <p class="text-xs"> Mark for removal</p>
     @foreach($district->superFacilitators as $user)
     <x-form.checkbox_array name="facilitatorsToRemove"
                            :value="$user->id"
                            :label="$user->name" />
     @endforeach
     </div>
+    <p class="text-xs"> Search to add</p>
     <div>
       @livewire('add-super-facilitator')
     </div>
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Schools</label>
-      <p class="text-bold text-xs"> Mark for removal</p>
+      <p class="text-xs"> Mark for removal</p>
     @foreach($district->schools as $school)
     <x-form.checkbox_array name="schoolsToRemove"
                            :value="$school->id"
                            :label="$school->name" />
     @endforeach
     </div>
+    <p class="text-bold text-xs"> Search to add</p>
     <div>
       @livewire('add-school')
     </div>
-    
-    <script>
-      function checkBoxes(){
-      if($('#license_status').is(":checked")) $('#anonymize').prop("disabled", true).prop("checked", false);}
-    </script>
     <div x-data="{active: true}">
       <input type="checkbox" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
           <span class="mx-2 text-gray-700"> Active Studio License </span><br>
@@ -64,5 +61,8 @@
     <button class="btn btn-danger">Delete</button>
     </form> -->
 
-
+<script>
+  function checkBoxes(){
+    if($('#license_status').is(":checked")) $('#anonymize').prop("disabled", true).prop("checked", false);}
+</script>
 </x-admin-layout>

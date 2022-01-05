@@ -3,7 +3,7 @@
 <div class="mb-2">
   <label class="text-gray-700 mb-2 form-required">{{$label}}</label>
 </div>
-<div class="mb-6">
+<div class="mb-4">
 <select name="{{$name}}" id="{{$name}}" {!! $attributes->merge(['class' => 'mt-1 block w-full rounded']) !!}>
     <option> </option>
     @foreach ($list as $item)
