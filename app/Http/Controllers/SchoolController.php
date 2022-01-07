@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
+use App\Models\Package;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -37,7 +40,9 @@ class SchoolController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.school.create', [
+            'packages' => Package::all()->sortBy('name'),
+          ]);
     }
 
     /**
@@ -48,7 +53,18 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:schools|max:255',
+        ]);
+
+        $school = School::create([
+            'name' => $request->name,
+            'package_id' => $request->get('package'),
+            'salesforce_acct_id' => $request->salesforce_acct_id
+        ]);
+
+        return redirect(route('admin.schools.index'));
     }
 
     /**
@@ -70,7 +86,10 @@ class SchoolController extends Controller
      */
     public function edit(School $school)
     {
-        //
+        return view('admin.school.edit', [
+            'packages' => Package::all()->sortBy('name'),
+            'school' => $school,
+        ]);
     }
 
     /**

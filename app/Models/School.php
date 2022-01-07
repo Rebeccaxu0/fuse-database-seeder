@@ -12,6 +12,18 @@ class School extends Organization
     use HasFactory;
     use SoftDeletes;
 
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+      'name',
+      'package_id',
+      'salesforce_acct_id',
+      'partner_id'
+    ];
+
     /**
      * The Package associated with this school, or parent District.
      */
@@ -51,7 +63,7 @@ class School extends Organization
     /**
      * The super facilitators associated with the parent district of this school.
      */
-    public function superFacilicators()
+    public function superFacilitators()
     {
       $district = $this->district()->first();
       return User::whereHas('districts', function(Builder $query) use ($district) {
