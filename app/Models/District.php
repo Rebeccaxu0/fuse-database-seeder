@@ -95,9 +95,10 @@ class District extends Organization
      */
     public function addSchools(array $schools_to_add)
     {
-      foreach ($this->schools as $school) {
-        if (in_array($school->id, $schools_to_add)) {
-          $school->district()->associate();
+      foreach ($schools_to_add as $id) {
+        $school = School::find($id);
+        if (!(in_array($school->id, $this->schools->pluck('id')->toArray()))){
+          $school->district()->associate($this);
           $school->save();
         }
       }
@@ -129,8 +130,13 @@ class District extends Organization
     {
       foreach ($super_facilitator_ids as $id) {
           $sfuser = User::find($id);
-          dd($sfuser);
-          $sfuser->districts()->attach($this);
+          if (!(in_array($this->id, $sfuser->districts->pluck('id')->toArray()))){
+            $sfuser->districts()->attach($this);
+          }
+          if (!$sfuser->is_super_facilitator()){
+            $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
+            $sfuser->has_role(5);
+          }
           $sfuser->save();
         }
         // Update cache of User::is_super_facilitator()?;
