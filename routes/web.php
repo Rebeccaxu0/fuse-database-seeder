@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
         return '<h1>' . __('TODO') . '</h1>';
       })->name('help_finder');
       Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('student.dashboard');
       })->name('dashboard');
       Route::get('/mystuff', function () {
         return '<h1>' . __('TODO') . '</h1>';
