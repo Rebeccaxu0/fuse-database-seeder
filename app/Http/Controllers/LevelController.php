@@ -46,7 +46,9 @@ class LevelController extends Controller
      */
     public function show(Level $level)
     {
-        //
+        // Show different view based on level started status.
+        // $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
+        // return view('student.level', ['challenges' => $challenges]);
     }
 
     /**
