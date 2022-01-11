@@ -20,7 +20,7 @@ class ChallengeVersionController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a customized listing of the resource for students.
      *
      * @return \Illuminate\Http\Response
      */
@@ -28,6 +28,17 @@ class ChallengeVersionController extends Controller
     {
         $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
         return view('student.challenges', ['challenges' => $challenges]);
+    }
+
+    /**
+     * Display a customized listing of the resource for students.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function student_help_finder()
+    {
+        $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
+        return view('student.help_finder', ['challenges' => $challenges]);
     }
 
     /**

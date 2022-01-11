@@ -1,6 +1,4 @@
 <div>
-  Help finder graphic
-  <a href="{{ route('student.help_finder') }}">
-    Help Finder
-  </a>
+  <p>(List of other students' progress on this challenge)</p>
+    <h2>{{ $challenge->name }}</h2>
 </div>

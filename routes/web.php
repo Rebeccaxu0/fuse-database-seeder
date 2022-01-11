@@ -41,9 +41,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   Route::name('student.')
     ->group(function () {
       Route::get('/challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
-      Route::get('/help_finder', function () {
-        return '<h1>' . __('TODO') . '</h1>';
-      })->name('help_finder');
+      Route::get('/help_finder', [ChallengeVersionController::class, 'student_help_finder'])->name('help_finder');
       Route::get('/dashboard', function () {
         return view('student.dashboard');
       })->name('dashboard');
