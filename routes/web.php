@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
 use App\Http\Controllers\DistrictController;
@@ -45,9 +46,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
       Route::get('/dashboard', function () {
         return view('student.dashboard');
       })->name('dashboard');
-      Route::get('/mystuff', function () {
-        return '<h1>' . __('TODO') . '</h1>';
-      })->name('portfolio');
+      Route::get('/mystuff', [ArtifactController::class, 'my_stuff_index'])->name('my_stuff');
     });
 
   /*

@@ -28,8 +28,8 @@
         href="{{ route('student.dashboard')}}">{{ __('Dashboard') }}</a>
     </li>
     <li>
-      <a class="px-2 {{ (request()->routeIs('student.portfolio') ? 'active' : '') }}"
-        href="{{ route('student.portfolio')}}">{{ __('My Stuff') }}</a>
+      <a class="px-2 {{ (request()->routeIs('student.my_stuff') ? 'active' : '') }}"
+        href="{{ route('student.my_stuff')}}">{{ __('My Stuff') }}</a>
     </li>
     <li>
       <form method="POST" action="{{ route('logout') }}" class="h-full">

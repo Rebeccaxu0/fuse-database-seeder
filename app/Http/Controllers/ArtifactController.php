@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Artifact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArtifactController extends Controller
 {
@@ -15,6 +16,17 @@ class ArtifactController extends Controller
     public function index()
     {
         //
+    }
+
+    /**
+     * Display a customized listing of the resource for students.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function my_stuff_index()
+    {
+        $artifacts = Auth::user()->artifacts;
+        return view('student.my_stuff', ['artifacts' => $artifacts]);
     }
 
     /**
