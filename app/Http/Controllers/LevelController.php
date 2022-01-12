@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\Http\Request;
 
@@ -42,10 +43,12 @@ class LevelController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Level  $level
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show(Level $level)
+    public function show(ChallengeVersion $challengeVersion, Level $level)
     {
+        return $level->level_number;
         // Show different view based on level started status.
         // $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
         // return view('student.level', ['challenges' => $challenges]);

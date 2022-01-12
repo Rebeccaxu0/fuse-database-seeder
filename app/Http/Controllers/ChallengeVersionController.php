@@ -26,8 +26,8 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
-        return view('student.challenges', ['challenges' => $challenges]);
+        $challengeVersions = Studio::find(Auth::user()->current_studio)->challengeVersions;
+        return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
     /**
@@ -37,8 +37,8 @@ class ChallengeVersionController extends Controller
      */
     public function student_help_finder()
     {
-        $challenges = Studio::find(Auth::user()->current_studio)->challengeVersions;
-        return view('student.help_finder', ['challenges' => $challenges]);
+        $challengeVersions = Studio::find(Auth::user()->current_studio)->challengeVersions;
+        return view('student.help_finder', ['challenges' => $challengeVersions]);
     }
 
     /**

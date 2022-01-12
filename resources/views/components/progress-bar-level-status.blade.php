@@ -1,7 +1,6 @@
-<a href="">
+<a href="{{ route('student.level', ['challengeVersion' => $level->challengeVersion, 'level' => $level]) }}">
   <div>
-    Level
+    Level {{ $level->level_number }}
     <!-- green for complete, striped for in-progress, grey for unstarted -->
-    <!-- Smile, breathe, and go slowly. - Thich Nhat Hanh -->
   </div>
 </a>

@@ -9,18 +9,21 @@ class ChallengeTile extends Component
 {
     /**
      * Challenge Version we're rendering.
+     *
      * @var ChallengeVersion
      */
-    public $challenge;
+    public $challengeVersion;
 
     /**
      * Create a new component instance.
      *
+     * @param ChallengeVersion $challengeVersion The ChallengeVersion to initialize.
+     *
      * @return void
      */
-    public function __construct(ChallengeVersion $challenge)
+    public function __construct(ChallengeVersion $challengeVersion)
     {
-        $this->challenge = $challenge;
+        $this->challengeVersion = $challengeVersion;
     }
 
     /**

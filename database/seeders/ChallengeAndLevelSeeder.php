@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class ChallengeAndLevelSeeder extends Seeder
 {
-    private $defaults = [
+    private $_defaults = [
       '3D You',
       'Beats Builder',
       'Coaster Boss',
@@ -57,26 +57,26 @@ class ChallengeAndLevelSeeder extends Seeder
 
     public function run()
     {
-      foreach ($this->defaults as $name) {
-        Challenge::factory()
-          ->has(
-            ChallengeVersion::factory()
-              ->state(['name' => json_encode(["en" => "{$name} v1"])])
-              ->has(
-                Level::factory()->count(3)
-              )
-          )
-          ->create([
-            'name' => $name,
-          ]);
-      }
-
-      $challenges = ChallengeVersion::all()->each(function($item, $key) {
-        $order = [];
-        foreach ($item->levels()->get() as $level) {
-          $order[$level->id] = count($order) + 1;
+        foreach ($this->_defaults as $name) {
+            Challenge::factory()
+                ->has(
+                    ChallengeVersion::factory()
+                        ->state(['name' => json_encode(["en" => "{$name} v1"])])
+                        ->has(Level::factory()->count(3))
+                )
+                ->create(
+                    ['name' => $name]
+                );
         }
-        $item->set_levels_order($order);
-      });
+
+        $challenges = ChallengeVersion::all()->each(
+            function ($item, $key) {
+                $order = [];
+                foreach ($item->levels()->get() as $level) {
+                    $order[$level->id] = count($order) + 1;
+                }
+                $item->set_levels_order($order);
+            }
+        );
     }
 }

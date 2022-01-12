@@ -41,7 +41,7 @@ class CreateChallengeVersionsTable extends Migration
                   ->nullable();
             $table->string('slug')
                   ->unique()
-                  ->nullable();
+                  ->nullable(false);
             $table->foreignId('prerequisite_challenge_version_id')
                   ->nullable()
                   ->constrained('challenge_versions')

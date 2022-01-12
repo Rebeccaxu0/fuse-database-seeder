@@ -1,4 +1,4 @@
 <div>
-  <x-progress-bar :challenge="$challenge" />
-    <h2>{{ $challenge->name }}</h2>
+  <x-progress-bar :challengeVersion="$challengeVersion" />
+    <h2>{{ $challengeVersion->name }}</h2>
 </div>
