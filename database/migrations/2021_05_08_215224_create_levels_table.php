@@ -32,6 +32,25 @@ class CreateLevelsTable extends Migration
                   ->references('id')->on('levels');
         });
 
+        Schema::create('level_starts', function (Blueprint $table) {
+            $table->foreign('level')
+                  ->references('id')
+                  ->on('levels')
+                  ->cascadeOnUpdate()
+                  ->nullOnDelete();
+            $table->foreign('user')
+                  ->references('id')
+                  ->on('users')
+                  ->cascadeOnUpdate()
+                  ->nullOnDelete();
+            $table->timestamp('created_at')
+                  ->useCurrent()
+                  ->comment('When user started this level.');
+            $table->primary(['level', 'user']);
+            $table->unique(['level', 'user']);
+            $table->index(['level', 'user']);
+        });
+
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('current_level')
                   ->nullable()

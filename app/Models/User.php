@@ -187,15 +187,23 @@ class User extends Authenticatable
     /**
      * @return bool
      */
-    function canImpersonate()
+    public function canImpersonate(): bool
     {
       return $this->is_admin();
     }
     /**
      * @return bool
      */
-    function canBeImpersonated()
+    public function canBeImpersonated(): bool
     {
       return !$this->is_admin();
+    }
+
+    public function startedLevel(Level $level): bool
+    {
+        return \Illuminate\Support\Facades\DB::table('level_starts')
+            ->where('level', $level->id)
+            ->where('user', $this->id)
+            ->exists();
     }
 }

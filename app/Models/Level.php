@@ -50,4 +50,9 @@ class Level extends Model
             $this->attributes['level_number'] = null;
         }
     }
+
+    public function isStarted(User $user): bool
+    {
+        return $user->startedLevel($this);
+    }
 }
