@@ -1,7 +1,8 @@
 @props(['name', 'value', 'label', 'active' => null])
 
 <div>
-  <div class="inline-flex items-center mb-2">
+  <div class="inline-flex items-center"
+        id="{{ $name }}">
     <input type="checkbox"
           class="form-checkbox"
           id="{{ "{$name}-{$value}" }}"

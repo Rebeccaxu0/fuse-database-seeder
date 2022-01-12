@@ -58,11 +58,15 @@ class SchoolController extends Controller
             'name' => 'required|unique:schools|max:255',
         ]);
 
+
         $school = School::create([
             'name' => $request->name,
             'package_id' => $request->get('package'),
-            'salesforce_acct_id' => $request->salesforce_acct_id
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+            'partner_id' => $request->get('partner')[0]
         ]);
+        $school->gradelevels()->attach($request->gradelevels);
+        $school->save();
 
         return redirect(route('admin.schools.index'));
     }

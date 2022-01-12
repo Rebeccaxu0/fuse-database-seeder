@@ -11,15 +11,28 @@
                      :value="old('package')" :list="$packages"/>
     <x-form.input label="Salesforce Account ID"
                   name="salesforce_acct_id"/>
-
+    <label class="text-gray-700 mb-4">Parent Organization</label>
+    <div>
+      @livewire('add-district')
+    </div>
+    <div id="partner">
     <label class="text-gray-700 mb-4">Partnerships</label>
-    @foreach(\App\Models\Partner::all() as $partner)
-    <x-form.checkbox_array
-             name="partners"
-             :value="$partner->id"
-             :label="$partner->name" />
+      @foreach(\App\Models\Partner::all() as $partner)
+      <x-form.exclusive_checkbox_array
+              name="partner"
+              :value="$partner->id"
+              :label="$partner->name" />
+      @endforeach
+    </div>
+    <br/>
+    <label class="text-gray-700 mb-4">Grade Levels</label>
+    @foreach(\App\Models\GradeLevel::all() as $glevel)
+      <x-form.checkbox_array
+              name="gradelevels"
+              :value="$glevel->id"
+              :label="$glevel->name" />
     @endforeach
-
+    <br/>
     <x-form.checkbox label="Active Studio License"
                      name="license_status"
                      :checked="old('license_status', 0)"/>
@@ -29,5 +42,4 @@
         </button>
       </div>
   </form>
-
 </x-admin-layout>

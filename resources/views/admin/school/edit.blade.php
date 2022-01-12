@@ -32,7 +32,7 @@
     
     <div x-data="{active: true}">
       <input type="checkbox" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
-          <span class="mx-2 text-gray-700"> Active Studio License </span><br>
+          <span class="mx-2 text-gray-700"> Active Studio Licenses </span><br>
           <span class="mx-2 text-xs text-gray-700"> Unchecking this will deactivate all studios in the school and move all associated students/facilitators into the Alumni Studio. </span><br>
       <input type="checkbox" id="anonymize" name="anonymize" :disabled="active">
           <span class="mx-2 text-gray-700" :class="{ 'text-gray-400': active}"> Anonymize studio members </span><br>

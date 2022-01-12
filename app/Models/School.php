@@ -105,4 +105,31 @@ class School extends Organization
     {
       return $this->belongsTo(Package::class);
     }
+
+    /**
+     * The grade levels associated with this school.
+     */
+    public function gradelevels()
+    {
+      return $this->belongsToMany(GradeLevel::class);
+    }
+
+
+    /*
+     * Add grade levels to a District.
+     *
+     * @param int[] $gradelevels
+     *  List of grade level ids.
+     */
+    public function addGradeLevels(array $gradelevels)
+    {
+        foreach ($gradelevels as $id) {
+          $gradelevel = GradeLevel::find($id);
+          if (!(in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))){
+            $gradelevel->schools()->associate($this);
+            $gradelevel->save();
+          }
+        }
+      }
+
 }
