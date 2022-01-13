@@ -108,7 +108,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The districts associated with this package.
+     * The districts associated with this user.
      */
     public function districts()
     {
@@ -116,7 +116,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The schools associated with this package.
+     * The schools associated with this user.
      */
     public function schools()
     {
@@ -124,11 +124,19 @@ class User extends Authenticatable
     }
 
     /**
-     * The studios associated with this package.
+     * The studios associated with this user.
      */
     public function studios()
     {
       return $this->belongsToMany(Studio::class);
+    }
+
+    /**
+     * The current studio associated with this user.
+     */
+    public function currentStudio()
+    {
+      return $this->belongsTo(Studio::class, 'current_studio');
     }
 
     /**

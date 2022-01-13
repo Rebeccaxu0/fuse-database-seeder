@@ -24,6 +24,24 @@ class Studio extends Organization
     }
 
     /**
+     * The users currently active in this studio.
+     */
+    public function currentUsers()
+    {
+      return $this->hasMany(User::class, 'current_studio');
+    }
+
+    /**
+     * The students currently active in this studio.
+     */
+    public function currentStudents()
+    {
+      return $this->CurrentUsers()->whereHas('roles', function(Builder $query) {
+        $query->where('id', '=', Role::STUDENT_ID);
+      });
+    }
+
+    /**
      * The students associated with this studio.
      */
     public function students()
@@ -34,6 +52,16 @@ class Studio extends Organization
     }
 
     /**
+     * The facilitators currently active in this studio.
+     */
+    public function currentFacilitators()
+    {
+      return $this->currentUsers()->whereHas('roles', function(Builder $query) {
+          $query->where('id', '=', Role::FACILITATOR_ID);
+        });
+    }
+
+    /**
      * The facilitators associated with this studio's parent org (school).
      */
     public function facilitators()
@@ -41,6 +69,16 @@ class Studio extends Organization
       return $this->users()->whereHas('roles', function(Builder $query) {
           $query->where('id', '=', Role::FACILITATOR_ID);
         });
+    }
+
+    /**
+     * The super facilitators currently active in this studio.
+     */
+    public function currentSuperFacilitators()
+    {
+      return $this->currentUsers()->whereHas('roles', function(Builder $query) {
+        $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
+      });
     }
 
     /**
@@ -81,7 +119,16 @@ class Studio extends Organization
      * The Challenges a student is allowed to view/start.
      * Always a subset of the challenges in the defacto package.
      */
-    public function challengeVersions() {
+    public function challengeVersions()
+    {
       return $this->belongsToMany(ChallengeVersion::class);
+    }
+
+    /**
+     * Alias of challengeVersions().
+     */
+    public function activeChallenges()
+    {
+        return $this->challengeVersions();
     }
 }
