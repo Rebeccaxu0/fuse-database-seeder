@@ -105,7 +105,7 @@
     @apply bg-white shadow-xl rounded-xl p-2;
   }
 
-  nav {
+  nav > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
     min-height: 2rem;
   }
@@ -143,72 +143,72 @@
     }
   }
 
-  nav#student-navbar {
+  nav #student-navbar {
     @apply transition-all duration-300 md:h-12;
     min-height: 4rem;
   }
-  nav#student-navbar.docked {
+  nav #student-navbar.docked {
     min-height: 2rem;
     max-height: 2rem;
   }
-  nav#student-navbar.docked:hover {
+  nav #student-navbar.docked:hover {
     min-height: 4rem;
     max-height: 4rem;
   }
-  nav#student-navbar.docked #profile-env {
+  nav #student-navbar.docked #profile-env {
     @apply transition-all duration-300 h-8;
   }
-  nav#student-navbar.docked #profile-pic {
+  nav #student-navbar.docked #profile-pic {
     @apply transition-all duration-300 h-7 w-7;
   }
-  nav#student-navbar.docked:hover #profile-env {
+  nav #student-navbar.docked:hover #profile-env {
     @apply h-16;
   }
-  nav#student-navbar.docked:hover #profile-pic {
+  nav #student-navbar.docked:hover #profile-pic {
     @apply h-10 w-10;
   }
-  nav#student-navbar li a {
+  nav #student-navbar li a {
     @apply text-xl md:text-sm lg:text-base;
   }
-  nav#student-navbar .burger-wrapper {
+  nav #student-navbar .burger-wrapper {
     @apply h-16;
   }
-  nav#student-navbar.docked .burger-wrapper {
+  nav #student-navbar.docked .burger-wrapper {
     @apply h-8;
   }
 
-  nav#admin-navbar {
+  nav #admin-navbar {
     @apply bg-slate-800 border-slate-500;
   }
-  nav#admin-navbar ul {
+  nav #admin-navbar ul {
     @apply md:ml-16;
   }
-  nav#admin-navbar li {
+  nav #admin-navbar li {
     @apply border-slate-500;
   }
-  nav#admin-navbar li a.active {
+  nav #admin-navbar li a.active {
     @apply bg-slate-900;
   }
-  nav#admin-navbar li a:hover {
+  nav #admin-navbar li a:hover {
     @apply bg-slate-900;
   }
 
-  nav#facilitator-navbar {
+  nav #facilitator-navbar {
     @apply bg-stone-100 border-stone-600;
   }
-  nav#facilitator-navbar ul {
+  nav #facilitator-navbar ul {
     @apply md:ml-16;
   }
-  nav#facilitator-navbar li {
+  nav #facilitator-navbar li {
     @apply border-stone-500;
   }
-  nav#facilitator-navbar li a {
+  nav #facilitator-navbar li a {
     @apply text-stone-500;
   }
-  nav#facilitator-navbar li a.active {
+  nav #facilitator-navbar li a.active {
     @apply text-stone-900 bg-stone-300;
   }
-  nav#facilitator-navbar li a:hover {
+  nav #facilitator-navbar li a:hover {
     @apply text-stone-900 bg-stone-300;
   }
 

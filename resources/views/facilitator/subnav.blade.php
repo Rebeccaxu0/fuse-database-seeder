@@ -1,5 +1,5 @@
-<x-navbar id="facilitator" hamburger-color="text-black">
-    <x-navbar-ul id="facilitator-menu">
+<x-subnav id="facilitator" hamburger-color="text-black">
+    <x-subnav-ul id="facilitator-menu">
         <li>
             <a class="px-2 {{ request()->routeIs('facilitator.activity') ? 'active' : '' }}"
                 href="{{ route('facilitator.activity') }}">{{ __('Studio Activity') }}</a>
@@ -24,5 +24,5 @@
             <a class="px-2 {{ request()->routeIs('facilitator.announcements') ? 'active' : '' }}"
                 href="{{ route('facilitator.announcements') }}">{{ __('Announcements') }}</a>
         </li>
-    </x-navbar-ul>
-</x-navbar>
+    </x-subnav-ul>
+</x-subnav>

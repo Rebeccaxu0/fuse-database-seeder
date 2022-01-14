@@ -1,5 +1,5 @@
-<x-navbar id="admin">
-    <x-navbar-ul id="admin-menu">
+<x-subnav id="admin">
+    <x-subnav-ul id="admin-menu">
         <li>
             <a class="px-2 {{ request()->routeIs('admin.packages.index') ? 'active' : '' }}"
                 href="{{ route('admin.packages.index') }}">{{ __('Packages') }}</a>
@@ -24,5 +24,5 @@
             <a class="px-2 {{ request()->routeIs('admin') ? 'active' : '' }}"
                 href="{{ route('admin') }}">{{ __('Administrivia') }}</a>
         </li>
-    </x-navbar-ul>
-</x-navbar>
+    </x-subnav-ul>
+</x-subnav>

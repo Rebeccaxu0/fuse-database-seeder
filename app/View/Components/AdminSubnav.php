@@ -2,9 +2,10 @@
 
 namespace App\View\Components;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class Navbar extends Component
+class AdminSubnav extends Component
 {
     /**
      * Create a new component instance.
@@ -13,7 +14,6 @@ class Navbar extends Component
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -23,6 +23,10 @@ class Navbar extends Component
      */
     public function render()
     {
-        return view('components.navbar');
+        $view = null;
+        if (Auth::user()->is_admin()) {
+            $view = view('admin.subnav');
+        }
+        return $view;
     }
 }

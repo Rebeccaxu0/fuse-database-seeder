@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class FacilitatorNavbar extends Component
+class FacilitatorSubnav extends Component
 {
     /**
      * Create a new component instance.
@@ -32,7 +32,7 @@ class FacilitatorNavbar extends Component
             || Auth::user()->is_super_facilitator()
             || Auth::user()->is_admin()
         ) {
-            $view = view('facilitator.navbar');
+            $view = view('facilitator.subnav');
         }
         return $view;
     }
