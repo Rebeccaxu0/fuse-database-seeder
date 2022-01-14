@@ -15,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-      if ($this->app->environment('local')) {
-        $this->app->register(TelescopeServiceProvider::class);
-      }
+        if ($this->app->environment('local')) {
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**
@@ -27,10 +27,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      Relation::morphMap([
-        'artifact' => 'App\Models\Artifact',
-        'idea' => 'App\Models\Idea',
-        'level' => 'App\Models\Level',
-      ]);
+        Relation::morphMap([
+            'artifact' => 'App\Models\Artifact',
+            'idea' => 'App\Models\Idea',
+            'level' => 'App\Models\Level',
+        ]);
     }
 }

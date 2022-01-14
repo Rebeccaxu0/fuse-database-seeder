@@ -32,59 +32,79 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function() {
-  Route::impersonate();
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::impersonate();
 
-  /*
-  |------------------------------------------------------------------------
-  | student routes
-  |------------------------------------------------------------------------
-  */
-  Route::name('student.')
-    ->group(function () {
-      Route::get('challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
-      Route::get('challenge/{challengeVersion:slug}/level/{level:level_number}', [LevelController::class, 'show'])->name('level');
-      Route::get('dashboard', function () {
-        return view('student.dashboard');
-      })->name('dashboard');
-      Route::get('help_finder', [ChallengeVersionController::class, 'student_help_finder'])->name('help_finder');
-      Route::get('mystuff', [ArtifactController::class, 'my_stuff_index'])->name('my_stuff');
-    });
+    /*
+    |------------------------------------------------------------------------
+    | student routes
+    |------------------------------------------------------------------------
+    */
+    Route::name('student.')
+        ->group(function () {
+            Route::get(
+                'challenges', [ChallengeVersionController::class, 'student_index']
+                )->name('challenges');
+            Route::get(
+                'challenge/{challengeVersion:slug}/level/{level:level_number}',
+                [LevelController::class, 'show']
+                )->name('level');
+            Route::get('dashboard', function () {
+                return view('student.dashboard');
+            })->name('dashboard');
+            Route::get(
+                'help_finder', [ChallengeVersionController::class, 'student_help_finder']
+                )->name('help_finder');
+            Route::get(
+                'mystuff', [ArtifactController::class, 'my_stuff_index']
+                )->name('my_stuff');
+        });
 
-  /*
-  |------------------------------------------------------------------------
-  | facilitator routes
-  |------------------------------------------------------------------------
-  */
-  Route::prefix('facilitator')
-    ->name('facilitator.')
-    ->group(function () {
-      Route::redirect('/', 'facilitator/people')->name('index');
-      Route::get('people', [FacilitatorStudioMembersController::class, 'index'])->name('people');
-      Route::get('activity', [FacilitatorActivityController::class, 'index'])->name('activity');
-      Route::get('challenges', [FacilitatorChallengesController::class, 'index'])->name('challenges');
-      Route::get('comments', [FacilitatorCommentsController::class, 'index'])->name('comments');
-      Route::get('settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
-      Route::get('announcements', [FacilitatorAnnouncementsController::class, 'index'])->name('announcements');
-    });
-  Route::get('support', function () {
-    return '<h1>' . __('TODO') . '</h1>';
-  })->name('support');
+    /*
+    |------------------------------------------------------------------------
+    | facilitator routes
+    |------------------------------------------------------------------------
+    */
+    Route::prefix('facilitator')
+        ->name('facilitator.')
+        ->group(function () {
+            Route::redirect('/', 'facilitator/people')->name('index');
+            Route::get(
+                'people', [FacilitatorStudioMembersController::class, 'index']
+                )->name('people');
+            Route::get(
+                'activity', [FacilitatorActivityController::class, 'index']
+                )->name('activity');
+            Route::get(
+                'challenges', [FacilitatorChallengesController::class, 'index']
+                )->name('challenges');
+            Route::get(
+                'comments', [FacilitatorCommentsController::class, 'index']
+                )->name('comments');
+            Route::get(
+                'settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
+            Route::get(
+                'announcements', [FacilitatorAnnouncementsController::class, 'index']
+                )->name('announcements');
+        });
+    Route::get('support', function () {
+        return '<h1>' . __('TODO') . '</h1>';
+    })->name('support');
 
-  /*
-  |------------------------------------------------------------------------
-  | admin routes
-  |------------------------------------------------------------------------
-  */
-  Route::view('admin', 'admin.index')->name('admin');
-  Route::prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-      Route::resource('packages', PackageController::class);
-      Route::resource('districts', DistrictController::class);
-      Route::resource('schools', SchoolController::class);
-      Route::resource('studios', StudioController::class);
-      Route::resource('challenges', ChallengeController::class);
-      Route::resource('lti_platforms', LTIPlatformController::class);
-    });
+    /*
+    |------------------------------------------------------------------------
+    | admin routes
+    |------------------------------------------------------------------------
+    */
+    Route::view('admin', 'admin.index')->name('admin');
+    Route::prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            Route::resource('packages', PackageController::class);
+            Route::resource('districts', DistrictController::class);
+            Route::resource('schools', SchoolController::class);
+            Route::resource('studios', StudioController::class);
+            Route::resource('challenges', ChallengeController::class);
+            Route::resource('lti_platforms', LTIPlatformController::class);
+        });
 });

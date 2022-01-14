@@ -16,7 +16,7 @@ class Idea extends Model
      */
     public function users()
     {
-      return $this->team();
+        return $this->team();
     }
 
     /**
@@ -24,7 +24,7 @@ class Idea extends Model
      */
     public function team()
     {
-      return $this->morphToMany(User::class, 'teamable', 'teams');
+        return $this->morphToMany(User::class, 'teamable', 'teams');
     }
 
     /**
@@ -32,7 +32,7 @@ class Idea extends Model
      */
     public function challengeVersions()
     {
-      return $this->inspiration();
+        return $this->inspiration();
     }
 
     /**
@@ -40,7 +40,7 @@ class Idea extends Model
      */
     public function inspiration()
     {
-      return $this->belongsToMany(ChallengeVersion::class, 'idea_inspirations');
+        return $this->belongsToMany(ChallengeVersion::class, 'idea_inspirations');
     }
 
     /**
@@ -48,7 +48,6 @@ class Idea extends Model
      */
     public function artifacts()
     {
-      return $this->morphMany(Artifact::class, 'artifactable');
+        return $this->morphMany(Artifact::class, 'artifactable');
     }
-
 }

@@ -16,7 +16,7 @@ class PackageController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(Package::class, 'package');
+        $this->authorizeResource(Package::class, 'package');
     }
 
     /**
@@ -121,6 +121,5 @@ class PackageController extends Controller
     {
         $package->delete();
         return redirect(route('admin.packages.index'));
-
     }
 }

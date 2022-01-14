@@ -19,7 +19,7 @@ class NavLink extends Component
      */
     public function __construct($active)
     {
-      $this->active = $active;
+        $this->active = $active;
     }
 
     /**

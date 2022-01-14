@@ -39,5 +39,4 @@ class FacilitatorChallengesController extends Controller
 
         return view('facilitator.challenges', $viewData);
     }
-
 }

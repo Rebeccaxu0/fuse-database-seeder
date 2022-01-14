@@ -8,8 +8,9 @@ class UserOption extends Component
 {
     public $user;
 
-    public function mount($user) {
-        $this->user= $user;
+    public function mount($user)
+    {
+        $this->user = $user;
     }
 
     public function render()

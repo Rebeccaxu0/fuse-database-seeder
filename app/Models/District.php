@@ -11,16 +11,16 @@ class District extends Organization
     use HasFactory;
     use SoftDeletes;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-      'name',
-      'package_id',
-      'salesforce_acct_id',
-      'license_status',
+        'name',
+        'package_id',
+        'salesforce_acct_id',
+        'license_status',
     ];
 
     /**
@@ -28,9 +28,9 @@ class District extends Organization
      */
     public function superFacilitators()
     {
-      return $this->users()->whereHas('roles', function(Builder $query) {
-        $query->where('name', '=', 'Super Facilitator');
-      });
+        return $this->users()->whereHas('roles', function (Builder $query) {
+            $query->where('name', '=', 'Super Facilitator');
+        });
     }
 
     /**
@@ -38,13 +38,13 @@ class District extends Organization
      */
     public function facilitators()
     {
-      $schools = $this->schools()->get()->pluck('id');
-      return User::whereHas('schools', function(Builder $query) use ($schools) {
-        $query->whereIn('id', $schools);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Facilitator');
-        });
+        $schools = $this->schools()->get()->pluck('id');
+        return User::whereHas('schools', function (Builder $query) use ($schools) {
+            $query->whereIn('id', $schools);
+        })
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('name', '=', 'Facilitator');
+            });
     }
 
     /**
@@ -52,13 +52,13 @@ class District extends Organization
      */
     public function students()
     {
-      $studios = $this->studios()->get()->pluck('id');
-      return User::whereHas('studios', function(Builder $query) use ($studios) {
-        $query->whereIn('id', $studios);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Student');
-        });
+        $studios = $this->studios()->get()->pluck('id');
+        return User::whereHas('studios', function (Builder $query) use ($studios) {
+            $query->whereIn('id', $studios);
+        })
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('name', '=', 'Student');
+            });
     }
 
     /**
@@ -66,7 +66,7 @@ class District extends Organization
      */
     public function schools()
     {
-      return $this->hasMany(School::class);
+        return $this->hasMany(School::class);
     }
 
     /**
@@ -74,7 +74,7 @@ class District extends Organization
      */
     public function studios()
     {
-      return $this->hasManyThrough(Studio::class, School::class);
+        return $this->hasManyThrough(Studio::class, School::class);
     }
 
     /**
@@ -82,7 +82,7 @@ class District extends Organization
      */
     public function package()
     {
-      return $this->belongsTo(Package::class);
+        return $this->belongsTo(Package::class);
     }
 
 
@@ -94,13 +94,13 @@ class District extends Organization
      */
     public function addSchools(array $schools_to_add)
     {
-      foreach ($schools_to_add as $id) {
-        $school = School::find($id);
-        if (! (in_array($school->id, $this->schools->pluck('id')->toArray()))){
-          $school->district()->associate($this);
-          $school->save();
+        foreach ($schools_to_add as $id) {
+            $school = School::find($id);
+            if (! (in_array($school->id, $this->schools->pluck('id')->toArray()))) {
+                $school->district()->associate($this);
+                $school->save();
+            }
         }
-      }
     }
 
     /*
@@ -111,12 +111,12 @@ class District extends Organization
      */
     public function removeSchools(array $schools_to_remove)
     {
-      foreach ($this->schools as $school) {
-        if (in_array($school->id, $schools_to_remove)) {
-          $school->district()->dissociate();
-          $school->save();
+        foreach ($this->schools as $school) {
+            if (in_array($school->id, $schools_to_remove)) {
+                $school->district()->dissociate();
+                $school->save();
+            }
         }
-      }
     }
 
     /*
@@ -127,16 +127,16 @@ class District extends Organization
      */
     public function addSuperFacilitators(array $super_facilitator_ids)
     {
-      foreach ($super_facilitator_ids as $id) {
-          $sfuser = User::find($id);
-          if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))){
-            $sfuser->districts()->attach($this);
-          }
-          if (! $sfuser->is_super_facilitator()){
-            $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-            $sfuser->has_role(5);
-          }
-          $sfuser->save();
+        foreach ($super_facilitator_ids as $id) {
+            $sfuser = User::find($id);
+            if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
+                $sfuser->districts()->attach($this);
+            }
+            if (! $sfuser->is_super_facilitator()) {
+                $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
+                $sfuser->has_role(5);
+            }
+            $sfuser->save();
         }
         // Update cache of User::is_super_facilitator()?;
     }
@@ -149,14 +149,14 @@ class District extends Organization
      */
     public function removeSuperFacilitators(array $super_facilitator_ids)
     {
-      foreach ($this->superFacilitators as $sf) {
-        if (in_array($sf->id, $super_facilitator_ids)) {
-          $sf->districts()->detach($this);
-          $sf->save();
-          // TODO: emit event to say a user associations have changed.
-          // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
-          // Then I guess you’re not a super facilitator anymore”
+        foreach ($this->superFacilitators as $sf) {
+            if (in_array($sf->id, $super_facilitator_ids)) {
+                $sf->districts()->detach($this);
+                $sf->save();
+                // TODO: emit event to say a user associations have changed.
+                // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
+                // Then I guess you’re not a super facilitator anymore”
+            }
         }
-      }
     }
 }

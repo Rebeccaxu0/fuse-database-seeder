@@ -33,9 +33,8 @@ class FacilitatorStudioMembersController extends Controller
             ->get();
 
         return view('facilitator.people', [
-          'students' => $students,
-          'facilitators' => $facilitators,
+            'students' => $students,
+            'facilitators' => $facilitators,
         ]);
     }
-
 }

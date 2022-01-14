@@ -16,17 +16,17 @@ class Artifact extends Model
      */
     public function users()
     {
-      return $this->team();
+        return $this->team();
     }
 
     public function team()
     {
-      return $this->morphToMany(User::class, 'teamable', 'teams');
+        return $this->morphToMany(User::class, 'teamable', 'teams');
     }
 
     public function comments()
     {
-      return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 
     /**
@@ -34,6 +34,6 @@ class Artifact extends Model
      */
     public function artifactable()
     {
-      return $this->morphTo();
+        return $this->morphTo();
     }
 }

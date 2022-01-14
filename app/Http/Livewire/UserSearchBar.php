@@ -11,15 +11,15 @@ class UserSearchBar extends Component
 
     public function selectUser($id)
     {
-      $this->emitUp('userSelected', $id);
-      $this->query = '';
+        $this->emitUp('userSelected', $id);
+        $this->query = '';
     }
 
     public function updatedQuery()
     {
-      $this->users = User::where('name', 'like', "%{$this->query}%")
-        ->limit(10)
-        ->get();
+        $this->users = User::where('name', 'like', "%{$this->query}%")
+            ->limit(10)
+            ->get();
     }
 
     public function render()

@@ -22,5 +22,4 @@ class FacilitatorSettingsController extends Controller
     {
         return view('facilitator.settings', []);
     }
-
 }

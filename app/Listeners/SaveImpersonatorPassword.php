@@ -24,8 +24,8 @@ class SaveImpersonatorPassword
      */
     public function handle(TakeImpersonation $event)
     {
-      session()->put([
-        'password_hash_web' =>  $event->impersonated->getAuthPassword(),
-      ]);
+        session()->put([
+            'password_hash_web' =>  $event->impersonated->getAuthPassword(),
+        ]);
     }
 }

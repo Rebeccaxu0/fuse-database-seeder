@@ -22,7 +22,7 @@ class StudioFactory extends Factory
     public function definition()
     {
         return [
-          'name' => 'Studio ' . $this->faker->emoji(),
+            'name' => 'Studio ' . $this->faker->emoji(),
         ];
     }
 }

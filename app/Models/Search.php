@@ -4,7 +4,8 @@ namespace App\Models;
 
 trait Search
 {
-    private function buildWildCards($term) {
+    private function buildWildCards($term)
+    {
         if ($term == "") {
             return $term;
         }
@@ -14,14 +15,15 @@ trait Search
         $term = str_replace($reservedSymbols, '', $term);
 
         $words = explode(' ', $term);
-        foreach($words as $idx => $word) {
+        foreach ($words as $idx => $word) {
             $words[$idx] = "+" . $word . "*";
         }
         $term = implode(' ', $words);
         return $term;
     }
 
-    protected function scopeSearch($query, $term) {
+    protected function scopeSearch($query, $term)
+    {
         $columns = implode(',', $this->searchable);
 
         // match john* for words starting with john

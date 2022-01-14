@@ -11,16 +11,16 @@ class School extends Organization
     use HasFactory;
     use SoftDeletes;
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-      'name',
-      'package_id',
-      'salesforce_acct_id',
-      'partner_id',
+        'name',
+        'package_id',
+        'salesforce_acct_id',
+        'partner_id',
     ];
 
     /**
@@ -28,10 +28,10 @@ class School extends Organization
      */
     public function deFactoPackage()
     {
-      if ($this->package()->count() > 0) {
-        return $this->package();
-      }
-      return $this->district->package();
+        if ($this->package()->count() > 0) {
+            return $this->package();
+        }
+        return $this->district->package();
     }
 
     /**
@@ -39,10 +39,10 @@ class School extends Organization
      */
     public function facilitators()
     {
-      return $this->users()
-                  ->whereHas('roles', function(Builder $query) {
-                    $query->where('name', '=', 'Facilitator');
-                  });
+        return $this->users()
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('name', '=', 'Facilitator');
+            });
     }
 
     /**
@@ -50,13 +50,13 @@ class School extends Organization
      */
     public function students()
     {
-      $studios = $this->studios()->get()->pluck('id');
-      return User::whereHas('studios', function(Builder $query) use ($studios) {
-        $query->whereIn('id', $studios);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Student');
-        });
+        $studios = $this->studios()->get()->pluck('id');
+        return User::whereHas('studios', function (Builder $query) use ($studios) {
+            $query->whereIn('id', $studios);
+        })
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('name', '=', 'Student');
+            });
     }
 
     /**
@@ -64,13 +64,13 @@ class School extends Organization
      */
     public function superFacilitators()
     {
-      $district = $this->district()->first();
-      return User::whereHas('districts', function(Builder $query) use ($district) {
-        $query->where('id', '=', $district->id);
-      })
-        ->whereHas('roles', function(Builder $query) {
-          $query->where('name', '=', 'Super Facilitator');
-        });
+        $district = $this->district()->first();
+        return User::whereHas('districts', function (Builder $query) use ($district) {
+            $query->where('id', '=', $district->id);
+        })
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('name', '=', 'Super Facilitator');
+            });
     }
 
     /**
@@ -78,7 +78,7 @@ class School extends Organization
      */
     public function district()
     {
-      return $this->belongsTo(District::class);
+        return $this->belongsTo(District::class);
     }
 
     /**
@@ -86,7 +86,7 @@ class School extends Organization
      */
     public function studios()
     {
-      return $this->hasMany(Studio::class);
+        return $this->hasMany(Studio::class);
     }
 
     /**
@@ -94,7 +94,7 @@ class School extends Organization
      */
     public function partner()
     {
-      return $this->belongsTo(Partner::class);
+        return $this->belongsTo(Partner::class);
     }
 
     /**
@@ -102,7 +102,7 @@ class School extends Organization
      */
     public function package()
     {
-      return $this->belongsTo(Package::class);
+        return $this->belongsTo(Package::class);
     }
 
     /**
@@ -110,7 +110,7 @@ class School extends Organization
      */
     public function gradelevels()
     {
-      return $this->belongsToMany(GradeLevel::class);
+        return $this->belongsToMany(GradeLevel::class);
     }
 
 
@@ -123,12 +123,11 @@ class School extends Organization
     public function addGradeLevels(array $gradelevels)
     {
         foreach ($gradelevels as $id) {
-          $gradelevel = GradeLevel::find($id);
-          if (! (in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))){
-            $gradelevel->schools()->associate($this);
-            $gradelevel->save();
-          }
+            $gradelevel = GradeLevel::find($id);
+            if (! (in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))) {
+                $gradelevel->schools()->associate($this);
+                $gradelevel->save();
+            }
         }
-      }
-
+    }
 }

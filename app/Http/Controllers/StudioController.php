@@ -14,7 +14,7 @@ class StudioController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(Studio::class, 'studio');
+        $this->authorizeResource(Studio::class, 'studio');
     }
 
     /**

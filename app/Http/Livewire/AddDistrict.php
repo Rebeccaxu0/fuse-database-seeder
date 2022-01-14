@@ -13,7 +13,7 @@ class AddDistrict extends Component
 
     public function addDistrict(District $district)
     {
-      $this->selectedschool = $district;
+        $this->selectedschool = $district;
     }
 
     public function render()

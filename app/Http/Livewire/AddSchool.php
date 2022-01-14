@@ -13,12 +13,12 @@ class AddSchool extends Component
 
     public function addSchool(School $school)
     {
-      $this->selectedschools[$school->id] = ['name' => $school->name];
+        $this->selectedschools[$school->id] = ['name' => $school->name];
     }
 
     public function removeSchool($id)
     {
-      unset($this->selectedschools[$id]);
+        unset($this->selectedschools[$id]);
     }
 
     public function render()

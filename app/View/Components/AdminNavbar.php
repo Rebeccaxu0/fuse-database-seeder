@@ -23,10 +23,10 @@ class AdminNavbar extends Component
      */
     public function render()
     {
-      $view = null;
-      if (Auth::user()->is_admin()) {
-        $view = view('admin.navbar');
-      }
-      return $view;
+        $view = null;
+        if (Auth::user()->is_admin()) {
+            $view = view('admin.navbar');
+        }
+        return $view;
     }
 }

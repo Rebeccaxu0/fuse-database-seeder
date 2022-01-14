@@ -11,15 +11,15 @@ class SchoolSearchBar extends Component
 
     public function selectSchool($id)
     {
-      $this->emitUp('schoolSelected', $id);
-      $this->query = '';
+        $this->emitUp('schoolSelected', $id);
+        $this->query = '';
     }
 
     public function updatedQuery()
     {
-      $this->schools = School::where('name', 'like', "%{$this->query}%")
-        ->limit(10)
-        ->get();
+        $this->schools = School::where('name', 'like', "%{$this->query}%")
+            ->limit(10)
+            ->get();
     }
 
     public function render()

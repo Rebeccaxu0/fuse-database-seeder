@@ -16,6 +16,6 @@ class Partner extends Model
      */
     public function schools()
     {
-      return $this->hasMany(Partner::class);
+        return $this->hasMany(Partner::class);
     }
 }

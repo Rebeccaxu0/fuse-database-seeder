@@ -13,11 +13,11 @@ class Comment extends Model
 
     public function artifact()
     {
-      return $this->belongsTo(Artifact::class);
+        return $this->belongsTo(Artifact::class);
     }
 
     public function user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

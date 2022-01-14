@@ -17,9 +17,9 @@ class Package extends Model
      * @var array
      */
     protected $fillable = [
-      'name',
-      'description',
-      'student_activity_tab_access',
+        'name',
+        'description',
+        'student_activity_tab_access',
     ];
 
 
@@ -28,7 +28,7 @@ class Package extends Model
      */
     public function challenges()
     {
-      return $this->belongsToMany(Challenge::class);
+        return $this->belongsToMany(Challenge::class);
     }
 
     /**
@@ -36,7 +36,7 @@ class Package extends Model
      */
     public function districts()
     {
-      return $this->hasMany(District::class);
+        return $this->hasMany(District::class);
     }
 
     /**
@@ -44,7 +44,7 @@ class Package extends Model
      */
     public function schools()
     {
-      return $this->hasMany(School::class);
+        return $this->hasMany(School::class);
     }
 
     /**
@@ -52,6 +52,6 @@ class Package extends Model
      */
     public function studios()
     {
-      return $this->hasMany(Studio::class);
+        return $this->hasMany(Studio::class);
     }
 }

@@ -26,12 +26,14 @@ class FacilitatorNavbar extends Component
      */
     public function render()
     {
-      $view = null;
-      if (Auth::user()->is_facilitator()
-       || Auth::user()->is_super_facilitator()
-       || Auth::user()->is_admin()) {
-        $view = view('facilitator.navbar');
-      }
-      return $view;
+        $view = null;
+        if (
+            Auth::user()->is_facilitator()
+            || Auth::user()->is_super_facilitator()
+            || Auth::user()->is_admin()
+        ) {
+            $view = view('facilitator.navbar');
+        }
+        return $view;
     }
 }

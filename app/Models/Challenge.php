@@ -16,7 +16,7 @@ class Challenge extends Model
      */
     public function challengeVersions()
     {
-      return $this->hasMany(ChallengeVersion::class);
+        return $this->hasMany(ChallengeVersion::class);
     }
 
     /**
@@ -24,6 +24,6 @@ class Challenge extends Model
      */
     public function packages()
     {
-      return $this->belongsToMany(Package::class);
+        return $this->belongsToMany(Package::class);
     }
 }

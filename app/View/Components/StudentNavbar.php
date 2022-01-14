@@ -14,14 +14,14 @@ class StudentNavbar extends Component
      */
     public function __construct()
     {
-      // $links = [
-      //   (object) ['route' => 'challenges', 'slot' => __('Challenges')],
-      //   (object) ['route' => 'challenges', 'slot' => __('Help Finder')],
-      //   (object) ['route' => 'challenges', 'slot' => __('Dashboard')],
-      //   (object) ['route' => 'challenges', 'slot' => __('My Stuff')],
-      // ];
+        // $links = [
+        //   (object) ['route' => 'challenges', 'slot' => __('Challenges')],
+        //   (object) ['route' => 'challenges', 'slot' => __('Help Finder')],
+        //   (object) ['route' => 'challenges', 'slot' => __('Dashboard')],
+        //   (object) ['route' => 'challenges', 'slot' => __('My Stuff')],
+        // ];
 
-      // parent::__construct('student', $links, 'fuse-teal-dk', '#3e3e3e', '4rem');
+        // parent::__construct('student', $links, 'fuse-teal-dk', '#3e3e3e', '4rem');
 
     }
 
@@ -32,6 +32,6 @@ class StudentNavbar extends Component
      */
     public function render()
     {
-      return view('student.navbar');
+        return view('student.navbar');
     }
 }

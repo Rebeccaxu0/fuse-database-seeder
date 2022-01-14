@@ -6,7 +6,7 @@ use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-Use Spatie\Translatable\HasTranslations;
+use Spatie\Translatable\HasTranslations;
 
 class ChallengeVersion extends Model
 {
@@ -21,7 +21,7 @@ class ChallengeVersion extends Model
      */
     public function challenge()
     {
-      return $this->belongsTo(Challenge::class);
+        return $this->belongsTo(Challenge::class);
     }
 
     /**
@@ -29,7 +29,7 @@ class ChallengeVersion extends Model
      */
     public function levels()
     {
-      return $this->hasMany(Level::class);
+        return $this->hasMany(Level::class);
     }
 
     /**
@@ -37,7 +37,7 @@ class ChallengeVersion extends Model
      */
     public function ideas()
     {
-      return $this->belongsToMany(Idea::class, 'idea_inspirations');
+        return $this->belongsToMany(Idea::class, 'idea_inspirations');
     }
 
     /**
@@ -45,7 +45,7 @@ class ChallengeVersion extends Model
      */
     public function challengeCategory()
     {
-      return $this->belongsTo(ChallengeCategory::class, 'challenge_category_id');
+        return $this->belongsTo(ChallengeCategory::class, 'challenge_category_id');
     }
 
     /**
@@ -53,14 +53,15 @@ class ChallengeVersion extends Model
      */
     public function prerequisiteChallengeVersion()
     {
-      return $this->hasOne(ChallengeVersion::class, 'prerequisite_challenge_version_id');
+        return $this->hasOne(ChallengeVersion::class, 'prerequisite_challenge_version_id');
     }
 
     /**
      * The Studios this challenge is active in.
      */
-    public function studios() {
-      return $this->belongsToMany(Studio::class);
+    public function studios()
+    {
+        return $this->belongsToMany(Studio::class);
     }
 
     /**
@@ -71,17 +72,17 @@ class ChallengeVersion extends Model
      */
     public function set_levels_order(array $order)
     {
-      $ids = array_keys($order);
-      $case_update_q = 'CASE id ';
-      foreach ($order as $id => $level_number) {
-        $case_update_q .= "WHEN {$id} THEN {$level_number} ";
-      }
-      $case_update_q .= 'END';
-      $nulls = DB::table('levels')
-        ->whereIn('id', $ids)
-        ->update(['level_number' => null]);
-      $reordered = DB::table('levels')
-        ->whereIn('id', $ids)
-        ->update(['level_number' => DB::raw($case_update_q)]);
+        $ids = array_keys($order);
+        $case_update_q = 'CASE id ';
+        foreach ($order as $id => $level_number) {
+            $case_update_q .= "WHEN {$id} THEN {$level_number} ";
+        }
+        $case_update_q .= 'END';
+        $nulls = DB::table('levels')
+            ->whereIn('id', $ids)
+            ->update(['level_number' => null]);
+        $reordered = DB::table('levels')
+            ->whereIn('id', $ids)
+            ->update(['level_number' => DB::raw($case_update_q)]);
     }
 }

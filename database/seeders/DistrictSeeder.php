@@ -17,25 +17,25 @@ class DistrictSeeder extends Seeder
      */
     public function run()
     {
-      $districts = District::factory()->count(2)
-        ->has(
-          School::factory()->count(3)
+        $districts = District::factory()->count(2)
             ->has(
-              Studio::factory()->count(5)
+                School::factory()->count(3)
+                    ->has(
+                        Studio::factory()->count(5)
+                    )
             )
-        )
-        ->create();
+            ->create();
 
-      foreach (District::all() as $district) {
-        $district->users()->attach(User::all()->random(2));
-      }
+        foreach (District::all() as $district) {
+            $district->users()->attach(User::all()->random(2));
+        }
 
-      foreach (School::all() as $school) {
-        $school->users()->attach(User::all()->random(5));
-      }
+        foreach (School::all() as $school) {
+            $school->users()->attach(User::all()->random(5));
+        }
 
-      foreach (Studio::all() as $studio) {
-        $studio->users()->attach(User::all()->random(10));
-      }
+        foreach (Studio::all() as $studio) {
+            $studio->users()->attach(User::all()->random(10));
+        }
     }
 }

@@ -17,8 +17,8 @@ class GradeLevel extends Model
      * @var array
      */
     protected $fillable = [
-      'name',
-      'id',
+        'name',
+        'id',
     ];
 
     /**
@@ -26,8 +26,6 @@ class GradeLevel extends Model
      */
     public function schools()
     {
-      return $this->belongsToMany(School::class);
+        return $this->belongsToMany(School::class);
     }
-
-
 }

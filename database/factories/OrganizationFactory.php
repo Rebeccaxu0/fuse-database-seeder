@@ -22,7 +22,7 @@ class OrganizationFactory extends Factory
     public function definition()
     {
         return [
-          'name' => 'Organization ' . $this->faker->emoji(),
+            'name' => 'Organization ' . $this->faker->emoji(),
         ];
     }
 }

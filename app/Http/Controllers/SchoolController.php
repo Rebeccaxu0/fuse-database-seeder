@@ -15,7 +15,7 @@ class SchoolController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(School::class, 'school');
+        $this->authorizeResource(School::class, 'school');
     }
 
     /**
@@ -40,7 +40,7 @@ class SchoolController extends Controller
     {
         return view('admin.school.create', [
             'packages' => Package::all()->sortBy('name'),
-          ]);
+        ]);
     }
 
     /**

@@ -9,9 +9,9 @@ use Illuminate\Database\Seeder;
 class PackageSeeder extends Seeder
 {
     private $defaults = [
-      'Discover',
-      'Create',
-      'Innovate',
+        'Discover',
+        'Create',
+        'Innovate',
     ];
 
     /**
@@ -21,13 +21,13 @@ class PackageSeeder extends Seeder
      */
     public function run()
     {
-      foreach ($this->defaults as $name) {
-        $challenges = Challenge::all()->random(5);
-        Package::factory()
-          ->hasAttached($challenges)
-          ->create([
-            'name' => $name,
-          ]);
-      }
+        foreach ($this->defaults as $name) {
+            $challenges = Challenge::all()->random(5);
+            Package::factory()
+                ->hasAttached($challenges)
+                ->create([
+                    'name' => $name,
+                ]);
+        }
     }
 }

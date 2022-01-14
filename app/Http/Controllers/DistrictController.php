@@ -15,7 +15,7 @@ class DistrictController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(District::class, 'district');
+        $this->authorizeResource(District::class, 'district');
     }
 
     /**
@@ -25,9 +25,9 @@ class DistrictController extends Controller
      */
     public function index()
     {
-      $districts = District::with(['schools', 'package'])
-        ->get()->sortBy('name');
-      return view('admin.district.index', ['districts' => $districts]);
+        $districts = District::with(['schools', 'package'])
+            ->get()->sortBy('name');
+        return view('admin.district.index', ['districts' => $districts]);
     }
 
     /**
@@ -37,9 +37,9 @@ class DistrictController extends Controller
      */
     public function create()
     {
-      return view('admin.district.create', [
-        'packages' => Package::all()->sortBy('name'),
-      ]);
+        return view('admin.district.create', [
+            'packages' => Package::all()->sortBy('name'),
+        ]);
     }
 
     /**
@@ -107,23 +107,23 @@ class DistrictController extends Controller
         ]);
 
         if (! empty($request->schoolsToRemove)) {
-          $district->removeSchools($request->schoolsToRemove);
+            $district->removeSchools($request->schoolsToRemove);
         }
 
         if (! empty($request->schoolsToAdd)) {
-          $district->addSchools($request->schoolsToAdd);
+            $district->addSchools($request->schoolsToAdd);
         }
 
         if (! empty($request->superFacilitatorsToRemove)) {
-          $district->removeSuperFacilitators($request->superFacilitatorsToRemove);
+            $district->removeSuperFacilitators($request->superFacilitatorsToRemove);
         }
 
         if (! empty($request->superFacilitatorsToAdd)) {
-          $district->addSuperFacilitators($request->superFacilitatorsToAdd);
+            $district->addSuperFacilitators($request->superFacilitatorsToAdd);
         }
 
-        if (! $request->boolean('license_status')){
-          destroy($district);
+        if (! $request->boolean('license_status')) {
+            destroy($district);
         }
 
         return redirect(route('admin.districts.index'));

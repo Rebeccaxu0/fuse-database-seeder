@@ -28,5 +28,4 @@ class FacilitatorCommentsController extends Controller
 
         return view('facilitator.comments', []);
     }
-
 }

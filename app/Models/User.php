@@ -31,8 +31,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $searchable = [
-      'name',
-      'id',
+        'name',
+        'id',
     ];
 
     /**
@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-      return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
     /**
@@ -89,7 +89,7 @@ class User extends Authenticatable
      */
     public function artifacts()
     {
-      return $this->morphedByMany(Artifact::class, 'teamable', 'teams');
+        return $this->morphedByMany(Artifact::class, 'teamable', 'teams');
     }
 
     /**
@@ -97,7 +97,7 @@ class User extends Authenticatable
      */
     public function comments()
     {
-      return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 
     /**
@@ -105,7 +105,7 @@ class User extends Authenticatable
      */
     public function ideas()
     {
-      return $this->morphedByMany(Idea::class, 'teamable', 'teams');
+        return $this->morphedByMany(Idea::class, 'teamable', 'teams');
     }
 
     /**
@@ -113,7 +113,7 @@ class User extends Authenticatable
      */
     public function districts()
     {
-      return $this->belongsToMany(District::class);
+        return $this->belongsToMany(District::class);
     }
 
     /**
@@ -121,7 +121,7 @@ class User extends Authenticatable
      */
     public function schools()
     {
-      return $this->belongsToMany(School::class);
+        return $this->belongsToMany(School::class);
     }
 
     /**
@@ -129,7 +129,7 @@ class User extends Authenticatable
      */
     public function studios()
     {
-      return $this->belongsToMany(Studio::class);
+        return $this->belongsToMany(Studio::class);
     }
 
     /**
@@ -137,7 +137,7 @@ class User extends Authenticatable
      */
     public function currentStudio()
     {
-      return $this->belongsTo(Studio::class, 'current_studio');
+        return $this->belongsTo(Studio::class, 'current_studio');
     }
 
     /**
@@ -145,7 +145,7 @@ class User extends Authenticatable
      */
     public function is_admin()
     {
-      return $this->has_role(Role::ADMIN_ID);
+        return $this->has_role(Role::ADMIN_ID);
     }
 
     /**
@@ -153,7 +153,7 @@ class User extends Authenticatable
      */
     public function is_super_facilitator()
     {
-      return $this->has_role(Role::SUPER_FACILITATOR_ID);
+        return $this->has_role(Role::SUPER_FACILITATOR_ID);
     }
 
     /**
@@ -161,7 +161,7 @@ class User extends Authenticatable
      */
     public function is_facilitator()
     {
-      return $this->has_role(Role::FACILITATOR_ID);
+        return $this->has_role(Role::FACILITATOR_ID);
     }
 
     /**
@@ -169,7 +169,7 @@ class User extends Authenticatable
      */
     public function is_student()
     {
-      return $this->has_role(Role::STUDENT_ID);
+        return $this->has_role(Role::STUDENT_ID);
     }
 
     /**
@@ -177,7 +177,7 @@ class User extends Authenticatable
      */
     public function is_anonymous_student()
     {
-      return $this->has_role(Role::ANONYMOUS_STUDENT_ID);
+        return $this->has_role(Role::ANONYMOUS_STUDENT_ID);
     }
 
     /**
@@ -189,23 +189,23 @@ class User extends Authenticatable
      */
     public function has_role($role_id)
     {
-      return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
-        return $this->roles()->where('role_id', $role_id)->get()->count();
-      });
+        return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
+            return $this->roles()->where('role_id', $role_id)->get()->count();
+        });
     }
     /**
      * @return bool
      */
     public function canImpersonate(): bool
     {
-      return $this->is_admin();
+        return $this->is_admin();
     }
     /**
      * @return bool
      */
     public function canBeImpersonated(): bool
     {
-      return ! $this->is_admin();
+        return ! $this->is_admin();
     }
 
     public function startedLevel(Level $level): bool

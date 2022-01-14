@@ -11,15 +11,15 @@ class DistrictSearchBar extends Component
 
     public function selectDistrict($id)
     {
-      $this->emitUp('districtSelected', $id);
-      $this->query = '';
+        $this->emitUp('districtSelected', $id);
+        $this->query = '';
     }
 
     public function updatedQuery()
     {
-      $this->districts = District::where('name', 'like', "%{$this->query}%")
-        ->limit(10)
-        ->get();
+        $this->districts = District::where('name', 'like', "%{$this->query}%")
+            ->limit(10)
+            ->get();
     }
 
     public function render()
@@ -27,4 +27,3 @@ class DistrictSearchBar extends Component
         return view('livewire.district-search-bar');
     }
 }
-

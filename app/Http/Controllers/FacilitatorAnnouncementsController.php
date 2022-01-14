@@ -22,5 +22,4 @@ class FacilitatorAnnouncementsController extends Controller
     {
         return view('facilitator.announcements', []);
     }
-
 }

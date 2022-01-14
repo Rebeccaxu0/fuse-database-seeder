@@ -16,14 +16,14 @@ class GuestFooter extends Component
      *
      * @var int
      */
-  public $students;
+    public $students;
 
     /**
      * Number of schools.
      *
      * @var int
      */
-  public $schools;
+    public $schools;
 
     /**
      * Create a new component instance.
@@ -36,10 +36,10 @@ class GuestFooter extends Component
     public function __construct()
     {
         $students = Cache::remember('student_count', 3600, function () {
-          return User::count();
+            return User::count();
         });
         $schools = Cache::remember('school_count', 3600, function () {
-          return School::count();
+            return School::count();
         });
         $ordinal = NumberFormatter::create(App::currentLocale(), NumberFormatter::DEFAULT_STYLE);
         $this->students = $ordinal->format($students);

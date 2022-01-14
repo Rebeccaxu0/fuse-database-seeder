@@ -48,18 +48,16 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::authenticateUsing(function (Request $request) {
-          $user = User::where('name', $request->name)->first();
+            $user = User::where('name', $request->name)->first();
 
-          if ($user) {
-            if (Hash::check($request->password, $user->password)) {
-              return $user;
+            if ($user) {
+                if (Hash::check($request->password, $user->password)) {
+                    return $user;
+                } else if (D7Hash::check($request->password, $user->password)) {
+                    $user->update(['password' => Hash::make($request->password)]);
+                    return $user;
+                }
             }
-            else if (D7Hash::check($request->password, $user->password)) {
-              $user->update(['password' => Hash::make($request->password)]);
-              return $user;
-            }
-          }
         });
-
     }
 }

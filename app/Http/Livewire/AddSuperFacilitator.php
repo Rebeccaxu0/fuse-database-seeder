@@ -13,12 +13,12 @@ class AddSuperFacilitator extends Component
 
     public function addUser(User $user)
     {
-      $this->selectedusers[$user->id] = ['name' => $user->name, 'full_name' => $user->full_name];
+        $this->selectedusers[$user->id] = ['name' => $user->name, 'full_name' => $user->full_name];
     }
 
     public function removeUser($id)
     {
-      unset($this->selectedusers[$id]);
+        unset($this->selectedusers[$id]);
     }
 
     public function render()

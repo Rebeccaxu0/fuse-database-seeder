@@ -16,6 +16,6 @@ class ChallengeCategory extends Model
      */
     public function challengeVersions()
     {
-      return $this->hasMany(ChallengeVersion::class);
+        return $this->hasMany(ChallengeVersion::class);
     }
 }

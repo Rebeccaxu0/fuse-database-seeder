@@ -16,10 +16,10 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-      if ($this->package()->count() > 0) {
-        return $this->package();
-      }
-      return $this->school->deFactoPackage();
+        if ($this->package()->count() > 0) {
+            return $this->package();
+        }
+        return $this->school->deFactoPackage();
     }
 
     /**
@@ -27,7 +27,7 @@ class Studio extends Organization
      */
     public function currentUsers()
     {
-      return $this->hasMany(User::class, 'current_studio');
+        return $this->hasMany(User::class, 'current_studio');
     }
 
     /**
@@ -35,9 +35,9 @@ class Studio extends Organization
      */
     public function currentStudents()
     {
-      return $this->CurrentUsers()->whereHas('roles', function(Builder $query) {
-        $query->where('id', '=', Role::STUDENT_ID);
-      });
+        return $this->CurrentUsers()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::STUDENT_ID);
+        });
     }
 
     /**
@@ -45,9 +45,9 @@ class Studio extends Organization
      */
     public function students()
     {
-      return $this->users()->whereHas('roles', function(Builder $query) {
-        $query->where('id', '=', Role::STUDENT_ID);
-      });
+        return $this->users()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::STUDENT_ID);
+        });
     }
 
     /**
@@ -55,8 +55,8 @@ class Studio extends Organization
      */
     public function currentFacilitators()
     {
-      return $this->currentUsers()->whereHas('roles', function(Builder $query) {
-          $query->where('id', '=', Role::FACILITATOR_ID);
+        return $this->currentUsers()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
 
@@ -65,8 +65,8 @@ class Studio extends Organization
      */
     public function facilitators()
     {
-      return $this->users()->whereHas('roles', function(Builder $query) {
-          $query->where('id', '=', Role::FACILITATOR_ID);
+        return $this->users()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
 
@@ -75,9 +75,9 @@ class Studio extends Organization
      */
     public function currentSuperFacilitators()
     {
-      return $this->currentUsers()->whereHas('roles', function(Builder $query) {
-        $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
-      });
+        return $this->currentUsers()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
+        });
     }
 
     /**
@@ -85,9 +85,9 @@ class Studio extends Organization
      */
     public function superFacilitators()
     {
-      return $this->users()->whereHas('roles', function(Builder $query) {
-        $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
-      });
+        return $this->users()->whereHas('roles', function (Builder $query) {
+            $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
+        });
     }
 
     /**
@@ -95,7 +95,7 @@ class Studio extends Organization
      */
     public function school()
     {
-      return $this->belongsTo(School::class);
+        return $this->belongsTo(School::class);
     }
 
     /**
@@ -103,7 +103,7 @@ class Studio extends Organization
      */
     public function district()
     {
-      return $this->school()->first() ? $this->school()->first()->district() : null;
+        return $this->school()->first() ? $this->school()->first()->district() : null;
     }
 
     /**
@@ -111,7 +111,7 @@ class Studio extends Organization
      */
     public function package()
     {
-      return $this->belongsTo(Package::class);
+        return $this->belongsTo(Package::class);
     }
 
     /**
@@ -120,7 +120,7 @@ class Studio extends Organization
      */
     public function challengeVersions()
     {
-      return $this->belongsToMany(ChallengeVersion::class);
+        return $this->belongsToMany(ChallengeVersion::class);
     }
 
     /**

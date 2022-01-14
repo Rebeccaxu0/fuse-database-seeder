@@ -16,7 +16,7 @@ class ChallengeVersionController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
+        $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
     }
 
     /**
