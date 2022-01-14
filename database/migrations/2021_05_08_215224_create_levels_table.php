@@ -28,24 +28,17 @@ class CreateLevelsTable extends Migration
         });
 
         Schema::create('level_starts', function (Blueprint $table) {
-            $table->unsignedBigInteger('level');
-            $table->unsignedBigInteger('user');
-            $table->foreign('level')
-                  ->references('id')
-                  ->on('levels')
-                  ->cascadeOnUpdate()
-                  ->nullOnDelete();
-            $table->foreign('user')
-                  ->references('id')
-                  ->on('users')
-                  ->cascadeOnUpdate()
-                  ->nullOnDelete();
+            $table->foreignId('level_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+            $table->foreignId('user_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
             $table->timestamp('created_at')
                   ->useCurrent()
                   ->comment('When user started this level.');
-            $table->primary(['level', 'user']);
-            $table->unique(['level', 'user']);
-            $table->index(['level', 'user']);
         });
 
         Schema::table('users', function (Blueprint $table) {
