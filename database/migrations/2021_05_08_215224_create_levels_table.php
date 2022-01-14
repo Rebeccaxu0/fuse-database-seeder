@@ -28,6 +28,8 @@ class CreateLevelsTable extends Migration
         });
 
         Schema::create('level_starts', function (Blueprint $table) {
+            $table->unsignedBigInteger('level');
+            $table->unsignedBigInteger('user');
             $table->foreign('level')
                   ->references('id')
                   ->on('levels')
