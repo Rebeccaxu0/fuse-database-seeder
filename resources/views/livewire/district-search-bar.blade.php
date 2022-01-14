@@ -14,11 +14,11 @@
         <div class="list-item">Searching...</div>
     </div>
 
-    @if(!empty($query))
+    @if (! empty($query))
         <div class="relative top-0 bottom-0 left-0 right-0"></div>
 
         <div class="relative z-10 w-full bg-white rounded-t-none shadow-lg list-group">
-          @forelse($districts as $district)
+          @forelse ($districts as $district)
           <div class="mb-6" wire:click="selectDistrict({{ $district->id }})">{{ $district->name }}</div>
           @empty
           <div>No results</div>

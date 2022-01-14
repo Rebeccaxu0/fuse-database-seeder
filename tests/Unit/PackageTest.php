@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Package;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class PackageTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->package = \App\Models\Package::factory()->make();
+      $this->package = Package::factory()->make();
     }
 
     protected function tearDown(): void

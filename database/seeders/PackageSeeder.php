@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Challenge;
 use App\Models\Package;
 use Illuminate\Database\Seeder;
 
@@ -21,7 +22,7 @@ class PackageSeeder extends Seeder
     public function run()
     {
       foreach ($this->defaults as $name) {
-        $challenges = \App\Models\Challenge::all()->random(5);
+        $challenges = Challenge::all()->random(5);
         Package::factory()
           ->hasAttached($challenges)
           ->create([

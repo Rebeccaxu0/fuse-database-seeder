@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Idea;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class IdeaTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->idea = \App\Models\Idea::factory()->make();
+      $this->idea = Idea::factory()->make();
     }
 
     protected function tearDown(): void

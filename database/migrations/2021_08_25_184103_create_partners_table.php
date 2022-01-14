@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePartnersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('partners', function (Blueprint $table) {
@@ -29,11 +25,6 @@ class CreatePartnersTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         if (Schema::hasColumns('schools', ['partner_id'])) {

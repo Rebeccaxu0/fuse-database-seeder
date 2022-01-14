@@ -17,7 +17,7 @@
     <div class="-mx-3 mb-2">
       <label class="text-gray-700 mb-2 form-required">{{ __('Allowed Challenges') }}</label>
     </div>
-    @foreach($challenges as $challenge)
+    @foreach ($challenges as $challenge)
     <x-form.checkbox_array
              name="challenges"
              :value="$challenge->id"

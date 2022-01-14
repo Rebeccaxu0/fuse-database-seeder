@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\District;
 use App\Models\Package;
 use App\Models\School;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -63,7 +61,7 @@ class SchoolController extends Controller
             'name' => $request->name,
             'package_id' => $request->get('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
-            'partner_id' => $request->get('partner')[0]
+            'partner_id' => $request->get('partner')[0],
         ]);
         $school->gradelevels()->attach($request->gradelevels);
         $school->save();

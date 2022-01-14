@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Studio;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FacilitatorStudioMembersController extends Controller

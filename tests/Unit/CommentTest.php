@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Comment;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ class CommentTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->comment = \App\Models\Comment::factory()->make();
+      $this->comment = Comment::factory()->make();
     }
 
     protected function tearDown(): void

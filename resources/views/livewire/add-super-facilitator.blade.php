@@ -1,5 +1,5 @@
 <div class="relative mb-4">
-  @livewire('user-search-bar')
+  @livewire ('user-search-bar')
 
   @foreach ($selectedusers as $id => $user)
   <div> 

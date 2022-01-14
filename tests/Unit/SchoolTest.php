@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\School;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class SchoolTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->school = \App\Models\School::factory()->make();
+      $this->school = School::factory()->make();
     }
 
     protected function tearDown(): void

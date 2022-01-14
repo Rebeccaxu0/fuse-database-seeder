@@ -28,7 +28,7 @@ abstract class TestCase extends BaseTestCase
         $args = $this->getRelationshipArguments($class, $relatedClassName, $relationship);
 
         if ($test_schema) {
-          if ($relationship == 'morphTo' && !isset($args[0])) {
+          if ($relationship == 'morphTo' && ! isset($args[0])) {
             $args[0] = $relatedClassName;
           }
           $this->assertRelationshipSchemaExists($class, $relationship, $args);

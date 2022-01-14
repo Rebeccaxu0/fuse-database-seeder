@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Studio;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class StudioTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->studio = \App\Models\Studio::factory()->make();
+      $this->studio = Studio::factory()->make();
     }
 
     protected function tearDown(): void

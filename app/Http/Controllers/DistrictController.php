@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\District;
 use App\Models\Package;
-use App\Models\School;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class DistrictController extends Controller
@@ -61,7 +59,7 @@ class DistrictController extends Controller
             'name' => $request->name,
             'package_id' => $request->get('package'),
             'salesforce_acct_id' => $request->salesforce_acct_id,
-            'license_status' => $request->boolean('license_status')
+            'license_status' => $request->boolean('license_status'),
         ]);
 
         return redirect(route('admin.districts.index'));
@@ -108,23 +106,23 @@ class DistrictController extends Controller
             'license_status' => $request->boolean('license_status'),
         ]);
 
-        if (!empty($request->schoolsToRemove)) {
+        if (! empty($request->schoolsToRemove)) {
           $district->removeSchools($request->schoolsToRemove);
         }
 
-        if (!empty($request->schoolsToAdd)) {
+        if (! empty($request->schoolsToAdd)) {
           $district->addSchools($request->schoolsToAdd);
         }
 
-        if (!empty($request->superFacilitatorsToRemove)) {
+        if (! empty($request->superFacilitatorsToRemove)) {
           $district->removeSuperFacilitators($request->superFacilitatorsToRemove);
         }
 
-        if (!empty($request->superFacilitatorsToAdd)) {
+        if (! empty($request->superFacilitatorsToAdd)) {
           $district->addSuperFacilitators($request->superFacilitatorsToAdd);
         }
 
-        if (!$request->boolean('license_status')){
+        if (! $request->boolean('license_status')){
           destroy($district);
         }
 

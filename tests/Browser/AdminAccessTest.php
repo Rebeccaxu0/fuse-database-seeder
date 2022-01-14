@@ -2,7 +2,8 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\Role;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -12,10 +13,10 @@ class AdminAccessTest extends DuskTestCase
     public function testAdminAccess()
     {
         $this->browse(function (Browser $browser) {
-            $user = \App\Models\User::factory()->state([
+            $user = User::factory()->state([
                 'password' => '$2y$10$YmNDcP/csWCz2wFVe4.O.e2/4tlug3VYFaufHRCWb8C7KkEXk0ixa',
             ])->create();
-            $admin_role = \App\Models\Role::where('name', 'FUSE Administrator')->first();
+            $admin_role = Role::where('name', 'FUSE Administrator')->first();
             $admin_role->$user;
             $browser->visit('/')
                 ->type('name', $user->name)
@@ -31,10 +32,10 @@ class AdminAccessTest extends DuskTestCase
     public function testNotAdmin()
     {
         $this->browse(function (Browser $browser) {
-            $user = \App\Models\User::factory()->state([
+            $user = User::factory()->state([
                 'password' => '$2y$10$YmNDcP/csWCz2wFVe4.O.e2/4tlug3VYFaufHRCWb8C7KkEXk0ixa',
             ])->create();
-            $student_role = \App\Models\Role::where('name', 'Student')->first();
+            $student_role = Role::where('name', 'Student')->first();
             $student_role->$user;
             $browser->visit('/')
                 ->type('name', $user->name)

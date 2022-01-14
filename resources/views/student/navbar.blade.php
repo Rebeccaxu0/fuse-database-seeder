@@ -17,19 +17,19 @@
   <x-navbar-ul id="student-menu" class="md:pl-3 md:pr-20 md:ml-16">
     <li class="md:-ml-3">
       <a class="px-2 {{ (request()->routeIs('student.challenges') ? 'active' : '') }}"
-        href="{{ route('student.challenges')}}">{{ __('Challenges') }}</a>
+        href="{{ route('student.challenges') }}">{{ __('Challenges') }}</a>
     </li>
     <li>
       <a class="px-2 {{ (request()->routeIs('student.help_finder') ? 'active' : '') }}"
-        href="{{ route('student.help_finder')}}">{{ __('Help Finder') }}</a>
+        href="{{ route('student.help_finder') }}">{{ __('Help Finder') }}</a>
     </li>
     <li>
       <a class="px-2 {{ (request()->routeIs('student.dashboard') ? 'active' : '') }}"
-        href="{{ route('student.dashboard')}}">{{ __('Dashboard') }}</a>
+        href="{{ route('student.dashboard') }}">{{ __('Dashboard') }}</a>
     </li>
     <li>
       <a class="px-2 {{ (request()->routeIs('student.my_stuff') ? 'active' : '') }}"
-        href="{{ route('student.my_stuff')}}">{{ __('My Stuff') }}</a>
+        href="{{ route('student.my_stuff') }}">{{ __('My Stuff') }}</a>
     </li>
     <li>
       <form method="POST" action="{{ route('logout') }}" class="h-full">

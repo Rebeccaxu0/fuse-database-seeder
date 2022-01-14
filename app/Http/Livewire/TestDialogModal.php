@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use LivewireUI\Modal\ModalComponent;
 
 class TestDialogModal extends Component
 {

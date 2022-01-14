@@ -4,7 +4,7 @@
 
   <x-slot name="header">{{ __('Edit Package ":name"', ['name' => $package->name]) }}</x-slot>
 
-  <form class="w-full max-w-lg mt-6" action="{{ route('admin.packages.update', $package)}}" method="POST">
+  <form class="w-full max-w-lg mt-6" action="{{ route('admin.packages.update', $package) }}" method="POST">
     @method('PATCH')
     @csrf
     <x-form.input label="Name"
@@ -20,7 +20,7 @@
     <div class="-mx-3 mb-2">
       <label class="text-gray-700 mb-2 form-required">Allowed Challenges</label>
     </div>
-    @foreach(\App\Models\Challenge::all() as $challenge)
+    @foreach (\App\Models\Challenge::all() as $challenge)
     <x-form.checkbox_array
              name="challenges"
              :value="$challenge->id"
@@ -34,7 +34,7 @@
     </div>
   </form>
 
-  <form id="delete-frm" class="" action="{{ route('admin.packages.destroy', $package)}}" method="POST">
+  <form id="delete-frm" class="" action="{{ route('admin.packages.destroy', $package) }}" method="POST">
     @method('DELETE')
     @csrf
     <button class="btn btn-danger">Delete</button>

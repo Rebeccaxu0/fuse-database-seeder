@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateChallengeVersionsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('challenge_versions', function (Blueprint $table) {
@@ -53,11 +49,6 @@ class CreateChallengeVersionsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('challenge_versions');

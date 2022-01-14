@@ -17,7 +17,7 @@
     </div>
     <div id="partner">
     <label class="text-gray-700 mb-4">Partnerships</label>
-      @foreach(\App\Models\Partner::all() as $partner)
+      @foreach (\App\Models\Partner::all() as $partner)
       <x-form.exclusive_checkbox_array
               name="partner"
               :value="$partner->id"
@@ -26,7 +26,7 @@
     </div>
     <br/>
     <label class="text-gray-700 mb-4">Grade Levels</label>
-    @foreach(\App\Models\GradeLevel::all() as $glevel)
+    @foreach (\App\Models\GradeLevel::all() as $glevel)
       <x-form.checkbox_array
               name="gradelevels"
               :value="$glevel->id"

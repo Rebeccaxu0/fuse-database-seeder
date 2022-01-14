@@ -19,7 +19,7 @@
   <h2>{{ __('Uncommon Tasks') }}</h2>
 
   <ul>
-    <li><a href="{{ route('admin.lti_platforms.index')}}">LTI</a></li>
+    <li><a href="{{ route('admin.lti_platforms.index') }}">LTI</a></li>
   </ul>
 
 </x-admin-layout>

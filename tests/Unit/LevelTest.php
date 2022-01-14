@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Level;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class LevelTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->level = \App\Models\Level::factory()->make();
+      $this->level = Level::factory()->make();
     }
 
     protected function tearDown(): void

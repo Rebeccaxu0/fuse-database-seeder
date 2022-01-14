@@ -7,7 +7,7 @@
   <a href="{{ route('admin.schools.create') }}">
     <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add School</button>
   </a>
-  @foreach($schools as $school)
+  @foreach ($schools as $school)
   <h3 class="mt-2 mb-2">{{ $school->name }}
     <span class="pl-2">
       <a href="{{ route('admin.schools.edit', $school->id) }}">
@@ -29,14 +29,13 @@
       @endforeach
     </ol>
   </details>
-  @if($school->district)
-  <label class="text-xs">{{ __('Parent district :district_name ',
-    [
-    'district_name' => $school->district->name,
-    ]) }}</label>
+  @if ($school->district)
+  <label class="text-xs">
+    {{ __('Parent district :district_name ', ['district_name' => $school->district->name]) }}
+  </label>
   @endif
   @endforeach
 
   {{ $schools->links() }}
 
-  </x-admin-layout>
+</x-admin-layout>

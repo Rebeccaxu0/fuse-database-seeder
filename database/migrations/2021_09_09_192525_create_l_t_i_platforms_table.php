@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLTIPlatformsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('l_t_i_platforms', function (Blueprint $table) {
@@ -42,11 +38,6 @@ class CreateLTIPlatformsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('l_t_i_platformable');

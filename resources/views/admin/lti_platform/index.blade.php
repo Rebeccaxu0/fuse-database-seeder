@@ -7,7 +7,7 @@
   <a href="{{ route('admin.packages.create') }}">
     <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add platform</button>
   </a>
-  @foreach($lti_platform as $lti)
+  @foreach ($lti_platform as $lti)
   <h3 class="mt-2 mb-2">{{ $lti->name }}
     <span class="pl-2">
       <a href="{{ route('admin.lti_platforms.edit', $lti->id) }}">

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ class UserTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->user = \App\Models\User::factory()->make();
+      $this->user = User::factory()->make();
     }
 
     protected function tearDown(): void

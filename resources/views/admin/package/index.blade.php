@@ -7,7 +7,7 @@
     <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
   </a>
 
-  @foreach($packages as $package)
+  @foreach ($packages as $package)
   <div class="bg-gray-200 rounded-md p-2 mb-2">
     <h3 class="mt-2 mb-2">{{ $package->name }}
       @if ($package->student_activity_tab_access)

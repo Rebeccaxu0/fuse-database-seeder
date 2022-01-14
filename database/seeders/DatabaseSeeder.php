@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-      \App\Models\User::factory(100)->create();
+      User::factory(100)->create();
       $this->call([
         ChallengeCategorySeeder::class,
         ChallengeAndLevelSeeder::class,

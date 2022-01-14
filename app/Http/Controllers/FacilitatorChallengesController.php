@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Challenge;
 use App\Models\ChallengeCategory;
-use App\Models\Studio;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FacilitatorChallengesController extends Controller

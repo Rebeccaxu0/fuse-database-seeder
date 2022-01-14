@@ -26,13 +26,15 @@ class CreateApiTokenTest extends TestCase
         }
 
         Livewire::test(ApiTokenManager::class)
-                    ->set(['createApiTokenForm' => [
-                        'name' => 'Test Token',
-                        'permissions' => [
-                            'read',
-                            'update',
+                    ->set([
+                            'createApiTokenForm' => [
+                            'name' => 'Test Token',
+                            'permissions' => [
+                                'read',
+                                'update',
+                            ],
                         ],
-                    ]])
+                    ])
                     ->call('createApiToken');
 
         $this->assertCount(1, $user->fresh()->tokens);

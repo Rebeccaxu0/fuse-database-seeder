@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Role;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class RoleTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->role = \App\Models\Role::factory()->make();
+      $this->role = Role::factory()->make();
     }
 
     protected function tearDown(): void

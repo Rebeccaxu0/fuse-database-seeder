@@ -1,6 +1,6 @@
 @props(['route', 'activeColor'])
 
-<li class='flex-1 py-4 md:p-0 m-0 list-none border-t last:border-b md:border-b-0 md:border-t-0 md:border-r first:md:border-l last:md:border-b-0 border-white max-w-none' @if (request()->routeIs($route)) style="background-color:{{$activeColor}}" @endif >
+<li class='flex-1 py-4 md:p-0 m-0 list-none border-t last:border-b md:border-b-0 md:border-t-0 md:border-r first:md:border-l last:md:border-b-0 border-white max-w-none' @if (request()->routeIs($route)) style="background-color:{{ $activeColor }}" @endif >
   <a href="{{ route($route) }}"
     class="flex justify-center items-center no-underline
            h-full w-full

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class District extends Organization
@@ -97,7 +96,7 @@ class District extends Organization
     {
       foreach ($schools_to_add as $id) {
         $school = School::find($id);
-        if (!(in_array($school->id, $this->schools->pluck('id')->toArray()))){
+        if (! (in_array($school->id, $this->schools->pluck('id')->toArray()))){
           $school->district()->associate($this);
           $school->save();
         }
@@ -130,10 +129,10 @@ class District extends Organization
     {
       foreach ($super_facilitator_ids as $id) {
           $sfuser = User::find($id);
-          if (!(in_array($this->id, $sfuser->districts->pluck('id')->toArray()))){
+          if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))){
             $sfuser->districts()->attach($this);
           }
-          if (!$sfuser->is_super_facilitator()){
+          if (! $sfuser->is_super_facilitator()){
             $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
             $sfuser->has_role(5);
           }

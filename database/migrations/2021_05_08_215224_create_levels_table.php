@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLevelsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('levels', function (Blueprint $table) {
@@ -63,11 +58,6 @@ class CreateLevelsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {

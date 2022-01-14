@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\ChallengeCategory;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class ChallengeCategoryTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->challengeCategory = \App\Models\ChallengeCategory::factory()->make();
+      $this->challengeCategory = ChallengeCategory::factory()->make();
     }
 
     protected function tearDown(): void

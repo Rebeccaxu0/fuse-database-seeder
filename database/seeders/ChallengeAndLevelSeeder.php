@@ -6,7 +6,6 @@ use App\Models\Challenge;
 use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class ChallengeAndLevelSeeder extends Seeder
 {

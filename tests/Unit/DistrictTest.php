@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\District;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class DistrictTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->district = \App\Models\District::factory()->make();
+      $this->district = District::factory()->make();
     }
 
     protected function tearDown(): void

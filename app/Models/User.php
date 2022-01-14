@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Lab404\Impersonate\Models\Impersonate;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -205,12 +205,12 @@ class User extends Authenticatable
      */
     public function canBeImpersonated(): bool
     {
-      return !$this->is_admin();
+      return ! $this->is_admin();
     }
 
     public function startedLevel(Level $level): bool
     {
-        return \Illuminate\Support\Facades\DB::table('level_starts')
+        return DB::table('level_starts')
             ->where('level', $level->id)
             ->where('user', $this->id)
             ->exists();

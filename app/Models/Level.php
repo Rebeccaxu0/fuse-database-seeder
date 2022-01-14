@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class Level extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasTranslations;
 
     public $translatable = ['stuff_you_need'];
 
@@ -42,10 +44,10 @@ class Level extends Model
 
     public function setLevelNumberAttribute($value)
     {
-        if (!is_null($value)) {
-            $e = 'Cannot set the level order number from the level directly. ' .
-                 'See App\Models\ChallengeVersion::set_levels_order()';
-            throw new \App\Exceptions\LevelException($e);
+        if (! is_null($value)) {
+            $e = 'Cannot set the level order number from the level directly. '
+                 . 'See App\Models\ChallengeVersion::set_levels_order()';
+            throw new LevelException($e);
         } else {
             $this->attributes['level_number'] = null;
         }

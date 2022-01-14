@@ -7,7 +7,7 @@
   <a href="{{ route('admin.studios.create') }}">
     <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studio</button>
   </a>
-  @foreach($studios as $studio)
+  @foreach ($studios as $studio)
   <h3 class="mt-2 mb-2">{{ $studio->name }}
     <span class="pl-2">
       <a href="{{ route('admin.studios.edit', $studio->id) }}">
@@ -37,7 +37,7 @@
       @endforeach
     </ol>
   </details>
-  @if($studio->school)
+  @if ($studio->school)
   <label class="text-xs">{{ __('Parent school :school_name ',
     [
     'school_name' => $studio->school->name,

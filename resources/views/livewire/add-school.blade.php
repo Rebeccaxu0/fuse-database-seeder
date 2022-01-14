@@ -1,5 +1,5 @@
 <div class="relative">
-  @livewire('school-search-bar')
+  @livewire ('school-search-bar')
 
   @foreach ($selectedschools as $id => $school)
   <div>

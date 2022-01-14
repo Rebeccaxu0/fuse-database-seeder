@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateGradeLevelsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('grade_levels', function (Blueprint $table) {
@@ -35,11 +31,6 @@ class CreateGradeLevelsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('grade_level_school');

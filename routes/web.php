@@ -42,13 +42,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   */
   Route::name('student.')
     ->group(function () {
-      Route::get('/challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
-      Route::get('/challenge/{challengeVersion:slug}/level/{level:level_number}', [LevelController::class, 'show'])->name('level');
-      Route::get('/dashboard', function () {
+      Route::get('challenges', [ChallengeVersionController::class, 'student_index'])->name('challenges');
+      Route::get('challenge/{challengeVersion:slug}/level/{level:level_number}', [LevelController::class, 'show'])->name('level');
+      Route::get('dashboard', function () {
         return view('student.dashboard');
       })->name('dashboard');
-      Route::get('/help_finder', [ChallengeVersionController::class, 'student_help_finder'])->name('help_finder');
-      Route::get('/mystuff', [ArtifactController::class, 'my_stuff_index'])->name('my_stuff');
+      Route::get('help_finder', [ChallengeVersionController::class, 'student_help_finder'])->name('help_finder');
+      Route::get('mystuff', [ArtifactController::class, 'my_stuff_index'])->name('my_stuff');
     });
 
   /*
@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
       Route::get('settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
       Route::get('announcements', [FacilitatorAnnouncementsController::class, 'index'])->name('announcements');
     });
-  Route::get('/support', function () {
+  Route::get('support', function () {
     return '<h1>' . __('TODO') . '</h1>';
   })->name('support');
 
@@ -76,7 +76,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function() {
   | admin routes
   |------------------------------------------------------------------------
   */
-  Route::view('/admin', 'admin.index')->name('admin');
+  Route::view('admin', 'admin.index')->name('admin');
   Route::prefix('admin')
     ->name('admin.')
     ->group(function () {

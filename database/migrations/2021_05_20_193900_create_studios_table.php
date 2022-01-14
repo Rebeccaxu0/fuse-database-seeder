@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateStudiosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('studios', function (Blueprint $table) {
@@ -76,11 +72,6 @@ class CreateStudiosTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {

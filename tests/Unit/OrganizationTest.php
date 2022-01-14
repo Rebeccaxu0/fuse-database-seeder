@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Facades\Schema;
+use App\Models\Organization;
 use Tests\TestCase;
 
 class OrganizationTest extends TestCase
@@ -12,7 +12,7 @@ class OrganizationTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->organization = \App\Models\Organization::factory()->make();
+      $this->organization = Organization::factory()->make();
     }
 
     protected function tearDown(): void

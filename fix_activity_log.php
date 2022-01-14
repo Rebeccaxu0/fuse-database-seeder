@@ -18,7 +18,7 @@ $result = $dbh->query($delete_nulls_q);
 print "{$result->rowCount()} rows of no activity deleted\n";
 
 // 1. Add flag column to mark a row as having been processed.
-if (!count($dbh->query("SHOW COLUMNS FROM `fuse_activity_log` LIKE 'processed'")->fetchAll())) {
+if (! count($dbh->query("SHOW COLUMNS FROM `fuse_activity_log` LIKE 'processed'")->fetchAll())) {
   $add_col_q = <<<MYSQL
 ALTER TABLE fuse_activity_log ADD processed TINYINT UNSIGNED DEFAULT 0;
 CREATE INDEX fuse_Activity_log_processed_IDX USING BTREE ON fuse_activity_log (processed);
@@ -89,7 +89,7 @@ foreach ($users as $user) {
         'studios' => '',
       ];
     }
-    if (!empty($activity['studio_nid'])) {
+    if (! empty($activity['studio_nid'])) {
       $sth->bindParam(':uid', $user['uid'], PDO::PARAM_INT);
       $sth->bindParam(':studio_nid', $activity['studio_nid'], PDO::PARAM_INT);
       $sth->bindParam(':t_max', $ts, PDO::PARAM_INT);
@@ -125,7 +125,7 @@ foreach ($users as $user) {
   $sth->closeCursor();
   $sth = $dbh->prepare($update_affiliated_studios_q);
   foreach ($epoch as $k => $v) {
-    if (!empty($v['studios'])
+    if (! empty($v['studios'])
       && ($v['t_start'] != $v['t_end'] || $ts == $v['t_end'])) {
       $sth->bindParam(':studios', $v['studios'], PDO::PARAM_STR);
       $sth->bindParam(':uid', $user['uid'], PDO::PARAM_INT);

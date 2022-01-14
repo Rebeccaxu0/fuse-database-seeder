@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Challenge;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class ChallengeTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->challenge = \App\Models\Challenge::factory()->make();
+      $this->challenge = Challenge::factory()->make();
     }
 
     protected function tearDown(): void

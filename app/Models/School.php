@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class School extends Organization
@@ -21,7 +20,7 @@ class School extends Organization
       'name',
       'package_id',
       'salesforce_acct_id',
-      'partner_id'
+      'partner_id',
     ];
 
     /**
@@ -125,7 +124,7 @@ class School extends Organization
     {
         foreach ($gradelevels as $id) {
           $gradelevel = GradeLevel::find($id);
-          if (!(in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))){
+          if (! (in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))){
             $gradelevel->schools()->associate($this);
             $gradelevel->save();
           }

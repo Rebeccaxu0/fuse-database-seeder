@@ -4,7 +4,7 @@
 
   <x-slot name="header">{{ __('Edit District :name', ['name' => $district->name]) }}</x-slot>
 
-  <form class="w-full max-w-lg mt-6" action="{{ route('admin.districts.update', $district)}}" method="POST">
+  <form class="w-full max-w-lg mt-6" action="{{ route('admin.districts.update', $district) }}" method="POST">
     @method('PATCH')
     @csrf
     <x-form.input label="Name" name="name" required="true"
@@ -18,7 +18,7 @@
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Super Facilitators</label>
       <p class="text-xs"> Mark for removal</p>
-    @foreach($district->superFacilitators as $user)
+    @foreach ($district->superFacilitators as $user)
     <x-form.checkbox_array name="superFacilitatorsToRemove"
                            :value="$user->id"
                            :label="$user->name" />
@@ -31,7 +31,7 @@
     <div class="mb-4">
       <label class="text-gray-700 mb-4">Current Schools</label>
       <p class="text-xs"> Mark for removal</p>
-    @foreach($district->schools as $school)
+    @foreach ($district->schools as $school)
     <x-form.checkbox_array name="schoolsToRemove"
                            :value="$school->id"
                            :label="$school->name" />
@@ -55,7 +55,7 @@
       </button>
     </div>
   </form>
-  <!-- <form id="delete-frm" class="" action="{{ route('admin.districts.destroy', $district)}}" method="POST">
+  <!-- <form id="delete-frm" class="" action="{{ route('admin.districts.destroy', $district) }}" method="POST">
     @method('DELETE')
     @csrf
     <button class="btn btn-danger">Delete</button>

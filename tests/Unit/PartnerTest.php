@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Partner;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -12,7 +13,7 @@ class PartnerTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->partner = \App\Models\Partner::factory()->make();
+      $this->partner = Partner::factory()->make();
     }
 
     protected function tearDown(): void

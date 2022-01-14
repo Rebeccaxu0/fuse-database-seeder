@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-      @foreach($districts as $district)
+      @foreach ($districts as $district)
       <tr>
         <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
           <div class="flex items-center">
@@ -63,7 +63,7 @@
             </div>
             <div class="ml-3">
               <p class="text-gray whitespace-no-wrap">
-              {{ $district->salesforce_acct_id ?? __('No ID')}}
+              {{ $district->salesforce_acct_id ?? __('No ID') }}
               </p>
             </div>
           </div>

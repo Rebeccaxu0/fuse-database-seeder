@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\View\Component;
 

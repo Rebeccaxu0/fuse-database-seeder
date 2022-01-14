@@ -18,7 +18,7 @@ class GradeLevel extends Model
      */
     protected $fillable = [
       'name',
-      'id'
+      'id',
     ];
 
     /**

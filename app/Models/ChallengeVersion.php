@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -76,11 +77,11 @@ class ChallengeVersion extends Model
         $case_update_q .= "WHEN {$id} THEN {$level_number} ";
       }
       $case_update_q .= 'END';
-      $nulls = \DB::table('levels')
+      $nulls = DB::table('levels')
         ->whereIn('id', $ids)
         ->update(['level_number' => null]);
-      $reordered = \DB::table('levels')
+      $reordered = DB::table('levels')
         ->whereIn('id', $ids)
-        ->update(['level_number' => \DB::raw($case_update_q)]);
+        ->update(['level_number' => DB::raw($case_update_q)]);
     }
 }

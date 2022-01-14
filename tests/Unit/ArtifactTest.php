@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Artifact;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
@@ -13,7 +14,7 @@ class ArtifactTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->artifact = \App\Models\Artifact::factory()->make();
+      $this->artifact = Artifact::factory()->make();
     }
 
     protected function tearDown(): void

@@ -2,7 +2,8 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Models\Package;
+use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -12,10 +13,10 @@ class AdminCRUDTest extends DuskTestCase
     public function testAdminCreatePackage()
     {
         $this->browse(function (Browser $browser) {
-            $pkgtest = \App\Models\Package::factory()->state([
+            $pkgtest = Package::factory()->state([
                 'name' => 'Test Package',
             ])->create();
-            $browser->loginAs(\App\Models\User::find(1)) //needs to be an admin user
+            $browser->loginAs(User::find(1)) //needs to be an admin user
                     ->visit('/admin/packages')
                     ->press('Add package')
                     ->assertPathIs()
@@ -32,7 +33,7 @@ class AdminCRUDTest extends DuskTestCase
     public function testAdminUpdatePackage()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(\App\Models\User::find(1)) //needs to be an admin user
+            $browser->loginAs(User::find(1)) //needs to be an admin user
                     ->visit('/admin/packages')
                     ->press('Edit')
                     //unselect challenge
@@ -47,7 +48,7 @@ class AdminCRUDTest extends DuskTestCase
     public function testAdminDeletePackage()
     {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs(\App\Models\User::find(1)) //needs to be an admin user
+            $browser->loginAs(User::find(1)) //needs to be an admin user
                     ->visit('/admin/packages')
                     ->press('Edit')
                     //title
