@@ -7,13 +7,18 @@ use Livewire\Component;
 
 class AddDistrict extends Component
 {
-    public $selecteddistrict;
+    public $selecteddistricts= [];
 
     protected $listeners = ['districtSelected' => 'addDistrict'];
 
     public function addDistrict(District $district)
     {
-        $this->selectedschool = $district;
+        $this->selecteddistricts[$district->id] = ['name' => $district->name];
+    }
+
+    public function removeDistrict($id)
+    {
+        unset($this->selecteddistricts[$id]);
     }
 
     public function render()
