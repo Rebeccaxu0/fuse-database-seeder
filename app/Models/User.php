@@ -211,8 +211,8 @@ class User extends Authenticatable
     public function startedLevel(Level $level): bool
     {
         return DB::table('level_starts')
-            ->where('level', $level->id)
-            ->where('user', $this->id)
+            ->where('level_id', $level->id)
+            ->where('user_id', $this->id)
             ->exists();
     }
 }
