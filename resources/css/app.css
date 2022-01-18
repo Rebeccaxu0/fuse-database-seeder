@@ -105,6 +105,18 @@
     @apply bg-white shadow-xl rounded-xl p-2;
   }
 
+  /* Add padding depending on the size of the top-menu */
+  @screen md {
+    #env.student {
+      padding-top: 4rem;
+    }
+    #env.fac {
+      padding-top: 6rem;
+    }
+    #env.admin {
+      padding-top: 8rem;
+    }
+  }
   nav > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
     min-height: 2rem;

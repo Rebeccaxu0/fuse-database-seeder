@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class AppLayout extends Component
 {
-    public $rolePadding;
+    public $roleClass;
 
     /**
      * Create a new component instance.
@@ -16,13 +16,13 @@ class AppLayout extends Component
      */
     public function __construct()
     {
-        $this->rolePadding = "4";
-        
+        $this->roleClass = 'student';
+
         if (Auth::user()->is_facilitator()) {
-            $this->rolePadding = "6";
+            $this->roleClass = 'fac';
         }
         if (Auth::user()->is_super_facilitator() || Auth::user()->is_admin()) {
-            $this->rolePadding = "8";
+            $this->roleClass = 'admin';
         }
     }
 
