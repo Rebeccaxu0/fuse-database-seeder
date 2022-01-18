@@ -24,5 +24,11 @@
             <a class="px-2 {{ request()->routeIs('facilitator.announcements') ? 'active' : '' }}"
                 href="{{ route('facilitator.announcements') }}">{{ __('Announcements') }}</a>
         </li>
+        @if (Auth::user()->is_super_facilitator())
+        <li>
+            <a class="px-2 {{ request()->routeIs('admin.studios.index') ? 'active' : '' }}"
+                href="{{ route('admin.studios.index') }}">{{ __('Super') }}</a>
+        </li>
+        @endif
     </x-subnav-ul>
 </x-subnav>
