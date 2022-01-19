@@ -63,6 +63,7 @@ class SchoolController extends Controller
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'partner_id' => $request->get('partner')[0],
         ]);
+        $school->addDistrict($request->districtsToAdd);
         $school->gradelevels()->attach($request->gradelevels);
         $school->save();
 

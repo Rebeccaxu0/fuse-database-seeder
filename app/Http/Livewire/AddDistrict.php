@@ -13,6 +13,7 @@ class AddDistrict extends Component
 
     public function addDistrict(District $district)
     {
+        $this->selecteddistricts= [];
         $this->selecteddistricts[$district->id] = ['name' => $district->name];
     }
 

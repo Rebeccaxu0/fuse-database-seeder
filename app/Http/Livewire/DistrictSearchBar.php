@@ -8,21 +8,6 @@ use Livewire\Component;
 class DistrictSearchBar extends Component
 {
     public $query;
-
-    public $show = true;
-
-
-    protected $listeners = ['addDistrict' => 'hide', 'removeDistrict' => 'show',];
-
-    public function show(){
-        $show = true;
-
-    }
-    
-    public function hide(){
-        $show = false;
-
-    }
     
     public function selectDistrict($id)
     {

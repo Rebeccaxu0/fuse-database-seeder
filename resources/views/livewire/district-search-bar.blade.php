@@ -1,5 +1,3 @@
-<div>
-@if($show)
 <div class="relative">
     <input id="district_search" name="district_search" type="text" class="form-input mt-1 block w-full rounded"
         placeholder="Search districts&hellip;" value="{{ $query }}" wire:keydown.enter.prevent=""
@@ -19,7 +17,5 @@
             @endforelse
         </div>
     @endif
-</div>
-@endif
 </div>
 
