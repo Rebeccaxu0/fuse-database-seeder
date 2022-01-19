@@ -1,7 +1,5 @@
 <div class="relative">
-    <div>
-        @livewire ('district-search-bar')
-    </div>
+    @livewire ('district-search-bar')
 
     @foreach ($selecteddistricts as $id => $district)
         <div>
