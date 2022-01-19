@@ -29,9 +29,14 @@
                             </x-jet-button>
                         </div>
                     </form>
+
+                    @if (JoelButcher\Socialstream\Socialstream::show())
+                        <x-socialstream-providers />
+                    @endif
+
                     <img src="/btn_google_signin_light_normal_web.png">
                     <p class="text-fuse-dk-teal text-base md:text-sm">
-                        sign up | forgot username or password
+                    <a href="{{ route('register') }}">sign up</a> | <a href="{{ route('password.request') }}" class="underline">forgot username or password</a>
                     </p>
                 </div>
     </main>
