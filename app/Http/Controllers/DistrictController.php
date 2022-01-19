@@ -123,7 +123,7 @@ class DistrictController extends Controller
         }
 
         if (! $request->boolean('license_status')) {
-            destroy($district);
+            District::destroy($district);
         }
 
         return redirect(route('admin.districts.index'));

@@ -113,6 +113,21 @@ class School extends Organization
         return $this->belongsToMany(GradeLevel::class);
     }
 
+    /*
+     * Add a parent organization (District) to a School.
+     *
+     * @param int[] $district_ids
+     *  List of district ids (should just be one).
+     */
+    public function addDistrict(array $district_ids)
+    {
+        $id = $district_ids[0];
+        $district = District::find($id);
+        $district->schools()->save($this);
+        $district->save();
+        $this->save();
+    }
+
 
     /*
      * Add grade levels to a District.
