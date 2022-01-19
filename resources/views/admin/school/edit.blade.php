@@ -12,8 +12,20 @@
             :list="$packages" />
         <x-form.input label="Salesforce Account ID" name="salesforce_acct_id"
             :value="old('salesforce_acct_id', $school->salesforce_acct_id)" />
-
-        <div class="mb-4">
+        <label class="text-gray-700 text-lg mb-6">{{ __('District: :name', ['name' => $school->district->name]) }}</label>
+        <br />  
+        <label class="text-gray-700 mb-4">Grade Levels</label>
+            @foreach (\App\Models\GradeLevel::all() as $glevel)
+                <x-form.checkbox_array name="gradelevels" :value="$glevel->id" :label="$glevel->name" />
+            @endforeach
+        <br />
+        <div id="partner">
+            <label class="text-gray-700 mb-4">Partnerships</label>
+            @foreach (\App\Models\Partner::all() as $partner)
+                <x-form.exclusive_checkbox_array name="partner" :value="$partner->id" :label="$partner->name" />
+            @endforeach
+        </div>
+        <div class="mt-4 mb-4">
             <label class="text-gray-700 mb-4">Current Super Facilitators</label>
             <p class="text-xs"> Mark for removal</p>
             @foreach ($school->superFacilitators() as $user)
@@ -23,6 +35,17 @@
         <p class="text-xs"> Search to add</p>
         <div>
             @livewire('add-super-facilitator')
+        </div>
+        <div class="mt-4 mb-4">
+            <label class="text-gray-700 mb-4">Current Studios</label>
+            <p class="text-xs"> Mark for removal</p>
+            @foreach ($school->studios as $studio)
+                <x-form.checkbox_array name="studiosToRemove" :value="$studio->id" :label="$studio->name" />
+            @endforeach
+        </div>
+        <p class="text-xs"> Search to add</p>
+        <div>
+            @livewire('add-studio')
         </div>
 
         <div x-data="{active: true}">

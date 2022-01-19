@@ -145,4 +145,80 @@ class School extends Organization
             }
         }
     }
+
+    /*
+     * Add studios to a School.
+     *
+     * @param int[] $studios_to_add
+     *  List of studio ids.
+     */
+    public function addStudios(array $studios_to_add)
+    {
+        foreach ($studios_to_add as $id) {
+            $studio = Studio::find($id);
+            if (! (in_array($studio->id, $this->studios->pluck('id')->toArray()))) {
+                $studio->school()->associate($this);
+                $studio->save();
+            }
+        }
+    }
+
+    /*
+     * Remove studios from a School.
+     *
+     * @param int[] $studios_to_remove
+     *  List of studio ids.
+     */
+    public function removeStudios(array $studios_to_remove)
+    {
+        foreach ($this->studios as $studio) {
+            if (in_array($studio->id, $studios_to_remove)) {
+                $studio->school()->dissociate();
+                $studio->save();
+            }
+        }
+    }
+
+        /*
+     * Add superfacilitators to a School.
+     *
+     * @param int[] $super_facilitator_ids
+     *  List of super facilitator ids.
+     */
+    public function addSuperFacilitators(array $super_facilitator_ids)
+    {
+        $district = $this->district->id;
+        foreach ($super_facilitator_ids as $id) {
+            $sfuser = User::find($id);
+            if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
+                $sfuser->districts()->attach($district);
+            }
+            if (! $sfuser->is_super_facilitator()) {
+                $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
+                $sfuser->has_role(5);
+            }
+            $sfuser->save();
+        }
+    }
+
+    /*
+     * Remove superfacilitators from a School.
+     *
+     * @param int[] $super_facilitators
+     *  List of super facilitator ids.
+     */
+    public function removeSuperFacilitators(array $super_facilitator_ids)
+    {
+        $district = $this->district->id;
+        foreach ($this->superFacilitators as $sf) {
+            if (in_array($sf->id, $super_facilitator_ids)) {
+                $sf->districts()->detach($district);
+                $sf->save();
+                // TODO: emit event to say a user associations have changed.
+                // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
+                // Then I guess you’re not a super facilitator anymore”
+            }
+        }
+    }
 }
+
