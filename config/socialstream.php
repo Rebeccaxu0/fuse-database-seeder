@@ -48,6 +48,6 @@ return [
         // Features::createAccountOnFirstLogin(),
         // Features::generateMissingEmails(),
         Features::rememberSession(),
-        Features::providerAvatars(),
+        // Features::providerAvatars(),
     ],
 ];

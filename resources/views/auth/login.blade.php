@@ -15,6 +15,7 @@
             <div class="lg:flex-1">
                 <h2 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">Sign In</h2>
                 <div class="mt-6 grid grid-cols-1 gap-6 max-w-full">
+                    <x-jet-validation-errors />
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <x-jet-label for="name" value="{{ __('Username') }}" class="text-base" />
@@ -34,9 +35,8 @@
                         <x-socialstream-providers />
                     @endif
 
-                    <img src="/btn_google_signin_light_normal_web.png">
-                    <p class="text-fuse-dk-teal text-base md:text-sm">
-                    <a href="{{ route('register') }}">sign up</a> | <a href="{{ route('password.request') }}" class="underline">forgot username or password</a>
+                    <p class="text-fuse-dk-teal text-base md:text-sm text-center">
+                    <a class="underline" href="{{ route('register') }}">sign up</a> | <a href="{{ route('password.request') }}" class="underline">forgot username or password</a>
                     </p>
                 </div>
     </main>
