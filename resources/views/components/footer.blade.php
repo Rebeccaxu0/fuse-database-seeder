@@ -10,7 +10,7 @@
             <li class="list-none m-0"><a href="https://www.fusestudio.net/our-story">{{ __('About') }}</a></li>
             <li class="list-none m-0"><a href="mailto:info@fusestudio.net">info@fusestudio</a></li>
         </ul>
-        <p>{{ __('Translation') }}</p>
+        <livewire:locale-switcher />
     </div>
     <div class="pl-8 md:col-start-3">
         <h3 class="text-white font-extrabold text-3xl lg:text-4xl pb-10 font-display">
