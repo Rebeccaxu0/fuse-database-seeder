@@ -41,7 +41,7 @@
     <div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
         {{ $slot }}
     </div>
-    <x-guest-footer />
+    <x-footer />
 </body>
 
 </html>
