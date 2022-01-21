@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Studio;
+use App\Models\District;
+use App\Models\School;
 use Illuminate\Http\Request;
 
 class StudioController extends Controller
@@ -28,7 +30,10 @@ class StudioController extends Controller
             ::with(['school', 'students', 'facilitators'])
             ->orderBy('name')
             ->paginate(20);
-        return view('admin.studio.index', ['studios' => $studios]);
+        return view('admin.studio.index', [
+            'districts' => District::all()->sortBy('name'),
+            'schools' => School::all()->sortBy('name')
+        ]);
     }
 
     /**
