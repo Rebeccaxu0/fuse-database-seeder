@@ -23,6 +23,6 @@ class GuestNav extends Component
      */
     public function render()
     {
-        return view('components.guest-nav');
+        return view('components.guest-subnav');
     }
 }

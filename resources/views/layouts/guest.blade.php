@@ -13,35 +13,19 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <style type="text/css">
-        @media (max-width: 2000px) {
-            input#nav-toggle:checked~label#show-button {
-                display: none;
-            }
-
-            input#nav-toggle:checked~label#hide-button {
-                display: flex;
-            }
-
-            input#nav-toggle:checked~#nav-menu {
-                display: block;
-                border-radius: 6px;
-            }
-
-            #nav-menu {
-                margin-top: 4rem;
-            }
-        }
-
-    </style>
 </head>
 
 <body>
-    <x-guest-nav />
-    <div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
+    <x-navbar>
+        <x-guest-subnav />
+    </x-navbar>
+
+    <div class="pt-12 bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
         {{ $slot }}
     </div>
     <x-footer />
+
+    @stack('scripts')
 </body>
 
 </html>
