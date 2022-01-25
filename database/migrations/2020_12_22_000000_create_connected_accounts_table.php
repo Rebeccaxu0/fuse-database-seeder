@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateConnectedAccountsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('connected_accounts', function (Blueprint $table) {
@@ -34,11 +29,6 @@ class CreateConnectedAccountsTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('connected_accounts');
