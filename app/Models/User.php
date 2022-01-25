@@ -239,19 +239,19 @@ class User extends Authenticatable
      */
     public function deFactoStudios() {
       // TODO: want to cache this or put it in session for quick lookup.
-      $studios = $this->studios;
+      $studios = $this->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE);
 
       if ($this->is_super_facilitator() || $this->is_admin()) {
           foreach ($this->districts as $district) {
               foreach ($district->schools as $school) {
-                  $studios = $studios->concat($school->studios);
+                  $studios = $studios->concat($school->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
               }
           }
       }
 
       if ($this->is_facilitator()) {
           foreach ($this->schools as $school) {
-              $studios = $studios->concat($school->studios);
+              $studios = $studios->concat($school->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
           }
       }
 
