@@ -234,4 +234,28 @@ class User extends Authenticatable
             ->where('user_id', $this->id)
             ->exists();
     }
+
+    /**
+     */
+    public function deFactoStudios() {
+      // TODO: want to cache this or put it in session for quick lookup.
+      $studios = $this->studios;
+
+      if ($this->is_super_facilitator() || $this->is_admin()) {
+          foreach ($this->districts as $district) {
+              foreach ($district->schools as $school) {
+                  $studios = $studios->concat($school->studios);
+              }
+          }
+      }
+
+      if ($this->is_facilitator()) {
+          foreach ($this->schools as $school) {
+              $studios = $studios->concat($school->studios);
+          }
+      }
+
+      return $studios->unique();
+    }
 }
+

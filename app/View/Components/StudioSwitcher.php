@@ -19,7 +19,7 @@ class StudioSwitcher extends Component
     {
         $this->activeStudio = Auth::user()->currentStudio;
         $this->otherStudios = Auth::user()
-             ->studios->except([$this->activeStudio->id]);
+             ->deFactoStudios()->except([$this->activeStudio->id]);
     }
 
     /**
