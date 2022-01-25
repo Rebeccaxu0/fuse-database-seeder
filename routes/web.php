@@ -35,6 +35,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::impersonate();
 
+    Route::get('active_studio/{studio}', [StudioController::class, 'active_studio'])->name('active_studio');
+
     /*
     |------------------------------------------------------------------------
     | student routes
