@@ -5,13 +5,14 @@ namespace App\Http\Livewire;
 use App\Models\District;
 use Livewire\Component;
 
-class AddDistrict extends Component
+class SelectDistrict extends Component
 {
     public $selecteddistricts= [];
+    public $selecteddistrict;
 
-    protected $listeners = ['districtSelected' => 'addDistrict'];
+    protected $listeners = ['districtSelected' => 'setDistrict'];
 
-    public function addDistrict(District $district)
+    public function setDistrict(District $district)
     {
         $this->selecteddistricts= [];
         $this->selecteddistricts[$district->id] = ['name' => $district->name];

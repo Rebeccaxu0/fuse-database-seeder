@@ -63,6 +63,7 @@ class SchoolController extends Controller
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'partner_id' => $request->get('partner')[0],
         ]);
+        $school->addDistrict($request->districtsToAdd);
         $school->gradelevels()->attach($request->gradelevels);
         $school->save();
 
@@ -103,9 +104,35 @@ class SchoolController extends Controller
      */
     public function update(Request $request, School $school)
     {
-        //
-    }
+        $school->update([
+            'name' => $request->name,
+            'package_id' => $request->package,
+            'salesforce_acct_id' => $request->salesforce_acct_id,
+            'license_status' => $request->boolean('license_status'),
+        ]);
 
+        if (! empty($request->studiosToRemove)) {
+            $school->removeStudios($request->studiosToRemove);
+        }
+
+        if (! empty($request->studiosToAdd)) {
+            $school->addStudios($request->studiosToAdd);
+        }
+
+        if (! empty($request->superFacilitatorsToRemove)) {
+            $school->removeSuperFacilitators($request->superFacilitatorsToRemove);
+        }
+
+        if (! empty($request->superFacilitatorsToAdd)) {
+            $school->addSuperFacilitators($request->superFacilitatorsToAdd);
+        }
+
+        if (! $request->boolean('license_status')) {
+            School::destroy($school);
+        }
+
+        return redirect(route('admin.schools.index'));
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -114,6 +141,8 @@ class SchoolController extends Controller
      */
     public function destroy(School $school)
     {
-        //
+        $school->delete();
+        return redirect(route('admin.schools.index'));
+        //not really a thing
     }
 }

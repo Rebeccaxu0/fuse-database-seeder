@@ -8,7 +8,7 @@ use Livewire\Component;
 class DistrictSearchBar extends Component
 {
     public $query;
-
+    
     public function selectDistrict($id)
     {
         $this->emitUp('districtSelected', $id);
