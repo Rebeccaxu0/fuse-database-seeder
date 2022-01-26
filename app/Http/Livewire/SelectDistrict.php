@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\District;
 use Livewire\Component;
 
-class AddDistrict extends Component
+class SelectDistrict extends Component
 {
     public $selecteddistricts= [];
     public $selecteddistrict;
