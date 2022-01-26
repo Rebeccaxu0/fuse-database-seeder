@@ -11,10 +11,7 @@
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="mb-2 relative break-inside-avoid">
-                                <div class="bg-slate-500 absolute top-0 w-14 h-7">
-                                    {{-- TODO: replace with livewire toggle component --}}
-                                    {{ in_array($challengeVersion->id, $activeChallenges) ? 't' : 'f' }}
-                                </div>
+                                <livewire:studio-challenge-toggle :challengeVersion="$challengeVersion" >
                                 <div class="border border-gray-400 rounded-lg ml-14 py-2 pl-8 pr-1"
                                     style="width: calc(100% - 3.5rem)">
                                     {{ $challengeVersion->name }}
