@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -239,23 +240,27 @@ class User extends Authenticatable
      */
     public function deFactoStudios() {
       // TODO: want to cache this or put it in session for quick lookup.
-      $studios = $this->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE);
+      $studios = new Collection;
 
       if ($this->is_super_facilitator() || $this->is_admin()) {
           foreach ($this->districts as $district) {
               foreach ($district->schools as $school) {
-                  $studios = $studios->concat($school->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+                  $studios = $studios->concat($school->studios);
               }
           }
       }
 
       if ($this->is_facilitator()) {
           foreach ($this->schools as $school) {
-              $studios = $studios->concat($school->studios->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+              $studios = $studios->concat($school->studios);
           }
       }
+      $studios = $studios->concat($this->studios);
 
-      return $studios->unique();
+      return $studios
+          ->unique()
+          ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
+          ->sortBy('district.name', SORT_STRING | SORT_FLAG_CASE);
     }
 }
 
