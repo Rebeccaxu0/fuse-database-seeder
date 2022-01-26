@@ -537,7 +537,7 @@ INSERT INTO fuse_laravel_test.users
   guardian_irb_consent, guardian_photo_consent,
   consent_email_last_sent, allow_survey,
   csv_header, csv_values,
-  current_studio, current_level)
+  active_studio, current_level)
 SELECT
   u.name, fullname.field_full_name_value as fullname, u.mail, u.pass,
   FROM_UNIXTIME(u.created) as created, u.status,

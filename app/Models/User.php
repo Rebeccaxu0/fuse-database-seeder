@@ -152,11 +152,11 @@ class User extends Authenticatable
     }
 
     /**
-     * The current studio associated with this user.
+     * The studio a user is currently active within.
      */
-    public function currentStudio()
+    public function activeStudio()
     {
-        return $this->belongsTo(Studio::class, 'current_studio');
+        return $this->belongsTo(Studio::class, 'active_studio');
     }
 
     /**

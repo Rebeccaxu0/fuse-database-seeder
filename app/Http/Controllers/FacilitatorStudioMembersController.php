@@ -23,11 +23,11 @@ class FacilitatorStudioMembersController extends Controller
      */
     public function index()
     {
-        $students = Studio::find(Auth::user()->current_studio)
+        $students = Studio::find(Auth::user()->active_studio)
             ->students()
             ->orderBy('name')
             ->get();
-        $facilitators = Studio::find(Auth::user()->current_studio)
+        $facilitators = Studio::find(Auth::user()->active_studio)
             ->facilitators()
             ->orderBy('name')
             ->get();

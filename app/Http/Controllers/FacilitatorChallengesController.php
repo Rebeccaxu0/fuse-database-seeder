@@ -25,7 +25,7 @@ class FacilitatorChallengesController extends Controller
      */
     public function index()
     {
-        $studio = Auth::user()->currentStudio;
+        $studio = Auth::user()->activeStudio;
         $packageChallengeIds = $studio->deFactoPackage->challenges->pluck('id');
         $eager = ['challengeVersions', 'challengeVersions.challengeCategory'];
 

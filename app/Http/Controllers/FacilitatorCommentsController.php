@@ -21,7 +21,7 @@ class FacilitatorCommentsController extends Controller
     public function index()
     {
         // TODO: get list of Comments.
-        // $students = Studio::find(Auth::user()->current_studio)
+        // $students = Studio::find(Auth::user()->active_studio)
         //     ->students()
         //     ->orderBy('name')
         //     ->get();

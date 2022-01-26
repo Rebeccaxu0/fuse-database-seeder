@@ -25,17 +25,17 @@ class Studio extends Organization
     /**
      * The users currently active in this studio.
      */
-    public function currentUsers()
+    public function actveUsers()
     {
-        return $this->hasMany(User::class, 'current_studio');
+        return $this->hasMany(User::class, 'active_studio');
     }
 
     /**
      * The students currently active in this studio.
      */
-    public function currentStudents()
+    public function activeStudents()
     {
-        return $this->CurrentUsers()->whereHas('roles', function (Builder $query) {
+        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::STUDENT_ID);
         });
     }
@@ -53,9 +53,9 @@ class Studio extends Organization
     /**
      * The facilitators currently active in this studio.
      */
-    public function currentFacilitators()
+    public function activeFacilitators()
     {
-        return $this->currentUsers()->whereHas('roles', function (Builder $query) {
+        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
@@ -73,9 +73,9 @@ class Studio extends Organization
     /**
      * The super facilitators currently active in this studio.
      */
-    public function currentSuperFacilitators()
+    public function activeSuperFacilitators()
     {
-        return $this->currentUsers()->whereHas('roles', function (Builder $query) {
+        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
         });
     }
