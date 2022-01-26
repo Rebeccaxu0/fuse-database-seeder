@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Studio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudioController extends Controller
 {
@@ -95,5 +96,15 @@ class StudioController extends Controller
     public function destroy(Studio $studio)
     {
         //
+    }
+
+    /**
+     */
+    public function active_studio(Studio $studio)
+    {
+        Auth::user()->active_studio = $studio->id;
+        Auth::user()->save();
+
+        return redirect(request()->header('Referer'));
     }
 }

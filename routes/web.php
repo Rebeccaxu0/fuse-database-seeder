@@ -35,6 +35,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::impersonate();
 
+    // TODO: In principle this should be a POST as it's not idempotent
     Route::get('active_studio/{studio}', [StudioController::class, 'active_studio'])->name('active_studio');
 
     /*
