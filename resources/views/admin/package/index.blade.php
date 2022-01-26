@@ -28,20 +28,21 @@
 
             <label class="text-xs">{{ $package->description }}</label>
             <details>
-                <summary>{{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
-                <ol>
+                <summary class="cursor-pointer">{{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
+                <ol class="list-none">
                     @foreach ($package->challenges as $challenge)
-                        <li><label class="text-xs text-fuse-teal">{{ $challenge->name }}</label></li>
+                        <li class="list-none text-xs text-fuse-teal">{{ $challenge->name }}</li>
                     @endforeach
                 </ol>
             </details>
 
-            <label
-                class="text-xs">{{ __('Used by :district_count districts, :school_count schools, and :studio_count studios', [
+            <div class="text-xs">
+                {{ __('Used by :district_count districts, :school_count schools, and :studio_count studios', [
                     'district_count' => count($package->districts),
                     'school_count' => count($package->schools),
                     'studio_count' => count($package->studios),
-                ]) }}</label>
+                ]) }}
+            </div>
         </div>
     @endforeach
 
