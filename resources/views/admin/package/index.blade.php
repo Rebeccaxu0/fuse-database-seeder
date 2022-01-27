@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
     <x-slot name="title">{{ __('Packages') }}</x-slot>
 
     <x-slot name="header">{{ __('Packages') }}</x-slot>
@@ -7,13 +7,10 @@
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
     </a>
 
+    <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4">
     @foreach ($packages as $package)
         <div class="bg-gray-200 rounded-md p-2 mb-2">
-            <h3 class="mt-2 mb-2">{{ $package->name }}
-                @if ($package->student_activity_tab_access)
-                    (Student Activity Tab Active)
-                @endif
-                <span class="pl-2">
+                <div class="float-right pl-2">
                     <a href="{{ route('admin.packages.edit', $package->id) }}">
                         <button><img class="h-6 w-6" src="/editpencil.png"></button>
                     </a>
@@ -23,8 +20,11 @@
                         @csrf
                         <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
                     </form>
-                </span>
-            </h3>
+                </div>
+            <h3 class="mt-2 mb-2">{{ $package->name }}</h3>
+            @if ($package->student_activity_tab_access)
+                <div>(Student Activity Tab Active)</div>
+              @endif
 
             <label class="text-xs">{{ $package->description }}</label>
             <details>
@@ -45,5 +45,6 @@
             </div>
         </div>
     @endforeach
+    </div>
 
 </x-admin-layout>
