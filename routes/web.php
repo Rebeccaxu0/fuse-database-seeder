@@ -32,7 +32,7 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(function () {
     Route::impersonate();
 
     // TODO: In principle this should be a POST as it's not idempotent
