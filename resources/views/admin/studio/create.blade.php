@@ -1,8 +1,8 @@
 <x-admin-layout>
 
-    <x-slot name="title">{{ __('Create Studios for :name', ['name' => $selectedschool->name])') }}</x-slot>
+    <x-slot name="title">{{ __('Create Studios for :name', ['name' => $selectedschool->name]) }}</x-slot>
 
-    <x-slot name="header">{{ __('Create Studios for :name', ['name' => $slectedschool->name])') }}</x-slot>
+    <x-slot name="header">{{ __('Create Studios for :name', ['name' => $slectedschool->name]) }}</x-slot>
 
     <form class="w-full max-w-lg mt-6" action="{{ route('admin.studios.store') }}" method="POST">
         @csrf
