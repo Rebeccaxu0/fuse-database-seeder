@@ -12,7 +12,7 @@
 
 <x-subnav id="student">
     <!-- Logo -->
-    <div class="absolute t-0 l-0 z-10 mt-3">
+    <div class="absolute t-0 l-0 z-50 mt-3">
         <a href="{{ route('student.dashboard') }}">
             <img src="/logo.png" alt="logo" class="w-20">
         </a>
