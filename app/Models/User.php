@@ -250,17 +250,19 @@ class User extends Authenticatable
           }
       }
 
-      if ($this->is_facilitator()) {
+      if ($this->is_facilitator() || $this->is_super_facilitator() || $this->is_admin()) {
           foreach ($this->schools as $school) {
               $studios = $studios->concat($school->studios);
           }
       }
       $studios = $studios->concat($this->studios);
 
-      return $studios
-          ->unique()
-          ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
-          ->sortBy('district.name', SORT_STRING | SORT_FLAG_CASE);
+      if (! empty($studios)) {
+        $studios = $studios->unique()
+              ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
+              ->sortBy('school.name', SORT_STRING | SORT_FLAG_CASE);
+      }
+      return $studios;
     }
 }
 
