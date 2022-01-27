@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Studio;
 use App\Models\District;
 use App\Models\School;
+use App\Models\Studio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +33,7 @@ class StudioController extends Controller
             ->paginate(20);
         return view('admin.studio.index', [
             'districts' => District::all()->sortBy('name'),
-            'schools' => School::all()->sortBy('name')
+            'schools' => School::all()->sortBy('name'),
         ]);
     }
 
