@@ -25,7 +25,11 @@ class JoinStudioForm extends Component
             $this->addError('studioCode', __('You are already a member of that studio.'));
         }
         else {
-            Auth::user()->studios()->attach($studio->id);
+            $user = Auth::user();
+            $user->studios()->attach($studio->id);
+            $user->activeStudio()->associate($studio);
+            $user->save();
+
             return redirect(request()->header('Referer'));
         }
     }
