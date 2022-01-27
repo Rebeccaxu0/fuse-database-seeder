@@ -1,4 +1,4 @@
-<div>
+<div class="cursor-pointer">
     <span
       wire:click="$set('showModalFlag', true)"
       alt="{{ __('Join a new studio') }}"
