@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Model\ChallengeVersion;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
