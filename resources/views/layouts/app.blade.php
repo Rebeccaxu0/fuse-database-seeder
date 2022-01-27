@@ -5,11 +5,14 @@
         <x-studio-switcher />
 
         <main class="flex-grow relative py-20 px-8">
+
             {{ $slot }}
-            <x-impersonate />
+
+            <livewire:impersonate />
         </main>
 
-        <x-footer />
     </div>
+
+    <x-footer />
 
 </x-base-layout>
