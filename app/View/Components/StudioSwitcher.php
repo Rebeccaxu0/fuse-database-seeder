@@ -7,8 +7,8 @@ use Illuminate\View\Component;
 
 class StudioSwitcher extends Component
 {
-    public $activeStudio;
-    public $otherStudios;
+    public $activeStudio = null;
+    public $otherStudios = null;
 
     /**
      * Create a new component instance.
@@ -17,9 +17,13 @@ class StudioSwitcher extends Component
      */
     public function __construct()
     {
-        $this->activeStudio = Auth::user()->activeStudio;
-        $this->otherStudios = Auth::user()
-             ->deFactoStudios()->except([$this->activeStudio->id]);
+        if (Auth::user()->deFactoStudios()->count() > 0) {
+            $this->activeStudio = Auth::user()->activeStudio;
+            $this->otherStudios =
+                Auth::user()
+                    ->deFactoStudios()
+                    ->except([$this->activeStudio->id]);
+        }
     }
 
     /**
