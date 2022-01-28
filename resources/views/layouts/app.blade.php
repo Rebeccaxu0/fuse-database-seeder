@@ -6,12 +6,7 @@
 
         @if (isset($header))
         <header class="bg-white shadow">
-            <div
-                class="text-fuse-teal-dk text-4xl font-semibold font-display
-                        max-w-7xl mx-auto
-                        py-0 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
+            <div class="text-fuse-teal-dk text-4xl font-semibold font-display max-w-7xl mx-auto py-0 px-4 sm:px-6 lg:px-8">{{ $header }}</div>
         </header>
         @endif
 

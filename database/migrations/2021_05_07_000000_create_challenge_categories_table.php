@@ -16,6 +16,10 @@ class CreateChallengeCategoriesTable extends Migration
             $table->softDeletes();
             $table->string('name');
             $table->text('description');
+            $table->boolean('disapproved')
+                ->default(0)
+                ->nullable(false)
+                ->description('Challenge is not fully tested, or has been deprecated.');
         });
     }
 
