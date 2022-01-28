@@ -68,9 +68,9 @@
                             </div>
                         </div>
                     </td>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white">
+                    <td class="px-1 py-1 border-b border-gray-200 bg-white">
                         <a href="{{ route('admin.districts.edit', $district->id) }}">
-                            <button><img class="h-6 w-6" src="/editpencil.png"></button>
+                            <button><img src="/editpencil.png"></button>
                         </a>
                     </td>
                 </tr>
