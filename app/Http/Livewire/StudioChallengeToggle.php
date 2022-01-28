@@ -3,9 +3,9 @@
 namespace App\Http\Livewire;
 
 use Illuminate\Support\Facades\Auth;
-use Livewire\Component;
+use App\Http\Livewire\Toggle;
 
-class StudioChallengeToggle extends Component
+class StudioChallengeToggle extends Toggle
 {
     public $challengeVersion;
     public $is_active;
@@ -27,11 +27,7 @@ class StudioChallengeToggle extends Component
           $studio->challengeVersions()->attach($this->challengeVersion->id);
       }
 
-      $this->is_active = ! $this->is_active;
+      parent::toggle();
     }
 
-    public function render()
-    {
-        return view('livewire.studio-challenge-toggle');
-    }
 }
