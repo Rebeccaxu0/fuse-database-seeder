@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Collection;
 
 class School extends Organization
 {
@@ -65,12 +66,17 @@ class School extends Organization
     public function superFacilitators()
     {
         $district = $this->district()->first();
-        return User::whereHas('districts', function (Builder $query) use ($district) {
-            $query->where('id', '=', $district->id);
-        })
+        $superFacilitators = new Collection;
+        if ($district) {
+          $superfacilitators = User::whereHas('districts',
+            function (Builder $query) use ($district) {
+                $query->where('id', '=', $district->id);
+            })
             ->whereHas('roles', function (Builder $query) {
                 $query->where('name', '=', 'Super Facilitator');
             });
+        }
+        return $superFacilitators;
     }
 
     /**
@@ -113,7 +119,7 @@ class School extends Organization
         return $this->belongsToMany(GradeLevel::class);
     }
 
-    /*
+    /**
      * Add a parent organization (District) to a School.
      *
      * @param int[] $district_ids
@@ -129,7 +135,7 @@ class School extends Organization
     }
 
 
-    /*
+    /**
      * Add grade levels to a District.
      *
      * @param int[] $gradelevels
@@ -146,7 +152,7 @@ class School extends Organization
         }
     }
 
-    /*
+    /**
      * Add studios to a School.
      *
      * @param int[] $studios_to_add
@@ -163,7 +169,7 @@ class School extends Organization
         }
     }
 
-    /*
+    /**
      * Remove studios from a School.
      *
      * @param int[] $studios_to_remove
@@ -179,7 +185,7 @@ class School extends Organization
         }
     }
 
-        /*
+    /**
      * Add superfacilitators to a School.
      *
      * @param int[] $super_facilitator_ids
@@ -201,7 +207,7 @@ class School extends Organization
         }
     }
 
-    /*
+    /**
      * Remove superfacilitators from a School.
      *
      * @param int[] $super_facilitators

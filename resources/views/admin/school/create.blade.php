@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
 
     <x-slot name="title">{{ __('Create School') }}</x-slot>
 
@@ -32,4 +32,4 @@
             </button>
         </div>
     </form>
-</x-admin-layout>
+</x-app-layout>
