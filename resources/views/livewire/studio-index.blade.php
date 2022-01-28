@@ -1,57 +1,94 @@
 <div class="relative">
     <div>
-        @livewire ('district-search-bar')
         <div>
             <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}"> 
             <h3 class="mt-2 mb-2">District: {{ $setdistrict['name'] }} </h3>
         </div>
+        @livewire ('district-search-bar')
     </div>
     <div>
-        @livewire ('school-search-bar')
         <div>
             <input type="hidden" name="currentschool" value="{{ $setschool->id }}"> 
             <h3 class="mt-2 mb-2"> School: {{ $setschool['name'] }} </h3>
         </div>
+        @livewire ('school-search-bar')
     </div>
+    <div class="mt-8" x-data="{ open: @entangle('showStudios') }">
+        <table class="min-w-full leading-normal">
+            <thead>
+                <tr>
+                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    {{ __('Name') }}
+                    </th>
+                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    {{ __('Package') }}
+                    </th>
+                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                        {{ __('Code') }}
+                    </th>
+                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                        {{ __('Edit') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($setschool->studios as $studio)
+                    <tr class="odd:bg-white even:bg-gray-100">
+                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                            </div>
+                                <div class="ml-3">
+                                    <p class="text-gray-900 whitespace-no-wrap">
+                                        {{ $studio->name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                            <p class="text-gray-900 whitespace-no-wrap">
+                                {{ $studio->package->name ?? __('No package set') }}
+                            </p>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                            </div>
+                                <div class="ml-3">
+                                    <p class="text-gray whitespace-no-wrap">
+                                        {{ $district->salesforce_acct_id ?? __('No ID') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-1 py-1 border-b border-gray-200">
+                                <span class="pl-2">
+                                    <a href="{{ route('admin.studios.edit', $studio->id) }}">
+                                        <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
+                                    </a>
+                                <form method="post" action="{{ route('admin.studios.destroy', $studio->id) }}" class="inline-block">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="destroy"><img class="h-6 w-6" src="/deletetrash.png"></button>
+                                </form>
+                                </span>
+                        </td> 
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    <h3 class="mt-2 mb-2"> {{ $setschool['name'] }} Facilitators </h3>
+        <div class="mb-4">
+            <p class="text-xs">{{ __('Mark for removal') }}</p>
+            @foreach ($setschool->facilitators as $user)
+                <x-form.checkbox_array name="facilitatorsToRemove" :value="$user->id" :label="$user->name" />
+            @endforeach
+        </div>
+        <p class="text-xs">{{ __('Search to add') }}</p>
+        <div>
+            @livewire('add-facilitator')
+        </div>
 
-    <div x-data="{ open: @entangle('showStudios') }">
-        @foreach ($setschool->studios as $studio)
-            <h3 class="mt-2 mb-2">{{ $studio->name }}
-                <span class="pl-2">
-                    <a href="{{ route('admin.studios.edit', $studio->id) }}">
-                        <button><img class="h-6 w-6" src="/editpencil.png"></button>
-                    </a>
-                    <form method="post" action="{{ route('admin.studios.destroy', $studio->id) }}" class="inline-block">
-                        @method('delete')
-                        @csrf
-                        <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
-                    </form>
-                </span>
-            </h3>
-            <label class="text-xs">{{ $studio->description }}</label>
-            <details>
-                <summary>{{ __(':student_count students', ['student_count' => count($studio->students)]) }}</summary>
-                <ol>
-                    @foreach ($studio->students as $student)
-                        <li><label class="text-xs text-fuse-teal">{{ $student->name }}</label></li>
-                    @endforeach
-                </ol>
-            </details>
-            <details>
-                <summary>{{ __(':fac_count facilitators', ['fac_count' => count($studio->facilitators)]) }}</summary>
-                <ol>
-                    @foreach ($studio->facilitators as $facilitator)
-                        <li><label class="text-xs text-fuse-teal">{{ $facilitator->name }}</label></li>
-                    @endforeach
-                </ol>
-            </details>
-            @if ($studio->school)
-                <label
-                    class="text-xs">{{ __('Parent school :school_name ', [
-                        'school_name' => $studio->school->name,
-                    ]) }}</label>
-            @endif
-        @endforeach
 </div>
 
 

@@ -35,6 +35,9 @@
   button, [type='button'], [type='reset'], [type='submit'] {
     @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
+  button, [type='button'], [type='destroy']{
+    @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
+  }
   button:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
     @apply outline-none ring;
   }
