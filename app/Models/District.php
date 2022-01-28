@@ -85,8 +85,7 @@ class District extends Organization
         return $this->belongsTo(Package::class);
     }
 
-
-    /*
+    /**
      * Add schools to a District.
      *
      * @param int[] $schools_to_add
@@ -103,7 +102,7 @@ class District extends Organization
         }
     }
 
-    /*
+    /**
      * Remove schools from a District.
      *
      * @param int[] $schools_to_remove
@@ -119,7 +118,7 @@ class District extends Organization
         }
     }
 
-    /*
+    /**
      * Add superfacilitators to a District.
      *
      * @param int[] $super_facilitator_ids
@@ -141,7 +140,7 @@ class District extends Organization
         // Update cache of User::is_super_facilitator()?;
     }
 
-    /*
+    /**
      * Remove superfacilitators from a District.
      *
      * @param int[] $super_facilitators
