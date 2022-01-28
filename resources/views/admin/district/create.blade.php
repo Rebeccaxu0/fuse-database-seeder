@@ -1,4 +1,8 @@
-<x-admin-layout>
+<x-app-layout>
+
+    <x-slot name="title">{{ __('Create District') }}</x-slot>
+
+    <x-slot name="header">{{ __('Create District') }}</x-slot>
 
     <form class="w-full max-w-lg mt-6" action="{{ route('admin.districts.store') }}" method="POST">
         @csrf
@@ -13,4 +17,4 @@
         </div>
     </form>
 
-</x-admin-layout>
+</x-app-layout>
