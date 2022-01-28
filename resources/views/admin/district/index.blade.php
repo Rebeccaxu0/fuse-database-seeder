@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
 
     <x-slot name="title">{{ __('Districts') }}</x-slot>
 
@@ -10,19 +10,22 @@
     <table class="min-w-full leading-normal">
         <thead>
             <tr>
-                <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-                    <h3>Name </h3>
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                  {{ __('Name') }}
                 </th>
-                <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-                    <h3>Package </h3>
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                  {{ __('Package') }}
                 </th>
-                <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-                    <h3>Schools </h3>
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    {{ __('Schools') }}
                 </th>
-                <th scope="col" class="px-5 py-3 bg-white  border-b border-gray-200 text-left">
-                    <h3>Salesforce Account ID </h3>
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    {{ __('Super Facilitators') }}
                 </th>
-                <th scope="col" class="ml-6 px-5 py-3 bg-white  border-b border-gray-200 text-left">
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    {{ __('Salesforce Account ID') }}
+                </th>
+                <th scope="col" class="ml-6 px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
                 </th>
             </tr>
         </thead>
@@ -58,6 +61,18 @@
                         </p>
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">
+                        <details>
+                            <summary>{{ __(':count', ['count' => count($district->superFacilitators)]) }}</summary>
+                            <ol>
+                                @foreach ($district->superFacilitators as $user)
+                                    <li><label class="text-xs text-fuse-teal">{{ $user->name }}</label></li>
+                                @endforeach
+                            </ol>
+                        </details>
+                        </p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                             </div>
@@ -70,11 +85,11 @@
                     </td>
                     <td class="px-1 py-1 border-b border-gray-200 bg-white">
                         <a href="{{ route('admin.districts.edit', $district->id) }}">
-                            <button><img src="/editpencil.png"></button>
+                            <button>{{ __('edit') }}</button>
                         </a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-</x-admin-layout>
+</x-app-layout>
