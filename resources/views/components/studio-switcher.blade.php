@@ -13,7 +13,7 @@
         @if ($activeStudio->school) {{ $activeStudio->school->name }} &ndash; @endif {{ $activeStudio->name }} @if (! empty($otherStudios))<span class="text-fuse-blue">&#9660;</span> @endif
       </label>
       <input type="checkbox" id="studio-list-toggle" name="studio-list-toggle" class="hidden">
-      @livewire('join-studio-form')
+      <livewire:join-studio-form />
     <ul id="studio-list-menu"
       class="absolute top-0 right-0 mt-12 mr-4 z-10
       max-w-xs max-h-48

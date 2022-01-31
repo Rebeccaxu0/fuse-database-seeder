@@ -2,8 +2,8 @@
 
     <x-slot name="title">{{ __('People') }}</x-slot>
 
-    <x-slot name="header">{{ __('PEOPLE') }}</x-slot>
+    <x-slot name="header">{{ __('People') }}</x-slot>
 
-    <h2>{{ __('People') }}</h2>
+    <livewire:facilitator-studio-membership />
 
 </x-app-layout>

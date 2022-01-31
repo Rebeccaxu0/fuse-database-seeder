@@ -39,3 +39,4 @@ class JoinStudioForm extends Component
         return view('livewire.join-studio-form');
     }
 }
+
