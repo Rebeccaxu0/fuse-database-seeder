@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Auth\SocialiteProviders\Clever\CleverExtendSocialite;
 use App\Listeners\RestoreImpersonatorPassword;
 use App\Listeners\SaveImpersonatorPassword;
 use Illuminate\Auth\Events\Registered;
@@ -9,6 +10,7 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Lab404\Impersonate\Events\LeaveImpersonation;
 use Lab404\Impersonate\Events\TakeImpersonation;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         LeaveImpersonation::class => [
             RestoreImpersonatorPassword::class,
+        ],
+        SocialiteWasCalled::class => [
+            CleverExtendSocialite::class,
         ],
     ];
 

@@ -12,6 +12,11 @@
         </a>
     @endif
 
+    <a href="{{ route('oauth.redirect', ['provider' => 'clever']) }}">
+        <x-clever-icon class="h-6 w-6 mx-2" />
+        <span class="sr-only">Clever</span>
+    </a>
+
     @if (JoelButcher\Socialstream\Socialstream::hasGoogleSupport())
         <a href="{{ route('oauth.redirect', ['provider' => JoelButcher\Socialstream\Providers::google()]) }}" >
             <x-google-icon class="h-6 w-6 mx-2" />

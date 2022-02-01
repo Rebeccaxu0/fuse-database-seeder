@@ -30,6 +30,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'clever' => [
+        'client_id' => env('CLEVER_CLIENT_ID'),
+        'client_secret' => env('CLEVER_CLIENT_SECRET'),
+        'redirect' => env('CLEVER_REDIRECT'),
+    ],
+
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),

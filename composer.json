@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
@@ -17,6 +20,8 @@
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.8",
         "selfsimilar/laravel-d7-password": "^0.1.2",
+        "socialiteproviders/generators": "^4.6",
+        "socialiteproviders/manager": "^4.1",
         "spatie/laravel-translatable": "^5.1"
     },
     "require-dev": {
@@ -33,7 +38,8 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "SocialiteProviders\\Clever\\": "SocialiteProviders/src/Clever/"
         }
     },
     "autoload-dev": {
@@ -53,7 +59,7 @@
             "@php artisan key:generate --ansi"
         ],
         "tlint": [
-          "./vendor/bin/tlint"
+            "./vendor/bin/tlint"
         ]
     },
     "extra": {

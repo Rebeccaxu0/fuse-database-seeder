@@ -30,6 +30,7 @@ return [
     */
 
     'providers' => [
+        // Providers::clever(),
         Providers::google(),
     ],
 
@@ -45,7 +46,7 @@ return [
     */
 
     'features' => [
-        // Features::createAccountOnFirstLogin(),
+        Features::createAccountOnFirstLogin(),
         // Features::generateMissingEmails(),
         Features::rememberSession(),
         // Features::providerAvatars(),
