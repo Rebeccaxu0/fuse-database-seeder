@@ -17,6 +17,8 @@ class Provider extends AbstractProvider
      */
     const URL = 'https://api.clever.com';
 
+    protected $stateless = true;
+
     /**
      * {@inheritdoc}
      */
