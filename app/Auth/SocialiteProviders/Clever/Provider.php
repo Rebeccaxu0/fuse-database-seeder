@@ -13,6 +13,11 @@ class Provider extends AbstractProvider
     const IDENTIFIER = 'CLEVER';
 
     /**
+     * Base URL
+     */
+    const URL = 'https://api.clever.com';
+
+    /**
      * {@inheritdoc}
      */
     protected $scopes = [''];
@@ -38,11 +43,14 @@ class Provider extends AbstractProvider
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('https://api.clever.com/v3.0/me', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
+        $headers = [ 'headers' => [
+                'Authorization' => "Bearer {$token}",
             ],
-        ]);
+        ];
+        $user_response = $this->getHttpClient()->get($this::URL . '/v3.0/me', $headers);
+        $user = json_decode($user_response->getBody(), true);
+
+        $response = $this->getHttpClient()->get($this::URL . $user['links'][1]['uri'], $headers);
 
         return json_decode($response->getBody(), true);
     }
@@ -63,10 +71,10 @@ class Provider extends AbstractProvider
         //
         // From https://dev.clever.com/docs/classroom-with-oauth
         return (new User())->setRaw($user)->map([
-            'id'        => $user['id'],
-            'name'      => $user['name'],
-            'full_name' => $user['name'],
-            'email'     => $user['email'],
+            'id'        => $user['data']['id'],
+            'name'      => $user['data']['email'],
+            'full_name' => "{$user['data']['name']['first']} {$user['data']['name']['last']}",
+            'email'     => $user['data']['email'],
         ]);
     }
 

@@ -182,7 +182,8 @@ return [
 
         Lab404\Impersonate\ImpersonateServiceProvider::class,
         Selfsimilar\D7Password\D7PasswordProvider::class,
-        SocialiteProviders\Generators\GeneratorsServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
+        // SocialiteProviders\Generators\GeneratorsServiceProvider::class,
 
         /*
          * Application Service Providers...
