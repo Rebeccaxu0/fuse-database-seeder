@@ -74,9 +74,9 @@ class Provider extends AbstractProvider
         // From https://dev.clever.com/docs/classroom-with-oauth
         return (new User())->setRaw($user)->map([
             'id'        => $user['data']['id'],
-            'name'      => $user['data']['email'],
+            'name'      => "{$user['data']['name']['first']} {$user['data']['name']['last']}",
             'full_name' => "{$user['data']['name']['first']} {$user['data']['name']['last']}",
-            'email'     => $user['data']['email'],
+            'email'     => $user['data']['email'] ?? null,
         ]);
     }
 
