@@ -4,7 +4,7 @@
     <hr class="w-full ml-2">
 </div>
 
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center gap-1">
     @if (JoelButcher\Socialstream\Socialstream::hasFacebookSupport())
         <a href="{{ route('oauth.redirect', ['provider' => JoelButcher\Socialstream\Providers::facebook()]) }}">
             <x-facebook-icon class="h-6 w-6 mx-2" />
@@ -12,14 +12,18 @@
         </a>
     @endif
 
-    <a href="{{ route('oauth.redirect', ['provider' => 'clever']) }}">
-        <x-clever-icon class="h-6 w-6 mx-2" />
+    <a class="bg-white border rounded flex p-2 shadow whitespace-nowrap"
+        href="{{ route('oauth.redirect', ['provider' => 'clever']) }}">
+        <x-clever-icon class="h-6 w-6 mr-2" />
+        <span class="text-black">{{ __('Sign in with Clever') }}</span>
         <span class="sr-only">Clever</span>
     </a>
 
     @if (JoelButcher\Socialstream\Socialstream::hasGoogleSupport())
-        <a href="{{ route('oauth.redirect', ['provider' => JoelButcher\Socialstream\Providers::google()]) }}" >
-            <x-google-icon class="h-6 w-6 mx-2" />
+        <a class="bg-white border rounded flex p-2 shadow whitespace-nowrap"
+          href="{{ route('oauth.redirect', ['provider' => JoelButcher\Socialstream\Providers::google()]) }}" >
+            <x-google-icon class="h-6 w-6 mr-2" />
+            <span class="text-black">{{ __('Sign in with Google') }}</span>
             <span class="sr-only">Google</span>
         </a>
     @endif

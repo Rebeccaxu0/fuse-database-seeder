@@ -30,7 +30,7 @@ return [
     */
 
     'providers' => [
-        // Providers::clever(),
+        'clever',
         Providers::google(),
     ],
 
