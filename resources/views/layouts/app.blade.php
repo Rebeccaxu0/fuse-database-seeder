@@ -14,7 +14,9 @@
 
             {{ $slot }}
 
-            <livewire:impersonate />
+            <div class="absolute bottom-0 left-0 right-0 px-8">
+              <livewire:impersonate />
+            </div>
         </main>
 
     </div>

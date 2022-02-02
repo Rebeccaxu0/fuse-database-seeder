@@ -12,7 +12,7 @@
     </div>
 
     @if (!empty($search))
-        <div class="absolute bottom-0 left-0 right-0"></div>
+    <div class="absolute bg-white rounded-lg left-0 right-0">
 
         <div class="relative z-10 w-full bg-white rounded-t-none shadow-lg list-group">
           @if (count($users))
@@ -39,6 +39,7 @@
               <div>No results</div>
           @endif
         </div>
+    </div>
     @endif
 </div>
 @endCanImpersonate
