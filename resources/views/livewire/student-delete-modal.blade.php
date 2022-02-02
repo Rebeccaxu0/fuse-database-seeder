@@ -1,12 +1,14 @@
-<div class="cursor-pointer inline-block">
+<div class="inline-block h-full">
     <span
       wire:click="$set('showDeleteModal', true)"
       alt="{{ __('Delete') }}"
       title="{{ __('Delete') }}"
-      class="cursor-pointer ml-2 leading-[0.9rem] border-2 border-red-500 text-red-500 rounded-xl text-center inline-block">{{
+      class="cursor-pointer -ml-2
+             py-2 px-2 h-full
+             bg-red-500 rounded-r-xl
+             text-white text-center inline-block">{{
       __('Delete')
       }}</span>
-    </a>
     <form wire:submit.prevent="submit">
         <x-jet-confirmation-modal wire:model="showDeleteModal">
             <x-slot name="title">
