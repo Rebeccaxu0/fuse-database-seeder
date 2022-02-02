@@ -108,4 +108,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::resource('challenges', ChallengeController::class);
             Route::resource('lti_platforms', LTIPlatformController::class);
         });
+    Route::get(
+        'admin/school/{school:school}/addstudios',
+    
 });

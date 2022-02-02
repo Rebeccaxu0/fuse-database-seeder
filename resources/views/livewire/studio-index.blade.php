@@ -1,5 +1,8 @@
 <div class="relative">
     <div>
+        <a href="{{ route('admin.schools.addstudios') }}">
+            <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
+        </a>
         <div>
             <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}"> 
             <h3 class="mt-2 mb-2">District: {{ $setdistrict['name'] }} </h3>
