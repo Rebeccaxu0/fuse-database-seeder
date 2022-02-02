@@ -1,9 +1,7 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+<x-guest-logo-layout>
+  <h2 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Sign Up') }}</h2>
 
+    <div class="mt-6 grid grid-cols-1 gap-6 max-w-full">
         <x-jet-validation-errors class="mb-4" />
 
         <form method="POST" action="{{ route('register') }}">
@@ -13,12 +11,6 @@
                 <x-jet-label for="name" value="{{ __('Name') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
                     autofocus autocomplete="name" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                    required />
             </div>
 
             <div class="mt-4">
@@ -50,12 +42,8 @@
                 </div>
             @endif
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-jet-button class="ml-4">
+            <div class="mt-8">
+                <x-jet-button class="btn w-full lg:max-w-xs">
                     {{ __('Register') }}
                 </x-jet-button>
             </div>
@@ -64,5 +52,10 @@
         @if (JoelButcher\Socialstream\Socialstream::show())
             <x-socialstream-providers />
         @endif
-    </x-jet-authentication-card>
-</x-guest-layout>
+
+        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+            {{ __('Already registered?') }}
+        </a>
+
+    </div>
+</x-guest-logo-layout>

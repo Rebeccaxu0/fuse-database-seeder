@@ -1,10 +1,6 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
-
-        <div class="mb-4 text-sm text-gray-600">
+<x-guest-logo-layout>
+    <h2 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Password reset') }}</h2>
+        <div class="mt-4 mb-4 text-sm text-gray-600">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
 
@@ -25,11 +21,11 @@
                     required autofocus />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+            <div class="flex items-center justify-end mt-4 gap-3">
+              <a class="btn bg-gray-300 rounded-lg text-gray-500 p-2 font-bold" href="/login">{{ __('Cancel') }}</a>
                 <x-jet-button>
                     {{ __('Email Password Reset Link') }}
                 </x-jet-button>
             </div>
         </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+</x-guest-logo-layout>
