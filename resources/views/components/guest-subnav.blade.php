@@ -1,9 +1,6 @@
 <x-subnav id="guest">
-    <!-- Logo -->
     <div class="absolute t-0 l-0 z-50 mt-3">
-        <a href="//www.fusestudio.net">
-            <img src="/logo.png" alt="logo" class="w-20">
-        </a>
+        <a href="//www.fusestudio.net"><img src="/logo.png" alt="{{ __('FUSE Logo') }}" title="{{ __('FUSE Logo') }}" class="w-20"></a>
     </div>
     <x-subnav-ul id="guest-menu" class="md:pl-3 md:pr-20 md:ml-16">
         <li class="ml-4"><a class="px-2" href="//www.fusestudio.net/how-fuse-works/">{{ __('How FUSE Works') }}</a></li>

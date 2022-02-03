@@ -1,7 +1,7 @@
-<div class="flex flex-row items-center justify-between py-4 text-gray-500">
-    <hr class="w-full mr-2">
+<div class="flex flex-row items-center justify-between py-4 text-slate-800">
+    <hr class="w-full mr-2 border-fuse-blue">
         {{ __('Or') }}
-    <hr class="w-full ml-2">
+    <hr class="w-full ml-2 border-fuse-blue">
 </div>
 
 <div class="flex flex-col md:flex-row lg:flex-col xl:flex-row items-center justify-center gap-1">

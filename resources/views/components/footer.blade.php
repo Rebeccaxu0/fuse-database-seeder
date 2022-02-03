@@ -1,26 +1,24 @@
 <footer class="align-bottom bg-fuse-teal-500 py-10 max-w-screen">
     <div class="container grid gap-x-2 grid-cols-2 md:grid-cols-3">
     <div class="md:col-start-2">
-        <h3 class="text-white font-extrabold text-3xl lg:text-4xl pb-10 font-display">
+        <span class="text-slate-600 font-extrabold text-3xl lg:text-4xl pb-10 font-display">
           {{ __(':count students', ['count' => $students]) }}
-        </h3>
+        </span>
         <ul class="leading-loose font-semibold list-none">
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/privacy">{{ __('Privacy Policy') }}</a></li>
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/terms-of-use">{{ __('Terms of Use') }}</a></li>
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/our-story">{{ __('About') }}</a></li>
-            <li class="list-none m-0"><a href="mailto:info@fusestudio.net">info@fusestudio</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="https://www.fusestudio.net/privacy">{{ __('Privacy Policy') }}</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="https://www.fusestudio.net/terms-of-use">{{ __('Terms of Use') }}</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="mailto:info@fusestudio.net">info@fusestudio</a></li>
         </ul>
         <livewire:locale-switcher />
     </div>
     <div class="pl-8 md:col-start-3">
-        <h3 class="text-white font-extrabold text-3xl lg:text-4xl pb-10 font-display">
+        <span class="text-slate-600 font-extrabold text-3xl lg:text-4xl pb-10 font-display">
           {{ __(':count schools', ['count' => $schools]) }}
-        </h3>
+        </span>
         <ul class="leading-loose font-semibold">
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/privacy">{{ __('Privacy Policy') }}</a></li>
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/terms-of-use">{{ __('Terms of Use') }}</a></li>
-            <li class="list-none m-0"><a href="https://www.fusestudio.net/our-story">{{ __('About') }}</a></li>
-            <li class="list-none m-0"><a href="mailto:info@fusestudio.net">info@fusestudio</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="https://www.fusestudio.net/privacy">{{ __('Privacy Policy') }}</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="https://www.fusestudio.net/terms-of-use">{{ __('Terms of Use') }}</a></li>
+            <li class="list-none m-0"><a class="text-slate-800" href="mailto:info@fusestudio.net">info@fusestudio</a></li>
         </ul>
         </div>
     <div class="col-start-1 md:mt-32 md:row-start-1">

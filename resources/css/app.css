@@ -105,6 +105,18 @@
     @apply bg-white shadow-xl rounded-xl p-2;
   }
 
+  .select-wcag-wrapper::after {
+    content: '▼';
+    margin: 0.5rem 0 0 -2rem;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .select-wcag-wrapper select {
+    background-image: none;
+    z-index: 10;
+  }
+
   /* Add padding depending on the size of the top-menu */
   @screen md {
     #env.student {

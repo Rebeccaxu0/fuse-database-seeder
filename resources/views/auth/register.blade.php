@@ -1,5 +1,7 @@
 <x-guest-logo-layout>
-  <h2 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Sign Up') }}</h2>
+    <x-slot name="title">{{ __('Sign Up') }}</x-slot>
+
+    <h1 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Sign Up') }}</h1>
 
     <div class="mt-6 grid grid-cols-1 gap-6 max-w-full">
         <x-jet-validation-errors class="mb-4" />

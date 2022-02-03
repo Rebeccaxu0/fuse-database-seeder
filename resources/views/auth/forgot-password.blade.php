@@ -1,5 +1,7 @@
 <x-guest-logo-layout>
-    <h2 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Password reset') }}</h2>
+    <x-slot name="title">{{ __('Password Reset') }}</x-slot>
+
+    <h1 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Password reset') }}</h1>
         <div class="mt-4 mb-4 text-sm text-gray-600">
             {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
         </div>
