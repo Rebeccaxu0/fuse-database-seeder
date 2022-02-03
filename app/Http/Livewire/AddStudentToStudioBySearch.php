@@ -10,11 +10,12 @@ use Livewire\Component;
 class AddStudentToStudioBySearch extends Component
 {
     public $search = '';
-    public $student = [];
+    public $students = [];
 
     public function add(User $student)
     {
-        $studio = Auth::user()->activeStudio;
+        Auth::user()->activeStudio->students()->attach($student);
+        $this->search = '';
         $this->emitUp('updateStudents');
     }
 

@@ -19,7 +19,7 @@
           @if (count($students))
           <ul>
             @foreach ($students as $student)
-            <li class="mb-6" :wire:click="add">
+            <li class="mb-6" wire:click="add({{ $student }})">
                 {{ $student->full_name }}
                 @if ($student->email)
                 &lt;{{ $student->email }}&gt;
