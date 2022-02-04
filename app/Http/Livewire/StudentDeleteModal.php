@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class StudentDeleteModal extends Component
@@ -11,7 +12,7 @@ class StudentDeleteModal extends Component
     public User $student;
 
     public function submit() {
-        $this->student->delete();
+        $this->student->studios()->detach(Auth::user()->activeStudio->id);
         $this->emitUp('updateStudents');
         $this->showDeleteModal = false;
     }
