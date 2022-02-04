@@ -21,8 +21,13 @@ class AddStudentToStudioBySearch extends Component
 
     public function render()
     {
+        $studio_members_q = User::select('id')
+            ->whereRelation('roles', 'id', Role::STUDENT_ID)
+            ->whereRelation('studios', 'id', Auth::user()->activeStudio->id);
+
         $users_q = User::with(['activeStudio', 'activeStudio.school'])
             ->whereRelation('roles', 'id', Role::STUDENT_ID)
+            ->whereNotIn('id', $studio_members_q)
             ->where(function ($query) {
             $query->where('name', 'like', "%{$this->search}%")
                 ->orWhere('full_name', 'like', "%{$this->search}%")
@@ -30,6 +35,7 @@ class AddStudentToStudioBySearch extends Component
             })
             ->limit(10);
 
+        $this->u_query = $users_q->toSql();
         $this->students = $users_q->get();
         return view('livewire.add-student-to-studio-by-search');
     }
