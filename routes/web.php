@@ -98,9 +98,11 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
     |------------------------------------------------------------------------
     */
     Route::view('admin', 'admin.index')->name('admin');
+    /*Route::get('admin.schools.addstudios', [SchoolController::class]);*/
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
+            Route::get('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::resource('packages', PackageController::class);
             Route::resource('districts', DistrictController::class);
             Route::resource('schools', SchoolController::class);
@@ -108,7 +110,5 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::resource('challenges', ChallengeController::class);
             Route::resource('lti_platforms', LTIPlatformController::class);
         });
-    Route::get(
-        'admin/school/{school:school}/addstudios',
-    
-});
+    });
+

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Package;
 use App\Models\School;
+use App\Models\Studio;
 use Illuminate\Http\Request;
 
 class SchoolController extends Controller
@@ -40,6 +41,19 @@ class SchoolController extends Controller
     {
         return view('admin.school.create', [
             'packages' => Package::all()->sortBy('name'),
+        ]);
+    }
+
+    /**
+     * 
+     *
+     * 
+     */
+    public function addstudios(School $school)
+    {
+        return view('admin.school.addstudios', [
+            'studios' => Studio::all()->sortBy('name'),
+            'school' => $school,
         ]);
     }
 

@@ -153,6 +153,21 @@ class School extends Organization
     }
 
     /**
+     * Create studios and add them to a School.
+     *
+     * @param int[] $studios_to_create
+     *  List of studio ids.
+     */
+    public function createStudios(array $studios_to_create)
+    {
+        foreach ($studios_to_create as $name) {
+            $studio = new Studio(['name' => $name]);
+            $studio->school()->associate($this);
+            $studio->save();
+        }
+    }
+
+    /**
      * Add studios to a School.
      *
      * @param int[] $studios_to_add

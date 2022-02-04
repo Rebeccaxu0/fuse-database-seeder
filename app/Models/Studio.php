@@ -14,6 +14,15 @@ class Studio extends Organization
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    /**
      * The Package associated with this studio or the parent School/District.
      */
     public function deFactoPackage()

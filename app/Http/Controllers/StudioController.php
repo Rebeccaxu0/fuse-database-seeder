@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\School;
 use App\Models\Studio;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +56,22 @@ class StudioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|studios|max:255',
+        ]);
+
+        dd($request->createstudios);
+
+        foreach ($request->createstudios as $name) {
+            $studio = Studio::create([
+                'name' => $name,
+            ]);
+            $studio->school()->associate($request->school);
+            $studio->save();
+        }
+
+        return redirect(route('admin.studios.index'));
     }
 
     /**
