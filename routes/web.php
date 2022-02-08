@@ -73,8 +73,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->name('facilitator.')
         ->group(function () {
             Route::redirect('/', 'facilitator/people')->name('index');
-            Route::get(
-                'people', [FacilitatorStudioMembersController::class, 'index'])->name('people');
+            Route::get('people', FacilitatorStudioMembership::class)->name('people');
             Route::get(
                 'activity', [FacilitatorActivityController::class, 'index']
                 )->name('activity');

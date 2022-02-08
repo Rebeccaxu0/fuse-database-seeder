@@ -33,6 +33,7 @@ class FacilitatorStudioMembership extends Component
 
     public function render()
     {
-        return view('livewire.facilitator-studio-membership');
+        return view('livewire.facilitator-studio-membership')
+            ->layout(\App\View\Components\AppLayout::class, ['title' => __('People'), 'header' => __('People')]);
     }
 }
