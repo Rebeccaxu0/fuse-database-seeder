@@ -35,9 +35,7 @@ class Studio extends Organization
      */
     public function activeStudents()
     {
-        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
-            $query->where('id', '=', Role::STUDENT_ID);
-        });
+      return $this->activeUsers()->doesntHave('roles');
     }
 
     /**
@@ -45,9 +43,7 @@ class Studio extends Organization
      */
     public function students()
     {
-        return $this->users()->whereHas('roles', function (Builder $query) {
-            $query->where('id', '=', Role::STUDENT_ID);
-        });
+      return $this->users()->doesntHave('roles');
     }
 
     /**

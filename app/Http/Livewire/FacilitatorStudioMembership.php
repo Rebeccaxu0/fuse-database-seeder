@@ -10,22 +10,24 @@ use Livewire\Component;
 class FacilitatorStudioMembership extends Component
 {
     public $students;
+    public Studio $studio;
 
     protected $listeners = ['updateStudents', 'updateFacilitators'];
 
     public function updateStudents() {
-        $this->students = Studio::find(Auth::user()->active_studio)
+        $this->students = $this->studio
             ->students()
             ->orderBy('name')
             ->get();
     }
 
     public function mount() {
-        $this->students = Studio::find(Auth::user()->active_studio)
+        $this->studio = Studio::find(Auth::user()->active_studio);
+        $this->students = $this->studio
             ->students()
             ->orderBy('name')
             ->get();
-        $this->facilitators = Studio::find(Auth::user()->active_studio)
+        $this->facilitators = $this->studio
             ->facilitators()
             ->orderBy('name')
             ->get();

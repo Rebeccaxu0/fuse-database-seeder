@@ -3,30 +3,37 @@
 namespace App\Http\Livewire;
 
 use App\Models\Role;
+use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class AddStudentToStudioBySearch extends Component
 {
+    public Studio $studio;
     public $search = '';
     public $students = [];
 
     public function add(User $student)
     {
-        Auth::user()->activeStudio->students()->attach($student);
+        $this->studio->students()->attach($student);
         $this->search = '';
         $this->emitUp('updateStudents');
+    }
+
+    public function mount(Studio $studio)
+    {
+        $this->studio = $studio;
     }
 
     public function render()
     {
         $studio_members_q = User::select('id')
-            ->whereRelation('roles', 'id', Role::STUDENT_ID)
+            ->doesntHave('roles')
             ->whereRelation('studios', 'id', Auth::user()->activeStudio->id);
 
         $users_q = User::with(['activeStudio', 'activeStudio.school'])
-            ->whereRelation('roles', 'id', Role::STUDENT_ID)
+            ->doesntHave('roles')
             ->whereNotIn('id', $studio_members_q)
             ->where(function ($query) {
             $query->where('name', 'like', "%{$this->search}%")

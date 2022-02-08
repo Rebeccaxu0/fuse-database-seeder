@@ -13,10 +13,10 @@
     {{ __('No Students') }}
     @endforelse
   </div>
-  <livewire:add-student-to-studio-by-search />
-  <livewire:add-student-to-studio-by-creation :studio="Auth::user()->activeStudio" />
+  <livewire:add-student-to-studio-by-search :studio="$studio" />
+  <livewire:add-student-to-studio-by-creation :studio="$studio" />
   <livewire:add-students-to-studio-by-csv />
-  <livewire:remove-all-students-from-studio :studio="Auth::user()->activeStudio" />
+  <livewire:remove-all-students-from-studio :studio="$studio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()])}}</h2>
   <div class="grid md:grid-cols-2 gap-4">
