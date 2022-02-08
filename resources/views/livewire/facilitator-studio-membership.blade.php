@@ -14,6 +14,9 @@
     @endforelse
   </div>
   <livewire:add-student-to-studio-by-search />
+  <livewire:add-student-to-studio-by-creation :studio="Auth::user()->activeStudio" />
+  <livewire:add-students-to-studio-by-csv />
+  <livewire:remove-all-students-from-studio :studio="Auth::user()->activeStudio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()])}}</h2>
   <div class="grid md:grid-cols-2 gap-4">
