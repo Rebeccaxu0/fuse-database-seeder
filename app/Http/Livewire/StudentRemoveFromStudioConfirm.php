@@ -2,24 +2,32 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class StudentDeleteModal extends Component
+class StudentRemoveFromStudioConfirm extends Component
 {
     public bool $showDeleteModal = false;
+    public Studio $studio;
     public User $student;
 
+    public function mount(Studio $studio)
+    {
+        $this->studio = $studio;
+    }
+
     public function submit() {
-        $this->student->studios()->detach(Auth::user()->activeStudio->id);
+        $this->studio->students()->detach($this->student);
+
         $this->emitUp('updateStudents');
         $this->showDeleteModal = false;
     }
 
     public function render()
     {
-        return view('livewire.student-delete-modal');
+        return view('livewire.student-remove-from-studio-confirm');
     }
 }
 

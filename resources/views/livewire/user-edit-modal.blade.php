@@ -5,24 +5,25 @@
       title="{{ __('Edit') }}"
       class="cursor-pointer
              py-2 px-5 h-full
-             bg-fuse-green rounded-l-xl
+             border-fuse-teal-dk border {{ $user->is_facilitator() ? 'rounded-xl' : 'rounded-l-xl' }}
+             text-fuse-teal-dk hover:text-white hover:bg-fuse-green-900
              text-white text-center inline-block">{{
       __('Edit')
       }}</span>
     <form wire:submit.prevent="submit">
         <x-jet-dialog-modal wire:model="showEditModal">
             <x-slot name="title">
-              {{ __('Edit Student :name', ['name' => $student->name]) }}
+              {{ __('Edit :full_name (:name)', ['full_name' => $user->full_name, 'name' => $user->name]) }}
             </x-slot>
 
             <x-slot name="content">
-                <label for="studio_code">{{ __('Name') }}</label>
+                <label for="name">{{ __('Username') }}</label>
                 <input
                     type="text"
                     name="name"
                     id="name"
-                    wire:model="name" />
-                @error('name')
+                    wire:model="user.name" />
+                @error('user.name')
                 <span class="text-red-500">
                   {{ $message }}
                 </span>
@@ -34,7 +35,7 @@
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
                 <x-jet-button wire:click="submit" wire:loading.attr="disabled">
-                    {{ __('Submit') }}
+                    {{ __('Save') }}
                 </x-jet-button>
             </x-slot>
         </x-jet-dialog-modal>

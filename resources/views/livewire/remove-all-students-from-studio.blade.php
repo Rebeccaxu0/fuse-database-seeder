@@ -3,10 +3,11 @@
       wire:click="$set('showRemoveModal', true)"
       alt="{{ __('Remove all students') }}"
       title="{{ __('Remove all students') }}"
-      class="cursor-pointer -ml-2
+      class="cursor-pointer
              py-2 px-2 h-full
-             bg-red-500 rounded-xl
-             text-white text-center inline-block">{{
+             border-fuse-teal-dk border border-b-2 rounded-xl
+             text-fuse-teal-dk hover:text-white hover:bg-fuse-red
+             text-center uppercase inline-block">{{
       __('Remove all students')
       }}</span>
     <form wire:submit.prevent="submit">

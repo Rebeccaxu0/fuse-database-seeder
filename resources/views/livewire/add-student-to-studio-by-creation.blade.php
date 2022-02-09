@@ -3,10 +3,11 @@
       wire:click="$set('showCreateStudentFormModal', true)"
       alt="{{ __('Create New Student') }}"
       title="{{ __('Create New Student') }}"
-      class="cursor-pointer -ml-2
+      class="cursor-pointer
              py-2 px-2 h-full
-             bg-fuse-green rounded-xl
-             text-white text-center inline-block">{{
+             border-fuse-teal-dk border border-b-2 rounded-xl
+             text-fuse-teal-dk hover:text-white hover:bg-fuse-green-900
+             text-center uppercase inline-block">{{
       __('Create New Student')
       }}</span>
     <form wire:submit.prevent="submit">

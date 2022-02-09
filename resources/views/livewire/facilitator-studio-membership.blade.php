@@ -5,8 +5,8 @@
     <div class="border rounded-xl px-4 py-2 relative">
       <span class="font-bold">{{ $student->full_name }}</span> <span>{{ $student->name }}</span>
       <div class="absolute right-0 top-0 bottom-0">
-        <livewire:student-edit-modal :student="$student" :wire:key="'edit-' . $student->id" />
-        <livewire:student-delete-modal :student="$student" :wire:key="'delete-' . $student->id" />
+        <livewire:user-edit-modal :studio="$studio" :user="$student" :wire:key="'edit-' . $student->id" />
+        <livewire:student-remove-from-studio-confirm :studio="$studio" :student="$student" :wire:key="'delete-' . $student->id" />
       </div>
     </div>
     @empty
@@ -15,7 +15,7 @@
   </div>
   <livewire:add-student-to-studio-by-search :studio="$studio" />
   <livewire:add-student-to-studio-by-creation :studio="$studio" />
-  <livewire:add-students-to-studio-by-csv />
+  <livewire:add-students-to-studio-by-csv :studio="$studio" />
   <livewire:remove-all-students-from-studio :studio="$studio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()])}}</h2>
@@ -23,9 +23,8 @@
     @forelse ($facilitators as $facilitator)
     <div class="border rounded-xl px-4 py-2 relative">
       <span class="font-bold">{{ $facilitator->full_name }}</span> <span>{{ $facilitator->name }}</span> <span>&lt;{{ $facilitator->email }}&gt;</span>
-      <div class="absolute right-0 top-0 bottom-0">
-        <!-- <livewire:student&#45;edit&#45;modal :student="$facilitator" :wire:key="'edit&#45;' . $facilitator&#45;>id" /> -->
-        <!-- <livewire:student&#45;delete&#45;modal :student="$facilitator" :wire:key="'delete&#45;' . $facilitator&#45;>id" /> -->
+      <div class="absolute right-0 top-0 bottom-0 rounded-xl overflow-hidden">
+        <livewire:user-edit-modal :studio="$studio" :user="$facilitator" :wire:key="'edit-' . $facilitator->id" />
       </div>
     </div>
     @empty

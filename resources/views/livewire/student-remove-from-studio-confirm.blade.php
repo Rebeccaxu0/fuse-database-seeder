@@ -3,22 +3,22 @@
       wire:click="$set('showDeleteModal', true)"
       alt="{{ __('Delete') }}"
       title="{{ __('Delete') }}"
-      class="cursor-pointer -ml-2
+      class="cursor-pointer -ml-1.5
              py-2 px-2 h-full
-             bg-red-500 rounded-r-xl
+             border-fuse-teal-dk border rounded-r-xl
+             text-fuse-teal-dk hover:text-white hover:bg-fuse-red
              text-white text-center inline-block">{{
-      __('Delete')
+      __('Remove')
       }}</span>
     <form wire:submit.prevent="submit">
         <x-jet-confirmation-modal wire:model="showDeleteModal">
             <x-slot name="title">
-              {{ __('Delete Student :name?', ['name' => $student->name]) }}
+                <span class="text-red-500">
+                    {{ __('Remove :full_name (:name) from Studio?', ['full_name' => $student->full_name, 'name' => $student->name]) }}
+                </span>
             </x-slot>
 
             <x-slot name="content">
-                <span class="text-red-500">
-                  {{ __('This is a permanent action.') }}
-                </span>
             </x-slot>
 
             <x-slot name="footer">
@@ -26,7 +26,7 @@
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
                 <x-jet-danger-button wire:click="submit" wire:loading.attr="disabled">
-                    {{ __('Delete') }}
+                    {{ __('Confirm') }}
                 </x-jet-danger-button>
             </x-slot>
         </x-jet-confirmation-modal>
