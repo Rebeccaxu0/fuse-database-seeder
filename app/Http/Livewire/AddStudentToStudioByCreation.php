@@ -63,7 +63,6 @@ class AddStudentToStudioByCreation extends Component
         $this->student->password = Hash::make($this->password);
         $this->student->active_studio = $this->studio->id;
         $this->student->save();
-        $this->student->roles()->attach(ROLE::STUDENT_ID);
         $this->student->studios()->attach($this->studio->id);
 
         $this->initializeStudent();
