@@ -9,7 +9,6 @@ use App\Http\Controllers\FacilitatorAnnouncementsController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
-use App\Http\Controllers\FacilitatorStudioMembersController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;

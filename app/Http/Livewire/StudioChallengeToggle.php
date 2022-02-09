@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Toggle;
+use Illuminate\Support\Facades\Auth;
 
 class StudioChallengeToggle extends Toggle
 {

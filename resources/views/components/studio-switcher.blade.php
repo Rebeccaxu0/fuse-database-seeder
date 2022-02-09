@@ -21,7 +21,7 @@
       overflow-scroll hidden border rounded-md">
     @foreach ($otherStudios as $studio)
     <li class="list-none -indent-8 pl-8">
-      <a href="{{ route('active_studio', $studio->id)}}">@if ($studio->school) {{ $studio->school->name }} &ndash; @endif {{ $studio->name }}</a>
+      <a href="{{ route('active_studio', $studio->id) }}">@if ($studio->school) {{ $studio->school->name }} &ndash; @endif {{ $studio->name }}</a>
     </li>
     @endforeach
     </ul>

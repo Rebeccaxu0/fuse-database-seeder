@@ -25,6 +25,23 @@ class Provider extends AbstractProvider
     protected $scopes = [''];
 
     /**
+     * Get the access token for the given code.
+     *
+     * @param  string  $code
+     * @return string
+     */
+    public function getAccessToken($code)
+    {
+        $response = $this->getHttpClient()->post($this->getTokenUrl(), [
+            'auth' => [$this->clientId, $this->clientSecret],
+            'headers' => ['Accept' => 'application/json'],
+            'form_params' => $this->getTokenFields($code),
+        ]);
+
+        return json_decode($response->getBody(), true)['access_token'];
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getAuthUrl($state)
@@ -86,24 +103,7 @@ class Provider extends AbstractProvider
     protected function getTokenFields($code)
     {
         return array_merge(parent::getTokenFields($code), [
-            'grant_type' => 'authorization_code'
+            'grant_type' => 'authorization_code',
         ]);
-    }
-
-    /**
-     * Get the access token for the given code.
-     *
-     * @param  string  $code
-     * @return string
-     */
-    public function getAccessToken($code)
-    {
-        $response = $this->getHttpClient()->post($this->getTokenUrl(), [
-            'auth' => [$this->clientId, $this->clientSecret],
-            'headers' => ['Accept' => 'application/json'],
-            'form_params' => $this->getTokenFields($code),
-        ]);
-
-        return json_decode($response->getBody(), true)['access_token'];
     }
 }

@@ -12,18 +12,6 @@ class UserEditModal extends Component
     public Studio $studio;
     public User $user;
 
-    protected function rules() {
-        return [
-            'user.full_name' => 'required|string',
-            'user.name' => 'required|string|unique:users,name',
-            'user.email' => 'email|unique:users,email',
-            'user.birthday' => 'required|date',
-            'user.gender' => 'nullable',
-            'user.ethnicity' => 'nullable',
-            'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
-        ];
-    }
-
     public function submit() {
         $this->student->name = $this->name;
         $this->student->save();
@@ -35,5 +23,17 @@ class UserEditModal extends Component
     public function render()
     {
         return view('livewire.user-edit-modal');
+    }
+
+    protected function rules() {
+        return [
+            'user.full_name' => 'required|string',
+            'user.name' => 'required|string|unique:users,name',
+            'user.email' => 'email|unique:users,email',
+            'user.birthday' => 'required|date',
+            'user.gender' => 'nullable',
+            'user.ethnicity' => 'nullable',
+            'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
+        ];
     }
 }

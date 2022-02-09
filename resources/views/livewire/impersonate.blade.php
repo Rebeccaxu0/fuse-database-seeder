@@ -1,6 +1,6 @@
 @canImpersonate
 <div class="relative">
-  <div>{{ __('Masquerade as user')}}</div>
+  <div>{{ __('Masquerade as user') }}</div>
     <input
      wire:model.debounce.300ms="search"
      type="text"

@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\EthnicityOptions;
 use App\Models\GenderOptions;
-use App\Models\Role;
 use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -22,18 +21,6 @@ class AddStudentToStudioByCreation extends Component
     public array $genderOptions = [];
     public array $ethnicityOptions = [];
 
-    protected function rules() {
-        return [
-            'student.full_name' => 'required|string',
-            'student.name' => 'required|string|unique:users,name',
-            'student.email' => 'email|unique:users,email',
-            'student.birthday' => 'required|date',
-            'student.gender' => 'nullable',
-            'student.ethnicity' => 'nullable',
-            'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
-        ];
-    }
-
     public function mount(Studio $studio)
     {
         $this->studio = $studio;
@@ -44,12 +31,6 @@ class AddStudentToStudioByCreation extends Component
             $this->genderOptions = GenderOptions::restricted();
         }
         $this->ethnicityOptions = EthnicityOptions::full();
-    }
-
-    private function initializeStudent() {
-        $this->student = new User;
-        $this->student->gender = 'U';
-        $this->student->ethnicity = 'rather_not_say';
     }
 
     public function updated($propertyName)
@@ -76,5 +57,23 @@ class AddStudentToStudioByCreation extends Component
     {
         return view('livewire.add-student-to-studio-by-creation');
     }
-  }
+
+    protected function rules() {
+        return [
+            'student.full_name' => 'required|string',
+            'student.name' => 'required|string|unique:users,name',
+            'student.email' => 'email|unique:users,email',
+            'student.birthday' => 'required|date',
+            'student.gender' => 'nullable',
+            'student.ethnicity' => 'nullable',
+            'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
+        ];
+    }
+
+    private function initializeStudent() {
+        $this->student = new User;
+        $this->student->gender = 'U';
+        $this->student->ethnicity = 'rather_not_say';
+    }
+}
 

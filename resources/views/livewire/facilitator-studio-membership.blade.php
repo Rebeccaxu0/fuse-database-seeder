@@ -1,5 +1,5 @@
 <div>
-  <h2 class="mb-8 text-left">{{ __('Students (:count)', ['count' => $students->count()])}}</h2>
+  <h2 class="mb-8 text-left">{{ __('Students (:count)', ['count' => $students->count()]) }}</h2>
   <div class="grid lg:grid-cols-2 gap-4">
     @forelse ($students as $student)
     <div class="border rounded-xl px-4 py-2 relative">
@@ -18,7 +18,7 @@
   <livewire:add-students-to-studio-by-csv :studio="$studio" />
   <livewire:remove-all-students-from-studio :studio="$studio" />
 
-  <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()])}}</h2>
+  <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()]) }}</h2>
   <div class="grid md:grid-cols-2 gap-4">
     @forelse ($facilitators as $facilitator)
     <div class="border rounded-xl px-4 py-2 relative">
