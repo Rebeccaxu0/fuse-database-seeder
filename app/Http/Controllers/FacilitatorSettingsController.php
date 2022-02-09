@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Studio;
+use Illuminate\Support\Facades\Auth;
+
 class FacilitatorSettingsController extends Controller
 {
+    public Studio $studio;
+
     /**
      * Create the controller instance.
      *
@@ -20,6 +25,6 @@ class FacilitatorSettingsController extends Controller
      */
     public function index()
     {
-        return view('facilitator.settings', []);
+        return view('facilitator.settings', ['studio' => Auth::user()->activeStudio]);
     }
 }
