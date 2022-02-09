@@ -23,7 +23,7 @@ class FacilitatorActivityController extends Controller
      */
     public function index()
     {
-        $students = Studio::find(Auth::user()->active_studio)
+        $students = Auth::user()->activeStudio
             ->students()
             ->orderBy('name')
             ->get();

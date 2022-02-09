@@ -51,7 +51,7 @@ class LevelController extends Controller
     {
         // Show different view based on level started status.
         $level_view = $level->isStarted(Auth::user()) ? 'student.level-started' : 'student.level-unstarted';
-        // $challenges = Studio::find(Auth::user()->active_studio)->challengeVersions;
+        // $challenges = Auth::user()->activeStudio->challengeVersions;
         return view($level_view, ['level' => $level]);
     }
 

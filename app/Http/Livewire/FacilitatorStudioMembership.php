@@ -22,7 +22,7 @@ class FacilitatorStudioMembership extends Component
     }
 
     public function mount() {
-        $this->studio = Studio::find(Auth::user()->active_studio);
+        $this->studio = Auth::user()->activeStudio;
         $this->students = $this->studio
             ->students()
             ->orderBy('name')
