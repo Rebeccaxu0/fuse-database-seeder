@@ -119,16 +119,22 @@
 
   /* Add padding depending on the size of the top-menu */
   @screen md {
-    #env.student {
+    body.student #env {
       padding-top: 4rem;
     }
-    #env.fac {
+    body.fac #env {
       padding-top: 6rem;
     }
-    #env.admin {
+    body.admin #env {
       padding-top: 8rem;
     }
   }
+
+  /* Add padding for masquearde form */
+  body.admin main {
+    padding-bottom: 10rem;
+  }
+
   nav > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
     min-height: 2rem;

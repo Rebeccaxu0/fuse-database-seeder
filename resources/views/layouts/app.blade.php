@@ -1,7 +1,7 @@
 <x-base-layout>
     <x-slot name="title">{{ $title ?? null }}</x-slot>
 
-    <div id='env' class="flex flex-col bg-white container shadow-2xl p-0 min-h-screen {{ $roleClass }}">
+    <div id='env' class="flex flex-col bg-white container shadow-2xl p-0 min-h-screen">
 
         <x-studio-switcher />
 

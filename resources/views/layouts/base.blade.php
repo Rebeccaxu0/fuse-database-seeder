@@ -21,7 +21,7 @@
     <script src="{{ mix('js/app.js') }}" defer></script>
 </head>
 
-<body class="bg-fuse-background">
+<body class="bg-fuse-background {{ $roleClass }}">
 
     <x-navbar>
         <x-admin-subnav />
