@@ -3,31 +3,24 @@
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Toggle;
-use Illuminate\Support\Facades\Auth;
+use App\Models\ChallengeVersion;
+use App\Models\Studio;
 
 class StudioChallengeToggle extends Toggle
 {
-    public $challengeVersion;
-    public $is_active;
+    public Studio $studio;
+    public ChallengeVersion $challengeVersion;
 
     public function mount() {
-        $this->is_active = Auth::user()
-             ->activeStudio
-             ->challengeVersions
-             ->contains($this->challengeVersion);
+        $this->is_active = $this->studio->challengeVersions->contains($this->challengeVersion);
     }
 
     public function toggle()
     {
-      $studio = Auth::user()->activeStudio;
-      if ($this->is_active) {
-          $studio->challengeVersions()->detach($this->challengeVersion->id);
-      }
-      else {
-          $studio->challengeVersions()->attach($this->challengeVersion->id);
-      }
-
       parent::toggle();
+      $action = $this->is_active ? 'attach' : 'detach';
+      $this->studio->challengeVersions()->$action($this->challengeVersion->id);
     }
 
 }
+

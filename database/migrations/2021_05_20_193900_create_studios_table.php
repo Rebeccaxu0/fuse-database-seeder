@@ -27,10 +27,12 @@ class CreateStudiosTable extends Migration
                   ->default(true);
             $table->boolean('require_email')
                   ->default(false);
-            $table->boolean('restrict_gender_options')
-                  ->default(true);
-            $table->boolean('disable_ideas')
-                  ->default(true);
+            $table->boolean('allow_non_binary_gender_options')
+                  ->default(false);
+            $table->boolean('allow_comments')
+                  ->default(false);
+            $table->boolean('allow_ideas')
+                  ->default(false);
             $table->boolean('universal_pwd')
                   ->default(false);
             $table->boolean('research_site')
@@ -39,6 +41,7 @@ class CreateStudiosTable extends Migration
                   ->default(true);
             $table->boolean('demo_studio')
                   ->default(false);
+            $table->string('join_code', 255);
         });
 
         Schema::create('studio_user', function (Blueprint $table) {

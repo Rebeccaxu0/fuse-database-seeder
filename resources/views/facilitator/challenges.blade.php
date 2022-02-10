@@ -12,8 +12,8 @@
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
-                                <livewire:studio-challenge-toggle :challengeVersion="$challengeVersion" >
-                                <div class="inline-block ml-2 border border-gray-400 rounded-lg py-2 pl-8 pr-1"
+                                <livewire:studio-challenge-toggle :studio="$studio" :challengeVersion="$challengeVersion" >
+                                <div class="inline-block border border-gray-400 rounded-lg py-2 pl-8 pr-1"
                                     style="width: calc(100% - 3.5rem)">
                                     {{ $challengeVersion->name }}
                                     <a class="border border-fuse-teal-500 rounded-xl mx-4 inline-block h-6 w-6 float-right text-center"
@@ -39,7 +39,7 @@
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
-                                <livewire:studio-challenge-toggle :challengeVersion="$challengeVersion" >
+                                <livewire:studio-challenge-toggle :studio="$studio" :challengeVersion="$challengeVersion" >
                                 <div class="inline-block ml-2 border border-gray-400 rounded-lg py-2 pl-8 pr-1"
                                     style="width: calc(100% - 3.5rem)">
                                     {{ $challengeVersion->name }}
