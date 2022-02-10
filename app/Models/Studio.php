@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Util\StudioCode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\QueryException;
 
 class Studio extends Organization
 {
@@ -125,5 +127,32 @@ class Studio extends Organization
     public function activeChallenges()
     {
         return $this->challengeVersions();
+    }
+
+    /**
+     * Try to set a new studio code. Must be unique. Try ten times then fail.
+     */
+    public function setNewStudioCode():bool {
+        $save_status = false;
+
+        for ($i = 0; $i < 10; $i++) {
+            $candidate = StudioCode::generate();
+            // We should put this in a lock or db transaction if we think
+            // multiple simultaneous users will get past the following guard
+            // with the same candidate. Unlikely.
+            if (Studio::where('join_code', $candidate)->doesntExist()) {
+                $this->join_code = $candidate;
+                try {
+                    $this->save();
+                    $save_status = true;
+                    break;
+                }
+                catch (QueryException $e) {
+                    // Ignore query exceptions. Most likely duplicate entry.
+                    // Just retry.
+                }
+            }
+        }
+        return $save_status;
     }
 }
