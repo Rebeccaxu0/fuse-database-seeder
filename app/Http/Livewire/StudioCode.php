@@ -9,6 +9,11 @@ class StudioCode extends Component
 {
     public Studio $studio;
 
+    public function setNewStudioCode()
+    {
+        $this->studio->setNewStudioCode();
+    }
+
     public function render()
     {
         return view('livewire.studio-code');
