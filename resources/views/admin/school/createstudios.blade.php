@@ -4,7 +4,7 @@
 
     <x-slot name="title">{{ __('Create Studios for :name', ['name' => $school->name]) }}</x-slot>
 
-    <form class="w-full max-w-lg mt-6" action="{{ route('admin.studios.store') }}" method="POST">
+    <form class="w-full max-w-lg mt-6" action="{{ route('admin.studios.addstudios') }}" method="POST">
         @csrf
         <label for="number"> Number of studios to create </label>
         <input id="number" class="form-control rounded required" type="text">
@@ -23,7 +23,7 @@
             <br>
         </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
-            <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
+            <button type="" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
                 Save Studios
             </button>
         </div>

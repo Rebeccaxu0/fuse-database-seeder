@@ -49,12 +49,22 @@ class SchoolController extends Controller
      *
      * 
      */
-    public function addstudios(School $school)
+    public function createstudios(School $school)
     {
-        return view('admin.school.addstudios', [
+        return view('admin.school.createstudios', [
             'studios' => Studio::all()->sortBy('name'),
             'school' => $school,
         ]);
+    }
+
+    /**
+     * 
+     *
+     * 
+     */
+    public function addstudios(School $school)
+    {
+        ///
     }
 
     /**
