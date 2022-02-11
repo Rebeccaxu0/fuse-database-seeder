@@ -42,6 +42,7 @@ class CreateStudiosTable extends Migration
             $table->boolean('demo_studio')
                   ->default(false);
             $table->string('join_code', 255);
+            $table->text('dashboard_message');
         });
 
         Schema::create('studio_user', function (Blueprint $table) {

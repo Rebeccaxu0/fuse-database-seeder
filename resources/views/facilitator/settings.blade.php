@@ -10,7 +10,8 @@
 
     <h2 class="uppercase text-left">{{ __('Studio Settings') }}</h2>
 
-    <h3>{{ __('Dashboard Message') }}</h3>
+    <h3 class="text-fuse-teal-dk">{{ __('Dashboard Message') }}</h3>
+    <livewire:studio-dashboard-message :studio="$studio" >
 
     <h3 class="text-fuse-teal-dk">{{ __('Sign In') }}</h3>
     <livewire:studio-bool-toggle :studio="$studio" property="universal_pwd" :label="__('Studio Code as Universal Password')" >
@@ -18,7 +19,7 @@
         {{ __('Turning this on will allow any member of your studio to sign in using the above studio code as a password.') }}
     </p>
 
-    <h3>{{ __('Registration') }}</h3>
+    <h3 class="text-fuse-teal-dk">{{ __('Registration') }}</h3>
     <div class="mb-4">
         <livewire:studio-bool-toggle :studio="$studio" property="require_email" :label="__('Collect Student Email')">
     </div>
@@ -28,7 +29,7 @@
         {{ __('Non-binary gender choices: Female/Male/Non-binary/Prefer not to say') }}
     </p>
 
-    <h3>{{ __('Website Features') }}</h3>
+    <h3 class="text-fuse-teal-dk">{{ __('Website Features') }}</h3>
     <div class="mb-4">
         <livewire:studio-bool-toggle :studio="$studio" property="allow_comments" :label="__('Allow Comments')">
     </div>

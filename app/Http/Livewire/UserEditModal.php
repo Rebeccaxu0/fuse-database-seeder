@@ -8,13 +8,12 @@ use Livewire\Component;
 
 class UserEditModal extends Component
 {
-    public $showEditModal = false;
+    public bool $showEditModal = false;
     public Studio $studio;
     public User $user;
 
     public function submit() {
-        $this->student->name = $this->name;
-        $this->student->save();
+        $this->user->save();
 
         $this->emitUp('updateStudents');
         $this->showEditModal = false;
