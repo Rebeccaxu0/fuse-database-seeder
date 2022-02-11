@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use Livewire\Component;

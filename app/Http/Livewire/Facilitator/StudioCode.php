@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use Livewire\Component;
@@ -16,6 +16,6 @@ class StudioCode extends Component
 
     public function render()
     {
-        return view('livewire.studio-code');
+        return view('livewire.facilitator.studio-code');
     }
 }
