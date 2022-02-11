@@ -13,7 +13,8 @@ class StudioDashboardMessage extends Component
         'studio.dashboard_message' => 'optional|string|max:500',
     ];
 
-    public function submit() {
+    public function updatedStudio($name, $key)
+    {
         $this->studio->save();
     }
 
