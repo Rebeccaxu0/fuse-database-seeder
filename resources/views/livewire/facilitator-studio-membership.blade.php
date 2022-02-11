@@ -3,7 +3,7 @@
   <div class="grid lg:grid-cols-2 gap-4">
     @forelse ($students as $student)
     <div class="border rounded-xl px-4 py-2 relative">
-      <span class="font-bold">{{ $student->full_name }}</span> <span>{{ $student->name }}</span>
+      <span class="font-bold">{{ $student->full_name }}</span> <span>{{ Str::of($student->name)->limit(20) }}</span>
       <div class="absolute right-0 top-0 bottom-0">
         <livewire:facilitator.user-edit-modal :studio="$studio" :user="$student" :wire:key="'edit-' . $student->id" />
         <livewire:facilitator.student-remove-from-studio-confirm :studio="$studio" :student="$student" :wire:key="'delete-' . $student->id" />
