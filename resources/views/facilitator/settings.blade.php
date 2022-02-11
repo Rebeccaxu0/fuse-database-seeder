@@ -11,28 +11,47 @@
     <h2 class="uppercase text-left">{{ __('Studio Settings') }}</h2>
 
     <h3 class="text-fuse-teal-dk">{{ __('Dashboard Message') }}</h3>
+
     <livewire:studio-dashboard-message :studio="$studio" >
 
     <h3 class="text-fuse-teal-dk">{{ __('Sign In') }}</h3>
-    <livewire:studio-bool-toggle :studio="$studio" property="universal_pwd" :label="__('Studio Code as Universal Password')" >
-    <p>
-        {{ __('Turning this on will allow any member of your studio to sign in using the above studio code as a password.') }}
-    </p>
+
+    <livewire:studio-bool-toggle :studio="$studio"
+        property="universal_pwd"
+        :label="__('Studio Code as Universal Password')" >
+
+    <p class="text-sm border rounded p-2 ml-4">{{
+        __('Turning this on will allow any member of your studio to sign in using the above studio code as a password.')
+    }}</p>
 
     <h3 class="text-fuse-teal-dk">{{ __('Registration') }}</h3>
+
     <div class="mb-4">
-        <livewire:studio-bool-toggle :studio="$studio" property="require_email" :label="__('Collect Student Email')">
+        <livewire:studio-bool-toggle :studio="$studio"
+          property="require_email"
+          :label="__('Collect Student Email')">
     </div>
-    <livewire:studio-bool-toggle :studio="$studio" property="allow_non_binary_gender_options" :label="__('Allow Non-binary Gender Options')">
+
+    <livewire:studio-bool-toggle :studio="$studio"
+      property="allow_non_binary_gender_options"
+      :label="__('Allow Non-binary Gender Options')">
+
     <p class="text-sm border rounded p-2 ml-4">
         {{ __('Traditional gender choices: Girl/Boy/Prefer not to say') }}<br>
         {{ __('Non-binary gender choices: Female/Male/Non-binary/Prefer not to say') }}
     </p>
 
     <h3 class="text-fuse-teal-dk">{{ __('Website Features') }}</h3>
+
     <div class="mb-4">
-        <livewire:studio-bool-toggle :studio="$studio" property="allow_comments" :label="__('Allow Comments')">
+        <livewire:studio-bool-toggle :studio="$studio"
+          property="allow_comments"
+          :label="__('Allow Comments')">
     </div>
-    <livewire:studio-bool-toggle :studio="$studio" property="allow_ideas" :label="__('Allow Ideas')">
+
+    <livewire:studio-bool-toggle :studio="$studio"
+      property="allow_ideas"
+      :label="__('Allow Ideas')">
 
 </x-app-layout>
+
