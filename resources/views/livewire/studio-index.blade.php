@@ -33,7 +33,7 @@
                         {{ __('Code') }}
                     </th>
                     <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                        {{ __('Remove') }}
+                        {{ __('Edit') }}
                     </th>
                 </tr>
             </thead>
@@ -73,7 +73,10 @@
                             </div>
                         </td>
                         <td class="px-1 py-1 border-b border-gray-200">
-                                <span class="pl-2">
+                                 <span class="pl-2">
++                                    <a href="{{ route('admin.studios.edit', $studio->id) }}">
++                                        <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
++                                    </a>
                                 <form method="post" action="{{ route('admin.studios.destroy', $studio->id) }}" class="inline-block">
                                     @method('delete')
                                     @csrf
