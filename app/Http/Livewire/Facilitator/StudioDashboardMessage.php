@@ -20,6 +20,6 @@ class StudioDashboardMessage extends Component
 
     public function render()
     {
-        return view('livewire.studio-dashboard-message');
+        return view('livewire.facilitator.studio-dashboard-message');
     }
 }
