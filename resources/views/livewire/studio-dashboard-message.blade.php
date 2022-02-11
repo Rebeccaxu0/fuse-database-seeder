@@ -6,13 +6,16 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 @endpush
 
-<div class="mt-2 bg-white" wire:ignore>
+<div class="quill mt-2 bg-white" wire:ignore>
   <div
        x-data
        x-ref="quillEditor"
        x-init="
+         toolbarOptions = ['bold', 'italic', 'underline', 'link'];
          options = {
-            debug: 'info',
+            modules: {
+                toolbar: toolbarOptions
+            },
             theme: 'snow'
          };
          quill = new Quill($refs.quillEditor, options);
