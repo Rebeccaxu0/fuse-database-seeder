@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\Models\User;
@@ -21,7 +21,7 @@ class UserEditModal extends Component
 
     public function render()
     {
-        return view('livewire.user-edit-modal');
+        return view('livewire.facilitator.user-edit-modal');
     }
 
     protected function rules() {

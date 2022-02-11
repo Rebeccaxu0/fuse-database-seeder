@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\Models\User;
@@ -43,6 +43,6 @@ class AddStudentToStudioBySearch extends Component
 
         $this->u_query = $users_q->toSql();
         $this->students = $users_q->get();
-        return view('livewire.add-student-to-studio-by-search');
+        return view('livewire.facilitator.add-student-to-studio-by-search');
     }
 }

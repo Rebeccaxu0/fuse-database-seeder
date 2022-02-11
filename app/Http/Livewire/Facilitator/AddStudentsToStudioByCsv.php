@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use Livewire\Component;
 
@@ -10,6 +10,6 @@ class AddStudentsToStudioByCsv extends Component
 
     public function render()
     {
-        return view('livewire.add-students-to-studio-by-csv');
+        return view('livewire.facilitator.add-students-to-studio-by-csv');
     }
 }

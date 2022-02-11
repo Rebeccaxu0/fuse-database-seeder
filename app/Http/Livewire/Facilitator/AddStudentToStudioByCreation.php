@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\EthnicityOptions;
 use App\Models\GenderOptions;
@@ -55,7 +55,7 @@ class AddStudentToStudioByCreation extends Component
 
     public function render()
     {
-        return view('livewire.add-student-to-studio-by-creation');
+        return view('livewire.facilitator.add-student-to-studio-by-creation');
     }
 
     protected function rules() {

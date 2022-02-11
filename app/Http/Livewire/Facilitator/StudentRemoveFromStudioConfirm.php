@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\Models\User;
@@ -26,7 +26,7 @@ class StudentRemoveFromStudioConfirm extends Component
 
     public function render()
     {
-        return view('livewire.student-remove-from-studio-confirm');
+        return view('livewire.facilitator.student-remove-from-studio-confirm');
     }
 }
 

@@ -5,18 +5,18 @@
     <div class="border rounded-xl px-4 py-2 relative">
       <span class="font-bold">{{ $student->full_name }}</span> <span>{{ $student->name }}</span>
       <div class="absolute right-0 top-0 bottom-0">
-        <livewire:user-edit-modal :studio="$studio" :user="$student" :wire:key="'edit-' . $student->id" />
-        <livewire:student-remove-from-studio-confirm :studio="$studio" :student="$student" :wire:key="'delete-' . $student->id" />
+        <livewire:facilitator.user-edit-modal :studio="$studio" :user="$student" :wire:key="'edit-' . $student->id" />
+        <livewire:facilitator.student-remove-from-studio-confirm :studio="$studio" :student="$student" :wire:key="'delete-' . $student->id" />
       </div>
     </div>
     @empty
     {{ __('No Students') }}
     @endforelse
   </div>
-  <livewire:add-student-to-studio-by-search :studio="$studio" />
-  <livewire:add-student-to-studio-by-creation :studio="$studio" />
-  <livewire:add-students-to-studio-by-csv :studio="$studio" />
-  <livewire:remove-all-students-from-studio :studio="$studio" />
+  <livewire:facilitator.add-student-to-studio-by-search :studio="$studio" />
+  <livewire:facilitator.add-student-to-studio-by-creation :studio="$studio" />
+  <livewire:facilitator.add-students-to-studio-by-csv :studio="$studio" />
+  <livewire:facilitator.remove-all-students-from-studio :studio="$studio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()]) }}</h2>
   <div class="grid md:grid-cols-2 gap-4">
@@ -24,7 +24,7 @@
     <div class="border rounded-xl px-4 py-2 relative">
       <span class="font-bold">{{ $facilitator->full_name }}</span> <span>{{ $facilitator->name }}</span> <span>&lt;{{ $facilitator->email }}&gt;</span>
       <div class="absolute right-0 top-0 bottom-0 rounded-xl overflow-hidden">
-        <livewire:user-edit-modal :studio="$studio" :user="$facilitator" :wire:key="'edit-' . $facilitator->id" />
+        <livewire:facilitator.user-edit-modal :studio="$studio" :user="$facilitator" :wire:key="'edit-' . $facilitator->id" />
       </div>
     </div>
     @empty
