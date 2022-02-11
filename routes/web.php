@@ -14,7 +14,7 @@ use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
-use App\Http\Livewire\FacilitatorStudioMembership;
+use App\Http\Livewire\Facilitator\StudioMembershipPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,7 +72,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->name('facilitator.')
         ->group(function () {
             Route::redirect('/', 'facilitator/people')->name('index');
-            Route::get('people', FacilitatorStudioMembership::class)->name('people');
+            Route::get('people', StudioMembershipPage::class)->name('people');
             Route::get(
                 'activity', [FacilitatorActivityController::class, 'index']
                 )->name('activity');
