@@ -11,7 +11,11 @@
        x-data
        x-ref="quillEditor"
        x-init="
-         quill = new Quill($refs.quillEditor, {theme: 'snow'});
+         options = {
+            debug: 'info',
+            theme: 'snow'
+         };
+         quill = new Quill($refs.quillEditor, options);
          quill.on('text-change', function () {
            $dispatch('quill-input', quill.root.innerHTML);
          });
