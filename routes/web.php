@@ -4,7 +4,6 @@ use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
 use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\FacilitatorActivityController;
 use App\Http\Controllers\FacilitatorAnnouncementsController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
+use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
 use Illuminate\Support\Facades\Route;
 
@@ -73,9 +73,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->group(function () {
             Route::redirect('/', 'facilitator/people')->name('index');
             Route::get('people', StudioMembershipPage::class)->name('people');
-            Route::get(
-                'activity', [FacilitatorActivityController::class, 'index']
-                )->name('activity');
+            Route::get('activity', StudioActivityPage::class)->name('activity');
             Route::get(
                 'challenges', [FacilitatorChallengesController::class, 'index']
                 )->name('challenges');
