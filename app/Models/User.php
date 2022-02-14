@@ -262,31 +262,33 @@ class User extends Authenticatable
 
     /**
      */
-    public function deFactoStudios() {
-      // TODO: want to cache this or put it in session for quick lookup.
-      $studios = new Collection;
+    public function deFactoStudios()
+    {
+        return Cache::remember("u{$this->id}_studios", 3600, function () {
+            $studios = new Collection;
 
-      if ($this->is_super_facilitator() || $this->is_admin()) {
-          foreach ($this->districts as $district) {
-              foreach ($district->schools as $school) {
+            if ($this->is_super_facilitator() || $this->is_admin()) {
+              foreach ($this->districts as $district) {
+                foreach ($district->schools as $school) {
                   $studios = $studios->concat($school->studios);
+                }
               }
-          }
-      }
+            }
 
-      if ($this->is_facilitator() || $this->is_super_facilitator() || $this->is_admin()) {
-          foreach ($this->schools as $school) {
-              $studios = $studios->concat($school->studios);
-          }
-      }
-      $studios = $studios->concat($this->studios);
+            if ($this->is_facilitator() || $this->is_super_facilitator() || $this->is_admin()) {
+              foreach ($this->schools as $school) {
+                $studios = $studios->concat($school->studios);
+              }
+            }
+            $studios = $studios->concat($this->studios);
 
-      if (! empty($studios)) {
-        $studios = $studios->unique()
-              ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
-              ->sortBy('school.name', SORT_STRING | SORT_FLAG_CASE);
-      }
-      return $studios;
+            if (! empty($studios)) {
+              $studios = $studios->unique()
+                                ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
+                                ->sortBy('school.name', SORT_STRING | SORT_FLAG_CASE);
+            }
+            return $studios;
+        });
     }
 }
 
