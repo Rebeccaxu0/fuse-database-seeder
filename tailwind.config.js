@@ -24,6 +24,7 @@ module.exports = {
                 'fuse-gray-500':       '#cedfe6',
                 'fuse-gray-700':       '#909ca8',
                 'fuse-gray-900':       '#545b49',
+                'fuse-green-50':       '#f0fad280',
                 'fuse-green-100':      '#dff4d3',
                 'fuse-green-500':      '#b6dd9f',
                 'fuse-green':          '#6cb306',

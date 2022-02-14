@@ -7,7 +7,8 @@ use Illuminate\View\Component;
 
 class ProgressBar extends Component
 {
-    public $challengeVersion;
+    public bool $interactive = true;
+    public ChallengeVersion $challengeVersion;
 
     /**
      * Create a new component instance.
@@ -16,8 +17,9 @@ class ProgressBar extends Component
      *
      * @return void
      */
-    public function __construct(ChallengeVersion $challengeVersion)
+    public function __construct(ChallengeVersion $challengeVersion, bool $interactive = true)
     {
+        $this->interactive = $interactive;
         $this->challengeVersion = $challengeVersion;
     }
 

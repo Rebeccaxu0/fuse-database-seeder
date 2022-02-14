@@ -8,11 +8,16 @@ use Illuminate\View\Component;
 class ProgressBarLevelStatus extends Component
 {
     /**
-     * Undocumented variable
+     * Interactive flag
+     */
+    public bool $interactive;
+
+    /**
+     * Level
      *
      * @var Level
      */
-    public $level;
+    public Level $level;
 
     /**
      * Create a new component instance.
@@ -21,8 +26,9 @@ class ProgressBarLevelStatus extends Component
      *
      * @return void
      */
-    public function __construct(Level $level)
+    public function __construct(bool $interactive, Level $level)
     {
+        $this->interactive = $interactive;
         $this->level = $level;
     }
 

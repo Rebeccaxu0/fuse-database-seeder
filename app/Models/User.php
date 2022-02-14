@@ -228,12 +228,36 @@ class User extends Authenticatable
         return ! $this->is_admin();
     }
 
+    /**
+     * Has started a given Level.
+     *
+     * @param Level $level
+     *
+     * @return bool
+     */
     public function startedLevel(Level $level): bool
     {
         return DB::table('level_starts')
             ->where('level_id', $level->id)
             ->where('user_id', $this->id)
             ->exists();
+    }
+
+    /**
+     * Has started a given ChallengeVersion.
+     *
+     * @param ChallengeVersion $challengeVersion
+     *
+     * @return bool
+     */
+    public function startedChallengeVersion(ChallengeVersion $challengeVersion): bool
+    {
+        foreach ($challengeVersion->levels as $level) {
+            if ($this->startedLevel($level)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

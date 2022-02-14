@@ -1,6 +1,10 @@
+@if ($interactive)
 <a href="{{ route('student.level', ['challengeVersion' => $level->challengeVersion, 'level' => $level]) }}">
-    <div>
+@endif
+    <span>
         Level {{ $level->level_number }}
         <!-- green for complete, striped for in-progress, grey for unstarted -->
-    </div>
+    </span>
+@if ($interactive)
 </a>
+@endif
