@@ -62,16 +62,6 @@ class StudioController extends Controller
             'name' => 'required|studios|max:255',
         ]);
 
-        dd($request->createstudios);
-
-        foreach ($request->createstudios as $name) {
-            $studio = Studio::create([
-                'name' => $name,
-            ]);
-            $studio->school()->associate($request->school);
-            $studio->save();
-        }
-
         return redirect(route('admin.studios.index'));
     }
 
@@ -109,7 +99,12 @@ class StudioController extends Controller
      */
     public function update(Request $request, Studio $studio)
     {
-        //
+        $studio->update([
+            'name' => $request->name,
+            'package_id' => $request->package
+        ]);
+
+        return redirect(route('admin.studios.index'));
     }
 
     /**
