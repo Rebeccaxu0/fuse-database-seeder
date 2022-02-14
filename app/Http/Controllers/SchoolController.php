@@ -62,9 +62,12 @@ class SchoolController extends Controller
      *
      * 
      */
-    public function addstudios(School $school)
+    public function addstudios(Request $request, School $school)
     {
-        ///
+        if (! empty($request->createstudios)) {
+            $school->createStudios($request->createstudios);
+        }
+        return redirect(route('admin.studios.index'));
     }
 
     /**
