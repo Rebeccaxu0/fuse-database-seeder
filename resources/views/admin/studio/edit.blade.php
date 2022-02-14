@@ -22,7 +22,7 @@
     </form>
     <script>
         function setCode(){
-            $studio->setNewStudioCode();
+            //{{ $studio->setNewStudioCode() }};
         }
     </script>
 </x-app-layout>
