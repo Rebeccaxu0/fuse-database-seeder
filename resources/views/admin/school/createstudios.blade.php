@@ -4,7 +4,7 @@
 
     <x-slot name="title">{{ __('Create Studios for :name', ['name' => $school->name]) }}</x-slot>
 
-    <form class="w-full max-w-lg mt-6" action="{{ route('admin.studios.addstudios') }}" method="POST">
+    <form class="w-full max-w-lg mt-6" action="{{ route('admin.schools.addstudios', $school) }}" method="POST">
         @csrf
         <label for="number"> Number of studios to create </label>
         <input id="number" class="form-control rounded required" type="text">
@@ -24,7 +24,7 @@
         </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
-                Save Studios
+                {{ __('Save Studios to :name', ['name' => $school->name]) }}
             </button>
         </div>
     </form>
@@ -37,12 +37,16 @@
         document.getElementById('number').addEventListener("keyup", 
             function addDefaults() {
                 var number = document.getElementById('number').value;
-                for (let i = 0; i <= number; i++) {
+                if (number.length == 0){
+                    document.getElementById("studioslist").innerHTML = "";
+                }
+                for (let i = 0; i < number; i++) {
                     var newinput = document.createElement('div');
+                    var string = "Studio " + (i+1);
                     newinput.innerHTML = "<input class='form-control rounded' name='createstudios[]' type='text'>";
                     document.getElementById("studioslist").appendChild(newinput);
+                    document.getElementsByName("createstudios[]")[i].value = string;
                 }
-                document.getElementsByName('createstudios[]')[i].value = "Studio" + i; //doesn't work
             }, false);
     </script>
 </x-app-layout>

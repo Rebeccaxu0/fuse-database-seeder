@@ -1,6 +1,6 @@
 <div class="relative">
     <div>
-        <a href="{{ route('admin.schools.addstudios', $setschool)  }}">
+        <a href="{{ route('admin.schools.createstudios', $setschool)  }}">
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
         <div>
