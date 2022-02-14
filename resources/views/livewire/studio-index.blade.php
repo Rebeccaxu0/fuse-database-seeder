@@ -67,7 +67,7 @@
                             </div>
                                 <div class="ml-3">
                                     <p class="text-gray whitespace-no-wrap">
-                                        {{ $district->salesforce_acct_id ?? __('No ID') }}
+                                        {{ $studio->join_code ?? __('No code set') }}
                                     </p>
                                 </div>
                             </div>
