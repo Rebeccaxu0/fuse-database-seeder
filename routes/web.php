@@ -102,7 +102,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::get('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
+            Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
             Route::resource('packages', PackageController::class);
             Route::resource('districts', DistrictController::class);
