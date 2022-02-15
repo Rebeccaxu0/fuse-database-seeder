@@ -66,7 +66,10 @@ module.exports = {
                     '2xl':   '6rem'
                 },
                 center: true
-            }
+            },
+          skew: {
+            '45': '45deg'
+          }
         }
     },
     variants: {},

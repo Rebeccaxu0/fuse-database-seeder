@@ -257,6 +257,16 @@
     }
   }
 
+  .progress-bar-segment {
+    @apply -ml-2 -mr-2 h-full flex-1 inline-block -skew-x-45 bg-zinc-300;
+  }
+  .progress-bar-segment.started {
+    background: repeating-linear-gradient(90deg,#2fc049 0 1rem,#b5edbf 1rem 2rem);
+  }
+  .progress-bar-segment.completed {
+    @apply bg-fuse-green;
+  }
+
   /* Quill.js editor resets */
   .quill button {
     @apply m-0 shadow-none rounded-none;

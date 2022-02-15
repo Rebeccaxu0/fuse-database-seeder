@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\Level;
+use App\Models\User;
 use Illuminate\View\Component;
 
 class ProgressBarLevelStatus extends Component
@@ -19,6 +20,8 @@ class ProgressBarLevelStatus extends Component
      */
     public Level $level;
 
+    public string $status;
+
     /**
      * Create a new component instance.
      *
@@ -26,10 +29,19 @@ class ProgressBarLevelStatus extends Component
      *
      * @return void
      */
-    public function __construct(bool $interactive, Level $level)
+    public function __construct(bool $interactive, Level $level, User $user)
     {
         $this->interactive = $interactive;
         $this->level = $level;
+        if ($user->completedLevel($level)) {
+            $this->status = 'completed';
+        }
+        else if ($user->startedLevel($level)) {
+            $this->status = 'started';
+        }
+        else {
+            $this->status = 'unstarted';
+        }
     }
 
     /**

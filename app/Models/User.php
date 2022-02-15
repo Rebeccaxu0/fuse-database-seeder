@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Artifact;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -243,6 +244,28 @@ class User extends Authenticatable
             ->exists();
     }
 
+
+    /**
+     * Has completed a given Level.
+     *
+     * @param Level $level
+     *
+     * @return bool
+     */
+    public function completedLevel(Level $level): bool
+    {
+        return DB::table('artifacts')
+            ->join('teams', function ($join) {
+                $join->on('artifacts.id', '=', 'teams.teamable_id')
+                    ->where('teams.teamable_type', 'artifact')
+                    ->where('teams.user_id', $this->id);
+            })
+            ->where('type', 'complete')
+            ->where('artifactable_type', 'level')
+            ->where('artifactable_id', $level->id)
+            ->exists();
+    }
+
     /**
      * Has started a given ChallengeVersion.
      *
@@ -261,6 +284,9 @@ class User extends Authenticatable
     }
 
     /**
+      * Get a list of Studios the user is a member of, directly or not.
+      *
+      * @return array [Studio]
      */
     public function deFactoStudios()
     {

@@ -27,7 +27,9 @@ class ChallengeVersionController extends Controller
     public function student_index()
     {
         $activeStudio = Auth::user()->activeStudio;
-        $challengeVersions = Studio::find($activeStudio->id)->challengeVersions;
+        $challengeVersions = Studio::find($activeStudio->id)
+            ->challengeVersions
+            ->sortBy('name');
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
