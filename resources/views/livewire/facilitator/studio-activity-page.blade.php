@@ -5,20 +5,19 @@
     <button>{{ __('Export Activity') }} </button>
 
     <div class="">
-        @forelse ($students as $student_key => $student)
-        <div wire:click="$emit('activateStudent', {{ $student_key }})" class="@if ($student_key == $activeStudent) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif border border-slate-400 rounded-xl px-4 py-1 mb-1">
+        @forelse ($students as $student)
+        <div wire:click="$emit('activateStudent', {{ $student->id }})" class="@if ($student->id == $activeStudentId) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif border border-slate-400 rounded-xl px-4 py-1 mb-1">
               <span>Online-status</span>
-              {{ $student->full_name }} ({{ $student->name }} - {{ $student->id }}) @if ($student_key == $activeStudent)<span class="float-right">&gt;</span>@endif
+              {{ $student->full_name }} ({{ $student->name }} - {{ $student->id }}) @if ($student->id == $activeStudentId)<span class="float-right">&gt;</span>@endif
             </div>
-            @if ($student_key == $activeStudent)
-                @foreach ($challenges as $challenge_key => $challenge)
-                {{-- @if ($student->startedChallenge($challenge))) --}}
-                <div wire:click="$emit('activateChallenge', {{ $challenge_key }})" class="@if ($challenge_key == $activeChallenge) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
-                        {{ $challenge->name }} @if ($challenge_key == $activeChallenge)<span class="float-right">&gt;</span>@endif
+            @if ($student->id == $activeStudentId)
+                @forelse ($challenges as $challenge)
+                <div wire:click="$emit('activateChallenge', {{ $challenge->id }})" class="@if ($challenge->id == $activeChallengeId) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
+                  {{ $challenge->name }} @if ($challenge->id == $activeChallengeId)<span class="float-right">&gt;</span>@endif
                         <x-progress-bar :user="$student" :interactive="false" :challengeVersion="$challenge" />
                         {{ __('Last activity') }}
                     </div>
-                    @if ($challenge_key == $activeChallenge)
+                    @if ($challenge->id == $activeChallengeId)
                         @forelse ($artifacts as $artifact)
                         {{ $artifact->type }} ({{ $artifact->artifactable->id }}) <span class="font-bold">{{ $artifact->artifactable->challengeVersion->name }}</span>
                         @empty
@@ -27,8 +26,9 @@
                         </div>
                         @endforelse
                     @endif
-                {{-- @endif --}}
-                @endforeach
+                @empty
+                {{ __('No activity yet') }}
+                @endforelse
             @endif
         @empty
         {{ __('No Students') }}

@@ -229,6 +229,11 @@ class User extends Authenticatable
         return ! $this->is_admin();
     }
 
+    public function startedLevels()
+    {
+        return $this->belongsToMany(Level::class, 'level_starts', 'user_id', 'level_id');
+    }
+
     /**
      * Has started a given Level.
      *
@@ -238,12 +243,8 @@ class User extends Authenticatable
      */
     public function startedLevel(Level $level): bool
     {
-        return DB::table('level_starts')
-            ->where('level_id', $level->id)
-            ->where('user_id', $this->id)
-            ->exists();
+        return $this->startedLevels->contains($level);
     }
-
 
     /**
      * Has completed a given Level.

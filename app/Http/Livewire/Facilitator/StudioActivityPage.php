@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Facilitator;
 
 use App\Models\ChallengeVersion;
-use App\Models\Studio;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,41 +13,38 @@ class StudioActivityPage extends Component
     public Collection $challenges;
     public Collection $ideas;
     public Collection $students;
-    public int $activeStudent;
-    public int $activeChallenge;
-    public Studio $studio;
+    public int $activeStudentId;
+    public int $activeChallengeId;
 
     protected $listeners = ['activateChallenge', 'activateStudent'];
 
-    public function activateChallenge(int $key)
+    public function activateChallenge(int $id)
     {
-        $this->activeChallenge = $key;
+        $this->activeChallengeId = $id;
         $this->populateArtifacts();
     }
 
-    public function activateStudent(int $key)
+    public function activateStudent(int $id)
     {
-        $this->activeStudent = $key;
-        $this->activeChallenge = 0;
-        $this->populateIdeas();
+        $this->activeStudentId = $id;
+        $this->populateChallenges();
         $this->populateArtifacts();
+        $this->populateIdeas();
     }
 
     public function mount()
     {
-        $this->studio = Auth::user()->activeStudio;
-        $this->students = $this->studio
-                               ->students()
-                               ->with('artifacts')
-                               ->orderBy('full_name')
-                               ->get();
-        $this->activeStudent = 0;
+        $this->students
+            = Auth::user()
+                ->activeStudio
+                ->students()
+                ->with('artifacts', 'startedLevels', 'startedLevels.challengeVersion')
+                ->orderBy('full_name')
+                ->get();
+        $this->activeStudentId
+            = $this->students->first() ? $this->students->first()->id : 0;
         $this->populateIdeas();
-        // TODO: populate challenges based on user level and idea starts.
-        $this->challenges = ChallengeVersion::with('levels')
-                                 ->orderBy('name')
-                                 ->get();
-        $this->activeChallenge = 0;
+        $this->populateChallenges();
         $this->populateArtifacts();
     }
 
@@ -59,22 +55,42 @@ class StudioActivityPage extends Component
 
     private function populateArtifacts()
     {
-        $levels
-            = $this->challenges[$this->activeChallenge]
-                   ->levels
-                   ->keyBy('id')
-                   ->keys()
-                   ->all();
+        $levelIds = ! $this->activeChallengeId ? [] :
+            $this->challenges
+                 ->find($this->activeChallengeId)
+                 ->levels
+                 ->keyBy('id')
+                 ->keys()
+                 ->all();
         $this->artifacts
-            = $this->students[$this->activeStudent]
-                ->artifacts
-                ->where('artifactable_type', 'level')
-                ->whereIn('artifactable_id', $levels);
+            = $this->students
+                   ->find($this->activeStudentId)
+                   ->artifacts
+                   ->where('artifactable_type', 'level')
+                   ->whereIn('artifactable_id', $levelIds);
+    }
+
+    private function populateChallenges()
+    {
+        $challengeVersion = function ($level, $key) {
+            return $level->challengeVersion;
+        };
+        $this->challenges
+            = $this
+                ->students
+                ->find($this->activeStudentId)
+                ->startedLevels
+                ->map($challengeVersion)
+                ->unique()
+                ->sortBy('name');
+
+        $this->activeChallengeId
+            = $this->challenges->first() ? $this->challenges->first()->id : 0;
     }
 
     private function populateIdeas()
     {
         $this->ideas
-          = $this->students[$this->activeStudent]->ideas;
+            = $this->students->find($this->activeStudentId)->ideas;
     }
 }
