@@ -115,7 +115,8 @@ class StudioController extends Controller
      */
     public function destroy(Studio $studio)
     {
-        //
+        $studio->delete();
+        return redirect(route('admin.studios.index'));
     }
 
     /**
