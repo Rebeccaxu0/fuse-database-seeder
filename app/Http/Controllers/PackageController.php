@@ -112,6 +112,25 @@ class PackageController extends Controller
     }
 
     /**
+     * Copy the package and allow user to edit from there. 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Package  $package
+     * @return \Illuminate\Http\Response
+     */
+    public function copy(Package $package)
+    {
+        $newpackage = Package::create([
+            'name' => $package->name . " Copy",
+            'description' => $package->description,
+            'student_activity_tab_access' => false,
+        ]);
+        $newpackage->save();
+        $newpackage->challenges()->attach($package->challenges);
+        return redirect(route('admin.packages.edit', $newpackage));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Package  $package
