@@ -14,6 +14,9 @@
                     <a href="{{ route('admin.packages.edit', $package->id) }}">
                         <button><img class="h-6 w-6" src="/editpencil.png"></button>
                     </a>
+                    <a href="{{ route('admin.packages.copy', $package) }}">
+                        <button type="button" class="bg-fuse-teal visited:bg-violet-700"><img class="h-6 w-6" src="/copyicon.png"></button>
+                    </a>
                     <form method="post" action="{{ route('admin.packages.destroy', $package->id) }}"
                         class="inline-block">
                         @method('delete')
