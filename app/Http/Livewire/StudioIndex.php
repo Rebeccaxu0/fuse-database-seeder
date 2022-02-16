@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\District;
 use App\Models\School;
 use App\Models\Studio;
+use Livewire\Component;
 
 class StudioIndex extends Component
 
@@ -13,6 +13,11 @@ class StudioIndex extends Component
     public $showStudios = false;
 
     protected $listeners = ['districtSelected' => 'setDistrict', 'schoolSelected'=> 'setSchool'];
+
+    public function __construct() {
+        $this->setdistrict = $this->setDistrict(District::all()->first());
+        $this->setschool = $this->setSchool($this->setdistrict->schools()->first());
+    }
 
     public function setDistrict(District $district)
     {
@@ -41,14 +46,6 @@ class StudioIndex extends Component
     {
         $this->setschool = null;
     }
-
-    public function __construct() {
-    
-        $this->setdistrict = $this->setDistrict(District::all()->first());
-        $this->setschool = $this->setSchool($this->setdistrict->schools()->first());
-
-    }
-
 
     public function render()
     {

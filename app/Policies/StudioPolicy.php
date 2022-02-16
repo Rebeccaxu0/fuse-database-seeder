@@ -18,7 +18,7 @@ class StudioPolicy
      */
     public function viewAny(User $user)
     {
-       return $user->is_admin(); 
+       return $user->is_admin();
     }
 
     /**

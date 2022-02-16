@@ -45,9 +45,9 @@ class SchoolController extends Controller
     }
 
     /**
-     * 
      *
-     * 
+     *
+     *
      */
     public function createstudios(School $school)
     {
@@ -58,9 +58,9 @@ class SchoolController extends Controller
     }
 
     /**
-     * 
      *
-     * 
+     *
+     *
      */
     public function addstudios(Request $request, School $school)
     {

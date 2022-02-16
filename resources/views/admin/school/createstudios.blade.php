@@ -34,7 +34,7 @@
             newinput.innerHTML = "<input class='form-control rounded' name='createstudios[]' type='text'>";
             document.getElementById("studioslist").appendChild(newinput);
         }
-        document.getElementById('number').addEventListener("keyup", 
+        document.getElementById('number').addEventListener("keyup",
             function addDefaults() {
                 var number = document.getElementById('number').value;
                 if (number.length == 0){

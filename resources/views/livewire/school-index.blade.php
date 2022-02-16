@@ -2,7 +2,7 @@
     <div>
         @livewire ('district-search-bar')
         <div>
-            <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}"> 
+            <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}">
             <h4 class="mt-2 mb-2"> District: {{ $setdistrict['name'] }} </h4>
         </div>
     </div>
@@ -130,7 +130,7 @@
                                     <button type="destroy"><img class="h-6 w-6" src="/deletetrash.png"></button>
                                 </form>
                                 </span>
-                        </td> 
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

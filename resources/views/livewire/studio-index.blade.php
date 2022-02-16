@@ -1,17 +1,17 @@
 <div class="relative">
     <div>
-        <a href="{{ route('admin.schools.createstudios', $setschool)  }}">
+        <a href="{{ route('admin.schools.createstudios', $setschool) }}">
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
         <div>
-            <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}"> 
+            <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}">
             <h3 class="mt-2 mb-2">District: {{ $setdistrict['name'] }} </h3>
         </div>
         @livewire ('district-search-bar')
     </div>
     <div>
         <div>
-            <input type="hidden" name="currentschool" value="{{ $setschool->id }}"> 
+            <input type="hidden" name="currentschool" value="{{ $setschool->id }}">
             <h3 class="mt-2 mb-2"> School: {{ $setschool['name'] }} </h3>
         </div>
         @livewire ('school-search-bar')
@@ -83,7 +83,7 @@
                                     <button type="destroy"><img class="h-6 w-6" src="/deletetrash.png"></button>
                                 </form>
                                 </span>
-                        </td> 
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -101,5 +101,4 @@
         </div>
 
 </div>
-
 

@@ -2,17 +2,19 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\District;
 use App\Models\School;
-use App\Models\Studio;
+use Livewire\Component;
 
 class SchoolIndex extends Component
-
 {
     public $showSchools = false;
 
     protected $listeners = ['districtSelected' => 'setDistrict'];
+
+    public function __construct() {
+        $this->setdistrict = $this->setDistrict(District::all()->first());
+    }
 
     public function setDistrict(District $district)
     {
@@ -25,14 +27,6 @@ class SchoolIndex extends Component
     {
         $this->setdistrict = null;
     }
-
-
-    public function __construct() {
-    
-        $this->setdistrict = $this->setDistrict(District::all()->first());
-
-    }
-
 
     public function render()
     {

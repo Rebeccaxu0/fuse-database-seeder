@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Facilitator;
 
-use App\Models\ChallengeVersion;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
