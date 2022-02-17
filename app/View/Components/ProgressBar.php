@@ -5,18 +5,13 @@ namespace App\View\Components;
 use App\Models\ChallengeVersion;
 use App\Models\User;
 use Illuminate\View\Component;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProgressBar extends Component
 {
     public bool $interactive = true;
     public ChallengeVersion $challengeVersion;
-
-    /**
-     * User
-     *
-     * @var User
-     */
-    public User $user;
+    public Collection $levels;
 
     /**
      * Create a new component instance.
@@ -29,7 +24,18 @@ class ProgressBar extends Component
     {
         $this->interactive = $interactive;
         $this->challengeVersion = $challengeVersion;
-        $this->user = $user;
+        $this->levels = $challengeVersion->levels->sortBy('level_number');
+        foreach ($this->levels as $level) {
+          if ($user->completedLevel($level)) {
+              $level->status = 'completed';
+          }
+          else if ($user->startedLevel($level)) {
+              $level->status = 'started';
+          }
+          else {
+              $this->status = 'unstarted';
+          }
+        }
     }
 
     /**
