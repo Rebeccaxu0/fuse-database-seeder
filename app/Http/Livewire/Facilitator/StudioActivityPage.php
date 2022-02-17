@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Facilitator;
 
+use app\Models\ChallengeVersion;
+use app\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -12,20 +14,20 @@ class StudioActivityPage extends Component
     public Collection $challenges;
     public Collection $ideas;
     public Collection $students;
-    public int $activeStudentId;
-    public int $activeChallengeId;
+    public ChallengeVersion $activeChallenge;
+    public User $activeStudent;
 
     protected $listeners = ['activateChallenge', 'activateStudent'];
 
     public function activateChallenge(int $id)
     {
-        $this->activeChallengeId = $id;
+        $this->activeChallenge = $this->challenges->find($id);
         $this->populateArtifacts();
     }
 
     public function activateStudent(int $id)
     {
-        $this->activeStudentId = $id;
+        $this->activeStudent = $this->students->find($id);
         $this->populateChallenges();
         $this->populateArtifacts();
         $this->populateIdeas();
@@ -40,11 +42,12 @@ class StudioActivityPage extends Component
                 ->with('artifacts', 'startedLevels', 'startedLevels.challengeVersion')
                 ->orderBy('full_name')
                 ->get();
-        $this->activeStudentId
-            = $this->students->first() ? $this->students->first()->id : 0;
-        $this->populateIdeas();
-        $this->populateChallenges();
-        $this->populateArtifacts();
+        if ($this->students->count()) {
+            $this->activeStudent = $this->students->first();
+            $this->populateIdeas();
+            $this->populateChallenges();
+            $this->populateArtifacts();
+        }
     }
 
     public function render()
@@ -54,16 +57,16 @@ class StudioActivityPage extends Component
 
     private function populateArtifacts()
     {
-        $levelIds = ! $this->activeChallengeId ? [] :
+        $levelIds = ! isset($this->activeChallenge) ? [] :
             $this->challenges
-                 ->find($this->activeChallengeId)
+                 ->find($this->activeChallenge)
                  ->levels
                  ->keyBy('id')
                  ->keys()
                  ->all();
         $this->artifacts
             = $this->students
-                   ->find($this->activeStudentId)
+                   ->find($this->activeStudent)
                    ->artifacts
                    ->where('artifactable_type', 'level')
                    ->whereIn('artifactable_id', $levelIds);
@@ -74,22 +77,22 @@ class StudioActivityPage extends Component
         $challengeVersion = function ($level, $key) {
             return $level->challengeVersion;
         };
-        $this->challenges
-            = $this
-                ->students
-                ->find($this->activeStudentId)
-                ->startedLevels
-                ->map($challengeVersion)
-                ->unique()
-                ->sortBy('name');
+        $this->challenges = $this ->activeStudent
+                                  ->startedLevels
+                                  ->map($challengeVersion)
+                                  ->unique()
+                                  ->sortBy('name');
 
-        $this->activeChallengeId
-            = $this->challenges->first() ? $this->challenges->first()->id : 0;
+        if ($this->challenges->count()) {
+            $this->activeChallenge = $this->challenges->first();
+        }
+        else {
+            unset($this->activeChallenge);
+        }
     }
 
     private function populateIdeas()
     {
-        $this->ideas
-            = $this->students->find($this->activeStudentId)->ideas;
+        $this->ideas = $this->activeStudent->ideas;
     }
 }

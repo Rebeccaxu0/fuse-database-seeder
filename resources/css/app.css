@@ -267,6 +267,15 @@
     @apply bg-fuse-green;
   }
 
+  .scroll-box {
+    @apply overflow-y-scroll;
+    height: calc(100vh - 12rem);
+  }
+
+  body.admin .scroll-box {
+    height: calc(100vh - 14rem);
+  }
+
   /* Quill.js editor resets */
   .quill button {
     @apply m-0 shadow-none rounded-none;
