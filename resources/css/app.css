@@ -32,13 +32,13 @@
     @apply ml-8 mt-3 leading-snug list-disc;
   }
 
-  button.submit, [type='reset'], [type='submit'] {
+  .btn, button.submit, [type='reset'], [type='submit'] {
     @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
-  button.destroy, [type='destroy']{
+  .btn.destroy, button.destroy, [type='destroy']{
     @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
-  button.btn:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
+  .btn, button.btn:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
     @apply outline-none ring;
   }
   button.btn:hover, [type='button']:hover, [type='reset']:hover, [type='submit']:hover {
