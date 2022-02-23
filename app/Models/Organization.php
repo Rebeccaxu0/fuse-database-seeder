@@ -4,10 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Organization extends Model
 {
     use HasFactory;
+    use Searchable;
+
+    /**
+      * Laravel Scout fields for search.
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'name' => $this->name,
+        ];
+    }
 
     /**
      * The Package associated with this organization.

@@ -16,6 +16,7 @@ use Lab404\Impersonate\Models\Impersonate;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,7 @@ class User extends Authenticatable
     use Impersonate;
     use Notifiable;
     use Search;
+    use Searchable;
     use SetsProfilePhotoFromUrl;
     use SoftDeletes;
     use TwoFactorAuthenticatable;
@@ -38,8 +40,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $searchable = [
-        'name',
+        'email',
+        'full_name',
         'id',
+        'name',
     ];
 
     /**
@@ -82,6 +86,18 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+      * Laravel Scout fields for search.
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'email' => $this->email,
+            'full_name' => $this->full_name,
+            'name' => $this->name,
+        ];
+    }
 
     /**
      * Get the URL to the user's profile photo.
