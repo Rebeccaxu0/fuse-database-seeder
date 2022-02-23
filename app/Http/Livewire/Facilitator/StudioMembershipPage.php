@@ -14,25 +14,27 @@ class StudioMembershipPage extends Component
 
     protected $listeners = ['updateStudents', 'updateFacilitators'];
 
+    public function updateFacilitators()
+    {
+        $this->facilitators = $this->studio
+            ->facilitators()
+            ->orderBy('full_name')
+            ->get();
+    }
+
     public function updateStudents()
     {
         $this->students = $this->studio
             ->students()
-            ->orderBy('name')
+            ->orderBy('full_name')
             ->get();
     }
 
     public function mount()
     {
         $this->studio = Auth::user()->activeStudio;
-        $this->students = $this->studio
-            ->students()
-            ->orderBy('full_name')
-            ->get();
-        $this->facilitators = $this->studio
-            ->facilitators()
-            ->orderBy('name')
-            ->get();
+        $this->updateStudents();
+        $this->updateFacilitators();
     }
 
     public function render()
