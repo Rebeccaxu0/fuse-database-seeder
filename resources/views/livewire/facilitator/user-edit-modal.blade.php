@@ -17,11 +17,11 @@
             </x-slot>
 
             <x-slot name="content">
-                <label for="name">{{ __('Username') }}</label>
+                <label for="name-{{ $user->id }}">{{ __('Username') }}</label>
                 <input
                     type="text"
-                    name="name"
-                    id="name"
+                    name="name-{{ $user->id }}"
+                    id="name-{{ $user->id }}"
                     wire:model="user.name" />
                 @error('user.name')
                 <span class="text-red-500">
