@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLevelsTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -61,4 +61,5 @@ class CreateLevelsTable extends Migration
         });
         Schema::dropIfExists('levels');
     }
-}
+};
+

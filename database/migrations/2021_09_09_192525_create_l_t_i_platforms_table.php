@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLTIPlatformsTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('l_t_i_platforms', function (Blueprint $table) {
@@ -43,4 +42,5 @@ class CreateLTIPlatformsTable extends Migration
         Schema::dropIfExists('l_t_i_platformable');
         Schema::dropIfExists('l_t_i_platforms');
     }
-}
+};
+

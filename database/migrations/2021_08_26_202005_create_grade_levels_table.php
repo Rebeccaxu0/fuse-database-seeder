@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGradeLevelsTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('grade_levels', function (Blueprint $table) {
@@ -36,4 +35,5 @@ class CreateGradeLevelsTable extends Migration
         Schema::dropIfExists('grade_level_school');
         Schema::dropIfExists('grade_levels');
     }
-}
+};
+

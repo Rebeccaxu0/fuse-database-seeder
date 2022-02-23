@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePackagesTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('packages', function (Blueprint $table) {
@@ -37,4 +36,5 @@ class CreatePackagesTable extends Migration
         Schema::dropIfExists('challenge_package');
         Schema::dropIfExists('packages');
     }
-}
+};
+

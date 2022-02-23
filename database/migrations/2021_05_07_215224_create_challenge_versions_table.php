@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChallengeVersionsTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('challenge_versions', function (Blueprint $table) {
@@ -53,4 +52,5 @@ class CreateChallengeVersionsTable extends Migration
     {
         Schema::dropIfExists('challenge_versions');
     }
-}
+};
+

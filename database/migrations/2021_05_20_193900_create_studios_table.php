@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudiosTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('studios', function (Blueprint $table) {
@@ -85,4 +84,5 @@ class CreateStudiosTable extends Migration
         Schema::dropIfExists('studio_user');
         Schema::dropIfExists('studios');
     }
-}
+};
+

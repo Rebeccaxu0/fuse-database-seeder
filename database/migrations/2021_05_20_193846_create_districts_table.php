@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDistrictsTable extends Migration
+return new class extends Migration
 {
-
     public function up()
     {
         Schema::create('districts', function (Blueprint $table) {
@@ -46,4 +45,5 @@ class CreateDistrictsTable extends Migration
         Schema::dropIfExists('district_user');
         Schema::dropIfExists('districts');
     }
-}
+};
+
