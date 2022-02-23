@@ -16,6 +16,9 @@
         </div>
         @livewire ('school-search-bar')
     </div>
+    <div> 
+     @livewire ('school-district-search-bar')
+     </div>
     <div class="mt-8" x-data="{ open: @entangle('showStudios') }">
         <table class="min-w-full leading-normal">
             <thead>
