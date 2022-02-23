@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             // PII
             $table->string('full_name', 255)
+                  ->fullText()
                   ->nullable();
             $table->string('gender', 2)
                   ->default('U')
@@ -38,6 +39,8 @@ return new class extends Migration
             $table->string('guardian_photo_consent', 255)->nullable();
             $table->date('consent_email_last_sent')->nullable();
             $table->boolean('allow_survey')->nullable();
+            $table->fullText('name');
+            $table->fullText('email');
         });
     }
 

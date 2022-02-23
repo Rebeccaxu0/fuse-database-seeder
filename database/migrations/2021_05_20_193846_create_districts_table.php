@@ -26,16 +26,17 @@ return new class extends Migration
                   ->unique()
                   ->nullable()
                   ->collation('utf8mb4_bin');
+            $table->fullText('name');
         });
 
         Schema::create('district_user', function (Blueprint $table) {
           $table->foreignId('district_id')
                 ->onDelete('cascade')
-                ->onUpdate('restrict')
+                ->onUpdate('cascade')
                 ->constrained();
           $table->foreignId('user_id')
                 ->onDelete('cascade')
-                ->onUpdate('restrict')
+                ->onUpdate('cascade')
                 ->constrained();
         });
     }
