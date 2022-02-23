@@ -1,15 +1,14 @@
 <div class="inline-block h-full">
-    <span
+    <button
       wire:click="$set('showEditModal', true)"
       alt="{{ __('Edit') }}"
       title="{{ __('Edit') }}"
-      class="cursor-pointer
-             py-2 px-5 h-full
+      class="py-2 px-5 h-full
              border-fuse-teal-dk border {{ $user->is_facilitator() ? 'rounded-xl' : 'rounded-l-xl' }}
              text-fuse-teal-dk hover:text-white hover:bg-fuse-green-900
              text-white text-center inline-block">{{
       __('Edit')
-      }}</span>
+      }}</button>
     <form wire:submit.prevent="submit">
         <x-jet-dialog-modal wire:model="showEditModal">
             <x-slot name="title">
