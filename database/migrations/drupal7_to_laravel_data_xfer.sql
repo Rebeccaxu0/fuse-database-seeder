@@ -49,6 +49,7 @@ ALTER TABLE fuse_laravel_test.school_user ADD d7_school_id BIGINT UNSIGNED DEFAU
 CREATE INDEX school_user_d7_school_id_IDX USING BTREE ON fuse_laravel_test.school_user (d7_school_id);
 ALTER TABLE fuse_laravel_test.school_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX school_user_d7_uid_IDX USING BTREE ON fuse_laravel_test.school_user (d7_uid);
+ALTER TABLE fuse_laravel_test.studios MODIFY COLUMN join_code varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL NULL;
 ALTER TABLE fuse_laravel_test.studios ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX studios_d7_id_IDX USING BTREE ON fuse_laravel_test.studios (d7_id);
 ALTER TABLE fuse_laravel_test.studios ADD d7_school_id BIGINT UNSIGNED DEFAULT 1;
@@ -185,13 +186,14 @@ SET pivot.challenge_id = c.id, pivot.package_id = p.id;
 INSERT INTO fuse_laravel_test.challenge_versions (
   name,
   challenge_id, challenge_category_id,
--- slug,
+  slug,
   info_article_url,
   d7_id, d7_challenge_id, d7_challenge_category_id, d7_prereq_challenge_id,
   created_at, updated_at
 )
 SELECT
   JSON_OBJECT("en", n.title), 1, 1,
+  CONCAT(n.title, n.nid),
   fdfiu.field_info_url_url,
   n.nid, challenge_ttd.tid, challenge_category_ttd.tid, fdfpc.field_prerequisite_challenges_nid,
   FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed)
@@ -200,13 +202,13 @@ LEFT JOIN fuse.field_data_field_version_of AS fdfvo ON
   (fdfvo.entity_type = 'node'
   AND fdfvo.bundle = 'challenge'
   AND fdfvo.entity_id = n.nid)
-JOIN fuse.taxonomy_term_data challenge_ttd
+LEFT JOIN fuse.taxonomy_term_data challenge_ttd
   ON challenge_ttd.tid = fdfvo.field_version_of_target_id
 LEFT JOIN fuse.field_data_field_challenge_category AS fdfcc ON
   (fdfcc.entity_type = 'node'
   AND fdfcc.bundle = 'challenge'
   AND fdfcc.entity_id = n.nid)
-JOIN fuse.taxonomy_term_data challenge_category_ttd
+LEFT JOIN fuse.taxonomy_term_data challenge_category_ttd
   ON challenge_category_ttd.tid = fdfcc.field_challenge_category_tid
 LEFT JOIN fuse.field_data_field_prerequisite_challenges AS fdfpc ON
   (fdfpc.entity_type = 'node'
@@ -282,11 +284,12 @@ ON cv.d7_id = fn.entity_id
 SET cv.facilitator_notes = fn.facilitator_notes;
 
 -- Update foreign keys
+-- ASSUMPTION: 'legacy' challenge id is 1, and 'legacy' challenge category id is 7.
 UPDATE fuse_laravel_test.challenge_versions cv
 LEFT JOIN fuse_laravel_test.challenges c ON cv.d7_challenge_id = c.d7_id
 LEFT JOIN fuse_laravel_test.challenge_categories cc ON cv.d7_challenge_category_id = cc.d7_id
 LEFT JOIN fuse_laravel_test.challenge_versions prereq ON cv.d7_prereq_challenge_id = prereq.d7_id
-SET cv.challenge_id = c.id, cv.challenge_category_id = cc.id, cv.prerequisite_challenge_version_id = prereq.id;
+SET cv.challenge_id = COALESCE(c.id, 1), cv.challenge_category_id = COALESCE(cc.id, 7), cv.prerequisite_challenge_version_id = prereq.id;
 
 -- Insert Levels
 INSERT INTO fuse_laravel_test.levels
@@ -343,7 +346,7 @@ WHERE levels.prerequisite_level IN (SELECT l.id FROM fuse_laravel_test.levels l 
 
 -- Districts
 INSERT INTO fuse_laravel_test.districts (
-  created_at, updated_at, name, status,
+  created_at, updated_at, name, license_status,
   package_id,
   salesforce_acct_id, d7_id
 )
@@ -368,6 +371,11 @@ LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
 WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 161;
 
 -- Schools
+-- WARNING: Make sure all Salesforce IDs are unique before importing.
+-- SELECT fdfsai.field_salesforce_acct_id_value, COUNT(fdfsai.field_salesforce_acct_id_value)
+-- FROM fuse.field_data_field_salesforce_acct_id fdfsai
+-- GROUP BY fdfsai.field_salesforce_acct_id_value
+-- HAVING COUNT(field_salesforce_acct_id_value) > 1;
 INSERT INTO fuse_laravel_test.schools (
   created_at, updated_at, name, status, district_id, package_id, partner_id,
   salesforce_acct_id, d7_id
@@ -412,9 +420,10 @@ LEFT JOIN fuse_laravel_test.schools school ON school.d7_id = fdfglt.entity_id
 WHERE fdfglt.entity_type = 'node' AND fdfglt.bundle = 'organization';
 
 -- Studios
-INSERT INTO fuse_laravel_test.studios (created_at, updated_at, name, status, school_id, package_id, d7_id)
+-- TODO: Ensure all studios have a join code. Exclude Alumni.
+INSERT INTO fuse_laravel_test.studios (created_at, updated_at, name, status, school_id, package_id, join_code, dashboard_message, d7_id)
 SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
-  n.title, n.status, schools.id, packages.id as package_id, n.nid
+  n.title, n.status, schools.id, packages.id as package_id, fdfsc.field_studio_code_studio_code as join_code, fsm.message as dashboard_message, n.nid
 FROM fuse.node AS n
 LEFT JOIN fuse.field_data_field_package AS fdfp ON
   (fdfp.entity_type = 'node'
@@ -431,7 +440,13 @@ LEFT JOIN fuse.field_data_field_salesforce_acct_id AS fdfsai ON
   (fdfsai.entity_type = 'node'
   AND fdfsai.bundle = 'space'
   AND fdfsai.entity_id = n.nid)
-WHERE n.type = 'space';
+LEFT JOIN fuse.field_data_field_studio_code AS fdfsc ON
+  (fdfsc.entity_type = 'node'
+  AND fdfsc.bundle = 'space'
+  AND fdfsc.entity_id = n.nid)
+LEFT JOIN fuse.fuse_studio_message AS fsm ON
+  (fsm.studio_nid = n.nid)
+WHERE n.type = 'space' AND n.nid <> 934966;
 
 -- LTI Platform associations
 INSERT INTO fuse_laravel_test.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
@@ -694,7 +709,6 @@ SELECT
   'save', 'level', levels.id,
   n.title, n.nid
 FROM fuse.node n
-RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
 RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
 RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
@@ -711,7 +725,6 @@ SELECT
   'complete', 'level', levels.id,
   n.title, n.nid
 FROM fuse.node n
-RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
 RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
 RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
@@ -767,7 +780,6 @@ SELECT
   'save', 'idea', levels.id,
   n.title, n.nid
 FROM fuse.node n
-RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
 RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
 RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'idea'
 LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
@@ -784,7 +796,6 @@ SELECT
   'complete', 'level', levels.id,
   n.title, n.nid
 FROM fuse.node n
-RIGHT JOIN fuse_laravel_test.users u ON u.d7_id = n.uid
 RIGHT JOIN fuse.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
 RIGHT JOIN fuse.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN fuse_laravel_test.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
@@ -921,6 +932,7 @@ SET log.district_id = d.id;
 -- ALTER TABLE fuse_laravel_test.studios DROP d7_id;
 -- ALTER TABLE fuse_laravel_test.studios DROP d7_school_id;
 -- ALTER TABLE fuse_laravel_test.studios DROP d7_package_id;
+-- ALTER TABLE fuse_laravel_test.studios MODIFY COLUMN join_code varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL NOT NULL;
 -- ALTER TABLE fuse_laravel_test.studio_user DROP d7_studio_id;
 -- ALTER TABLE fuse_laravel_test.studio_user DROP d7_uid;
 -- ALTER TABLE fuse_laravel_test.ideas DROP d7_id;
