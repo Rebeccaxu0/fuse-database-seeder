@@ -87,6 +87,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    #[SearchUsingFullText(['email', 'full_name', 'name'])]
     /**
       * Laravel Scout fields for search.
      */

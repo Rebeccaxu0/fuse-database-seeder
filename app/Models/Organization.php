@@ -11,6 +11,7 @@ class Organization extends Model
     use HasFactory;
     use Searchable;
 
+    #[SearchUsingFullText('name')]
     /**
       * Laravel Scout fields for search.
      */
