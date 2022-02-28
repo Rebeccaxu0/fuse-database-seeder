@@ -1,9 +1,9 @@
 <div class="relative">
     @livewire ('school-district-search-bar')
 
-    @foreach ($selecteddss as $id => $ds)
+    @foreach ($selectedschools as $id => $school)
         <div>
-            <input type="hidden" name="dssToAdd[]" value="{{ $id }}">{{ $ds['name'] }} <span
+            <input type="hidden" name="schoolsToAdd[]" value="{{ $id }}">{{ }} <span
                 class="inline-flex"> <img wire:click="removeUser({{ $id }})" class="h-6 w-6"
                     src="/deletetrash.png"> </span>
         </div>

@@ -12,42 +12,35 @@ class StudioIndex extends Component
 {
     public $showStudios = false;
 
-    protected $listeners = ['districtSelected' => 'setDistrict', 'schoolSelected'=> 'setSchool', 'dsSelected'=> 'setDs',];
+    protected $listeners = ['dsSelected'=> 'setDs'];
 
+    public function setDs(School $ds)
+    {
+        $this->setSchool($ds);
+        $this->showStudios = true;
+    }
+    
     public function setDistrict(District $district)
     {
         $this->setdistrict = $district;
-        $this->showStudios = true;
-        $this->setSchool($this->setdistrict->schools->first());
         return $this->setdistrict;
-    }
-
-    public function setDs($item)
-    {
-        /*if (item is school)..
-        setSchool($item);
-        if (item is district).. 
-        setDistrict($item);     */
-    }
-
-    public function removeDistrict()
-    {
-        $this->setdistrict = null;
     }
 
     public function setSchool(School $school)
     {
         $this->setschool = $school;
-        $this->showStudios = true;
-        // if ($this->setschool->district->first() != $this->setdistrict){
-        //$this->setdistrict = $this->setschool->district->first();
-        //}
+        $this->setDistrict($school->district);
         return $this->setschool;
     }
 
     public function removeSchool()
     {
         $this->setschool = null;
+    }
+
+    public function removeDistrict()
+    {
+        $this->setdistrict = null;
     }
 
     public function __construct() {
