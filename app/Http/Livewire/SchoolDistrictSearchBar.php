@@ -18,16 +18,16 @@ class SchoolDistrictSearchBar extends Component
 
     public function updatedQuery()
     {
-        /*$this->dss = District::where('name', 'like', "%{$this->query}%")
-            ->limit(5)
-            ->get();*/
-        $schools = School::where('name', 'like', "%{$this->query}%")
-            ->limit(5);
-        $districts = District::where('name', 'like', "%{$this->query}%")
-            ->limit(5)
+        $this->dss = School::where('name', 'like', "%{$this->query}%")
+            ->limit(10)
             ->get();
-        $merged = $schools->merged($districts);
-        $this->dss = $merged->all();
+        
+        /*$districts = School::whereHas('district',
+            function (Builder $query)  {
+                $query->where($district->name, 'like', "%{$this->query}%");})
+                ->union($schools)
+                ->get();*/
+        
     }
 
     public function render()
