@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\District;
 use App\Models\School;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 
 class SchoolDistrictSearchBar extends Component
@@ -19,15 +20,14 @@ class SchoolDistrictSearchBar extends Component
     public function updatedQuery()
     {
         $this->dss = School::where('name', 'like', "%{$this->query}%")
+            ->orWhereHas('district',
+              function (Builder $query)  {
+                $query->where('name', 'like', "%{$this->query}%");
+            })
+            ->with('district')
             ->limit(10)
+            ->orderBy('name')
             ->get();
-        
-        /*$districts = School::whereHas('district',
-            function (Builder $query)  {
-                $query->where($district->name, 'like', "%{$this->query}%");})
-                ->union($schools)
-                ->get();*/
-        
     }
 
     public function render()

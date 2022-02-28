@@ -10,51 +10,23 @@ use Livewire\Component;
 class StudioIndex extends Component
 
 {
-    public $showStudios = false;
+    public School $school;
 
     protected $listeners = ['dsSelected'=> 'setDs'];
 
-    public function setDs(School $ds)
+    public function setDs(int $school_id)
     {
-        $this->setSchool($ds);
-        $this->showStudios = true;
-    }
-    
-    public function setDistrict(District $district)
-    {
-        $this->setdistrict = $district;
-        return $this->setdistrict;
-    }
-
-    public function setSchool(School $school)
-    {
-        $this->setschool = $school;
-        $this->setDistrict($school->district);
-        return $this->setschool;
-    }
-
-    public function removeSchool()
-    {
-        $this->setschool = null;
-    }
-
-    public function removeDistrict()
-    {
-        $this->setdistrict = null;
+        $this->school = School::find($school_id);
     }
 
     public function __construct() {
-    
-        $this->setdistrict = $this->setDistrict(District::all()->first());
-        $this->setschool = $this->setSchool($this->setdistrict->schools()->first());
+      $this->school = District::all()->first()->schools()->first();
 
     }
 
 
     public function render()
     {
-        return view('livewire.studio-index', [
-            'studios' => Studio::all(),
-        ]);
+        return view('livewire.studio-index');
     }
 }
