@@ -20,16 +20,16 @@ return new class extends Migration
 
         Schema::create('role_user', function (Blueprint $table) {
             $table->foreignId('user_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->foreignId('role_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
-            $table->unique(['user_id', 'role_id']);
-            $table->index('user_id');
-            $table->index('role_id');
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
+            $table->primary(['user_id', 'role_id']);
         });
     }
 

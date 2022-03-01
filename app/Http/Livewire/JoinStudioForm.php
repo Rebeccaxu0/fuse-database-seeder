@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Studio;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class JoinStudioForm extends Component
@@ -29,6 +30,7 @@ class JoinStudioForm extends Component
             $user->studios()->attach($studio->id);
             $user->activeStudio()->associate($studio);
             $user->save();
+            Cache::forget("u{$user->id}_studios");
 
             return redirect(request()->header('Referer'));
         }

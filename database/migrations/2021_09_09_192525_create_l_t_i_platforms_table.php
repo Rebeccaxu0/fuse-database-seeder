@@ -26,15 +26,6 @@ return new class extends Migration
             $table->string('api_secret', 255)->nullable();
             $table->string('api_endpoint', 255)->nullable();
         });
-
-        Schema::create('l_t_i_platformable', function (Blueprint $table) {
-            $table->foreignId('l_t_i_platform_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('cascade')
-                  ->constrained();
-            $table->bigInteger('l_t_i_platformable_id');
-            $table->string('l_t_i_platformable_type');
-        });
     }
 
     public function down()

@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
             $table->char('salesforce_acct_id', 255)
                   ->unique()
                   ->nullable()
@@ -31,14 +34,17 @@ return new class extends Migration
         });
 
         Schema::create('school_user', function (Blueprint $table) {
-          $table->foreignId('school_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
-          $table->foreignId('user_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
+            $table->foreignId('school_id')
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
+            $table->foreignId('user_id')
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
+            $table->primary(['school_id', 'user_id']);
         });
     }
 

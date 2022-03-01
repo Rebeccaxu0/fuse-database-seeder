@@ -29,16 +29,19 @@ return new class extends Migration
 
         Schema::create('level_starts', function (Blueprint $table) {
             $table->foreignId('level_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
+                  ->index()
+                  ->constrained()
+                  ->restrictOnDelete()
+                  ->restrictOnUpdate();
             $table->foreignId('user_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->timestamp('created_at')
                   ->useCurrent()
                   ->comment('When user started this level.');
+            $table->primary(['level_id', 'user_id']);
         });
 
         Schema::table('users', function (Blueprint $table) {

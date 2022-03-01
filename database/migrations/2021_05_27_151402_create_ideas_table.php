@@ -25,13 +25,16 @@ return new class extends Migration
 
         Schema::create('idea_inspirations', function (Blueprint $table) {
             $table->foreignId('idea_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
+                  ->index()
+                  ->constrained()
+                  ->cascadeOnDelete()
+                  ->cascadeOnUpdate();
             $table->foreignId('challenge_version_id')
-                  ->onDelete('cascade')
-                  ->onUpdate('restrict')
-                  ->constrained();
+                  ->index()
+                  ->constrained()
+                  ->restrictOnDelete()
+                  ->cascadeOnUpdate();
+            $table->primary(['idea_id', 'challenge_version_id']);
         });
     }
 

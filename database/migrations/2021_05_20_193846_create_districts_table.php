@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
             $table->char('salesforce_acct_id', 255)
                   ->unique()
                   ->nullable()

@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreignId('package_id')
                   ->nullable()
                   ->constrained();
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
             $table->boolean('active')
                   ->default(true);
             $table->boolean('require_email')
@@ -47,24 +50,30 @@ return new class extends Migration
 
         Schema::create('studio_user', function (Blueprint $table) {
           $table->foreignId('studio_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
           $table->foreignId('user_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+          $table->primary(['studio_id', 'user_id']);
         });
 
         Schema::create('challenge_version_studio', function (Blueprint $table) {
           $table->foreignId('challenge_version_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
           $table->foreignId('studio_id')
-                ->onDelete('cascade')
-                ->onUpdate('cascade')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+          $table->primary(['challenge_version_id', 'studio_id']);
         });
 
         Schema::table('users', function (Blueprint $table) {

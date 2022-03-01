@@ -20,13 +20,16 @@ return new class extends Migration
 
         Schema::create('grade_level_school', function (Blueprint $table) {
           $table->foreignId('school_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
           $table->foreignId('grade_level_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
+                ->index()
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+          $table->primary(['school_id', 'grade_level_id']);
         });
     }
 
