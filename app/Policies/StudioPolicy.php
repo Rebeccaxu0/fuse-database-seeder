@@ -18,7 +18,7 @@ class StudioPolicy
      */
     public function viewAny(User $user)
     {
-       return $user->is_admin();
+       return $user->isAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class StudioPolicy
      */
     public function view(User $user, Studio $studio)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class StudioPolicy
      */
     public function create(User $user)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class StudioPolicy
      */
     public function update(User $user, Studio $studio)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class StudioPolicy
      */
     public function delete(User $user, Studio $studio)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**

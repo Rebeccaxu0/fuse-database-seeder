@@ -25,7 +25,7 @@ class Impersonate extends Component
 
             // If we let facilitators or superfacilitators use this, we will limit
             // them to searching for member students of the active studio.
-            if (! Auth::user()->is_admin()) {
+            if (! Auth::user()->isAdmin()) {
               $users_q = $users_q->whereRelation('roles', 'id', Role::STUDENT_ID)
                 ->whereRelation('studios', 'id', Auth::user()->activeStudio->id);
             }

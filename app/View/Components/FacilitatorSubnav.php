@@ -28,9 +28,9 @@ class FacilitatorSubnav extends Component
     {
         $view = null;
         if (
-            Auth::user()->is_facilitator()
-            || Auth::user()->is_super_facilitator()
-            || Auth::user()->is_admin()
+            Auth::user()->isFacilitator()
+            || Auth::user()->isSuperFacilitator()
+            || Auth::user()->isAdmin()
         ) {
             $view = view('facilitator.subnav');
         }

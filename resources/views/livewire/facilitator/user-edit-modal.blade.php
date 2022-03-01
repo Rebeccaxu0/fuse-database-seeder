@@ -4,7 +4,7 @@
       alt="{{ __('Edit') }}"
       title="{{ __('Edit') }}"
       class="py-2 px-5 h-full
-             border-fuse-teal-dk border {{ $user->is_facilitator() ? 'rounded-xl' : 'rounded-l-xl' }}
+             border-fuse-teal-dk border {{ $user->isFacilitator() ? 'rounded-xl' : 'rounded-l-xl' }}
              text-fuse-teal-dk hover:text-white hover:bg-fuse-green-900
              text-white text-center inline-block">{{
       __('Edit')

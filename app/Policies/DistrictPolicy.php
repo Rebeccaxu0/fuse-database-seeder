@@ -18,7 +18,7 @@ class DistrictPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class DistrictPolicy
      */
     public function view(User $user, District $district)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class DistrictPolicy
      */
     public function create(User $user)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class DistrictPolicy
      */
     public function update(User $user, District $district)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class DistrictPolicy
      */
     public function delete(User $user, District $district)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class DistrictPolicy
      */
     public function restore(User $user, District $district)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class DistrictPolicy
      */
     public function forceDelete(User $user, District $district)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 }

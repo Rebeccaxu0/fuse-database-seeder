@@ -24,7 +24,7 @@ class AdminSubnav extends Component
     public function render()
     {
         $view = null;
-        if (Auth::user()->is_admin()) {
+        if (Auth::user()->isAdmin()) {
             $view = view('admin.subnav');
         }
         return $view;

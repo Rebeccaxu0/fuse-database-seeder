@@ -181,41 +181,41 @@ class User extends Authenticatable
     /**
      * Check if user has admin role.
      */
-    public function is_admin()
+    public function isAdmin()
     {
-        return $this->has_role(Role::ADMIN_ID);
+        return $this->hasRole(Role::ADMIN_ID);
     }
 
     /**
      * Check if user has super facilitator role.
      */
-    public function is_super_facilitator()
+    public function isSuperFacilitator()
     {
-        return $this->has_role(Role::SUPER_FACILITATOR_ID);
+        return $this->hasRole(Role::SUPER_FACILITATOR_ID);
     }
 
     /**
      * Check if user has facilitator role.
      */
-    public function is_facilitator()
+    public function isFacilitator()
     {
-        return $this->has_role(Role::FACILITATOR_ID);
+        return $this->hasRole(Role::FACILITATOR_ID);
     }
 
     /**
      * Check if user has student role.
      */
-    public function is_student()
+    public function isStudent()
     {
-        return $this->has_role(Role::STUDENT_ID);
+        return $this->hasRole(Role::STUDENT_ID);
     }
 
     /**
      * Check if user has anonymous student role.
      */
-    public function is_anonymous_student()
+    public function isAnonymousStudent()
     {
-        return $this->has_role(Role::ANONYMOUS_STUDENT_ID);
+        return $this->hasRole(Role::ANONYMOUS_STUDENT_ID);
     }
 
     /**
@@ -225,7 +225,7 @@ class User extends Authenticatable
      *
      * @return boolean
      */
-    public function has_role($role_id)
+    public function hasRole($role_id)
     {
         return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
             return $this->roles()->where('role_id', $role_id)->get()->count();
@@ -236,14 +236,14 @@ class User extends Authenticatable
      */
     public function canImpersonate(): bool
     {
-        return $this->is_admin();
+        return $this->isAdmin();
     }
     /**
      * @return bool
      */
     public function canBeImpersonated(): bool
     {
-        return ! $this->is_admin();
+        return ! $this->isAdmin();
     }
 
     public function startedLevels()
@@ -311,7 +311,7 @@ class User extends Authenticatable
         return Cache::remember("u{$this->id}_studios", 3600, function () {
             $studios = new Collection;
 
-            if ($this->is_super_facilitator() || $this->is_admin()) {
+            if ($this->isSuperFacilitator() || $this->isAdmin()) {
               foreach ($this->districts as $district) {
                 foreach ($district->schools as $school) {
                   $studios = $studios->concat($school->studios);
@@ -319,7 +319,7 @@ class User extends Authenticatable
               }
             }
 
-            if ($this->is_facilitator() || $this->is_super_facilitator() || $this->is_admin()) {
+            if ($this->isFacilitator() || $this->isSuperFacilitator() || $this->isAdmin()) {
               foreach ($this->schools as $school) {
                 $studios = $studios->concat($school->studios);
               }
@@ -335,4 +335,3 @@ class User extends Authenticatable
         });
     }
 }
-

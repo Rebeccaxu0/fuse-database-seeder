@@ -214,9 +214,9 @@ class School extends Organization
             if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
                 $sfuser->districts()->attach($district);
             }
-            if (! $sfuser->is_super_facilitator()) {
+            if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                $sfuser->has_role(5);
+                $sfuser->hasRole(5);
             }
             $sfuser->save();
         }

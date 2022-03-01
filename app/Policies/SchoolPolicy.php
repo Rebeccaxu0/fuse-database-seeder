@@ -18,7 +18,7 @@ class SchoolPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class SchoolPolicy
      */
     public function view(User $user, School $school)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class SchoolPolicy
      */
     public function create(User $user)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class SchoolPolicy
      */
     public function update(User $user, School $school)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class SchoolPolicy
      */
     public function delete(User $user, School $school)
     {
-        return $user->is_admin();
+        return $user->isAdmin();
     }
 
     /**
