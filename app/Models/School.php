@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class School extends Organization
 {
@@ -216,9 +217,8 @@ class School extends Organization
             }
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                $sfuser->hasRole(5);
+                Cache::forget("u{$sfuser->id}_has_role_" . Role::SUPER_FACILITATOR_ID);
             }
-            $sfuser->save();
         }
     }
 

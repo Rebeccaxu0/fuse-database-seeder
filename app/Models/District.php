@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class District extends Organization
 {
@@ -133,11 +134,9 @@ class District extends Organization
             }
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                $sfuser->hasRole(5);
+                Cache::forget("u{$sfuser->id}_has_role_" . Role::SUPER_FACILITATOR_ID);
             }
-            $sfuser->save();
         }
-        // Update cache of User::isSuperFacilitator()?;
     }
 
     /**
