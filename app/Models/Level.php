@@ -46,7 +46,7 @@ class Level extends Model
     {
         if (! is_null($value)) {
             $e = 'Cannot set the level order number from the level directly. '
-                 . 'See App\Models\ChallengeVersion::set_levels_order()';
+                 . 'See App\Models\ChallengeVersion::setLevelsOrder()';
             throw new LevelException($e);
         } else {
             $this->attributes['level_number'] = null;

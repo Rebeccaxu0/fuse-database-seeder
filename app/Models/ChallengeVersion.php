@@ -70,7 +70,7 @@ class ChallengeVersion extends Model
      * @param array $order
      * Array where key is level id and value is order number.
      */
-    public function set_levels_order(array $order)
+    public function setLevelsOrder(array $order)
     {
         $ids = array_keys($order);
         $case_update_q = 'CASE id ';

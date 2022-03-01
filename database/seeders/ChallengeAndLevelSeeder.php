@@ -74,7 +74,7 @@ class ChallengeAndLevelSeeder extends Seeder
                 foreach ($item->levels()->get() as $level) {
                     $order[$level->id] = count($order) + 1;
                 }
-                $item->set_levels_order($order);
+                $item->setLevelsOrder($order);
             }
         );
     }
