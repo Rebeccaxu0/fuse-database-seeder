@@ -26,10 +26,9 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
+        // TODO: Add logic to account for Alumni/Freemium accounts.
         $activeStudio = Auth::user()->activeStudio;
-        $challengeVersions = Studio::find($activeStudio->id)
-            ->challengeVersions
-            ->sortBy('name');
+        $challengeVersions = $activeStudio ? $activeStudio->challengeVersions->sortBy('name') : [];
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
@@ -40,7 +39,9 @@ class ChallengeVersionController extends Controller
      */
     public function student_help_finder()
     {
-        $challengeVersions = Auth::user()->activeStudio->challengeVersions;
+        // TODO: Add logic to account for Alumni/Freemium accounts.
+        $activeStudio = Auth::user()->activeStudio;
+        $challengeVersions = $activeStudio ? $activeStudio->challengeVersions->sortBy('name') : [];
         return view('student.help_finder', ['challenges' => $challengeVersions]);
     }
 
