@@ -9,18 +9,18 @@
         <x-form.input label="School Name" name="name" required="true" />
         <x-form.dropdown label="Package" name="package" :value="old('package')" :list="$packages" />
         <x-form.input label="Salesforce Account ID" name="salesforce_acct_id" />
-        <label class="text-gray-700 mb-4">Parent Organization</label>
+        <span class="text-gray-700 mb-4">Parent Organization</span>
         <div>
             @livewire('add-district')
         </div>
         <div id="partner">
-            <label class="text-gray-700 mb-4">Partnerships</label>
+            <span class="text-gray-700 mb-4">Partnerships</span>
             @foreach (\App\Models\Partner::all() as $partner)
                 <x-form.exclusive_checkbox_array name="partner" :value="$partner->id" :label="$partner->name" />
             @endforeach
         </div>
         <br />
-        <label class="text-gray-700 mb-4">Grade Levels</label>
+        <span class="text-gray-700 mb-4">Grade Levels</span>
         @foreach (\App\Models\GradeLevel::all() as $glevel)
             <x-form.checkbox_array name="gradelevels" :value="$glevel->id" :label="$glevel->name" />
         @endforeach

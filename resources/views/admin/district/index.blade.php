@@ -11,10 +11,10 @@
         <thead>
             <tr>
                 <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                  {{ __('Name') }}
+                    {{ __('Name') }}
                 </th>
                 <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                  {{ __('Package') }}
+                    {{ __('Package') }}
                 </th>
                 <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
                     {{ __('Schools') }}
@@ -54,7 +54,7 @@
                             <summary>{{ __(':count', ['count' => count($district->schools)]) }}</summary>
                             <ol>
                                 @foreach ($district->schools as $school)
-                                    <li><label class="text-xs text-fuse-teal">{{ $school->name }}</label></li>
+                                    <li><span class="text-xs text-fuse-teal">{{ $school->name }}</span></li>
                                 @endforeach
                             </ol>
                         </details>
@@ -66,7 +66,7 @@
                             <summary>{{ __(':count', ['count' => count($district->superFacilitators)]) }}</summary>
                             <ol>
                                 @foreach ($district->superFacilitators as $user)
-                                    <li><label class="text-xs text-fuse-teal">{{ $user->name }}</label></li>
+                                    <li><span class="text-xs text-fuse-teal">{{ $user->name }}</span></li>
                                 @endforeach
                             </ol>
                         </details>
