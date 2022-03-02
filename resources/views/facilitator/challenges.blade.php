@@ -3,6 +3,9 @@
     <x-slot name="title">{{ __('My Challenge Management') }}</x-slot>
     <x-slot name="header">{{ __('My Challenge Management') }}</x-slot>
 
+    @if (! $challenges )
+        <h2>{{ __('Your studio is misconfigured and we cannot show challenges. Please contact FUSE.') }}</h2>
+    @else
     <div class="md:columns-2 md:gap-12">
         @foreach ($primaryChallengeCategories as $category)
             <div class="py-4 px-4 break-inside-avoid">
@@ -54,6 +57,7 @@
             </div>
         @endforeach
     </div>
+    @endif
 
 </x-app-layout>
 

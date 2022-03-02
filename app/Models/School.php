@@ -30,7 +30,7 @@ class School extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0) {
+        if ($this->package()->count() > 0 || ! $this->district) {
             return $this->package();
         }
         return $this->district->package();

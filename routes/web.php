@@ -12,6 +12,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\StudioActivityExportController;
 use App\Http\Controllers\StudioController;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
@@ -74,6 +75,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::redirect('/', 'facilitator/people')->name('index');
             Route::get('people', StudioMembershipPage::class)->name('people');
             Route::get('activity', StudioActivityPage::class)->name('activity');
+            Route::get('activity/export', StudioActivityExportController::class)->name('activity-export');
             Route::get(
                 'challenges', [FacilitatorChallengesController::class, 'index']
                 )->name('challenges');

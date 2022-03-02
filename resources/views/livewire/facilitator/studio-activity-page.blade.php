@@ -2,7 +2,37 @@
     <x-slot name="title">{{ __('My Studio Activity') }}</x-slot>
     <x-slot name="header">{{ __('My Studio Activity') }}</x-slot>
 
-    <button class="btn submit">{{ __('Export Activity') }} </button>
+    <button>
+      {{ __('Export Activity') }}
+    </button>
+    <form action="{{ route('facilitator.activity-export')}}" method="GET">
+      <input type="hidden" name="studio_id" value="{{ $studio->id }}">
+        <p>
+        </p>
+        @if ($errors->any())
+            <ul>
+              @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+        @endif
+        <fieldset class="sm:flex max-w-md items-center justify-center border border-black p-2">
+          <legend class="bg-fuse-teal-dk text-white px-2 py-1">
+            {{ __('Download all studio activity between the following dates:')}}
+          </legend>
+          <div class="float-left sm:flex-1 m-2">
+            <label class="font-bold" for='from_date'>{{ __('From') }}</label>
+            <input class="w-40" type="date" name="from_date" min="2010-01-01" max="{{ date('Y-m-d') }}" value="{{ old('from_date', date('Y-m-d')) }}">
+          </div>
+          <div class="float-left sm:flex-1 m-2">
+            <label class="font-bold" for='to_date'>{{ __('To') }}</label>
+            <input class="w-40" type="date" name="to_date" min="2010-01-01" max="{{ date('Y-m-d') }}" value="{{ old('to_date', date('Y-m-d')) }}">
+          </div>
+          <div class="float-right sm:flex-1">
+            <button class="btn flex-1">{{ __('Submit') }}</button>
+          </div>
+        </fieldset>
+    </form>
 
     <div class="mt-8 lg:grid lg:grid-cols-3 gap-4">
         <div class="col-start-1 lg:scroll-box">

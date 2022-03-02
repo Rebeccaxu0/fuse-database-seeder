@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Facilitator;
 
 use app\Models\ChallengeVersion;
+use app\Models\Studio;
 use app\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ class StudioActivityPage extends Component
     public Collection $ideas;
     public Collection $students;
     public ChallengeVersion $activeChallenge;
+    public Studio $studio;
     public User $activeStudent;
 
     protected $listeners = ['activateChallenge', 'activateStudent'];
@@ -35,13 +37,17 @@ class StudioActivityPage extends Component
 
     public function mount()
     {
-        $this->students
-            = Auth::user()
-                ->activeStudio
-                ->students()
-                ->with('artifacts', 'startedLevels', 'startedLevels.challengeVersion')
-                ->orderBy('full_name')
-                ->get();
+        $this->studio = Auth::user()->activeStudio;
+        $eager = [
+          'artifacts',
+          'startedLevels',
+          'startedLevels.challengeVersion',
+        ];
+        $this->students = $this->studio
+                               ->students()
+                               ->with($eager)
+                               ->orderBy('full_name')
+                               ->get();
         if ($this->students->count()) {
             $this->activeStudent = $this->students->first();
             $this->populateIdeas();
