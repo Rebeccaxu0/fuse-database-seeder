@@ -7,7 +7,7 @@
     <a href="{{ route('admin.districts.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add district</button>
     </a>
-    <table class="min-w-full leading-normal">
+    <table class="min-w-full min-h-full leading-normal">
         <thead>
             <tr>
                 <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
@@ -32,23 +32,24 @@
         <tbody>
             @foreach ($districts as $district)
                 <tr>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td class="border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                             </div>
                             <div class="ml-3">
-                                <p class="text-gray-900 whitespace-no-wrap">
+                                <a class="text-gray-900 underline whitespace-no-wrap"
+                                    href="{{ route('admin.schools.index', ['district' => $district]) }}">
                                     {{ $district->name }}
-                                </p>
+                                </a>
                             </div>
                         </div>
                     </td>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td class="border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap">
                             {{ $district->package->name ?? __('No package set') }}
                         </p>
                     </td>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td class="border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap">
                         <details>
                             <summary>{{ __(':count', ['count' => count($district->schools)]) }}</summary>
@@ -60,7 +61,7 @@
                         </details>
                         </p>
                     </td>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td class="border-gray-200 bg-white text-sm">
                         <p class="text-gray-900 whitespace-no-wrap">
                         <details>
                             <summary>{{ __(':count', ['count' => count($district->superFacilitators)]) }}</summary>
@@ -72,7 +73,7 @@
                         </details>
                         </p>
                     </td>
-                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                    <td class="border-gray-200 bg-white text-sm">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
                             </div>
@@ -83,7 +84,7 @@
                             </div>
                         </div>
                     </td>
-                    <td class="px-1 py-1 border-b border-gray-200 bg-white">
+                    <td class="border-gray-200 bg-white">
                         <a href="{{ route('admin.districts.edit', $district->id) }}">
                             <button>{{ __('edit') }}</button>
                         </a>
