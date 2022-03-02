@@ -31,7 +31,7 @@
                     <div>(Student Activity Tab Active)</div>
                 @endif
 
-                <label class="text-xs">{{ $package->description }}</label>
+                <span class="text-xs">{{ $package->description }}</span>
                 <details>
                     <summary class="cursor-pointer">
                         {{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
@@ -52,5 +52,4 @@
             </div>
         @endforeach
     </div>
-
     </x-admin-layout>

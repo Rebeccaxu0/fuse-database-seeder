@@ -4,7 +4,8 @@
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
     </div>
-    <h3 class="mt-2 mb-2">{{ $school->name }} [{{ $school->district ? $school->district->name : __('<No District>') }}]</h3>
+    <h3 class="mt-2 mb-2">{{ $school->name }}
+        [{{ $school->district ? $school->district->name : __('<No District>') }}]</h3>
     @livewire ('school-district-search-bar')
     <div class="mt-8">
         <table class="min-w-full leading-normal">
@@ -72,7 +73,5 @@
         <div>
             @livewire('add-facilitator')
         </div>
-
     </div>
 </div>
-

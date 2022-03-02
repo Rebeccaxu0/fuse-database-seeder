@@ -11,13 +11,13 @@
             <thead>
                 <tr>
                     <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                    {{ __('Name') }}
+                        {{ __('Name') }}
                     </th>
                     <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                    {{ __('District') }}
+                        {{ __('District') }}
                     </th>
                     <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
-                    {{ __('Package') }}
+                        {{ __('Package') }}
                     </th>
                     <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
                         {{ __('Studios') }}
@@ -42,7 +42,7 @@
                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                            </div>
+                                </div>
                                 <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ $school->name }}
@@ -53,7 +53,7 @@
                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                            </div>
+                                </div>
                                 <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
                                         {{ $school->district->name }}
@@ -69,41 +69,15 @@
                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
-                            </div>
+                                </div>
                                 <details>
-                                    <summary>{{ __(':count studio(s)', ['count' => count($school->studios)]) }}</summary>
+                                    <summary>{{ __(':count studio(s)', ['count' => count($school->studios)]) }}
+                                    </summary>
                                     <ol>
-                                    @foreach ($school->studios as $studio)
-                                        <li><label class="text-xs text-fuse-teal">{{ $studio->name }}</label></li>
-                                    @endforeach
-                            </ol>
-                        </details>
-                            </div>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                            </div>
-                                <details>
-                                    <summary>{{ __(':count facilitator(s)', ['count' => count($school->facilitators)]) }}</summary>
-                                    <ol>
-                                    @foreach ($school->facilitators as $user)
-                                        <li><label class="text-xs text-fuse-teal">{{ $user->name }}</label></li>
-                                    @endforeach
-                            </ol>
-                        </details>
-                            </div>
-                        </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0">
-                            </div>
-                                <details>
-                                    <summary>{{ __(':count grade(s)', ['count' => count($school->gradelevels)]) }}</summary>
-                                    <ol>
-                                    @foreach ($school->gradelevels as $grade)
-                                        <li><label class="text-xs text-fuse-teal">{{ $grade->name }}</label></li>
-                                    @endforeach
+                                        @foreach ($school->studios as $studio)
+                                            <li><span class="text-xs text-fuse-teal">{{ $studio->name }}</span>
+                                            </li>
+                                        @endforeach
                                     </ol>
                                 </details>
                             </div>
@@ -111,7 +85,38 @@
                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
+                                </div>
+                                <details>
+                                    <summary>
+                                        {{ __(':count facilitator(s)', ['count' => count($school->facilitators)]) }}
+                                    </summary>
+                                    <ol>
+                                        @foreach ($school->facilitators as $user)
+                                            <li><span class="text-xs text-fuse-teal">{{ $user->name }}</span></li>
+                                        @endforeach
+                                    </ol>
+                                </details>
                             </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                </div>
+                                <details>
+                                    <summary>{{ __(':count grade(s)', ['count' => count($school->gradelevels)]) }}
+                                    </summary>
+                                    <ol>
+                                        @foreach ($school->gradelevels as $grade)
+                                            <li><label class="text-xs text-fuse-teal">{{ $grade->name }}</label></li>
+                                        @endforeach
+                                    </ol>
+                                </details>
+                            </div>
+                        </td>
+                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0">
+                                </div>
                                 <div class="ml-3">
                                     <p class="text-sm text-gray whitespace-no-wrap">
                                         {{ $school->partner->name ?? __('No partner set') }}
@@ -120,22 +125,22 @@
                             </div>
                         </td>
                         <td class="px-1 py-1 border-b border-gray-200">
-                                <span class="pl-2">
-                                    <a href="{{ route('admin.schools.edit', $school->id) }}">
-                                        <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
-                                    </a>
-                                <form method="post" action="{{ route('admin.schools.destroy', $school->id) }}" class="inline-block">
+                            <span class="pl-2">
+                                <a href="{{ route('admin.schools.edit', $school->id) }}">
+                                    <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
+                                </a>
+                                <form method="post" action="{{ route('admin.schools.destroy', $school->id) }}"
+                                    class="inline-block">
                                     @method('delete')
                                     @csrf
                                     <button type="destroy"><img class="h-6 w-6" src="/deletetrash.png"></button>
                                 </form>
-                                </span>
+                            </span>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
+    </div>
 </div>
-
-

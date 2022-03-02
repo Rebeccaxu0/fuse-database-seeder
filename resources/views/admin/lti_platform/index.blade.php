@@ -1,4 +1,4 @@
-<x-admin-layout>
+<x-app-layout>
 
     <x-slot name="title">{{ __('LTI PLatforms') }}</x-slot>
 
@@ -21,7 +21,7 @@
                 </form>
             </span>
         </h3>
-        <label class="text-xs">{{ $lti->description }}</label>
+        <span class="text-xs">{{ $lti->description }}</span>
     @endforeach
 
-</x-admin-layout>
+</x-app-layout>

@@ -18,7 +18,7 @@
         <x-form.checkbox label="Access to Student Activity Tab" name="student_activity_tab_access"
             :checked="old('student_activity_tab_access', $package->student_activity_tab_access)" />
         <div class="mb-2">
-            <label class="text-gray-700 mb-2 form-required">Allowed Challenges</label>
+            <span class="text-gray-700 mb-2 form-required">Allowed Challenges</span>
         </div>
         <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4">
             @foreach (\App\Models\Challenge::all() as $challenge)
@@ -35,4 +35,4 @@
 
     </form>
 
-</x-admin-layout>
+    </x-admin-layout>
