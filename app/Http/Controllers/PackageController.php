@@ -121,9 +121,9 @@ class PackageController extends Controller
     public function copy(Package $package)
     {
         $newpackage = Package::create([
-            'name' => $package->name . " Copy",
+            'name' => $package->name . ' Copy',
             'description' => $package->description,
-            'student_activity_tab_access' => false,
+            'student_activity_tab_access' => $package->student_activity_tab_access,
         ]);
         $newpackage->save();
         $newpackage->challenges()->attach($package->challenges);
