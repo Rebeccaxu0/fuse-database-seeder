@@ -10,28 +10,28 @@
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Name') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('District') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Package') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Studios') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Facilitators') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Grade(s)') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Partner') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Edit') }}
                     </th>
                 </tr>
@@ -39,7 +39,7 @@
             <tbody>
                 @foreach ($setdistrict->schools as $school)
                     <tr class="odd:bg-white even:bg-gray-100">
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -61,12 +61,12 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
                                 {{ $school->package->name ?? __('No package set') }}
                             </p>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -82,7 +82,7 @@
                                 </details>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -98,7 +98,7 @@
                                 </details>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -113,7 +113,7 @@
                                 </details>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
@@ -124,8 +124,8 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-1 py-1 border-b border-gray-200">
-                            <span class="pl-2">
+                        <td class="border-gray-200">
+                            <span>
                                 <a href="{{ route('admin.schools.edit', $school->id) }}">
                                     <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
                                 </a>

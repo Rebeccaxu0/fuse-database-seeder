@@ -11,16 +11,16 @@
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-gray-700 bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Name') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-gray-700 bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Package') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-gray-700 bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Code') }}
                     </th>
-                    <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-gray-700 bold">
+                    <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Edit') }}
                     </th>
                 </tr>
@@ -28,26 +28,26 @@
             <tbody>
                 @foreach ($school->studios as $studio)
                     <tr class="odd:bg-white even:bg-gray-100">
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <p class="ml-3 text-gray-900 whitespace-no-wrap">
                                     {{ $studio->name }}
                                 </p>
                             </div>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
                                 {{ $studio->package->name ?? __('No package set') }}
                             </p>
                         </td>
-                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                        <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <p class="ml-3 text-gray whitespace-no-wrap">
                                     {{ $studio->join_code ?? __('No code set') }}
                                 </p>
                             </div>
                         </td>
-                        <td class="px-2 py-1 border-b border-gray-200">
+                        <td class="border-gray-200 text-sm">
                             <a href="{{ route('admin.studios.edit', $studio->id) }}">
                                 <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
                             </a>
@@ -63,7 +63,7 @@
             </tbody>
         </table>
         <h3 class="mt-2 mb-2">{{ __(':school Facilitators', ['school' => $school->name]) }}</h3>
-        <div class="mb-4">
+        <div class="mb-2">
             <p class="text-xs">{{ __('Mark for removal') }}</p>
             @foreach ($school->facilitators as $user)
                 <x-form.checkbox_array name="facilitatorsToRemove" :value="$user->id" :label="$user->name" />
