@@ -27,7 +27,7 @@ return new class extends Migration
                   ->comment("FUSE Avatar configuration/generator");
             $table->boolean('seen_idea_trailer')
                   ->default(0);
-            $table->timestamp('access')
+            $table->timestamp('last_access')
                   ->nullable()
                   ->index();
             $table->timestamp('login')
@@ -42,6 +42,10 @@ return new class extends Migration
             'timezone',
             'language',
             'reporting_id',
+            'avatar_config',
+            'seen_idea_trailer',
+            'access',
+            'login',
         ]);
     }
 };

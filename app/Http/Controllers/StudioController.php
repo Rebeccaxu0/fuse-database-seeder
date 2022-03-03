@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExportStudioActivityRequest;
 use App\Models\District;
 use App\Models\Package;
 use App\Models\School;
 use App\Models\Studio;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -126,5 +128,29 @@ class StudioController extends Controller
         Auth::user()->save();
 
         return redirect(request()->header('Referer'));
+    }
+
+    public function exportActivity(ExportStudioActivityRequest $request, Studio $studio)
+    {
+        $validated = $request->validated();
+        $user = Auth::user();
+
+        $name = $studio->school
+            ? "{$studio->school->name}-$studio->name"
+            : $studio->name;
+        $filename = preg_replace('/[^a-z0-9]+/', '-', strtolower($name)) . '.csv';
+        return response()->streamDownload(function () {
+          $handle = fopen('php://output', 'w');
+          fputcsv($handle, ['id', 'name', 'fullname']);
+          // This is demonstration code to show how to properly stream large CSV
+          // files.
+          User::where('id', '<', 1000)->chunk(500, function($users) use($handle) {
+              foreach($users as $user) {
+                fputcsv($handle, [$user->id, $user->name, $user->full_name]);
+              }
+          });
+          fclose($handle);
+        },
+            $filename);
     }
 }

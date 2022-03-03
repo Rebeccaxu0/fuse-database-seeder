@@ -5,8 +5,7 @@
     <button>
       {{ __('Export Activity') }}
     </button>
-    <form action="{{ route('facilitator.activity-export')}}" method="GET">
-      <input type="hidden" name="studio_id" value="{{ $studio->id }}">
+    <form action="{{ route('facilitator.activity-export', $studio)}}" method="GET">
         <p>
         </p>
         @if ($errors->any())

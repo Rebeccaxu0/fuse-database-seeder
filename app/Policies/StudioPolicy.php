@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class StudioPolicy
 {
@@ -90,5 +91,23 @@ class StudioPolicy
     public function forceDelete(User $user, Studio $studio)
     {
         //
+    }
+
+    /**
+     * Determine whether the user can export Studio activity.
+     *
+     * @param \App\Models\User  $user
+     * @param \App\Models\Studio $studio
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function exportActivity(User $user, Studio $studio)
+    {
+        return $user->isAdmin()
+          || (
+            ($user->isFacilitator() || $user->isSuperFacilitator()) &&
+            $user->deFactoStudios()->contains($studio)
+          )
+          ? Response::allow()
+          : Response::deny(__('You are either not a facilitator or a member of this studio.'));
     }
 }

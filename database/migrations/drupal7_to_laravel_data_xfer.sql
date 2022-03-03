@@ -543,7 +543,7 @@ INSERT INTO `fuse_laravel_test`.users
   (name, full_name, email, password,
   created_at, status, timezone, seen_idea_trailer,
   login,
-  access,
+  last_access,
   language, d7_id,
   reporting_id,
   avatar_config,
