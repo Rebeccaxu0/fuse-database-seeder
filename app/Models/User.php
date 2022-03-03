@@ -246,6 +246,14 @@ class User extends Authenticatable
         return ! $this->isAdmin();
     }
 
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return Cache::has('user-is-online-' . $this->id);
+    }
+
     public function startedLevels()
     {
         return $this->belongsToMany(Level::class, 'level_starts', 'user_id', 'level_id');

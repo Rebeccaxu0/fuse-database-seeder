@@ -37,7 +37,9 @@
         <div class="col-start-1 lg:scroll-box">
         @forelse ($students as $student)
             <button wire:click="$emit('activateStudent', {{ $student->id }})" class="@if ($student->id == $activeStudent->id) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif w-full block text-left border border-slate-400 rounded-xl px-4 py-1 mb-1">
-                <span>O</span>
+              <div class="inline-block -mb-0.5 border-2 border-slate-300 {{ $student->isOnline() ? 'bg-fuse-green-500': '' }} rounded-lg w-4 h-4">
+                    <span class="sr-only">Status: {{ $student->isOnline() ? __('Online') :  __('Offline') }}"</span>
+                </div>
                 <span title="{{ $student->full_name . ' (' . $student->name . ')' }}">
                     {{ Str::limit($student->full_name, 15) }} ({{ Str::limit($student->name, 15) }})
                 </span>

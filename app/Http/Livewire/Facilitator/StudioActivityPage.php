@@ -7,6 +7,7 @@ use app\Models\Studio;
 use app\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class StudioActivityPage extends Component
