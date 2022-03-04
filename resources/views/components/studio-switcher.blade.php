@@ -21,7 +21,16 @@
       overflow-scroll hidden border rounded-md">
     @foreach ($otherStudios as $studio)
     <li class="list-none -indent-8 pl-8">
-      <a href="{{ route('active_studio', $studio->id) }}">@if ($studio->school) {{ $studio->school->name }} &ndash; @endif {{ $studio->name }}</a>
+        <form action="{{ route('switch_studio', $studio) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <button>
+                @if ($studio->school)
+                    {{ $studio->school->name }} &ndash;
+                @endif
+                {{ $studio->name }}
+            </button>
+        </form>
     </li>
     @endforeach
     </ul>

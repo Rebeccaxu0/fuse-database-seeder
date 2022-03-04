@@ -121,9 +121,16 @@ class StudioController extends Controller
     }
 
     /**
+     * Switch the active studio for the user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Studio  $studio
+     * @return \Illuminate\Http\Response
      */
-    public function active_studio(Studio $studio)
+    public function switch(Request $request, Studio $studio)
     {
+        $this->authorize('switch', $studio);
+
         Auth::user()->active_studio = $studio->id;
         Auth::user()->save();
 
