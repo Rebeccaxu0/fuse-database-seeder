@@ -1,3 +1,13 @@
+@push('scripts')
+  {{-- Naive implementation to keep 'online' in sync by pinging
+        server once a minute. Ways to improve:
+        + heartbeat endpoint on separate server
+        + put fetch on background thread (web/service worker) --}}
+    <script>
+        setInterval(() => fetch('/heartbeat'), 60000);
+    </script>
+@endpush
+
 <x-base-layout>
     <x-slot name="title">{{ $title ?? null }}</x-slot>
 

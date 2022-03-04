@@ -36,6 +36,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(function () {
     Route::impersonate();
 
+    Route::get('heartbeat', function() { return response()->noContent(); });
     Route::put('studios/{studio}/switch', [StudioController::class, 'switch'])->name('switch_studio');
 
     /*
