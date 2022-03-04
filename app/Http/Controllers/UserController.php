@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.user.index', ['users' => User::paginate(15)]);
+        // return view('admin.user.index', ['users' => User::paginate(15)]);
     }
 
     /**
@@ -83,12 +83,4 @@ class UserController extends Controller
         //
     }
 
-		/**
-		 * Show users currently online.
-		 *
-		 * @return \Illuminate\Http\Response
-		 */
-		public function onlineStatus()
-		{
-		}
 }

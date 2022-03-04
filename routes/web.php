@@ -14,6 +14,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
+use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
 use Illuminate\Support\Facades\Route;
@@ -112,6 +113,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::resource('challenges', ChallengeController::class);
             Route::resource('lti_platforms', LTIPlatformController::class);
             Route::resource('users', UserController::class);
+            Route::get('users', UsersPage::class)->name('users.index');
             Route::get('users/online', [UserController::class, 'onlineStatus'])->name('users.online');
         });
     });

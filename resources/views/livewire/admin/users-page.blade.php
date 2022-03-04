@@ -1,4 +1,5 @@
-<x-app-layout>
+<div>
+    <input wire:model.debounce.300ms="userSearch" type='text' >
     @foreach ($users as $user)
     <div>
       {{ $user->name }}
@@ -11,4 +12,4 @@
     @endforeach
 
     {{ $users->links() }}
-</x-app-layout>
+</div>
