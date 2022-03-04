@@ -74,7 +74,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::redirect('/', 'facilitator/people')->name('index');
             Route::get('people', StudioMembershipPage::class)->name('people');
             Route::get('activity', StudioActivityPage::class)->name('activity');
-            Route::get('activity/export/{studio}', [StudioController::class, 'exportActivity'])->name('activity-export');
+            Route::get('activity/export/{studio}', [StudioController::class, 'exportActivity'])->name('export_activity');
             Route::get(
                 'challenges', [FacilitatorChallengesController::class, 'index']
                 )->name('challenges');

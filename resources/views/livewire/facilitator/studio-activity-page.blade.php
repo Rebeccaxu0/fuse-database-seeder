@@ -5,7 +5,7 @@
     <button>
       {{ __('Export Activity') }}
     </button>
-    <form action="{{ route('facilitator.activity-export', $studio)}}" method="GET">
+    <form action="{{ route('facilitator.export_activity', $studio)}}" method="GET">
         <p>
         </p>
         @if ($errors->any())
