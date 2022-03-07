@@ -103,8 +103,9 @@ class StudioController extends Controller
     {
         $studio->update([
             'name' => $request->name,
-            'package_id' => $request->package
         ]);
+        $studio->package()->associate($request->package);
+        $studio->save();
 
         return redirect(route('admin.studios.index'));
     }
