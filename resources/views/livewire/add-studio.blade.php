@@ -5,7 +5,7 @@
         <div>
             <input type="hidden" name="studiosToAdd[]" value="{{ $id }}">{{ $studio['name'] }} <span
                 class="inline-flex"> <img wire:click="removeStudio({{ $id }})" class="h-6 w-6"
-                    src="/deletetrash.png"> </span>
+                    src="/deletetrash.svg"> </span>
         </div>
     @endforeach
 </div>

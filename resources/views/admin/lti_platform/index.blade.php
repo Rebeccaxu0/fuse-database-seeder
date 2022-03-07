@@ -11,13 +11,13 @@
         <h3 class="mt-2 mb-2">{{ $lti->name }}
             <span class="pl-2">
                 <a href="{{ route('admin.lti_platforms.edit', $lti->id) }}">
-                    <button><img class="h-6 w-6" src="/editpencil.png"></button>
+                    <button><img class="h-6 w-6" src="/editpencil.svg"></button>
                 </a>
                 <form method="post" action="{{ route('admin.lti_platforms.destroy', $lti->id) }}"
                     class="inline-block">
                     @method('delete')
                     @csrf
-                    <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
+                    <button type="submit"><img class="h-6 w-6" src="/deletetrash.svg"></button>
                 </form>
             </span>
         </h3>
