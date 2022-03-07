@@ -73,12 +73,12 @@
                                 <details>
                                     <summary>{{ __(':count studio(s)', ['count' => count($school->studios)]) }}
                                     </summary>
-                                    <ol>
+                                    <ul>
                                         @foreach ($school->studios as $studio)
-                                            <li><span class="text-xs text-fuse-teal">{{ $studio->name }}</span>
+                                            <li><span class="text-xs">{{ $studio->name }}</span>
                                             </li>
                                         @endforeach
-                                    </ol>
+                                    </ul>
                                 </details>
                             </div>
                         </td>
@@ -90,11 +90,11 @@
                                     <summary>
                                         {{ __(':count facilitator(s)', ['count' => count($school->facilitators)]) }}
                                     </summary>
-                                    <ol>
+                                    <ul>
                                         @foreach ($school->facilitators as $user)
-                                            <li><span class="text-xs text-fuse-teal">{{ $user->name }}</span></li>
+                                            <li><span class="text-xs">{{ $user->name }}</span></li>
                                         @endforeach
-                                    </ol>
+                                    </ul>
                                 </details>
                             </div>
                         </td>
@@ -105,11 +105,11 @@
                                 <details>
                                     <summary>{{ __(':count grade(s)', ['count' => count($school->gradelevels)]) }}
                                     </summary>
-                                    <ol>
+                                    <ul>
                                         @foreach ($school->gradelevels as $grade)
-                                            <li><label class="text-xs text-fuse-teal">{{ $grade->name }}</label></li>
+                                            <li><label class="text-xs">{{ $grade->name }}</label></li>
                                         @endforeach
-                                    </ol>
+                                    </ul>
                                 </details>
                             </div>
                         </td>

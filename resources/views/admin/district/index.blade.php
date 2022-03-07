@@ -53,11 +53,11 @@
                         <p class="text-gray-900 whitespace-no-wrap">
                         <details>
                             <summary>{{ __(':count', ['count' => count($district->schools)]) }}</summary>
-                            <ol>
+                            <ul>
                                 @foreach ($district->schools as $school)
-                                    <li><span class="text-xs text-fuse-teal">{{ $school->name }}</span></li>
+                                    <li><span class="text-xs">{{ $school->name }}</span></li>
                                 @endforeach
-                            </ol>
+                            </ul>
                         </details>
                         </p>
                     </td>
@@ -65,11 +65,11 @@
                         <p class="text-gray-900 whitespace-no-wrap">
                         <details>
                             <summary>{{ __(':count', ['count' => count($district->superFacilitators)]) }}</summary>
-                            <ol>
+                            <ul>
                                 @foreach ($district->superFacilitators as $user)
-                                    <li><span class="text-xs text-fuse-teal">{{ $user->name }}</span></li>
+                                    <li><span class="text-xs">{{ $user->name }}</span></li>
                                 @endforeach
-                            </ol>
+                            </ul>
                         </details>
                         </p>
                     </td>
