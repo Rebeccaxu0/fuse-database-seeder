@@ -103,16 +103,18 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
+            Route::resources([
+                'challenges'    => ChallengeController::class,
+                'districts'     => DistrictController::class,
+                'lti_platforms' => LTIPlatformController::class,
+                'packages'      => PackageController::class,
+                'schools'       => SchoolController::class,
+                'studios'       => StudioController::class,
+                'users'         => UserController::class,
+            ]);
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
-            Route::resource('packages', PackageController::class);
-            Route::resource('districts', DistrictController::class);
-            Route::resource('schools', SchoolController::class);
-            Route::resource('studios', StudioController::class);
-            Route::resource('challenges', ChallengeController::class);
-            Route::resource('lti_platforms', LTIPlatformController::class);
-            Route::resource('users', UserController::class);
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('users/online', [UserController::class, 'onlineStatus'])->name('users.online');
         });

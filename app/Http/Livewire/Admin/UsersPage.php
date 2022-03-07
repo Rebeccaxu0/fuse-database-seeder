@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Admin;
 use Carbon\Carbon;
 use App\Models\District;
 use App\Models\Role;
+use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,8 +17,11 @@ class UsersPage extends Component
     use WithPagination;
 
     public Collection $districts;
+    public Collection $schools;
     public District $district;
+    public School $school;
     public int $districtFilter = 0;
+    public int $schoolFilter = 0;
     public string $userSearch = '';
     public bool $status = true;
     public bool $onlyOnline = false;
@@ -25,14 +29,41 @@ class UsersPage extends Component
     public string $query = '';
 
     protected $listeners = ['toggleOnline'];
+    protected $queryString = [
+      'districtFilter' => ['except' => 0, 'as' => 'district'],
+      'schoolFilter' => ['except' => 0, 'as' => 'school'],
+      'onlyOnline' => ['except' => false, 'as' => 'online'],
+      'page' => ['except' => 1, 'as' => 'p'],
+      'rolesFilter' => ['except' => 'all', 'as' => 'user_type'],
+      'userSearch' => ['except' => '', 'as' => 's'],
+    ];
 
     public function mount()
     {
-        $this->districts = District::all();
+        $this->districts = District::with('schools')->get()->sortBy('name');
+        if ($this->districtFilter) {
+            $this->district = $this->districts->find($this->districtFilter);
+            $this->schools = $this->district->schools->sortBy('name');
+        }
+        else {
+            $this->schools = School::all()->sortBy('name');
+        }
     }
 
     public function toggleOnline() {
         $this->onlyOnline = ! $this->onlyOnline;
+    }
+
+    public function updatedDistrictFilter()
+    {
+        if ($this->districtFilter) {
+            $this->district = $this->districts->find($this->districtFilter);
+            $this->schools = $this->district->schools->sortBy('name');
+        }
+        else {
+            unset($this->district);
+            $this->schools = School::all()->sortBy('name');
+        }
     }
 
     public function updatedUserSearch()
@@ -71,8 +102,19 @@ class UsersPage extends Component
           default:
       }
 
-      if ($this->districtFilter) {
-          $this->district = $this->districts->find($this->districtFilter);
+      if ($this->schoolFilter) {
+          $this->school = $this->schools->find($this->schoolFilter);
+          $users = $users->where(function ($outerQuery) {
+              $outerQuery
+                  ->orWhereHas('schools', function (Builder $innerQuery) {
+                      $innerQuery->whereIn('id', $this->school->pluck('id'));
+                  })
+                  ->orWhereHas('studios', function (Builder $innerQuery) {
+                      $innerQuery->whereIn('id', $this->school->studios->pluck('id'));
+                  });
+          });
+      }
+      else if ($this->districtFilter) {
           $users = $users->where(function ($outerQuery) {
               $outerQuery
                   ->orWhereHas('districts', function (Builder $innerQuery) {
