@@ -67,7 +67,7 @@ class SchoolController extends Controller
         if (! empty($request->createstudios)) {
             $school->createStudios($request->createstudios);
         }
-        return redirect(route('admin.studios.index'));
+        return redirect(route('admin.studios.index', ['id' => $school->id]));
     }
 
     /**
@@ -94,7 +94,7 @@ class SchoolController extends Controller
         $school->gradelevels()->attach($request->gradelevels);
         $school->save();
 
-        return redirect(route('admin.schools.index'));
+        return redirect(route('admin.schools.index', ['id' => $school->district->id]));
     }
 
     /**
