@@ -30,11 +30,11 @@
                 <details>
                     <summary class="cursor-pointer">
                         {{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
-                    <ol class="list-none">
+                    <ul>
                         @foreach ($package->challenges as $challenge)
-                            <li class="list-none text-xs text-fuse-teal">{{ $challenge->name }}</li>
+                            <li class="list-none text-xs">{{ $challenge->name }}</li>
                         @endforeach
-                    </ol>
+                    </ul>
                 </details>
 
                 <div class="text-xs">
