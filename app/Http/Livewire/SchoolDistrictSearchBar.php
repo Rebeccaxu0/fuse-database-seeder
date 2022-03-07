@@ -11,10 +11,15 @@ class SchoolDistrictSearchBar extends Component
 {
     public $query;
 
+    protected $queryString = [
+        'id' => ['except' => null],
+    ];
+
     public function selectDs($id)
     {
         $this->emitUp('dsSelected', $id);
         $this->query = '';
+        $this->id = $id;
     }
 
     public function updatedQuery()
