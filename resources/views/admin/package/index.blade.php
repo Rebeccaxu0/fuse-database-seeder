@@ -12,7 +12,7 @@
             <div class="bg-gray-200 rounded-md p-2 mb-2">
                 <div class="float-right pl-2">
                     <a href="{{ route('admin.packages.edit', $package->id) }}">
-                        <button><img class="h-6 w-6" src="/editpencil.png"></button>
+                        <button><img class="h-6 w-6" src="/editpencil.svg"></button>
                     </a>
                     <form method="post" action="{{ route('admin.packages.copy', $package) }}"
                         class="inline-block">
@@ -23,7 +23,7 @@
                         class="inline-block">
                         @method('delete')
                         @csrf
-                        <button type="submit"><img class="h-6 w-6" src="/deletetrash.png"></button>
+                        <button type="submit"><img class="h-6 w-6" src="/deletetrash.svg"></button>
                     </form>
                 </div>
                 <h3 class="mt-2 mb-2">{{ $package->name }}</h3>

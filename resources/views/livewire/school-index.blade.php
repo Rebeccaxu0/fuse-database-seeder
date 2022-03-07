@@ -133,7 +133,7 @@
                                     class="inline-block">
                                     @method('delete')
                                     @csrf
-                                    <button type="destroy"><img class="h-6 w-6" src="/deletetrash.png"></button>
+                                    <button type="destroy"><img class="h-6 w-6" src="/deletetrash.svg"></button>
                                 </form>
                             </span>
                         </td>
