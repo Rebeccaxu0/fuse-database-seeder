@@ -127,7 +127,7 @@
                         <td class="border-gray-200">
                             <span>
                                 <a href="{{ route('admin.schools.edit', $school->id) }}">
-                                    <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
+                                    <button type="reset"><img class="h-6 w-6" src="/editpencil.svg"></button>
                                 </a>
                                 <form method="post" action="{{ route('admin.schools.destroy', $school->id) }}"
                                     class="inline-block">
