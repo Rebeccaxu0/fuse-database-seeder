@@ -49,7 +49,7 @@
                         </td>
                         <td class="border-gray-200 text-sm">
                             <a href="{{ route('admin.studios.edit', $studio->id) }}">
-                                <button type="reset"><img class="h-6 w-6" src="/editpencil.png"></button>
+                                <button type="reset"><img class="h-6 w-6" src="/editpencil.svg"></button>
                             </a>
                             <form method="post" action="{{ route('admin.studios.destroy', $studio->id) }}"
                                 class="inline-block">
