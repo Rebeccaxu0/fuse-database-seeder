@@ -162,6 +162,7 @@ class School extends Organization
     {
         foreach ($studios_to_create as $name) {
             $studio = new Studio(['name' => $name]);
+            $studio->package()->associate($this->package);
             $studio->school()->associate($this);
             $studio->save();
         }
