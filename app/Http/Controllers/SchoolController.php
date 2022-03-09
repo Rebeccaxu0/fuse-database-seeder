@@ -94,7 +94,7 @@ class SchoolController extends Controller
         $school->gradelevels()->attach($request->gradelevels);
         $school->save();
 
-        return redirect(route('admin.schools.index', ['id' => $school->district->id]));
+        return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
     }
 
     /**
@@ -158,7 +158,7 @@ class SchoolController extends Controller
             School::destroy($school);
         }
 
-        return redirect(route('admin.schools.index'));
+        return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
     }
     /**
      * Remove the specified resource from storage.
