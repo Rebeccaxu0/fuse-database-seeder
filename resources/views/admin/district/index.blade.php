@@ -38,7 +38,7 @@
                             </div>
                             <div class="ml-3">
                                 <a class="text-gray-900 underline whitespace-no-wrap"
-                                    href="{{ route('admin.schools.index', ['district' => $district]) }}">
+                                    href="{{ route('admin.schools.index', ['district' => $district->id]) }}">
                                     {{ $district->name }}
                                 </a>
                             </div>
