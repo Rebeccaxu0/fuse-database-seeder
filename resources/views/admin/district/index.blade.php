@@ -37,7 +37,7 @@
                             <div class="flex-shrink-0">
                             </div>
                             <div class="ml-3">
-                                <a class="text-gray-900 underline whitespace-no-wrap"
+                                <a class="text-lg text-gray-900 underline whitespace-no-wrap"
                                     href="{{ route('admin.schools.index', ['district' => $district->id]) }}">
                                     {{ $district->name }}
                                 </a>
