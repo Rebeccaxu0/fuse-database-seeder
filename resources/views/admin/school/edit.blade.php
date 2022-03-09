@@ -11,8 +11,7 @@
         <div class="grid md:grid-cols-2 gap-x-4">
             <div>
                 <x-form.defaultdropdown label="Package" name="package" value="old('package', $school->package_id)"
-                :inherited="$school->district->package"
-                :list="$packages" />
+                    :inherited="$school->district->package" :list="$packages" />
             </div>
             <div>
                 <x-form.input label="Salesforce Account ID" name="salesforce_acct_id"
@@ -77,16 +76,16 @@
             <input type="checkbox" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
             <span class="mx-2 text-gray-700">{{ __('Active Studio Licenses') }}</span><br>
             <span
-                class="mx-2 text-xs text-gray-700">{{__('Unchecking this will deactivate all studios in the school and move all associated students/facilitators into the Alumni Studio.') }}</span><br>
+                class="mx-2 text-xs text-gray-700">{{ __('Unchecking this will deactivate all studios in the school and move all associated students/facilitators into the Alumni Studio.') }}</span><br>
             <input type="checkbox" id="anonymize" name="anonymize" :disabled="active">
             <span class="mx-2 text-gray-700"
                 :class="{ 'text-gray-400': active}">{{ __('Anonymize studio members') }}</span><br>
             <span class="mx-2 text-xs text-gray-700"
-                :class="{ 'text-gray-400': active}">{{__('WARNING: This is a destructive operation and cannot be undone.') }}</span><br>
+                :class="{ 'text-gray-400': active}">{{ __('WARNING: This is a destructive operation and cannot be undone.') }}</span><br>
         </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit" id="btn-submit"
-                class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{__(' Update School') }}</button>
+                class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __(' Update School') }}</button>
         </div>
     </form>
     <!-- <form id="delete-frm" class="" action="{{ route('admin.schools.destroy', $school) }}" method="POST">

@@ -17,11 +17,11 @@ class SchoolIndex extends Component
 
     protected $listeners = ['districtSelected' => 'setDistrict'];
 
-    public function mount() {
+    public function mount()
+    {
         if ($this->districtFilter) {
             $this->setDistrict(District::find($this->districtFilter));
-        }
-        else {
+        } else {
             $this->setDistrict(District::all()->first());
             $this->districtFilter = null;
         }
@@ -47,4 +47,3 @@ class SchoolIndex extends Component
         ]);
     }
 }
-

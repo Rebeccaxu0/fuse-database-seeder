@@ -20,10 +20,12 @@ class SchoolDistrictSearchBar extends Component
     public function updatedQuery()
     {
         $this->dss = School::where('name', 'like', "%{$this->query}%")
-            ->orWhereHas('district',
-              function (Builder $query)  {
-                $query->where('name', 'like', "%{$this->query}%");
-            })
+            ->orWhereHas(
+                'district',
+                function (Builder $query) {
+                    $query->where('name', 'like', "%{$this->query}%");
+                }
+            )
             ->with('district')
             ->limit(10)
             ->orderBy('name')

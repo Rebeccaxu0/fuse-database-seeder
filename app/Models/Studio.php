@@ -27,7 +27,7 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0 || ! $this->school) {
+        if ($this->package()->count() > 0 || !$this->school) {
             return $this->package();
         }
         return $this->school->deFactoPackage();
@@ -46,7 +46,7 @@ class Studio extends Organization
      */
     public function activeStudents()
     {
-      return $this->activeUsers()->doesntHave('roles');
+        return $this->activeUsers()->doesntHave('roles');
     }
 
     /**
@@ -54,7 +54,7 @@ class Studio extends Organization
      */
     public function students()
     {
-      return $this->users()->doesntHave('roles');
+        return $this->users()->doesntHave('roles');
     }
 
     /**
@@ -141,7 +141,8 @@ class Studio extends Organization
     /**
      * Try to set a new studio code. Must be unique. Try ten times then fail.
      */
-    public function setNewStudioCode():bool {
+    public function setNewStudioCode(): bool
+    {
         $save_status = false;
 
         for ($i = 0; $i < 10; $i++) {
@@ -155,8 +156,7 @@ class Studio extends Organization
                     $this->save();
                     $save_status = true;
                     break;
-                }
-                catch (QueryException $e) {
+                } catch (QueryException $e) {
                     // Ignore query exceptions. Most likely duplicate entry.
                     // Just retry.
                 }

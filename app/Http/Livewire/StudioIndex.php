@@ -17,14 +17,13 @@ class StudioIndex extends Component
         'id' => ['except' => null],
     ];
 
-    protected $listeners = ['dsSelected'=> 'setDs'];
+    protected $listeners = ['dsSelected' => 'setDs'];
 
     public function mount()
     {
         if ($this->id) {
             $this->setDs($this->id);
         }
-
     }
 
     public function setDs(int $school_id)
@@ -33,9 +32,9 @@ class StudioIndex extends Component
         $this->id = $school_id;
     }
 
-    public function __construct() {
-      $this->school = District::all()->first()->schools()->first();
-
+    public function __construct()
+    {
+        $this->school = District::all()->first()->schools()->first();
     }
 
 
