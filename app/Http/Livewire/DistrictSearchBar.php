@@ -9,13 +9,10 @@ class DistrictSearchBar extends Component
 {
     public $query;
 
-    protected $queryString = ['id'];
-
     public function selectDistrict($id)
     {
         $this->emitUp('districtSelected', $id);
         $this->query = '';
-        $this->id = $id;
     }
 
     public function updatedQuery()
