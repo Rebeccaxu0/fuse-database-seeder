@@ -13,6 +13,9 @@ module.exports = {
             'sans': ['Inter', 'Helvetica', 'Arial', 'sans-serif']
         },
         extend: {
+            boxShadow: {
+                'tile': '0.5em 0.5em 1em rgb(0 0 0 / 20%)'
+            },
             colors: {
                 'fuse-background':     '#ebebeb',
                 'fuse-blue':           '#83c9e3',
@@ -54,9 +57,6 @@ module.exports = {
                 'fuse-teal-dk-700':    '#0a485f',
                 'fuse-yellow':         '#f7e70b'
             },
-            spacing: {
-                '72': '18rem'
-            },
             container: {
                 padding: {
                     DEFAULT: '1rem',
@@ -67,9 +67,12 @@ module.exports = {
                 },
                 center: true
             },
-          skew: {
-            '45': '45deg'
-          }
+            skew: {
+              '45': '45deg'
+            },
+            spacing: {
+                '72': '18rem'
+            }
         }
     },
     variants: {},

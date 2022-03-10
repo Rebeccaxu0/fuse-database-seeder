@@ -1,6 +1,6 @@
 <div>
     <div wire:click="$set('showModalFlag', true)"
-      class="relative cursor-pointer border rounded-lg p-4 aspect-[17/14] shadow-lg">
+      class="relative cursor-pointer rounded-lg p-4 aspect-[17/14] shadow-tile">
       <div class="aspect-video bg-blue-200 w-full">Preview Image</div>
       <div>
         <span class="text-slate-500 uppercase">{{ $timeAgo }} ({{ $artifact->created_at->format('Y-m-d') }})</span>
