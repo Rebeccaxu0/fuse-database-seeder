@@ -7,6 +7,7 @@ use App\Models\Idea;
 use App\Models\Level;
 use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class ArtifactModalTile extends Component
 {
@@ -17,7 +18,7 @@ class ArtifactModalTile extends Component
     {
         $this->parent = $this->artifact->artifactable;
         $this->timeAgo = Carbon::create($this->artifact->created_at)->diffForHumans();
-        $this->comments = true;
+        $this->comments = (bool) Auth::user()->activeStudio->allow_comments;
         $this->commentCount = 0;
         if ($this->parent::class == Level::class) {
             $this->parent->type = 'level';
