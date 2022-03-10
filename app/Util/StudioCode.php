@@ -4,6 +4,10 @@ namespace App\Util;
 
 class StudioCode
 {
+    private const FORBIDDEN_NUMBERS = [
+        420, 666, 669, 690, 691, 692, 693, 694, 695, 696, 697, 698, 699
+    ];
+
     private const ADJECTIVES = [
         'able',
         'best',
@@ -452,8 +456,11 @@ class StudioCode
     {
         $adjective = self::ADJECTIVES[array_rand(self::ADJECTIVES)];
         $noun = self::NOUNS[array_rand(self::NOUNS)];
-        $num = sprintf("%'.03u", mt_rand(0, 999));
-        return "{$adjective} {$noun} {$num}";
+        do {
+            $num = mt_rand(0, 999);
+        } while (in_array($num, self::FORBIDDEN_NUMBERS));
+        $formattedNumber = sprintf("%'.03u", $num);
+        return "{$adjective} {$noun} {$formattedNumber}";
     }
 }
 
