@@ -58,6 +58,9 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 return view('student.dashboard');
             })->name('dashboard');
             Route::get(
+                'ideas', [IdeaController::class, 'index']
+                )->name('ideas');
+            Route::get(
                 'help_finder', [ChallengeVersionController::class, 'student_help_finder']
                 )->name('help_finder');
             Route::get(

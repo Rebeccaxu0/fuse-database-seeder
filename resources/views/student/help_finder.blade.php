@@ -4,6 +4,7 @@
 
     <x-slot name="header">{{ __('Help Finder') }}</x-slot>
 
+    <x-challenge-gallery-menu />
     @forelse ($challenges as $challenge)
         {{ $challenge->name }}
         <x-help-finder-tile :challenge="$challenge" />

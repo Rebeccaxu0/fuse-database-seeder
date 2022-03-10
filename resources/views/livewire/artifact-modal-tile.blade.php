@@ -16,7 +16,7 @@
       </div>
       <div class="absolute bottom-0 left-0 m-4 flex items-center">
         @if ($parent->type == 'idea')
-            <x-icon icon="idea" viewBox="60.4 90.6" fill="currentColor" alt="{{ __('complete') }}" class="text-orange-500"/>
+            <x-icon icon="idea" viewBox="60.4 90.6" fill="currentColor" alt="{{ __('idea') }}" class="text-orange-500"/>
         @else
             <span class="text-blue-400 text-2xl font-bold">{{ __('L:number', ['number' => $parent->level_number]) }}</span>
         @endif
