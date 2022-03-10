@@ -163,6 +163,28 @@ class User extends Authenticatable
     }
 
     /**
+     * The level and idea starts associated with this user.
+     */
+    public function starts()
+    {
+        return $this->morphMany(Start::class, 'startable');
+    }
+
+    public function startedIdeas()
+    {
+      return $this->belongsToMany(Idea::class, 'starts', 'user_id', 'startable_id')
+                  ->as('start')
+                  ->wherePivot('startable_type', 'idea');
+    }
+
+    public function startedLevels()
+    {
+      return $this->belongsToMany(Level::class, 'starts', 'user_id', 'startable_id')
+                  ->as('start')
+                  ->wherePivot('startable_type', 'level');
+    }
+
+    /**
      * The studios associated with this user.
      */
     public function studios()
@@ -254,11 +276,6 @@ class User extends Authenticatable
         return Cache::has('user-is-online-' . $this->id);
     }
 
-    public function startedLevels()
-    {
-        return $this->belongsToMany(Level::class, 'level_starts', 'user_id', 'level_id');
-    }
-
     /**
      * Has started a given Level.
      *
@@ -268,7 +285,9 @@ class User extends Authenticatable
      */
     public function startedLevel(Level $level): bool
     {
-        return $this->startedLevels->contains($level);
+        return Cache::remember("u{$this->id}_has_started_level{$level->id}", 3600, function () use ($level) {
+            return $this->startedLevels->contains($level);
+        });
     }
 
     /**
@@ -280,16 +299,28 @@ class User extends Authenticatable
      */
     public function completedLevel(Level $level): bool
     {
-        return DB::table('artifacts')
-            ->join('teams', function ($join) {
-                $join->on('artifacts.id', '=', 'teams.teamable_id')
-                    ->where('teams.teamable_type', 'artifact')
-                    ->where('teams.user_id', $this->id);
-            })
-            ->where('type', 'complete')
-            ->where('artifactable_type', 'level')
-            ->where('artifactable_id', $level->id)
-            ->exists();
+        return Cache::remember("u{$this->id}_has_completed_level{$level->id}", 3600, function () use ($level) {
+            return DB::table('artifacts')
+                ->join('teams', function ($join) {
+                    $join->on('artifacts.id', '=', 'teams.teamable_id')
+                        ->where('teams.teamable_type', 'artifact')
+                        ->where('teams.user_id', $this->id);
+                })
+                ->where('type', 'complete')
+                ->where('artifactable_type', 'level')
+                ->where('artifactable_id', $level->id)
+                ->exists();
+        });
+    }
+
+    public function lastActivity(ChallengeVersion $challengeVersion)
+    {
+      if ($this->startedChallengeVersion($challengeVersion)) {
+          return 'beep';
+      }
+      else {
+          return __('Never');
+      }
     }
 
     /**

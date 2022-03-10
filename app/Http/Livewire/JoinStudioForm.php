@@ -9,8 +9,8 @@ use Livewire\Component;
 
 class JoinStudioForm extends Component
 {
-    public $showModalFlag = false;
-    public $studioCode = '';
+    public bool $showModalFlag = false;
+    public string $studioCode = '';
 
     protected $rules = [
         'studioCode' => 'required',

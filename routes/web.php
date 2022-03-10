@@ -112,11 +112,13 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'studios'       => StudioController::class,
                 'users'         => UserController::class,
             ]);
+
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
+
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
+
             Route::get('users', UsersPage::class)->name('users.index');
-            Route::get('users/online', [UserController::class, 'onlineStatus'])->name('users.online');
         });
     });
 

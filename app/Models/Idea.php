@@ -28,6 +28,14 @@ class Idea extends Model
     }
 
     /**
+     * Get the start on this idea.
+     */
+    public function starts()
+    {
+        return $this->morphMany(Start::class, 'startable');
+    }
+
+    /**
      * Challenge Version(s) that inspired this idea.
      */
     public function challengeVersions()

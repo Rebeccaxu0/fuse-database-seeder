@@ -36,6 +36,14 @@ class Level extends Model
         return $this->morphMany(Artifact::class, 'artifactable');
     }
 
+    /**
+     * Get the start on this level.
+     */
+    public function starts()
+    {
+        return $this->morphMany(Start::class, 'startable');
+    }
+
     public function setChallengeVersionIDAttribute($value)
     {
         $this->attributes['challenge_version_id'] = $value;

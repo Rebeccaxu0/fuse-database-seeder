@@ -23,8 +23,8 @@ class ProgressBar extends Component
     public function __construct(ChallengeVersion $challengeVersion, User $user, bool $interactive = true)
     {
         $this->interactive = $interactive;
-        $this->challengeVersion = $challengeVersion;
-        $this->levels = $challengeVersion->levels->sortBy('level_number');
+        $this->challengeVersion = $challengeVersion->load('levels');
+        $this->levels = $this->challengeVersion->levels->sortBy('level_number');
         foreach ($this->levels as $level) {
           if ($user->completedLevel($level)) {
               $level->status = 'completed';
@@ -33,7 +33,7 @@ class ProgressBar extends Component
               $level->status = 'started';
           }
           else {
-              $this->status = 'unstarted';
+              $level->status = 'unstarted';
           }
         }
     }

@@ -32,7 +32,7 @@ class StudioActivityPage extends Component
         $this->activeStudent = $this->students->find($id);
         $this->populateChallenges();
         $this->populateArtifacts();
-        $this->populateIdeas();
+        // $this->populateIdeas();
     }
 
     public function mount()
@@ -52,6 +52,7 @@ class StudioActivityPage extends Component
             $this->activeStudent = $this->students->first();
             $this->populateIdeas();
             $this->populateChallenges();
+            // $this->artifacts = new Collection;
             $this->populateArtifacts();
         }
     }
@@ -64,15 +65,13 @@ class StudioActivityPage extends Component
     private function populateArtifacts()
     {
         $levelIds = ! isset($this->activeChallenge) ? [] :
-            $this->challenges
-                 ->find($this->activeChallenge)
+            $this->activeChallenge
                  ->levels
                  ->keyBy('id')
                  ->keys()
                  ->all();
         $this->artifacts
-            = $this->students
-                   ->find($this->activeStudent)
+            = $this->activeStudent
                    ->artifacts
                    ->where('artifactable_type', 'level')
                    ->whereIn('artifactable_id', $levelIds);
@@ -83,11 +82,11 @@ class StudioActivityPage extends Component
         $challengeVersion = function ($level, $key) {
             return $level->challengeVersion;
         };
-        $this->challenges = $this ->activeStudent
-                                  ->startedLevels
-                                  ->map($challengeVersion)
-                                  ->unique()
-                                  ->sortBy('name');
+        $this->challenges = $this->activeStudent
+                                 ->startedLevels
+                                 ->map($challengeVersion)
+                                 ->unique()
+                                 ->sortBy('name');
 
         if ($this->challenges->count()) {
             $this->activeChallenge = $this->challenges->first();

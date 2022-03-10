@@ -700,6 +700,26 @@ WHERE NOT ISNULL(districts.id);
 
 -- TODO: Artifacts
 
+-- Starts
+
+INSERT IGNORE INTO `fuse_laravel_test`.level_starts (
+  startable_type, startable_id, user_id, created_at
+)
+SELECT 'level', levels.id, users.id, FROM_UNIXTIME(fal.timestamp)
+FROM `fuse`.fuse_activity_log fal
+LEFT JOIN `fuse_laravel_test`.levels ON levels.d7_id = fal.lid
+LEFT JOIN `fuse_laravel_test`.users ON users.d7_id = fal.uid
+WHERE fal.activity_type = 'start_level' and fal.is_idea_level = 0;
+
+INSERT IGNORE INTO `fuse_laravel_test`.level_starts (
+  startable_type, startable_id, user_id, created_at
+)
+SELECT 'idea', levels.id, users.id, FROM_UNIXTIME(fal.timestamp)
+FROM `fuse`.fuse_activity_log fal
+LEFT JOIN `fuse_laravel_test`.ideas ON ideas.d7_id = fal.lid
+LEFT JOIN `fuse_laravel_test`.users ON users.d7_id = fal.uid
+WHERE fal.activity_type = 'start_level' and fal.is_idea_level = 1;
+
 -- Level Saves
 -- Exclude Saves from deleted users.
 INSERT INTO `fuse_laravel_test`.artifacts (

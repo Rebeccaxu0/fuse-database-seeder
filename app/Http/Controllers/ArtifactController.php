@@ -25,7 +25,7 @@ class ArtifactController extends Controller
      */
     public function my_stuff_index()
     {
-        $artifacts = Auth::user()->artifacts;
+        $artifacts = Auth::user()->artifacts()->paginate(12);
         return view('student.my_stuff', ['artifacts' => $artifacts]);
     }
 

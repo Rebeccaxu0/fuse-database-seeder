@@ -36,28 +36,37 @@
     <div class="mt-8 lg:grid lg:grid-cols-3 gap-4">
         <div class="col-start-1 lg:scroll-box">
         @forelse ($students as $student)
-            <button wire:click="$emit('activateStudent', {{ $student->id }})" class="@if ($student->id == $activeStudent->id) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif w-full block text-left border border-slate-400 rounded-xl px-4 py-1 mb-1">
+            <button wire:click="$emit('activateStudent', {{ $student->id }})" class="@if ($student->id == $activeStudent->id) font-bold bg-fuse-green-50 cursor-default @else hover:bg-slate-50 @endif w-full block text-left border border-slate-400 rounded-xl px-4 py-1 mb-1">
               <div class="inline-block -mb-0.5 border-2 border-slate-300 {{ $student->isOnline() ? 'bg-fuse-green-500': '' }} rounded-lg w-4 h-4">
                     <span class="sr-only">Status: {{ $student->isOnline() ? __('Online') :  __('Offline') }}"</span>
                 </div>
                 <span title="{{ $student->full_name . ' (' . $student->name . ')' }}">
-                    {{ Str::limit($student->full_name, 15) }} ({{ Str::limit($student->name, 15) }})
+                  {{ str($student->full_name)->limit(15) }} ({{ str($student->name)->limit(15) }})
                 </span>
                 @if ($student->id == $activeStudent->id)<span class="float-right">&gt;</span>@endif
             </button>
             <div class="lg:hidden @if ($student->id == $activeStudent->id) scroll-box @endif">
               @if ($student->id == $activeStudent->id)
                   @forelse ($challenges as $challenge)
-                      <button wire:click="$emit('activateChallenge', {{ $challenge->id }})" class="@if ($challenge->id == $activeChallenge->id) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif block w-full text-left border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
+                      @if ($challenge->id == $activeChallenge->id)
+                          <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
+                      @else
+                          <button wire:click="$emit('activateChallenge', {{ $challenge->id }})"
+                            class="hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
+                        @endif
                         {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
                         <div class="h-4">
-                          <x-progress-bar :user="$student" :interactive="false" :challengeVersion="$challenge" />
+                            <x-progress-bar :user="$student" :interactive="false" :challengeVersion="$challenge" />
                         </div>
-                          {{ __('Last activity') }}
-                      </button>
+                        {{ __('Last activity') }} ( {{ $student->lastActivity($challenge) }})
+                      @if ($challenge->id == $activeChallenge->id)
+                          </div>
+                      @else
+                          </button>
+                      @endif
                       @if ($challenge->id == $activeChallenge->id)
                           @forelse ($artifacts as $artifact)
-                              {{ $artifact->type }} ({{ $artifact->artifactable->id }}) <span class="font-bold">{{ $artifact->artifactable->challengeVersion->name }}</span>
+                            <livewire:artifact-modal-tile :artifact="$artifact" :wire:key="$artifact->id">
                           @empty
                               <div class="font-bold uppercase text-lg ml-4 py-2">
                                 {{ __('No artifacts uploaded yet for this challenge') }}
@@ -77,13 +86,22 @@
         </div>
         <div class="hidden lg:block col-start-2 scroll-box">
             @forelse ($challenges as $challenge)
-                <button wire:click="$emit('activateChallenge', {{ $challenge->id }})" class="@if ($challenge->id == $activeChallenge->id) font-bold bg-fuse-green-50 @else cursor-pointer hover:bg-slate-50 @endif block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                @if ($challenge->id == $activeChallenge->id)
+                <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                @else
+                <button wire:click="$emit('activateChallenge', {{ $challenge->id }})"
+                  class="hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                @endif
               {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
                     <div class="h-4">
-                      <x-progress-bar :user="$activeStudent" :interactive="false" :challengeVersion="$challenge" />
+                            <x-progress-bar :user="$activeStudent" :interactive="false" :challengeVersion="$challenge" />
                     </div>
                     {{ __('Last activity') }}
-                </button>
+                @if ($challenge->id == $activeChallenge->id)
+                    </div>
+                @else
+                    </button>
+                @endif
             @empty
             <div class="font-bold uppercase text-lg text-center border rounded-xl p-4">
               {{ __('This student has not yet started any challenges.') }}
@@ -93,7 +111,7 @@
         <div class="hidden lg:block col-start-3 scroll-box">
             @if ($activeChallenge)
                 @forelse ($artifacts as $artifact)
-                {{ $artifact->type }} ({{ $artifact->artifactable->id }}) <span class="font-bold">{{ $artifact->artifactable->challengeVersion->name }}</span>
+                    <livewire:artifact-modal-tile :artifact="$artifact" :wire:key="$artifact->id">
                 @empty
                 <div class="font-bold uppercase text-lg ml-4 py-2">
                   {{ __('No artifacts uploaded yet for this challenge') }}
