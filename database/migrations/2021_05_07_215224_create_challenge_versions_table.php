@@ -20,6 +20,8 @@ return new class extends Migration
             $table->json('name');
             $table->json('blurb')
                   ->nullable();
+            $table->json('gallery_note')
+                  ->nullable();
             $table->json('summary')
                   ->nullable();
             $table->json('stuff_you_need')

@@ -194,6 +194,7 @@ INSERT INTO `fuse_laravel_test`.challenge_versions (
 )
 SELECT
   JSON_OBJECT("en", n.title), 1, 1,
+-- TODO: Add php script to update slug after import
   CONCAT(n.title, n.nid),
   fdfiu.field_info_url_url,
   n.nid, challenge_ttd.tid, challenge_category_ttd.tid, fdfpc.field_prerequisite_challenges_nid,
@@ -243,6 +244,17 @@ JOIN (
   GROUP BY entity_id) as b
 ON cv.d7_id = b.entity_id
 SET cv.blurb = b.blurb;
+
+-- Challenge Gallery Title Modifier Note
+UPDATE `fuse_laravel_test`.challenge_versions cv
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG('en', field_cg_version_details_value) as gallery_note
+  FROM `fuse`.field_data_field_cg_version_details
+  WHERE entity_type = 'node' AND bundle = 'challenge'
+  GROUP BY entity_id) as s
+ON cv.d7_id = s.entity_id
+SET cv.gallery_note  = s.gallery_note;
+
 
 -- Stuff You Need
 UPDATE `fuse_laravel_test`.challenge_versions cv

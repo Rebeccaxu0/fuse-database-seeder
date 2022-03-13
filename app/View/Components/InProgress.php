@@ -2,10 +2,13 @@
 
 namespace App\View\Components;
 
+use App\Models\ChallengeVersion;
 use Illuminate\View\Component;
 
 class InProgress extends Component
 {
+    public $challengeVersions;
+
     /**
      * Create a new component instance.
      *
@@ -13,7 +16,7 @@ class InProgress extends Component
      */
     public function __construct()
     {
-        //
+        $this->challengeVersions = ChallengeVersion::all()->random(5);
     }
 
     /**

@@ -14,7 +14,7 @@ class ChallengeVersion extends Model
     use HasTranslations;
     use SoftDeletes;
 
-    public $translatable = ['name', 'facilitator_notes'];
+    public $translatable = ['blurb', 'facilitator_notes', 'gallery_note', 'name'];
 
     /**
      * The challenge that owns this challenge version.

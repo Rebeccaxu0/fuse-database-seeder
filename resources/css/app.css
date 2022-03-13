@@ -257,15 +257,43 @@
     }
   }
 
-  .progress-bar-segment {
-    @apply -ml-2 -mr-2 h-full flex-1 inline-block -skew-x-45 bg-zinc-300;
+  .gallery-play-border {
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 100%;
+    border: 5px solid rgba(0,0,0,0.3);
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    height: 80px;
+    /* Orion bug requires margin auto for H center */
+    margin: 0 auto;
+    transition: all 0.5s ease;
+    width: 80px;
+    z-index: 1;
   }
-  .progress-bar-segment.started {
-    background: repeating-linear-gradient(90deg,#2fc049 0 1rem,#b5edbf 1rem 2rem);
+  .gallery-play-border:hover {
+    border-color: transparent;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
   }
-  .progress-bar-segment.completed {
-    @apply bg-fuse-green;
+  .gallery-play-border:hover .play_button {
+    border-left: 35px solid rgba(0,0,0,0.9);
   }
+  .gallery-play-border:active, .play_border:focus {
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+  }
+  .gallery-play-button {
+    border-bottom: 20px solid transparent;
+    border-left: 35px solid rgba(70, 70, 70, 0.8);
+    border-top: 20px solid transparent;
+    height: 0;
+    left: 34%; /* LTR */
+    position:relative;
+    top: 15px;
+    width: 0;
+    [dir="rtl"] & {
+      right: 16%;
+    }
+  }
+
 
   .scroll-box {
     @apply overflow-y-scroll;

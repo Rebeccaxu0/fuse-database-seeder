@@ -1,13 +1,12 @@
-@props(['challenges' => [(object) ['title' => 'test']]])
 <div>
     <h2>
         {{ __('Also In Progress') }}
     </h2>
-    @forelse ($challenges as $challenge)
+    @forelse ($challengeVersions as $challengeVersion)
         <h3>
-            {{ $challenge->title }}
+            {{ $challengeVersion->challenge->name }}
         </h3>
-        <x-progress-bar :challenge="$challenge" />
+        <x-progress-bar :interactive="true" :challengeVersion="$challengeVersion" class="h-4" />
     @empty
         {{ __('Nothing started! Choose a challenge.') }}
     @endforelse

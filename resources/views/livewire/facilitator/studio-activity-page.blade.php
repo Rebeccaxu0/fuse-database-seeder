@@ -55,9 +55,7 @@
                             class="hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 ml-3 mb-1 uppercase">
                         @endif
                         {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
-                        <div class="h-4">
-                            <x-progress-bar :user="$student" :interactive="false" :challengeVersion="$challenge" />
-                        </div>
+                        <x-progress-bar :user="$student" :interactive="false" :challengeVersion="$challenge" class="h-4" />
                         {{ __('Last activity') }} ( {{ $student->lastActivity($challenge) }})
                       @if ($challenge->id == $activeChallenge->id)
                           </div>
@@ -93,9 +91,7 @@
                   class="hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
                 @endif
               {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
-                    <div class="h-4">
-                            <x-progress-bar :user="$activeStudent" :interactive="false" :challengeVersion="$challenge" />
-                    </div>
+                    <x-progress-bar :user="$activeStudent" :interactive="false" :challengeVersion="$challenge" class="h-4" />
                     {{ __('Last activity') }}
                 @if ($challenge->id == $activeChallenge->id)
                     </div>
