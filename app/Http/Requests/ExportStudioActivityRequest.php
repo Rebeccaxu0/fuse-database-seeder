@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Studio;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExportStudioActivityRequest extends FormRequest

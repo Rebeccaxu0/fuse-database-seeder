@@ -5,7 +5,7 @@
     <button>
       {{ __('Export Activity') }}
     </button>
-    <form action="{{ route('facilitator.export_activity', $studio)}}" method="GET">
+    <form action="{{ route('facilitator.export_activity', $studio) }}" method="GET">
         <p>
         </p>
         @if ($errors->any())
@@ -17,7 +17,7 @@
         @endif
         <fieldset class="sm:flex max-w-md items-center justify-center border border-black p-2">
           <legend class="bg-fuse-teal-dk text-white px-2 py-1">
-            {{ __('Download all studio activity between the following dates:')}}
+            {{ __('Download all studio activity between the following dates:') }}
           </legend>
           <div class="float-left sm:flex-1 m-2">
             <label class="font-bold" for='from_date'>{{ __('From') }}</label>

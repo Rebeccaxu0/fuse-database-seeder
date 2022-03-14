@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\District;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;

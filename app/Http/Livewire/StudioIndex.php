@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\District;
 use App\Models\School;
-use App\Models\Studio;
 use Livewire\Component;
 
 class StudioIndex extends Component

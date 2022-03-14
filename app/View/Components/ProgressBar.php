@@ -4,8 +4,8 @@ namespace App\View\Components;
 
 use App\Models\ChallengeVersion;
 use App\Models\User;
-use Illuminate\View\Component;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\View\Component;
 
 class ProgressBar extends Component
 {
