@@ -31,7 +31,7 @@ return new class extends Migration
             $table->json('facilitator_notes')
                   ->nullable();
             // $table->string('gallery_image');
-            // $table->string('gallery_wistia_video');
+            $table->string('gallery_wistia_video_id');
             $table->string('gallery_version_desc_short')
                   ->nullable();
             $table->string('gallery_version_desc_long')

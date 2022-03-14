@@ -341,6 +341,39 @@ class User extends Authenticatable
     }
 
     /**
+     * Has completed a given ChallengeVersion.
+     *
+     * @param ChallengeVersion $challengeVersion
+     *
+     * @return bool
+     */
+    public function completedChallengeVersion(ChallengeVersion $challengeVersion): bool
+    {
+        return $this->completedLevel($challengeVersion->levels->sortBy('level_number')->last());
+    }
+
+    /**
+     * Has started a given ChallengeVersion.
+     *
+     * @param ChallengeVersion $challengeVersion
+     *
+     * @return bool
+     */
+    public function canStartChallengeVersion(ChallengeVersion $challengeVersion): bool
+    {
+        // If there's no prerequisite Challenge Version or
+        // they've already started it on thier own or via team,
+        // let them continue.
+        return
+            $this->isAdmin()
+            || $this->isSuperFacilitator()
+            || $this->isFacilitator()
+            || (! $challengeVersion->prerequisiteChallengeVersion)
+            || $this->startedChallengeVersion($challengeVersion)
+            || $this->completedChallengeVersion($challengeVersion->prerequisiteChallengeVersion);
+    }
+
+    /**
       * Get a list of Studios the user is a member of, directly or not.
       *
       * @return array [Studio]

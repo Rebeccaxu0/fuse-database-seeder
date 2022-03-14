@@ -187,6 +187,7 @@ SET pivot.challenge_id = c.id, pivot.package_id = p.id;
 INSERT INTO `fuse_laravel_test`.challenge_versions (
   name,
   challenge_id, challenge_category_id,
+  gallery_wistia_video_id,
   slug,
   info_article_url,
   d7_id, d7_challenge_id, d7_challenge_category_id, d7_prereq_challenge_id,
@@ -196,6 +197,7 @@ SELECT
   JSON_OBJECT("en", n.title), 1, 1,
 -- TODO: Add php script to update slug after import
   CONCAT(n.title, n.nid),
+  fdfw.field_wistia_video_id,
   fdfiu.field_info_url_url,
   n.nid, challenge_ttd.tid, challenge_category_ttd.tid, fdfpc.field_prerequisite_challenges_nid,
   FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed)
@@ -220,6 +222,10 @@ LEFT JOIN `fuse`.field_data_field_info_url AS fdfiu ON
   (fdfiu.entity_type = 'node'
   AND fdfiu.bundle = 'challenge'
   AND fdfiu.entity_id = n.nid)
+LEFT JOIN `fuse`.field_data_field_wistia AS fdfw ON
+  (fdfw.entity_type = 'node'
+    AND fdfw.bundle = 'challenge'
+    AND fdfw.entity_id = n.nid)
 WHERE n.type = 'challenge'
 GROUP BY n.nid
 ORDER BY n.title ASC;
@@ -858,84 +864,84 @@ WHERE !ISNULL(a.d7_id);
 -- TODO: Activity Log
 -- N.B. - This is likely to move out of the database sooner than later.
 -- This takes almost 9 minutes to run. Can we hasten it? 5.4M records.
-INSERT INTO `fuse_laravel_test`.activity_log (
-  id,
-  created_at,
-  d7_uid, d7_lid,
-  -- user_id, level_id,
-  birthday, gender, ethnicity,
-  activity_type, d7_afilliated_studios,
-  d7_studio_nid,
-  -- studio_id,
-  studio_name,
-  challenge_title, challenge_version, level_number,
-  d7_artifact_nid,
-  -- artifact_id,
-  artifact_name, artifact_url,
-  is_team_artifact,
-  trigger_activity_id,
-  d7_school_nid,
-  -- school_id,
-  school_name,
-  d7_district_nid,
-  -- district_id,
-  district_name,
-  is_idea_level,
-  is_facilitator
-)
-SELECT fal.aid,
-  FROM_UNIXTIME(fal.timestamp), -- users.id as user_id, levels.id as level,
-  fal.uid, fal.lid,
-  fal.birthday as birthday, fal.gender as gender, fal.ethnicity as ethnicity,
-  fal.activity_type, fal.affiliated_studios,
-  fal.studio_nid,
-  -- studios.id as studio,
-  fal.studio_name as studio_name,
-  fal.challenge_title as challenge, fal.challenge_version as c_version, fal.level_number as l_no,
-  fal.artifact_nid,
-  -- artifacts.id as artifact_id,
-  fal.artifact_name as artifact_name, fal.artifact_url as artifact_url,
-  COALESCE(fal.is_team_artifact, 0) as 'team?',
-  fal.trigger_aid,
-  fal.school_nid,
-  -- schools.id as school_id,
-  fal.school_name as school_name,
-  fal.district_nid,
-  -- districts.id as district_id,
-  fal.district_name as district_name,
-  fal.is_idea_level,
-  fal.is_facilitator
-FROM `fuse`.fuse_activity_log fal;
--- RIGHT OUTER JOIN `fuse_laravel_test`.users users ON users.d7_id = fal.uid
--- LEFT JOIN `fuse_laravel_test`.levels levels ON levels.d7_id = fal.lid
--- LEFT JOIN `fuse_laravel_test`.studios studios ON studios.d7_id = fal.studio_nid
--- LEFT JOIN `fuse_laravel_test`.artifacts artifacts ON artifacts.d7_id = fal.artifact_nid
--- LEFT JOIN `fuse_laravel_test`.schools schools ON schools.d7_id = fal.school_nid
--- LEFT JOIN `fuse_laravel_test`.districts districts ON districts.d7_id = fal.school_nid
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.users u ON log.d7_uid = u.d7_id
-SET log.user_id = u.id;
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.levels l ON log.d7_lid = l.d7_id
-SET log.level_id = l.id;
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.studios s ON log.d7_studio_nid = s.d7_id
-SET log.studio_id = s.id;
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.artifacts a ON log.d7_artifact_nid = a.d7_id
-SET log.artifact_id = a.id;
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.schools s ON log.d7_school_nid = s.d7_id
-SET log.school_id = s.id;
-
-UPDATE `fuse_laravel_test`.activity_log log
-LEFT JOIN `fuse_laravel_test`.districts d ON log.d7_district_nid = d.d7_id
-SET log.district_id = d.id;
+-- INSERT INTO `fuse_laravel_test`.activity_log (
+--   id,
+--   created_at,
+--   d7_uid, d7_lid,
+--   -- user_id, level_id,
+--   birthday, gender, ethnicity,
+--   activity_type, d7_afilliated_studios,
+--   d7_studio_nid,
+--   -- studio_id,
+--   studio_name,
+--   challenge_title, challenge_version, level_number,
+--   d7_artifact_nid,
+--   -- artifact_id,
+--   artifact_name, artifact_url,
+--   is_team_artifact,
+--   trigger_activity_id,
+--   d7_school_nid,
+--   -- school_id,
+--   school_name,
+--   d7_district_nid,
+--   -- district_id,
+--   district_name,
+--   is_idea_level,
+--   is_facilitator
+-- )
+-- SELECT fal.aid,
+--   FROM_UNIXTIME(fal.timestamp), -- users.id as user_id, levels.id as level,
+--   fal.uid, fal.lid,
+--   fal.birthday as birthday, fal.gender as gender, fal.ethnicity as ethnicity,
+--   fal.activity_type, fal.affiliated_studios,
+--   fal.studio_nid,
+--   -- studios.id as studio,
+--   fal.studio_name as studio_name,
+--   fal.challenge_title as challenge, fal.challenge_version as c_version, fal.level_number as l_no,
+--   fal.artifact_nid,
+--   -- artifacts.id as artifact_id,
+--   fal.artifact_name as artifact_name, fal.artifact_url as artifact_url,
+--   COALESCE(fal.is_team_artifact, 0) as 'team?',
+--   fal.trigger_aid,
+--   fal.school_nid,
+--   -- schools.id as school_id,
+--   fal.school_name as school_name,
+--   fal.district_nid,
+--   -- districts.id as district_id,
+--   fal.district_name as district_name,
+--   fal.is_idea_level,
+--   fal.is_facilitator
+-- FROM `fuse`.fuse_activity_log fal;
+-- -- RIGHT OUTER JOIN `fuse_laravel_test`.users users ON users.d7_id = fal.uid
+-- -- LEFT JOIN `fuse_laravel_test`.levels levels ON levels.d7_id = fal.lid
+-- -- LEFT JOIN `fuse_laravel_test`.studios studios ON studios.d7_id = fal.studio_nid
+-- -- LEFT JOIN `fuse_laravel_test`.artifacts artifacts ON artifacts.d7_id = fal.artifact_nid
+-- -- LEFT JOIN `fuse_laravel_test`.schools schools ON schools.d7_id = fal.school_nid
+-- -- LEFT JOIN `fuse_laravel_test`.districts districts ON districts.d7_id = fal.school_nid
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.users u ON log.d7_uid = u.d7_id
+-- SET log.user_id = u.id;
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.levels l ON log.d7_lid = l.d7_id
+-- SET log.level_id = l.id;
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.studios s ON log.d7_studio_nid = s.d7_id
+-- SET log.studio_id = s.id;
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.artifacts a ON log.d7_artifact_nid = a.d7_id
+-- SET log.artifact_id = a.id;
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.schools s ON log.d7_school_nid = s.d7_id
+-- SET log.school_id = s.id;
+--
+-- UPDATE `fuse_laravel_test`.activity_log log
+-- LEFT JOIN `fuse_laravel_test`.districts d ON log.d7_district_nid = d.d7_id
+-- SET log.district_id = d.id;
 
 --Drop temp D7 migration columns.
 -- ALTER TABLE `fuse_laravel_test`.users DROP d7_id;

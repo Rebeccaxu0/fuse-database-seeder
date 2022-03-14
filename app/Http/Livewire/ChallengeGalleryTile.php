@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\ChallengeVersion;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ChallengeGalleryTile extends Component
@@ -12,10 +13,10 @@ class ChallengeGalleryTile extends Component
     public ChallengeVersion $challengeVersion;
     public User $user;
 
-    public function mount(ChallengeVersion $challengeVersion, User $user = null)
+    public function mount(ChallengeVersion $challengeVersion, User $user)
     {
         $this->challengeVersion = $challengeVersion;
-        $this->user = ! is_null($user) ? $user : Auth::user();
+        $this->user = $user;
     }
 
     public function render()
