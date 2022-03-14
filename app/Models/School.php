@@ -30,7 +30,7 @@ class School extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0 || !$this->district) {
+        if ($this->package()->count() > 0 || ! $this->district) {
             return $this->package();
         }
         return $this->district->package();
@@ -69,16 +69,14 @@ class School extends Organization
         $district = $this->district()->first();
         $superFacilitators = new Collection;
         if ($district) {
-            $superfacilitators = User::whereHas(
-                'districts',
-                function (Builder $query) use ($district) {
-                    $query->where('id', '=', $district->id);
-                }
-            )
-                ->whereHas('roles', function (Builder $query) {
-                    $query->where('name', '=', 'Super Facilitator');
-                });
-        }
+            $superfacilitators = User::whereHas('districts',
+              function (Builder $query) use ($district) {
+                  $query->where('id', '=', $district->id);
+              })
+              ->whereHas('roles', function (Builder $query) {
+                  $query->where('name', '=', 'Super Facilitator');
+              });
+            }
         return $superFacilitators;
     }
 
@@ -148,7 +146,7 @@ class School extends Organization
     {
         foreach ($gradelevels as $id) {
             $gradelevel = GradeLevel::find($id);
-            if (!(in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))) {
+            if (! (in_array($gradelevel->id, $this->gradelevels->pluck('id')->toArray()))) {
                 $gradelevel->schools()->associate($this);
                 $gradelevel->save();
             }
@@ -181,7 +179,7 @@ class School extends Organization
     {
         foreach ($studios_to_add as $id) {
             $studio = Studio::find($id);
-            if (!(in_array($studio->id, $this->studios->pluck('id')->toArray()))) {
+            if (! (in_array($studio->id, $this->studios->pluck('id')->toArray()))) {
                 $studio->school()->associate($this);
                 $studio->save();
             }
@@ -215,10 +213,10 @@ class School extends Organization
         $district = $this->district->id;
         foreach ($super_facilitator_ids as $id) {
             $sfuser = User::find($id);
-            if (!(in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
+            if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
                 $sfuser->districts()->attach($district);
             }
-            if (!$sfuser->isSuperFacilitator()) {
+            if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
                 Cache::forget("u{$sfuser->id}_has_role_" . Role::SUPER_FACILITATOR_ID);
             }

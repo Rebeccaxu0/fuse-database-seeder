@@ -18,7 +18,6 @@ class SchoolController extends Controller
     {
         $this->authorizeResource(School::class, 'school');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +30,6 @@ class SchoolController extends Controller
             ->paginate(20);
         return view('admin.school.index', ['schools' => $schools]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -43,7 +41,6 @@ class SchoolController extends Controller
             'packages' => Package::all()->sortBy('name'),
         ]);
     }
-
     /**
      *
      *
@@ -56,7 +53,6 @@ class SchoolController extends Controller
             'school' => $school,
         ]);
     }
-
     /**
      * 
      *
@@ -69,7 +65,6 @@ class SchoolController extends Controller
         }
         return redirect(route('admin.studios.index', ['id' => $school->id]));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -96,7 +91,6 @@ class SchoolController extends Controller
 
         return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
     }
-
     /**
      * Display the specified resource.
      *
@@ -107,7 +101,6 @@ class SchoolController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -121,7 +114,6 @@ class SchoolController extends Controller
             'school' => $school,
         ]);
     }
-
     /**
      * Update the specified resource in storage.
      *

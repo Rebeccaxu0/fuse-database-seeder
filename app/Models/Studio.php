@@ -27,7 +27,7 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0 || !$this->school) {
+        if ($this->package()->count() > 0 || ! $this->school) {
             return $this->package();
         }
         return $this->school->deFactoPackage();

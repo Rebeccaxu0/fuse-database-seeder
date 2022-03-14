@@ -15,12 +15,14 @@
                 @if (count($students))
                     <ul>
                         @foreach ($students as $student)
-                            <li class="mb-6 cursor-pointer" wire:click="add({{ $student }})">
-                                {{ $student->full_name }}
-                                @if ($student->email)
-                                    &lt;{{ $student->email }}&gt;
-                                @endif
-                                ({{ $student->name }})
+                            <li class="mb-6">
+                                <button wire:click="add({{ $student }})">
+                                    {{ $student->full_name }}
+                                    @if ($student->email)
+                                        &lt;{{ $student->email }}&gt;
+                                    @endif
+                                    ({{ $student->name }})
+                                </button>
                             </li>
                         @endforeach
                     </ul>

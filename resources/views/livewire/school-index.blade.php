@@ -2,8 +2,8 @@
     <div>
         @livewire ('district-search-bar')
         <div>
-            <input type="hidden" name="currentdistrict" value="{{ $setdistrict->id }}">
-            <h4 class="mt-2 mb-2"> District: {{ $setdistrict['name'] }} </h4>
+            <input type="hidden" name="currentdistrict" value="{{ $activeDistrict->id }}">
+            <h4 class="mt-2 mb-2"> District: {{ $activeDistrict['name'] }} </h4>
         </div>
     </div>
     <div class="mt-8" x-data="{ open: @entangle('showSchools') }">
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($setdistrict->schools as $school)
+                @foreach ($activeDistrict->schools as $school)
                     <tr class="odd:bg-white even:bg-gray-100">
                         <td class="border-gray-200 text-sm">
                             <div class="flex items-center">

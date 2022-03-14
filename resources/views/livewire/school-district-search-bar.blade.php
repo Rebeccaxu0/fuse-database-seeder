@@ -11,8 +11,12 @@
 
         <div class="relative z-10 w-full bg-white rounded-t-none shadow-lg list-group">
             @forelse ($dss as $ds)
-                <div class="mb-6" wire:click="selectDs({{ $ds->id }})">{{ $ds->name }}
-                    [{{ $ds->district ? $ds->district->name : __('<No District>') }}]</div>
+                <div class="mb-6">
+                    <button wire:click="selectDs({{ $ds->id }})">
+                        {{ $ds->name }}
+                        [{{ $ds->district ? $ds->district->name : __('<No District>') }}]
+                    </button>
+                </div>
             @empty
                 <div>No results</div>
             @endforelse

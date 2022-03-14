@@ -11,18 +11,21 @@ class StudioIndex extends Component
 
 {
     public School $school;
-    public $id = null;
+    public ?int $ider = null;
 
     protected $queryString = [
-        'id' => ['except' => null],
+        'ider' => ['except' => null, 'as' => 'id'],
     ];
 
     protected $listeners = ['dsSelected' => 'setDs'];
 
     public function mount()
     {
-        if ($this->id) {
-            $this->setDs($this->id);
+        if ($this->ider) {
+            $this->setDs($this->ider);
+        }
+        else {
+            $this->setDs(District::all()->first()->schools()->first()->id);
         }
     }
 
@@ -31,12 +34,6 @@ class StudioIndex extends Component
         $this->school = School::find($school_id);
         $this->id = $school_id;
     }
-
-    public function __construct()
-    {
-        $this->school = District::all()->first()->schools()->first();
-    }
-
 
     public function render()
     {

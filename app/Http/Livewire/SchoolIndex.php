@@ -10,6 +10,7 @@ class SchoolIndex extends Component
 {
     public $showSchools = false;
     public $districtFilter = null;
+    public $activeDistrict;
 
     protected $queryString = [
         'districtFilter' => ['except' => null, 'as' => 'district']
@@ -29,15 +30,14 @@ class SchoolIndex extends Component
 
     public function setDistrict(District $district)
     {
-        $this->setdistrict = $district;
+        $this->activeDistrict = $district;
         $this->showSchools = true;
-        $this->districtFilter = $this->setdistrict->id;
-        return $this->setdistrict;
+        $this->districtFilter = $this->activeDistrict->id;
     }
 
     public function removeDistrict()
     {
-        $this->setdistrict = null;
+        $this->activeDistrict = null;
     }
 
     public function render()

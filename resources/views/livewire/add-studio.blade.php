@@ -3,10 +3,10 @@
 
     @foreach ($selectedstudios as $id => $studio)
         <div>
-            <input type="hidden" name="studiosToAdd[]" value="{{ $id }}">{{ $studio['name'] }} <span
-                class="inline-flex"> <img wire:click="removeStudio({{ $id }})" class="h-6 w-6"
-                    src="/deletetrash.svg"> </span>
+            <input type="hidden" name="studiosToAdd[]" value="{{ $id }}">{{ $studio['name'] }}
+            <button class="inline-flex" wire:click="removeStudio({{ $id }})">
+                <img class="h-6 w-6" src="/deletetrash.svg"/>
+            </button>
         </div>
     @endforeach
 </div>
-

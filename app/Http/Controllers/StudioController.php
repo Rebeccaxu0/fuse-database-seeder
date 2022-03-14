@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ExportStudioActivityRequest;
 use App\Models\District;
+use App\Models\Package;
 use App\Models\School;
 use App\Models\Studio;
-use App\Models\Package;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,9 +86,10 @@ class StudioController extends Controller
     public function edit(Studio $studio)
     {
         return view('admin.studio.edit', [
-                        'packages' => Package::all()->sortBy('name'),
-                        'studio' => $studio
-                    ]);
+            'packages' => Package::all()->sortBy('name'),
+            'studio' => $studio,
+            ]
+        );
     }
 
     /**
