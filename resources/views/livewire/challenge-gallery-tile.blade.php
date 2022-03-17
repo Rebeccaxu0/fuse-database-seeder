@@ -1,10 +1,12 @@
 @push('scripts')
     <script src="https://fast.wistia.com/embed/medias/{{ $challengeVersion->gallery_wistia_video_id }}.jsonp" async></script>
 @endpush
-<div class="shadow-tile">
+<div class="bg-white shadow-tile">
     <button wire:click="$set('showModalFlag', true)"
       class="w-full relative rounded-lg p-4 text-left">
-        <div class="aspect-video bg-blue-200 w-full rounded-lg flex items-center justify-items-center">
+        <div class="aspect-video w-full rounded-lg flex items-center justify-items-center"
+          {{-- NO WAR --}}
+          style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
           <div class="gallery-play-border">
             <div class="gallery-play-button">&nbsp;</div>
           </div>

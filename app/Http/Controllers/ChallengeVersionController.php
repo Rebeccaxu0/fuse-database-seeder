@@ -41,7 +41,7 @@ class ChallengeVersionController extends Controller
         // TODO: Add logic to account for Alumni/Freemium accounts.
         $activeStudio = Auth::user()->activeStudio;
         $challengeVersions = $activeStudio ? $activeStudio->challengeVersions->sortBy('name') : [];
-        return view('student.help_finder', ['challenges' => $challengeVersions]);
+        return view('student.help_finder', ['challenges' => $challengeVersions, 'studio' => $activeStudio]);
     }
 
     /**

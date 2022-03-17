@@ -294,6 +294,103 @@
     }
   }
 
+  /* Help Finder Icon */
+  .activity-icon {
+    border-radius: 15px;
+    border-top-right-radius: 0;
+    border: solid 4px #bfc8cc;
+    display: inline-block;
+    height: 2rem;
+    margin: auto;
+    transform: rotate(-10deg);
+    width: 2rem;
+  }
+
+  .activity-icon.active {
+    border-color: #5ff238;
+  }
+  .activity-icon span {
+    display: inline-block;
+    font-weight: bolder;
+    height: 2rem;
+    margin: -4px;
+    text-align: center;
+    transform: rotate(10deg);
+    width: 2rem;
+  }
+
+  .activity-icon.active-0 {
+    animation-delay: 0.25s !important;
+  }
+  .activity-icon.active-1 {
+    animation-delay: 0.5s !important;
+  }
+  .activity-icon.active-2 {
+    animation-delay: 0.75s !important;
+  }
+  .activity-icon.active-3 {
+    animation-delay: 1s !important;
+  }
+  .activity-icon.active-4 {
+    animation-delay: 1.25s !important;
+  }
+  .activity-icon.active-5 {
+    animation-delay: 1.5s !important;
+  }
+  .activity-icon.active-6 {
+    animation-delay: 1.75s !important;
+  }
+  .activity-icon.active-7 {
+    animation-delay: 2.0s !important;
+  }
+  .activity-icon.active-8 {
+    animation-delay: 2.25s !important;
+  }
+  .activity-icon.active-9 {
+    animation-delay: 2.5s !important;
+  }
+
+  .long_pulse1 .activity-icon.active {
+    animation: pulse1 5s infinite;
+  }
+  .long_pulse2 .activity-icon.active {
+    animation: pulse2 5s infinite;
+  }
+
+  .short_pulse1 .activity-icon.active {
+    animation: pulse2 3s infinite;
+  }
+  .short_pulse2 .activity-icon.active {
+    animation: pulse2 3s infinite;
+  }
+
+  @keyframes pulse1 {
+    from { transform: rotate(-10deg) scale(1); }
+    10% { transform: rotate(-10deg) scale(1.15); }
+    20% { transform: rotate(-10deg) scale(1); }
+    40% { transform: rotate(-10deg) scale(1.15); }
+    50% { transform: rotate(-10deg) scale(1); }
+  }
+
+  @keyframes pulse2 {
+    from { transform: rotate(-10deg) scale(1); }
+    5% { transform: rotate(-10deg) scale(1.15); }
+    10% { transform: rotate(-10deg) scale(1); }
+    15% { transform: rotate(-10deg) scale(1.15); }
+    20% { transform: rotate(-10deg) scale(1); }
+  }
+
+  @keyframes color-cycle {
+    from {
+      border-color: #5ff238;
+    }
+    50% {
+      border-color: white;
+    }
+    to {
+      border-color: #5ff238;
+    }
+  }
 
   .scroll-box {
     @apply overflow-y-scroll;

@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\ChallengeVersion;
+use App\Models\Studio;
 use Illuminate\View\Component;
 
 class HelpFinderTile extends Component
@@ -11,16 +12,22 @@ class HelpFinderTile extends Component
      * Challenge Version we're rendering.
      * @var ChallengeVersion
      */
-    public $challenge;
+    public ChallengeVersion $challengeVersion;
+
+    /**
+     * Studio from which to determine activity.
+     */
+    public Studio $studio;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(ChallengeVersion $challenge)
+    public function __construct(ChallengeVersion $challengeVersion, Studio $studio)
     {
-        $this->challenge = $challenge;
+        $this->challengeVersion = $challengeVersion;
+        $this->studio = $studio;
     }
 
     /**
