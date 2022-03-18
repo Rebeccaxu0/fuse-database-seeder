@@ -4,6 +4,10 @@
 
     <x-slot name="header">{{ __('MyStuff') }}</x-slot>
 
+    <div class="my-6">
+      Knobs and dials - Filters and sorts
+    </div>
+
     <div class="sm:hidden">
       {{ $artifacts->links() }}
     </div>

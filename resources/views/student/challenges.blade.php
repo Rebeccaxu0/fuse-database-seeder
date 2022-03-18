@@ -4,6 +4,10 @@
 
 <x-app-layout>
 
+    <x-slot name="title">{{ __('My Challenges') }}</x-slot>
+
+    <x-slot name="header">{{ __('My Challenges') }}</x-slot>
+
   <x-challenge-gallery-menu />
 
   <div class="px-16 py-8 bg-zinc-100

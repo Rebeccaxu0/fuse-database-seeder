@@ -16,12 +16,22 @@
         <x-studio-switcher />
 
         @if (isset($header))
-        <header class="bg-white shadow">
-            <div class="text-fuse-teal-dk text-4xl font-semibold font-display max-w-7xl mx-auto py-0 px-4 sm:px-6 lg:px-8">{{ $header }}</div>
+        <header>
+            <h1 class="flex items-center text-fuse-teal-dk text-4xl font-black font-display max-w-7xl m-0 py-0 px-4 sm:px-6 lg:px-8">
+                <span class="relative mr-2">
+                <x-avatar :user="auth()->user()" class="h-16 w-16" />
+                @if (! auth()->user()->profile_photo_path)
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <livewire:customize-avatar-modal :user="auth()->user()" />
+                    </div>
+                @endif
+                </span>
+                {{ $header }}
+            </h1>
         </header>
         @endif
 
-        <main class="flex-grow relative py-20 px-8">
+        <main class="flex-grow relative pt-4 pb-10 px-8">
 
             {{ $slot }}
 

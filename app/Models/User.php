@@ -23,9 +23,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasConnectedAccounts;
     use HasFactory;
-    use HasProfilePhoto {
-        getProfilePhotoUrlAttribute as getPhotoUrl;
-    }
+    use HasProfilePhoto;
     use Impersonate;
     use Notifiable;
     use Search;
@@ -112,6 +110,28 @@ class User extends Authenticatable
         }
 
         return $this->getPhotoUrl();
+    }
+
+    /**
+     * Get the URL to the user's profile photo.
+     *
+     * @return string
+     */
+    public function getPhotoUrl()
+    {
+        return $this->profile_photo_path
+                    ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
+                    : $this->defaultProfilePhotoUrl();
+    }
+
+    /**
+     * Get the default profile photo URL if no profile photo has been uploaded.
+     *
+     * @return string
+     */
+    protected function defaultProfilePhotoUrl()
+    {
+        return '/img/default_avatar.jpg';
     }
 
     /**
