@@ -2,21 +2,24 @@
 
 namespace App\View\Components;
 
-use App\Models\ChallengeVersion;
+use App\Models\User;
 use Illuminate\View\Component;
 
 class InProgress extends Component
 {
-    public $challengeVersions;
+    public User $user;
+    public $startedChallengeVersions;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->challengeVersions = ChallengeVersion::all()->random(5);
+        $this->user = $user;
+        $activeChallengeVersions = $user->activeStudio->challengeVersions;
+        $this->startedChallengeVersions = $user->startedLevels->unique()->map(function ($level, $key) { return $level->challengeVersion;})->unique()->intersect($activeChallengeVersions)->sortBy('name');
     }
 
     /**

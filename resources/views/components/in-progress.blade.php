@@ -1,12 +1,15 @@
-<div>
-    <h2>
+<div {{ $attributes->merge() }}>
+    <h2 class="text-left">
         {{ __('Also In Progress') }}
     </h2>
-    @forelse ($challengeVersions as $challengeVersion)
-        <h3>
+    @forelse ($startedChallengeVersions as $challengeVersion)
+        <h3 class="text-fuse-teal mb-0">
             {{ $challengeVersion->challenge->name }}
         </h3>
-        <x-progress-bar :interactive="true" :challengeVersion="$challengeVersion" class="h-4" />
+        <x-progress-bar :user="$user" :interactive="true" :challengeVersion="$challengeVersion" class="h-4 my-0" />
+          <div class="text-sm">
+            {{ __(':number working on now', ['number' => $challengeVersion->activeStudents($user->activeStudio)]) }}
+          </div>
     @empty
         {{ __('Nothing started! Choose a challenge.') }}
     @endforelse

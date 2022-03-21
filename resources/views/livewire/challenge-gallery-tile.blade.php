@@ -1,6 +1,3 @@
-@push('scripts')
-    <script src="https://fast.wistia.com/embed/medias/{{ $challengeVersion->gallery_wistia_video_id }}.jsonp" async></script>
-@endpush
 <div class="bg-white shadow-tile">
     <button wire:click="$set('showModalFlag', true)"
       class="w-full relative rounded-lg p-4 text-left">
@@ -32,11 +29,7 @@
 
         <div class="mx-4 mb-4 relative overflow-hidden">
             <div class="w-full bg-blue-200 rounded-lg">
-              <div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;">
-                <div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:0;width:100%;">
-                  <div class="wistia_embed wistia_async_{{ $challengeVersion->gallery_wistia_video_id }} seo=false videoFoam=true" style="height:100%;position:relative;width:100%">&nbsp;</div>
-                </div>
-              </div>
+              <x-wistia.inline :videoId="$challengeVersion->gallery_wistia_video_id" />
             </div>
         </div>
 

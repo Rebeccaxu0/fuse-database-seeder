@@ -20,9 +20,9 @@ class StudioPolicy
      */
     public function before(User $user, $ability)
     {
-      if ($user->isAdmin()) {
-            return true;
-        }
+        if ($user->isAdmin()) {
+              return true;
+          }
     }
 
     /**
@@ -132,5 +132,18 @@ class StudioPolicy
                && $user->deFactoStudios()->contains($studio)
           ? Response::allow()
           : Response::deny(__('You are either not a facilitator or a member of this studio.'));
+    }
+
+    /**
+     * Determine whether the user can update the model's dashboard message.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Studio  $studio
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function updateDashboardMessage(User $user, Studio $studio)
+    {
+        return ($user->isFacilitator() || $user->isSuperFacilitator())
+            && $user->deFactoStudios()->contains($studio);
     }
 }
