@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                      <x-studio-notes :user="auth()->user()" />
+                        <x-studio-notes :user="auth()->user()" />
                         <x-explore-tile :user="auth()->user()" />
                     </div>
 

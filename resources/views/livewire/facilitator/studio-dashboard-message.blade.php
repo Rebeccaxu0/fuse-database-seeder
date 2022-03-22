@@ -6,7 +6,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 @endpush
 
-<div class="quill mt-2 bg-white" wire:ignore>
+<div class="quill bg-white" wire:ignore>
   <div
        x-data
        x-ref="quillEditor"
