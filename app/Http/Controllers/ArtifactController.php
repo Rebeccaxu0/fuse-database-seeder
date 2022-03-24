@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artifact;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,12 +22,23 @@ class ArtifactController extends Controller
     /**
      * Display a customized listing of the resource for students.
      *
+     * @param User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function artifact_gallery(User $user = null)
+    {
+        $artifacts = $user->artifacts()->paginate(12);
+        return view('student.my_stuff', ['artifacts' => $artifacts, 'studio' => $user->activeStudio]);
+    }
+
+    /**
+     * Display a customized listing of the resource for students.
+     *
      * @return \Illuminate\Http\Response
      */
     public function my_stuff_index()
     {
-        $artifacts = Auth::user()->artifacts()->paginate(12);
-        return view('student.my_stuff', ['artifacts' => $artifacts]);
+        return $this->artifact_gallery(Auth::user());
     }
 
     /**

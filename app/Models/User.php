@@ -187,9 +187,12 @@ class User extends Authenticatable
      */
     public function starts()
     {
-        return $this->morphMany(Start::class, 'startable');
+        return $this->hasMany(Start::class);
     }
 
+    /**
+     * Ideas a user has started.
+     */
     public function startedIdeas()
     {
       return $this->belongsToMany(Idea::class, 'starts', 'user_id', 'startable_id')
@@ -197,6 +200,9 @@ class User extends Authenticatable
                   ->wherePivot('startable_type', 'idea');
     }
 
+    /**
+     * Levels a user has started.
+     */
     public function startedLevels()
     {
       return $this->belongsToMany(Level::class, 'starts', 'user_id', 'startable_id')
@@ -425,5 +431,40 @@ class User extends Authenticatable
             }
             return $studios;
         });
+    }
+
+    /**
+     * Return a user's first or given name.
+     *
+     * @return string
+     */
+    function firstName()
+    {
+      return explode(' ', $this->full_name)[0];
+    }
+
+    /**
+     * Return a user's last name or family name or surname.
+     *
+     * @return string
+     */
+    function lastName()
+    {
+      $parts = explode(' ', $this->full_name);
+      return end($parts);
+    }
+
+    /**
+     * Return a user's abbreviated last name or family name or surname.
+     *
+     * @return string
+     */
+    function abbreviatedLastName()
+    {
+      $abbreviation = '';
+      foreach (explode('-', $this->lastName()) as $subname) {
+        $abbreviation .= strtoupper(substr($subname, 0, 1));
+      }
+      return $abbreviation;
     }
 }

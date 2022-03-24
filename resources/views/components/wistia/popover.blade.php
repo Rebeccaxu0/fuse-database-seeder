@@ -17,3 +17,4 @@
 @else
 <span class="wistia_embed wistia_async_{{ $videoId }} popover=true popoverContent=link" style="display:inline;position:relative"><a href="#">{{ $slot }}</a></span>
 @endif
+

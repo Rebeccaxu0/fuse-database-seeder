@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\ChallengeVersion;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ChallengeGalleryTile extends Component

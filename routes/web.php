@@ -65,6 +65,9 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'help_finder', [ChallengeVersionController::class, 'student_help_finder']
                 )->name('help_finder');
             Route::get(
+                '{user}/mystuff', [ArtifactController::class, 'artifact_gallery']
+                )->name('their_stuff');
+            Route::get(
                 'mystuff', [ArtifactController::class, 'my_stuff_index']
                 )->name('my_stuff');
         });

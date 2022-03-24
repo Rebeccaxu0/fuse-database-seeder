@@ -12,7 +12,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <section class="sm:grid gap-4 sm:grid-cols-6">
 
-                <x-dashboard-status :user="Auth::user()" class="sm:col-span-3 md:col-span-4"/>
+                <x-dashboard-status :user="auth()->user()" class="sm:col-span-3 md:col-span-4"/>
 
                 <section class="sm:col-span-3 md:col-span-2
                   bg-gradient-to-t from-fuse-teal to-fuse-teal-dk-800">
@@ -30,7 +30,7 @@
 
             <section class="lg:grid lg:gap-4 lg:grid-cols-6">
 
-                <x-activity-feed class="lg:col-span-4"/>
+              <x-student.activity-feed :studio="auth()->user()->activeStudio" class="lg:col-span-4"/>
 
                 <section class="lg:col-span-2">
                     {{ __('How To FUSE') }}
