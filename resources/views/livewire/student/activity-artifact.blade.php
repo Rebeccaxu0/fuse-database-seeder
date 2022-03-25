@@ -1,9 +1,7 @@
 <div>
     <button wire:click="$set('showModalFlag', true)"
-      class="cursor-pointer p-4 mb-2 relative rounded-lg bg-white w-full shadow-tile">
-        <span class="absolute right-0 top-0 mt-1 mr-2 text-xs">
-            {{ $timeAgo }} ({{ $artifact->created_at->format('Y-m-d') }})</span>
-        </span>
+      class="cursor-pointer float-right">
+        <x-artifact-preview-image :artifact="$artifact" class="h-44 mt-2"/>
     </button>
     <x-jet-modal wire:model="showModalFlag">
         <div class="py-4 text-center text-fuse-teal-dk text-3xl whitespace-nowrap">

@@ -56,6 +56,6 @@ class ActivityFeed extends Component
      */
     public function render()
     {
-        return view('student.activity-feed');
+        return view('student.activity-feed.index');
     }
 }

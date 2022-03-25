@@ -8,8 +8,9 @@
     stroke-width="{{ $strokeWidth }}"
     stroke-linecap="round"
     stroke-linejoin="round"
-    id="{{ $id }}"
-    {{ $attributes->merge(['class' => "$icon $class inline-block"]) }}
+    @if ($id) id="{{ $id }}" @endif
+    {{ $attributes->merge(['class' => "$icon $class", 'inline-block' => ! $displayOverride]) }}
 >
     @includeIf("icons.$icon")
 </svg>
+

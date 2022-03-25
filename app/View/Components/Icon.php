@@ -14,6 +14,7 @@ class Icon extends Component
     public string $strokeWidth;
     public ?string $id;
     public ?string $class;
+    public bool $displayOverride;
 
     /**
      * Create a new component instance.
@@ -21,15 +22,16 @@ class Icon extends Component
      * @return void
      */
     public function __construct(
-        $icon = null,
-        $width = 24,
-        $height = 24,
-        $viewBox = '24 24',
-        $fill = 'none', // currentColor, none
-        $stroke = 'currentColor', // currentColor, none
-        $strokeWidth = "2",
-        $id = null,
-        $class = null
+        string $icon,
+        int $width = 24,
+        int $height = 24,
+        string $viewBox = '24 24',
+        string $fill = 'none', // currentColor, none
+        string $stroke = 'currentColor', // currentColor, none
+        string $strokeWidth = "2",
+        ?string $id = null,
+        ?string $class = null,
+        bool $displayOverride = false,
     )
     {
         $this->icon = $icon;
@@ -38,8 +40,9 @@ class Icon extends Component
         $this->viewBox = $viewBox;
         $this->fill = $fill;
         $this->strokeWidth = $strokeWidth;
-        $this->id = $id ?? '';
-        $this->class = $class ?? '';
+        $this->id = $id;
+        $this->class = $class;
+        $this->displayOverride = $displayOverride;
     }
 
     /**
