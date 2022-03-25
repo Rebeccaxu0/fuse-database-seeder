@@ -63,6 +63,6 @@ class Level extends Model
 
     public function isStarted(User $user): bool
     {
-        return $user->startedLevel($this);
+        return $user->hasStartedLevel($this);
     }
 }

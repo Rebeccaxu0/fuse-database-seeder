@@ -29,7 +29,7 @@ class ProgressBar extends Component
           if ($user->completedLevel($level)) {
               $level->status = 'completed';
           }
-          else if ($user->startedLevel($level)) {
+          else if ($user->hasStartedLevel($level)) {
               $level->status = 'started';
           }
           else {

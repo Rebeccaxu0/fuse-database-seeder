@@ -19,7 +19,18 @@ class InProgress extends Component
     {
         $this->user = $user;
         $activeChallengeVersions = $user->activeStudio->challengeVersions;
-        $this->startedChallengeVersions = $user->startedLevels->unique()->map(function ($level, $key) { return $level->challengeVersion;})->unique()->intersect($activeChallengeVersions)->sortBy('name');
+        $this->startedChallengeVersions
+            = $user->startedLevels
+                   ->unique()
+                   ->map(function ($level, $key) {
+                      return $level->challengeVersion;
+                   })
+                   ->unique()
+                   ->filter(function ($challengeVersion, $key) use ($user) {
+                      return ! $user->hasCompletedChallengeVersion($challengeVersion);
+                   })
+                   ->intersect($activeChallengeVersions)
+                   ->sortBy('name');
     }
 
     /**

@@ -7,9 +7,6 @@
             {{ $challengeVersion->challenge->name }}
         </h3>
         <x-progress-bar :user="$user" :interactive="true" :challengeVersion="$challengeVersion" class="h-4 my-0" />
-          <div class="text-sm">
-            {{ __(':number working on now', ['number' => $challengeVersion->activeStudents($user->activeStudio)]) }}
-          </div>
     @empty
         {{ __('Nothing started! Choose a challenge.') }}
     @endforelse

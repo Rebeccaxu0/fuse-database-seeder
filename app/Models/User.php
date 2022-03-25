@@ -309,7 +309,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function startedLevel(Level $level): bool
+    public function hasStartedLevel(Level $level): bool
     {
         return Cache::remember("u{$this->id}_has_started_level{$level->id}", 3600, function () use ($level) {
             return $this->startedLevels->contains($level);
@@ -359,7 +359,7 @@ class User extends Authenticatable
     public function startedChallengeVersion(ChallengeVersion $challengeVersion): bool
     {
         foreach ($challengeVersion->levels as $level) {
-            if ($this->startedLevel($level)) {
+            if ($this->hasStartedLevel($level)) {
                 return true;
             }
         }
@@ -373,7 +373,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function completedChallengeVersion(ChallengeVersion $challengeVersion): bool
+    public function hasCompletedChallengeVersion(ChallengeVersion $challengeVersion): bool
     {
         return $this->completedLevel($challengeVersion->levels->sortBy('level_number')->last());
     }
@@ -395,8 +395,8 @@ class User extends Authenticatable
             || $this->isSuperFacilitator()
             || $this->isFacilitator()
             || (! $challengeVersion->prerequisiteChallengeVersion)
-            || $this->startedChallengeVersion($challengeVersion)
-            || $this->completedChallengeVersion($challengeVersion->prerequisiteChallengeVersion);
+            || $this->hasStartedChallengeVersion($challengeVersion)
+            || $this->hasCompletedChallengeVersion($challengeVersion->prerequisiteChallengeVersion);
     }
 
     /**
