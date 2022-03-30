@@ -22,13 +22,9 @@ class InProgress extends Component
         $this->startedChallengeVersions
             = $user->startedLevels
                    ->unique()
-                   ->map(function ($level, $key) {
-                      return $level->challengeVersion;
-                   })
+                   ->map(fn($level, $key) => $level->levelable)
                    ->unique()
-                   ->filter(function ($challengeVersion, $key) use ($user) {
-                      return ! $user->hasCompletedChallengeVersion($challengeVersion);
-                   })
+                   ->filter(fn($cv, $key) => ! $user->hasCompletedChallengeVersion($cv))
                    ->intersect($activeChallengeVersions)
                    ->sortBy('name');
     }

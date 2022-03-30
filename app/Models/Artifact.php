@@ -30,10 +30,11 @@ class Artifact extends Model
     }
 
     /**
-     * Get the parent artifactable model (level or idea).
+     * Get the parent level.
      */
-    public function artifactable()
+    public function level()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Level::class);
     }
 }
+

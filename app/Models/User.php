@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Artifact;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -183,7 +182,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The level and idea starts associated with this user.
+     * The Starts for a Level of a ChallengeVersion or Idea associated with this user.
      */
     public function starts()
     {
@@ -191,21 +190,55 @@ class User extends Authenticatable
     }
 
     /**
+     * The started Levels of a ChallengeVersion or Idea associated with this user.
+     */
+    public function startedLevels()
+    {
+        return $this->belongsToMany(Level::class, 'starts', 'user_id', 'level_id');
+    }
+
+    /**
+     * The idea starts associated with this user.
+     */
+    public function ideaStarts()
+    {
+        return $this->hasMany(Start::class)
+            ->where('startable_type', 'idea');
+    }
+
+    /**
+     * The level starts associated with this user.
+     */
+    public function levelStarts()
+    {
+        return $this->hasMany(Start::class)
+            ->where('startable_type', 'level');
+    }
+
+    /**
+     * Get the most recent level or idea start associated with this user.
+     */
+    public function latestStart()
+    {
+        return $this->hasOne(Start::class)->latestOfMany();
+    }
+
+    /**
      * Ideas a user has started.
      */
     public function startedIdeas()
     {
-      return $this->belongsToMany(Idea::class, 'starts', 'user_id', 'startable_id')
+      return $this->belongsToMany(Idea::class, 'starts', 'user_id', 'level_id')
                   ->as('start')
-                  ->wherePivot('startable_type', 'idea');
+                  ->where('level.levelable.levelable_type', 'idea');
     }
 
     /**
      * Levels a user has started.
      */
-    public function startedLevels()
+    public function startedChallengeLevels()
     {
-      return $this->belongsToMany(Level::class, 'starts', 'user_id', 'startable_id')
+      return $this->belongsToMany(Level::class, 'starts', 'user_id', 'level_id')
                   ->as('start')
                   ->wherePivot('startable_type', 'level');
     }
@@ -270,11 +303,13 @@ class User extends Authenticatable
      * User has a given role.
      *
      * @param int $role_id
+     * @param bool $fresh
      *
      * @return boolean
      */
-    public function hasRole($role_id)
+    public function hasRole(int $role_id, bool $fresh = false)
     {
+        if ($fresh) Cache::forget("u{$this->id}_has_role_{$role_id}");
         return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
             return $this->roles()->where('role_id', $role_id)->get()->count();
         });
@@ -303,7 +338,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Has started a given Level.
+     * Has started a given Idea or Level.
      *
      * @param Level $level
      *
@@ -311,32 +346,35 @@ class User extends Authenticatable
      */
     public function hasStartedLevel(Level $level): bool
     {
-        return Cache::remember("u{$this->id}_has_started_level{$level->id}", 3600, function () use ($level) {
-            return $this->startedLevels->contains($level);
-        });
+        return Cache::remember(
+            "u{$this->id}_has_started_level_{$level->id}",
+            3600,
+            fn() => $this->startedLevels->contains($level),
+        );
     }
 
     /**
-     * Has completed a given Level.
+     * Has completed a given Idea or Level.
      *
      * @param Level $level
      *
      * @return bool
      */
-    public function completedLevel(Level $level): bool
+    public function hasCompletedLevel(Level $level): bool
     {
-        return Cache::remember("u{$this->id}_has_completed_level{$level->id}", 3600, function () use ($level) {
-            return DB::table('artifacts')
+        return Cache::remember(
+            "u{$this->id}_has_completed_level_{$level->id}",
+            3600,
+            fn() => DB::table('artifacts')
                 ->join('teams', function ($join) {
                     $join->on('artifacts.id', '=', 'teams.teamable_id')
-                        ->where('teams.teamable_type', 'artifact')
-                        ->where('teams.user_id', $this->id);
+                         ->where('teams.teamable_type', 'artifact')
+                         ->where('teams.user_id', $this->id);
                 })
                 ->where('type', 'complete')
-                ->where('artifactable_type', 'level')
-                ->where('artifactable_id', $level->id)
-                ->exists();
-        });
+                ->where('level_id', $level->id)
+                ->exists()
+        );
     }
 
     public function lastActivity(ChallengeVersion $challengeVersion)
@@ -375,7 +413,7 @@ class User extends Authenticatable
      */
     public function hasCompletedChallengeVersion(ChallengeVersion $challengeVersion): bool
     {
-        return $this->completedLevel($challengeVersion->levels->sortBy('level_number')->last());
+        return $this->hasCompletedLevel($challengeVersion->levels->sortBy('level_number')->last());
     }
 
     /**
@@ -402,10 +440,12 @@ class User extends Authenticatable
     /**
       * Get a list of Studios the user is a member of, directly or not.
       *
+      * @param bool $fresh
       * @return array [Studio]
      */
-    public function deFactoStudios()
+    public function deFactoStudios(bool $fresh = false)
     {
+        if ($fresh) Cache::forget("u{$this->id}_studios");
         return Cache::remember("u{$this->id}_studios", 3600, function () {
             $studios = new Collection;
 
@@ -431,6 +471,31 @@ class User extends Authenticatable
             }
             return $studios;
         });
+    }
+
+    /**
+     * Get the level associated with a user's most recent activity
+     * (start/save/complete) limited to a given studio.
+     *
+     * param ?Studio $studio
+     * return Level
+     */
+    public function mostRecentLevel(?Studio $studio = null): Level
+    {
+        $studio ??= $this->activeStudio;
+        $studioLevels
+            = $studio->activechallenges
+                   ->map(fn($challengeversion, $key) => $challengeversion->levels)
+                   ->flatten()
+                   ->pluck('id');
+        $ideaLevels
+            = $this->ideas
+                   ->map(fn($idea, $key) => $idea->level)
+                   ->flatten()
+                   ->pluck('id');
+        $levels = $studioLevels->union($ideaLevels);
+
+        $starts = $this->starts->whereIn($levels)->sortDesc();
     }
 
     /**

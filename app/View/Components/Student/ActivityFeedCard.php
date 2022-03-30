@@ -3,6 +3,7 @@
 namespace App\View\Components\Student;
 
 use App\Models\Artifact;
+use App\Models\Idea;
 use App\Models\Start;
 use App\Models\Studio;
 use Carbon\Carbon;

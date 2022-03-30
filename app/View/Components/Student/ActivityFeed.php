@@ -33,12 +33,10 @@ class ActivityFeed extends Component
         // This introduces the complication of paginating due to merging.
         $limit = 10;
         $students = $studio->students->pluck('id');
-        $starts = Start::with('startable')
-            ->whereIn('user_id', $students)
+        $starts = Start::whereIn('user_id', $students)
             ->limit($limit)
             ->get();
-        $artifacts = Artifact::with('artifactable')
-            ->whereHas('team', function (Builder $query) use ($students) {
+        $artifacts = Artifact::whereHas('team', function (Builder $query) use ($students) {
                 $query->whereIn('user_id', $students);
             })
             ->limit($limit)

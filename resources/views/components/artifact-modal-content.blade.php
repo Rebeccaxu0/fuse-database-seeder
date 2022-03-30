@@ -34,7 +34,7 @@
     <div class="font-medium clear-both">
         <div>{{ $artifact->name }}</div>
         <div>
-          <a href="{{ route('student.level', [$artifact->artifactable->challengeVersion, $artifact->artifactable]) }}">{{ $title_modifier }}</a> | {{ $title }}
+          <a href="{{ $levelRoute }}">{{ $title_modifier }}</a> | {{ $title }}
         </div>
     </div>
 </div>

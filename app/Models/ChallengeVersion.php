@@ -29,7 +29,7 @@ class ChallengeVersion extends Model
      */
     public function levels()
     {
-        return $this->hasMany(Level::class);
+        return $this->morphMany(Level::class, 'levelable');
     }
 
     /**
@@ -104,3 +104,4 @@ class ChallengeVersion extends Model
 
     }
 }
+

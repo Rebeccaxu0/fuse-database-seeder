@@ -9,6 +9,8 @@ class Start extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
+
     /**
      * The user that created this start.
      */
@@ -18,10 +20,11 @@ class Start extends Model
     }
 
     /**
-     * Get the parent startable model (level or idea).
+     * Get the associated level.
      */
-    public function startable()
+    public function level()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Level::class);
     }
 }
+

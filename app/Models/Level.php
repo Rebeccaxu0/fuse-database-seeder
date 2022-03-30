@@ -21,32 +21,41 @@ class Level extends Model
     protected $guarded = ['level_number'];
 
     /**
-     * Get the associated ChallengeVersion.
-     */
-    public function challengeVersion()
-    {
-        return $this->belongsTo(ChallengeVersion::class);
-    }
-
-    /**
      * Get the artifacts on this level.
      */
     public function artifacts()
     {
-        return $this->morphMany(Artifact::class, 'artifactable');
+        return $this->hasMany(Artifact::class);
     }
 
     /**
-     * Get the start on this level.
+     * Get the starts on this level.
      */
     public function starts()
     {
-        return $this->morphMany(Start::class, 'startable');
+        return $this->hasMany(Start::class);
     }
 
-    public function setChallengeVersionIDAttribute($value)
+    /**
+     * Get the parent (ChallengeVersion or Idea) of this level.
+     */
+    public function levelable()
     {
-        $this->attributes['challenge_version_id'] = $value;
+        return $this->morphTo();
+    }
+
+    public function next()
+    {
+        if ($this->levelable::class == ChallengeVersion::class) {
+            return $this->levelable
+                        ->levels
+                        ->firstWhere('level_number', $this->level_number + 1);
+        }
+    }
+
+    public function setLevelableIdAttribute(int $id)
+    {
+        $this->attributes['levelable_id'] = $id;
         $this->level_number = null;
     }
 

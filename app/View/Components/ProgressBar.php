@@ -26,7 +26,7 @@ class ProgressBar extends Component
         $this->challengeVersion = $challengeVersion->load('levels');
         $this->levels = $this->challengeVersion->levels->sortBy('level_number');
         foreach ($this->levels as $level) {
-          if ($user->completedLevel($level)) {
+          if ($user->hasCompletedLevel($level)) {
               $level->status = 'completed';
           }
           else if ($user->hasStartedLevel($level)) {

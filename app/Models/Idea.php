@@ -32,7 +32,15 @@ class Idea extends Model
      */
     public function starts()
     {
-        return $this->morphMany(Start::class, 'startable');
+        return $this->hasMany(Start::class);
+    }
+
+    /**
+     * Get the level on this idea.
+     */
+    public function level()
+    {
+        return $this->morphOne(Level::class, 'levelable');
     }
 
     /**
@@ -56,6 +64,6 @@ class Idea extends Model
      */
     public function artifacts()
     {
-        return $this->morphMany(Artifact::class, 'artifactable');
+        return $this->hasMany(Artifact::class);
     }
 }
