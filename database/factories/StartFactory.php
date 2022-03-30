@@ -2,22 +2,25 @@
 
 namespace Database\Factories;
 
-use App\Models\Artifact;
+use App\Models\Start;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ArtifactFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Start>
+ */
+class StartFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Artifact::class;
+    protected $model = Start::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {

@@ -312,8 +312,8 @@ SET cv.challenge_id = COALESCE(c.id, 1), cv.challenge_category_id = COALESCE(cc.
 
 -- Insert Levels
 INSERT INTO `fuse_laravel_test`.levels
-(created_at, updated_at, challenge_version_id, d7_id, d7_challenge_version_id, d7_prereq_level_id)
-SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), 1, n.nid as d7_id, fdfc.field_challenge_nid, fdfp.field_prerequisites_nid
+(created_at, updated_at, levelable_id, levelable_type, d7_id, d7_challenge_version_id, d7_prereq_level_id)
+SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), 1, 'level', n.nid as d7_id, fdfc.field_challenge_nid, fdfp.field_prerequisites_nid
 FROM `fuse`.node AS n
 RIGHT OUTER JOIN `fuse`.field_data_field_challenge AS fdfc ON
   (fdfc.entity_type = 'node'

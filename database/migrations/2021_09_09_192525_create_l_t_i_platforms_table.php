@@ -26,6 +26,24 @@ return new class extends Migration
             $table->string('api_secret', 255)->nullable();
             $table->string('api_endpoint', 255)->nullable();
         });
+
+        Schema::table('districts', function (Blueprint $table) {
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
+        });
+
+        Schema::table('schools', function (Blueprint $table) {
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
+        });
+
+        Schema::table('studios', function (Blueprint $table) {
+            $table->foreignId('l_t_i_platform_id')
+                  ->nullable()
+                  ->constrained();
+        });
     }
 
     public function down()

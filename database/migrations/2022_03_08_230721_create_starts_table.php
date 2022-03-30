@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('starts', function (Blueprint $table) {
             $table->id();
-            $table->string('startable_type', 255);
-            $table->unsignedBigInteger('startable_id')
-                  ->index();
+            $table->foreignId('level_id')
+                  ->constrained()
+                  ->restrictOnDelete()
+                  ->cascadeOnUpdate();
             $table->foreignId('user_id')
                   ->index()
                   ->constrained()

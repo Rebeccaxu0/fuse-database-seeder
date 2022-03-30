@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Studio;
+use App\Util\StudioCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StudioFactory extends Factory
@@ -23,6 +24,7 @@ class StudioFactory extends Factory
     {
         return [
             'name' => 'Studio ' . $this->faker->emoji(),
+            'join_code' => StudioCode::generate(),
         ];
     }
 }

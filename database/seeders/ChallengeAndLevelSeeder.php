@@ -6,6 +6,7 @@ use App\Models\Challenge;
 use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ChallengeAndLevelSeeder extends Seeder
 {
@@ -60,8 +61,11 @@ class ChallengeAndLevelSeeder extends Seeder
             Challenge::factory()
                 ->has(
                     ChallengeVersion::factory()
-                        ->state(['name' => json_encode(["en" => "{$name} v1"])])
-                        ->has(Level::factory()->count(3))
+                      ->state([
+                          'name' => json_encode(["en" => "{$name} v1"]),
+                          'slug' => Str::of($name)->slug('-'),
+                      ])
+                      ->has(Level::factory()->count(3))
                 )
                 ->create(
                     ['name' => $name]
