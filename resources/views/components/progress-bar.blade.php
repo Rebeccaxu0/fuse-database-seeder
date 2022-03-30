@@ -9,7 +9,7 @@
           bg-zinc-300
       @endif">
         @if ($interactive)
-        <a class="block w-full h-full" href="{{ route('student.level', ['challengeVersion' => $challengeVersion, 'level' => $level]) }}">
+        <a class="block w-full h-full" href="{{ route('student.level', ['challengeVersion' => $levelable, 'level' => $level]) }}">
         @endif
               <span class="sr-only">{{ __('Level :number', ['number' => $level->level_number]) }}</span>
         @if ($interactive)

@@ -34,11 +34,19 @@ class Studio extends Organization
     }
 
     /**
+     * The users associated with this studio.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * The users currently active in this studio.
      */
     public function actveUsers()
     {
-        return $this->hasMany(User::class, 'active_studio');
+        return $this->users->where('active_studio', $this->id);
     }
 
     /**

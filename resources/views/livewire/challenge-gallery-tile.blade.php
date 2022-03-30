@@ -8,7 +8,7 @@
             <div class="gallery-play-button">&nbsp;</div>
           </div>
         </div>
-        <x-progress-bar :user="$user" :interactive="true" :challengeVersion="$challengeVersion" class="h-3" />
+        <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" />
         <div class="font-bold text-xl">
           {{ $challengeVersion->challenge->name }}
           <span class="uppercase text-sm font-light text-fuse-nav-blue">

@@ -38,9 +38,9 @@ class Idea extends Model
     /**
      * Get the level on this idea.
      */
-    public function level()
+    public function levels()
     {
-        return $this->morphOne(Level::class, 'levelable');
+        return $this->morphMany(Level::class, 'levelable');
     }
 
     /**

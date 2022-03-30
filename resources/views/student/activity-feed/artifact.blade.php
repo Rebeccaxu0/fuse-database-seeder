@@ -11,7 +11,7 @@
             <x-avatar :user="$user" class="h-7 w-7 mr-2" /> {{ $user->firstName() }} {{ $user->abbreviatedLastName() }}
           </a>
           @if ($loop->index == 2 && $loop->count > 2)
-              {{__(', and :remaining more', ['remaining' => $loop->count - 3]) }}
+              {{ __(', and :remaining more', ['remaining' => $loop->count - 3]) }}
           @endif
         </li>
     @endforeach

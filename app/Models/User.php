@@ -228,19 +228,17 @@ class User extends Authenticatable
      */
     public function startedIdeas()
     {
-      return $this->belongsToMany(Idea::class, 'starts', 'user_id', 'level_id')
-                  ->as('start')
-                  ->where('level.levelable.levelable_type', 'idea');
+      return $this->startedLevels()
+                  ->where('levelable_type', Idea::class);
     }
 
     /**
      * Levels a user has started.
      */
-    public function startedChallengeLevels()
+    public function startedChallengeVersionLevels()
     {
-      return $this->belongsToMany(Level::class, 'starts', 'user_id', 'level_id')
-                  ->as('start')
-                  ->wherePivot('startable_type', 'level');
+      return $this->startedLevels()
+                  ->where('levelable_type', ChallengeVersion::class);
     }
 
     /**
@@ -257,6 +255,7 @@ class User extends Authenticatable
     public function activeStudio()
     {
         return $this->belongsTo(Studio::class, 'active_studio');
+        // return Studio::find($this->active_studio);
     }
 
     /**
@@ -377,14 +376,16 @@ class User extends Authenticatable
         );
     }
 
-    public function lastActivity(ChallengeVersion $challengeVersion)
+    public function lastActivityOnChallengeVersionOrIdea(ChallengeVersion|Idea $levelable)
     {
-      if ($this->startedChallengeVersion($challengeVersion)) {
-          return 'beep';
-      }
-      else {
-          return __('Never');
-      }
+        return __('Never');
+        // TODO: Implement.
+        if ($this->startedChallengeVersion($challengeVersion)) {
+            return 'beep';
+        }
+        else {
+            return __('Never');
+        }
     }
 
     /**

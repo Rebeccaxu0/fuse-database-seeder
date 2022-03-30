@@ -62,7 +62,7 @@ class ChallengeAndLevelSeeder extends Seeder
                 ->has(
                     ChallengeVersion::factory()
                       ->state([
-                          'name' => json_encode(["en" => "{$name} v1"]),
+                          'name' => $name . ' v1',
                           'slug' => Str::of($name)->slug('-'),
                       ])
                       ->has(Level::factory()->count(3))

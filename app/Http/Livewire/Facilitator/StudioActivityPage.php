@@ -41,7 +41,7 @@ class StudioActivityPage extends Component
         $eager = [
           'artifacts',
           'startedLevels',
-          'startedLevels.challengeVersion',
+          // 'startedLevels.challengeVersion',
         ];
         $this->students = $this->studio
                                ->students()
@@ -79,12 +79,9 @@ class StudioActivityPage extends Component
 
     private function populateChallenges()
     {
-        $challengeVersion = function ($level, $key) {
-            return $level->challengeVersion;
-        };
         $this->challenges = $this->activeStudent
-                                 ->startedLevels
-                                 ->map($challengeVersion)
+                                 ->startedChallengeVersionLevels
+                                 ->map(fn($level) => $level->levelable)
                                  ->unique()
                                  ->sortBy('name');
 

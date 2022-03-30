@@ -25,6 +25,14 @@ class District extends Organization
     ];
 
     /**
+     * The users associated with this district.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * The super facilitators associated with this district.
      */
     public function superFacilitators()

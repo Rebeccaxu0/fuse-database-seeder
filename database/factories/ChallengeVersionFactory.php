@@ -26,7 +26,7 @@ class ChallengeVersionFactory extends Factory
             //'id' => $this->faker->randomDigit,
             'challenge_id' => 1,
             'challenge_category_id' => 1,
-            'name' => "{\"en\": \"{$this->faker->words(3, true)}\"}",
+            'name' => $this->faker->words(3, true),
         ];
     }
 }

@@ -47,7 +47,7 @@ class DashboardStatus extends Component
         //     --> Find most recent start/save/complete for any Idea or
         //         challengeVersion that is active in this studio and use above
 
-        $this->user = $user->load('starts', 'activeStudio.activeChallenges.levels');
+        $this->user = $user->load('starts');
 
         // `Current Level` and `Previous Level` should be empty only for new users
         if (is_null($this->user->current_level) && is_null($this->user->previous_level)) {

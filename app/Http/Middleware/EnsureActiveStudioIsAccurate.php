@@ -19,26 +19,27 @@ class EnsureActiveStudioIsAccurate
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        // If a user is a member of any org...
-        if ($user->deFactoStudios()->count() > 0) {
-            // ...and has no active studio...
-            if (is_null($user->activeStudio)
-                // ...or if Auth::user() is no longer a member of active studio.
-                || ! $user->deFactoStudios()->contains($user->activeStudio)) {
-                // THEN set activestudio to first available.
-                $user->activeStudio()->associate($user->deFactoStudios()->first());
+        // If a user is NOT a member of any org and NOT an admin
+        if ($user->deFactoStudios()->count() == 0 && (! $user->isAdmin() || $user->isRoot())) {
+            // Ensure active_studio is null.
+            if (! is_null($user->activeStudio)) {
+                $user->active_studio = null;
                 $user->save();
+            }
+            // Ensure former Facilitators and Super Facilitators are demoted to student.
+            if ($user->roles->count() > 0) {
+                $user->roles()->detach();
+                Cache::forget("u{$user->id}_has_role_*");
             }
         }
         else {
-            // Ensure activeStudio is null if Auth::user() is not a member of any org.
-            if (! is_null($user->activeStudio)) {
-                $user->activeStudio()->dissociate();
+            // Ensure all studio/school/district members have a valid `active_studio` set.
+            if (is_null($user->activeStudio)
+                // If user is no longer a member of their active_studio.
+                || ! $user->deFactoStudios()->contains($user->active_studio)) {
+                $user->active_studio = $user->deFactoStudios()->first()->id;
                 $user->save();
             }
-            // Remove all roles. An unaffiliated use cannot be a facilitator or admin.
-            $user->roles()->detach();
-            Cache::forget("u{$user->id}_has_role_*");
         }
 
         return $next($request);

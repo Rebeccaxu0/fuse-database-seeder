@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Artifact;
-use App\Models\Level;
 use App\Models\Start;
-use App\Models\User;
+use App\Models\Studio;
 use Illuminate\Database\Seeder;
 
 class ArtifactSeeder extends Seeder
@@ -19,9 +18,8 @@ class ArtifactSeeder extends Seeder
     {
         $starts = Start::all();
         foreach ($starts as $start) {
-            $artifact_count = rand(1, 10);
-            for ($i = 0; $i < $artifact_count; $i++) {
-                $team = User::all()
+            if (rand(1, 100) < 25) {
+              $team = Studio::find($start->user->active_studio)->students
                     ->random(rand(0, 2))
                     ->push($start->user);
                 Artifact::factory()

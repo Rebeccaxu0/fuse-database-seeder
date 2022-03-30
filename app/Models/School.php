@@ -37,6 +37,14 @@ class School extends Organization
     }
 
     /**
+     * The users associated with this school.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * The facilitators associated with this school.
      */
     public function facilitators()

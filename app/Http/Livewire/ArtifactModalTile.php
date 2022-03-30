@@ -3,7 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Artifact;
-use App\Models\Level;
+use App\Models\ChallengeVersion;
 use App\Models\Studio;
 use Livewire\Component;
 
@@ -17,12 +17,12 @@ class ArtifactModalTile extends Component
 
     public function mount()
     {
-        if ($this->artifact->artifactable::class == Level::class) {
-            $this->title = $this->artifact->artifactable->challengeVersion->challenge->name;
-            $this->title_modifier = __('Level :number', ['number' => $this->artifact->artifactable->level_number]);
+        if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
+            $this->title = $this->artifact->level->levelable->challenge->name;
+            $this->title_modifier = __('Level :number', ['number' => $this->artifact->level->level_number]);
         }
         else {
-            $this->title = $this->artifact->artifactable->name;
+            $this->title = $this->artifact->level->levelable->name;
         }
     }
 

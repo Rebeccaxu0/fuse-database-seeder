@@ -3,6 +3,7 @@
 namespace App\View\Components;
 
 use App\Models\ChallengeVersion;
+use App\Models\Idea;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\Component;
@@ -10,7 +11,7 @@ use Illuminate\View\Component;
 class ProgressBar extends Component
 {
     public bool $interactive = true;
-    public ChallengeVersion $challengeVersion;
+    public ChallengeVersion|Idea $levelable;
     public Collection $levels;
 
     /**
@@ -20,11 +21,11 @@ class ProgressBar extends Component
      *
      * @return void
      */
-    public function __construct(ChallengeVersion $challengeVersion, User $user, bool $interactive = true)
+    public function __construct(ChallengeVersion|Idea $levelable, User $user, bool $interactive = true)
     {
         $this->interactive = $interactive;
-        $this->challengeVersion = $challengeVersion->load('levels');
-        $this->levels = $this->challengeVersion->levels->sortBy('level_number');
+        $this->levelable = $levelable->load('levels');
+        $this->levels = $this->levelable->levels->sortBy('level_number');
         foreach ($this->levels as $level) {
           if ($user->hasCompletedLevel($level)) {
               $level->status = 'completed';
