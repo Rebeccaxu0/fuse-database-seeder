@@ -12,6 +12,22 @@ class Challenge extends Model
     use SoftDeletes;
 
     /**
+     * The challenges which list this Challenge as a prerequisite.
+     */
+    public function dependantChallenges()
+    {
+        return $this->hasMany(Challenge::class, 'prerequisite_challenge_id');
+    }
+
+    /**
+     * The prerequisite challenge associated with this challenge.
+     */
+    public function prerequisiteChallenge()
+    {
+        return $this->belongsTo(Challenge::class, 'prerequisite_challenge_id');
+    }
+
+    /**
      * The challenge versions associated with this challenge.
      */
     public function challengeVersions()
@@ -25,5 +41,24 @@ class Challenge extends Model
     public function packages()
     {
         return $this->belongsToMany(Package::class);
+    }
+
+    public function isStartable(User $user)
+    {
+      return $this->prerequisiteChallenge
+          ? $this->isCompleted($user)
+          : true;
+    }
+
+    public function isCompleted(User $user)
+    {
+        $completed = false;
+        foreach ($this->challengeVersions as $cv) {
+          if ($user->hasCompletedLevel($cv->levels->last())) {
+            $completed = true;
+            break;
+          }
+        }
+        return $completed;
     }
 }

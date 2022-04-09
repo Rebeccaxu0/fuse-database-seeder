@@ -28,11 +28,6 @@ END;
                   ->nullable()
                   ->comment($levelNumberComment);
             $table->unique(['levelable_id', 'levelable_type', 'level_number']);
-            $table->unsignedBigInteger('prerequisite_level')
-                  ->nullable()
-                  ->comment('Usually just the prior level (level_number - 1)');
-            $table->foreign('prerequisite_level')
-                  ->references('id')->on('levels');
         });
 
         Schema::table('users', function (Blueprint $table) {

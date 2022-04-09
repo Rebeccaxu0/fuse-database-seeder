@@ -55,6 +55,10 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenge/{challengeVersion:slug}/level/{level:level_number}',
                 [LevelController::class, 'show']
                 )->name('level');
+            Route::post(
+                'challenge/{challengeVersion:slug}/level/{level:level_number}/start',
+                [LevelController::class, 'start']
+                )->name('level_start');
             Route::get('dashboard', function () {
                 return view('student.dashboard');
             })->name('dashboard');
