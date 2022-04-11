@@ -13,10 +13,10 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
-            $table->unsignedBigInteger('levelable_id')
-                  ->comment('Parent ChallengeVersion or Idea');
-            $table->string('levelable_type')
-                  ->comment("Valid levelable types are 'challenge_version' and 'idea'");
+            $table->morphs('levelable');
+                  // ->comment('Parent ChallengeVersion or Idea');
+            // $table->string('levelable_type')
+            //       ->comment("Valid levelable types are 'challenge_version' and 'idea'");
             $levelNumberComment = <<<END
 Level number must be unique per ChallengeVersion or Idea.
 
@@ -27,6 +27,21 @@ END;
             $table->unsignedTinyInteger('level_number')
                   ->nullable()
                   ->comment($levelNumberComment);
+
+            $table->string('blurb', 1024)
+                  ->nullable();
+            $table->text('challenge_desc')
+                  ->nullable();
+            $table->text('stuff_you_need_desc')
+                  ->nullable();
+            $table->text('get_started_desc')
+                  ->nullable();
+            $table->text('how_to_complete_desc')
+                  ->nullable();
+            $table->text('get_help_desc')
+                  ->nullable();
+            $table->text('power_up_desc')
+                  ->nullable();
             $table->unique(['levelable_id', 'levelable_type', 'level_number']);
         });
 

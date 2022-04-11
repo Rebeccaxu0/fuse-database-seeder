@@ -52,7 +52,17 @@ class LevelController extends Controller
     {
         // If a student has started this level, use started level template.
         if (Auth::user()->hasStartedLevel($level)) {
-            return view('student.level-started', ['level' => $level]);
+            $whats_next['text'] = __('Choose a new Challenge!');
+            $whats_next['route'] = route('student.challenges');
+            if ($level->next()) {
+                $whats_next['text'] = $level->next()->blurb;
+                $whats_next['route'] = route('student.level',
+                    [
+                        'challengeVersion' => $level->levelable,
+                        'level' => $level->next(),
+                    ]);
+            }
+            return view('student.level-started', ['level' => $level, 'whats_next' => $whats_next]);
         }
 
         // Default is to restrict the level.

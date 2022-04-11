@@ -6,6 +6,7 @@ use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 Use Spatie\Translatable\HasTranslations;
 
 class Level extends Model
@@ -131,6 +132,7 @@ class Level extends Model
             'level_id' => $this->id,
             'user_id' => $user->id,
         ]);
+        Cache::put("u{$user->id}_has_started_level_{$this->id}", true);
         return true;
       }
       return false;
