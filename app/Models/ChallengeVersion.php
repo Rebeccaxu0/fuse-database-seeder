@@ -25,7 +25,9 @@ class ChallengeVersion extends Model
      */
     protected $fillable = [
         'name',
-        'description',
+        'challenge_id',
+        'challenge_category_id',
+        'slug',
     ];
 
     /**

@@ -39,9 +39,13 @@
                                             <a href="{{ route('admin.challengeversions.edit', $version->id) }}">
                                                 <x-icon icon="edit" width=18 height=18 class="ml-2 text-black" />
                                             </a>
-                                            <a href="{{ route('admin.challengeversions.destroy', $version->id) }}">
-                                                <x-icon icon="trash" width=18 height=18 class="ml-2 text-black" />
-                                            </a>
+                                            <!--<form method="post" action="{{ route('admin.challengeversions.destroy', $version->id) }}">
+                                                @method('delete')
+                                                @csrf
+                                                <button>
+                                                    <x-icon icon="trash" width=18 height=18 class="ml-2 text-black" />
+                                                </button>
+                                            </form>-->
                                         </span>
                                     </li>
                                     @endforeach
@@ -59,9 +63,13 @@
                         <a href="{{ route('admin.challenges.edit', $challenge->id) }}">
                             <x-icon icon="edit" width=25 height=25 class="ml-2 text-black" />
                         </a>
-                        <a href="{{ route('admin.challenges.destroy', $challenge->id) }}">
-                            <x-icon icon="trash" width=25 height=25 class="ml-2 text-black" />
-                        </a>
+                        <form method="post" action="{{ route('admin.challenges.destroy', $challenge->id) }}">
+                            @method('delete')
+                            @csrf
+                            <button>
+                                <x-icon icon="trash" width=25 height=25 class="ml-2 text-black" />
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>
