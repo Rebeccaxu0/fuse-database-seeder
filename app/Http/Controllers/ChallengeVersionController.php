@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Challenge;
 use App\Models\ChallengeVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,9 +60,9 @@ class ChallengeVersionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Challenge $challenge)
     {
-        //
+        return view('admin.challengeversions.create', ['challenge' => $challenge]);
     }
 
     /**
@@ -72,7 +73,17 @@ class ChallengeVersionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:challengeversions|max:255',
+        ]);
+
+        $challengeversion = ChallengeVersion::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect(route('admin.challenges.index'));
     }
 
     /**
@@ -94,7 +105,9 @@ class ChallengeVersionController extends Controller
      */
     public function edit(ChallengeVersion $challengeVersion)
     {
-        //
+        return view('admin.challengeversions.edit', [
+            'version' => $challengeVersion,
+        ]);
     }
 
     /**
@@ -106,7 +119,12 @@ class ChallengeVersionController extends Controller
      */
     public function update(Request $request, ChallengeVersion $challengeVersion)
     {
-        //
+        $challengeVersion->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect(route('admin.challenges.index'));
     }
 
     /**

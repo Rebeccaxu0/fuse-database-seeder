@@ -12,6 +12,16 @@ class Challenge extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    /**
      * The challenges which list this Challenge as a prerequisite.
      */
     public function dependantChallenges()

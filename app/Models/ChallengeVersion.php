@@ -19,6 +19,16 @@ class ChallengeVersion extends Model
     public $translatable = ['blurb', 'facilitator_notes', 'gallery_note', 'name'];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    /**
      * The challenge that owns this challenge version.
      */
     public function challenge()

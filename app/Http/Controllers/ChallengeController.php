@@ -16,7 +16,6 @@ class ChallengeController extends Controller
     {
         $challenges = Challenge::all()->sortBy('name');
         return view('admin.challenge.index', ['challenges' => $challenges]);
-        //
     }
 
     /**
@@ -26,7 +25,7 @@ class ChallengeController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.challenge.create');
     }
 
     /**
@@ -37,7 +36,17 @@ class ChallengeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:challenges|max:255',
+        ]);
+
+        $challenge = Challenge::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect(route('admin.challenges.index'));
     }
 
     /**
@@ -59,7 +68,9 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        //
+        return view('admin.challenge.edit', [
+            'challenge' => $challenge,
+        ]);
     }
 
     /**
@@ -71,7 +82,12 @@ class ChallengeController extends Controller
      */
     public function update(Request $request, Challenge $challenge)
     {
-        //
+        $challenge->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect(route('admin.challenges.index'));
     }
 
     /**
