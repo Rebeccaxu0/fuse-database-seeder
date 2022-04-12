@@ -106,9 +106,9 @@ class ChallengeVersionController extends Controller
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
-            //'challenge_id' => $challenge->id,
-            //'challenge_category_id' => $request->category_id,
-            //'slug' => Str::of($request->name)->slug('-'),
+            'challenge_id' => $challenge->id,
+            'challenge_category_id' => $request->category_id,
+            'slug' => Str::of($request->name)->slug('-'),
         ]);
 
         return redirect(route('admin.challenges.index'));
@@ -135,9 +135,7 @@ class ChallengeVersionController extends Controller
     public function edit(ChallengeVersion $challengeversion)
     {
         return view('admin.challengeversion.edit', [
-            'challengeversion' => $challengeversion,
-            'categories' => ChallengeCategory::all()->sortBy('name'), 
-            'challenges' => Challenge::all()->sortBy('name'),
+            'challengeversion' => $challengeVersion,
         ]);
     }
 
@@ -152,15 +150,6 @@ class ChallengeVersionController extends Controller
     {
         $challengeversion->update([
             'name' => $request->name,
-            'slug' => Str::of($request->name)->slug('-'),
-            'challenge_category_id' => $request->category_id,
-            'gallery_version_desc_short' => $request->versiondesc, //need to fix textarea parameters
-            'blurb' => $request->blurb,
-            'summary' => $request->summary,
-            'stuff_you_need' => $request->stuffyouneed,
-            'chromebook_info' => $request->chromeinfo,
-            'prerequisite_challenge_version_id' => $request->prereqchal,
-            'info_article_url' => $request->infourl
         ]);
 
         $challengeversion->setLevelsOrder($request->level);
@@ -175,7 +164,8 @@ class ChallengeVersionController extends Controller
      */
     public function destroy(ChallengeVersion $challengeversion)
     {
-        $challengeversion->delete();
+        dd($challengeVersion);
+        $challengeVersion->delete();
         return redirect(route('admin.challenges.index'));
     }
 }
