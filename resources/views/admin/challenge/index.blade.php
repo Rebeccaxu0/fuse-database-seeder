@@ -5,16 +5,15 @@
     <x-slot name="header">{{ __('Challenges') }}</x-slot>
 
     <a href="{{ route('admin.challenges.create') }}">
-        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Create challenge</button>
+        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add challenge</button>
     </a>
-
     <table class="min-w-full min-h-full leading-normal">
         <thead>
             <tr>
-                <th scope="col" class="px-5 py-5 bg-white border-b border-gray-200 text-left text-black bold">
+                <th scope="col" class="px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
                     {{ __('Challenge') }}
                 </th>
-                <th scope="col" class="ml-6 px-5 py-5 bg-white border-b border-gray-200 text-left text-black bold">
+                <th scope="col" class="ml-6 px-5 py-3 bg-white border-b border-gray-200 text-left text-black bold">
                 </th>
             </tr>
         </thead>
@@ -25,7 +24,7 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                         </div>
-                        <div class="flex mt-3 ml-3">
+                        <div class="flex ml-3">
                             <a href="{{ route('admin.challenges.edit', $challenge->id) }}">
                                 {{ $challenge->name }}
                             </a>
@@ -35,17 +34,13 @@
                                 <ul>
                                     @foreach ($challenge->challengeVersions as $version)
                                     <li>
-                                        <span class="flex">{{ $version->name }}
+                                        <span class="flex text-xs">{{ $version->name }}
                                             <a href="{{ route('admin.challengeversions.edit', $version->id) }}">
                                                 <x-icon icon="edit" width=18 height=18 class="ml-2 text-black" />
                                             </a>
-                                            <!--<form method="post" action="{{ route('admin.challengeversions.destroy', $version->id) }}">
-                                                @method('delete')
-                                                @csrf
-                                                <button>
-                                                    <x-icon icon="trash" width=18 height=18 class="ml-2 text-black" />
-                                                </button>
-                                            </form>-->
+                                            <a href="{{ route('admin.challengeversions.destroy', $version->id) }}">
+                                                <x-icon icon="trash" width=18 height=18 class="ml-2 text-black" />
+                                            </a>
                                         </span>
                                     </li>
                                     @endforeach
@@ -63,13 +58,9 @@
                         <a href="{{ route('admin.challenges.edit', $challenge->id) }}">
                             <x-icon icon="edit" width=25 height=25 class="ml-2 text-black" />
                         </a>
-                        <form method="post" action="{{ route('admin.challenges.destroy', $challenge->id) }}">
-                            @method('delete')
-                            @csrf
-                            <button>
-                                <x-icon icon="trash" width=25 height=25 class="ml-2 text-black" />
-                            </button>
-                        </form>
+                        <a href="{{ route('admin.challenges.destroy', $challenge->id) }}">
+                            <x-icon icon="trash" width=25 height=25 class="ml-2 text-black" />
+                        </a>
                     </div>
                 </td>
             </tr>
