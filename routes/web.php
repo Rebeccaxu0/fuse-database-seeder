@@ -122,7 +122,6 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->group(function () {
             Route::resources([
                 'challenges'    => ChallengeController::class,
-                'challengeversions' => ChallengeVersionController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
                 'media'         => MediaController::class,
@@ -131,11 +130,17 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'studios'       => StudioController::class,
                 'users'         => UserController::class,
             ]);
-
+                
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
 
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
+
+            Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');
+            Route::post('challengeversions/{challenge}/store', [ChallengeVersionController::class, 'store'])->name('challengeversions.store');
+            Route::get('challengeversions/edit', [ChallengeVersionController::class, 'edit'])->name('challengeversions.edit');
+            Route::put('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'update'])->name('challengeversions.update');
+            Route::delete('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'destroy'])->name('challengeversions.destroy');
 
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('media', MediaManagerPage::class)->name('media.index');

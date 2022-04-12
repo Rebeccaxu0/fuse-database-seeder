@@ -1,7 +1,10 @@
-@props(['name', 'label', 'list', 'value'])
+@props(['name', 'label', 'list', 'value', 'required'])
 
 <div class="mb-6">
     <span class="text-gray-700 mb-2 form-required">{{ $label }}</span>
+    @if ($required)
+            <span class="form-required" title="This field is required.">*</span>
+    @endif
     <select name="{{ $name }}" id="{{ $name }}" {!! $attributes->merge(['class' => 'mt-1 block w-full rounded']) !!}>
         <option> </option>
         @foreach ($list as $item)

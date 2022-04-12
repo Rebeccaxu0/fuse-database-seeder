@@ -1,13 +1,13 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Edit Challenge Version :name', ['name' => $version->name]) }}</x-slot>
+    <x-slot name="title">{{ __('Edit Challenge Version :name', ['name' => $challengeversion->name]) }}</x-slot>
 
-    <x-slot name="header">{{ __('Edit Challenge Version :name', ['name' => $version->name]) }}</x-slot>
+    <x-slot name="header">{{ __('Edit Challenge Version :name', ['name' => $challengeversion->name]) }}</x-slot>
 
-    <form class="mt-6" action="{{ route('admin.challengeversions.update', $version) }}" method="POST">
+    <form class="mt-6" action="{{ route('admin.challengeversions.update', $challengeversion->id) }}" method="POST">
         @method('PATCH')
         @csrf
-        <x-form.input label="Name" name="name" required="true" :value="old('name', $version->name)" />
+        <x-form.input label="Name" name="name" required="true" :value="old('name', $challengeversion->name)" />
         <x-form.textarea name="description">{{ old('description', '') }}</x-form.textarea>
         
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
