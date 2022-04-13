@@ -187,6 +187,9 @@
     @apply transition-all duration-300 md:h-12;
     min-height: 4rem;
   }
+  nav #profile-pic {
+    @apply w-10 h-10;
+  }
   nav #student-navbar.docked {
     min-height: 2rem;
     max-height: 2rem;
@@ -396,6 +399,23 @@
     }
   }
 
+  /* this only runs once.*/
+  /* TODO: https://css-tricks.com/how-to-animate-the-details-element-using-waapi/ */
+  #artifact-form-container:not([open]) summary ~ * {
+    animation: sweep-back 1s ease-in-out;
+  }
+  #artifact-form-container[open] summary ~ * {
+    animation: sweep 1s ease-in-out;
+  }
+  @keyframes sweep {
+    0%   { opacity: 0; transform: translateX(-10px)}
+    100% { opacity: 1; transform: translateX(0)}
+  }
+  @keyframes sweep-back {
+    0%   { opacity: 1; transform: translateX(0)}
+    100% { opacity: 0; transform: translateX(-10px)}
+  }
+
   .scroll-box {
     @apply overflow-y-scroll;
     max-height: calc(100vh - 12rem);
@@ -414,4 +434,25 @@
     line-height: unset;
     text-transform: unset;
   }
+}
+
+/* Adjust inline anchors to respect fixed headers */
+/* These are base defaults that need to be adjusted via js */
+html.student {
+  scroll-padding-top: 4rem;
+}
+html.student.docked {
+  scroll-padding-top: 2rem;
+}
+html.admin {
+  scroll-padding-top: 8rem;
+}
+html.admin.docked {
+  scroll-padding-top: 6rem;
+}
+html.fac {
+  scroll-padding-top: 6rem;
+}
+html.fac.docked {
+  scroll-padding-top: 4rem;
 }

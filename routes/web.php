@@ -59,6 +59,10 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenge/{challengeVersion:slug}/level/{level:level_number}/start',
                 [LevelController::class, 'start']
                 )->name('level_start');
+            Route::post(
+                'artifact',
+                [ArtifactController::class, 'store']
+                )->name('save_artifact');
             Route::get('dashboard', function () {
                 return view('student.dashboard');
             })->name('dashboard');
