@@ -49,6 +49,11 @@
     <span class="font-medium">{{ __('Level :number', ['number' => $level->level_number]) }}</span>
   </h1>
 
+  @if (session('status'))
+  <div class="status">
+      {{ session('status') }}
+  </div>
+  @endif
   <div class="bg-slate-100 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3">
     <article id="main" class="lg:col-span-2">
       <section class="bg-white border rounded-xl p-4">
@@ -85,10 +90,10 @@
         <h2 class="text-black text-lg font-bold">{{ __('How to Complete This Level') }}</h2>
         {!! $fields['how_to_complete_desc'] !!}
         <a name="save-complete"></a>
-        <details id="artifact-form-container">
+        <details id="artifact-form-container" @if($errors->any()) open @endif>
           <summary class="btn cursor-pointer">{{ __('Save or Complete') }}
           </summary>
-          <livewire:level-save-or-complete-form />
+          <livewire:level-save-or-complete-form :level_id="$level->id"/>
         </details>
       </section>
 

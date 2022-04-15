@@ -6,6 +6,7 @@ use Livewire\Component;
 
 class LevelSaveOrCompleteForm extends Component
 {
+    public int $level_id;
 
     public function mount()
     {

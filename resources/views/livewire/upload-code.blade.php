@@ -1,4 +1,12 @@
 <div>
-  <label for="upload-code">{{ ('Mobile Upload Code') }}</label>
-  <input id="upload-code" name="upload-code" placeholder="{{ ('e.g. ABC123') }}">
+  <label for="uploadcode">{{ ('Mobile Upload Code') }}</label>
+  @error('uploadcode')
+  <div class="alert">{{ $message }}</div>
+  @enderror
+  <input id="uploadcode"
+         name="uploadcode"
+         placeholder="{{ ('e.g. ABC123') }}"
+         value="{{ old('uploadcode') }}"
+         class="px-1 @error('uploadcode') border border-red-500 @enderror"
+         >
 </div>

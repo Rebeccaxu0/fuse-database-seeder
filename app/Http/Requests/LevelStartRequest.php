@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StartLevelRequest extends FormRequest
+class LevelStartRequest extends FormRequest
 {
     /**
      * Does the user have access to this studio?

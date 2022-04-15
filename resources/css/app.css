@@ -39,7 +39,7 @@
   .btn, button.submit, [type='reset'], [type='submit'] {
     @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
-  .btn.destroy, button.destroy, [type='destroy']{
+  .btn.destroy, button.destroy, [type='destroy'] {
     @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
   .btn, button.btn:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
@@ -122,6 +122,10 @@
   .select-wcag-wrapper select {
     background-image: none;
     z-index: 10;
+  }
+
+  .alert {
+      @apply text-red-500 italic;
   }
 
   /* Add padding depending on the size of the top-menu */
@@ -416,6 +420,10 @@
     100% { opacity: 0; transform: translateX(-10px)}
   }
 
+  .status {
+      @apply rounded-lg px-4 py-2 my-4 bg-fuse-green-900 text-white;
+  }
+
   .scroll-box {
     @apply overflow-y-scroll;
     max-height: calc(100vh - 12rem);
@@ -423,6 +431,13 @@
 
   body.admin .scroll-box {
     max-height: calc(100vh - 14rem);
+  }
+
+  input[type='checkbox'].hidden + span {
+      @apply bg-white border rounded p-1 m-1;
+  }
+  input[type='checkbox'].hidden:checked + span {
+      @apply bg-fuse-green-100;
   }
 
   /* Quill.js editor resets */
