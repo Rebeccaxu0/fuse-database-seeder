@@ -1,3 +1,8 @@
+-- Migration notes - Files
+-- currently in file_managed table the uri column includes a protocol header?
+-- e.g. s3:// or storage-api-public://
+-- we will need to figure out what to do with those.
+-- TODO: research Laravel s3 adapter and Filestack
 -- Run search and replace on source database `fuse` if necessary.
 -- Run search and replace on target database `fuse_laravel_test` if necessary.
 -- Add temp D7 migration columns.
