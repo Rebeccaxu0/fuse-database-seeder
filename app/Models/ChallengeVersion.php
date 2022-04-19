@@ -27,7 +27,10 @@ class ChallengeVersion extends Model
         'name',
         'challenge_id',
         'challenge_category_id',
+        'blurb',
+        'prerequisite_challenge_version_id',
         'slug',
+        'info_article_url'
     ];
 
     /**
