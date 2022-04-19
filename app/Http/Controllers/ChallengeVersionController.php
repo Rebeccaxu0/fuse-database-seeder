@@ -139,6 +139,8 @@ class ChallengeVersionController extends Controller
     {
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
+            'categories' => ChallengeCategory::all()->sortBy('name'), 
+            'challenges' => Challenge::all()->sortBy('name'),
         ]);
     }
 
@@ -153,6 +155,11 @@ class ChallengeVersionController extends Controller
     {
         $challengeversion->update([
             'name' => $request->name,
+            'challenge_category_id' => $request->category_id,
+            'blurb' => $request->blurb,
+            'prerequisite_challenge_version_id' => $request->prereqchal,
+            'slug' => Str::of($request->name)->slug('-'),
+            'info_article_url' => $request->infourl
         ]);
 
         return redirect(route('admin.challenges.index'));
