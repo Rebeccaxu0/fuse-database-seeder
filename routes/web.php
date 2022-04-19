@@ -121,6 +121,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->group(function () {
             Route::resources([
                 'challenges'    => ChallengeController::class,
+                //'challengeversions'    => ChallengeVersionController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
                 'media'         => MediaController::class,
