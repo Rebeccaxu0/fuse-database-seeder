@@ -59,13 +59,19 @@ class ChallengeVersionController extends Controller
     }
 
     /**
+    public function create(Challenge $challenge)
+    {
+        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name')]);
+    }*/
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create(Challenge $challenge)
     {
-        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name')]);
+        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name'), 'challenges' => Challenge::all()->sortBy('name')]);
     }
 
     /**
@@ -85,12 +91,33 @@ class ChallengeVersionController extends Controller
             'name' => $request->name,
             'challenge_id' => $challenge->id,
             'challenge_category_id' => $request->category_id,
+            'blurb' => $request->blurb,
+            'prerequisite_challenge_version_id' => $request->prereqchal,
             'slug' => Str::of($request->name)->slug('-'),
+            'info_article_url' => $request->infourl
+        ]);
+
+        return redirect(route('admin.challenges.index'));
+    } 
+/*
+    public function store(Request $request)
+    {
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:challenge_versions|max:255',
+        ]);
+
+        $challengeversion = ChallengeVersion::create([
+            'name' => $request->name,
+            //'challenge_id' => $challenge->id,
+            //'challenge_category_id' => $request->category_id,
+            //'slug' => Str::of($request->name)->slug('-'),
         ]);
 
         return redirect(route('admin.challenges.index'));
     }
 
+*/
     /**
      * Display the specified resource.
      *
@@ -108,10 +135,10 @@ class ChallengeVersionController extends Controller
      * @param  \App\Models\ChallengeVersion  $challengeVersion
      * @return \Illuminate\Http\Response
      */
-    public function edit(ChallengeVersion $challengeVersion)
+    public function edit(ChallengeVersion $challengeversion)
     {
         return view('admin.challengeversion.edit', [
-            'challengeversion' => $challengeVersion,
+            'challengeversion' => $challengeversion,
         ]);
     }
 
@@ -122,9 +149,9 @@ class ChallengeVersionController extends Controller
      * @param  \App\Models\ChallengeVersion  $challengeVersion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ChallengeVersion $challengeVersion)
+    public function update(Request $request, ChallengeVersion $challengeversion)
     {
-        $challengeVersion->update([
+        $challengeversion->update([
             'name' => $request->name,
         ]);
 
@@ -137,10 +164,9 @@ class ChallengeVersionController extends Controller
      * @param  \App\Models\ChallengeVersion  $challengeVersion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ChallengeVersion $challengeVersion)
+    public function destroy(ChallengeVersion $challengeversion)
     {
-        dd($challengeVersion);
-        $challengeVersion->delete();
+        $challengeversion->delete();
         return redirect(route('admin.challenges.index'));
     }
 }
