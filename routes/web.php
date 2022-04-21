@@ -8,6 +8,7 @@ use App\Http\Controllers\FacilitatorAnnouncementsController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIPlatformController;
@@ -122,6 +123,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
+                'files'         => FileController::class,
                 'packages'      => PackageController::class,
                 'schools'       => SchoolController::class,
                 'studios'       => StudioController::class,

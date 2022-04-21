@@ -33,6 +33,14 @@ class Level extends Model
     }
 
     /**
+     * Associated preview image (File).
+     */
+    public function preview_image()
+    {
+        return $this->hasOne(File::class);
+    }
+
+    /**
      * Get the artifacts on this level.
      */
     public function artifacts()
