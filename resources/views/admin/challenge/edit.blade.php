@@ -15,9 +15,4 @@
                 class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Update Challenge') }}</button>
         </div>
     </form>
-    <script>
-        function checkBoxes() {
-            if ($('#license_status').is(":checked")) $('#anonymize').prop("disabled", true).prop("checked", false);
-        }
-    </script>
 </x-app-layout>

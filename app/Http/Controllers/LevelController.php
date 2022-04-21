@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
+use App\Models\Challenge;
 use App\Models\Level;
+use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -18,7 +20,8 @@ class LevelController extends Controller
      */
     public function index()
     {
-        //
+        $levels = Level::all()->sortBy('name');
+        return view('admin.level.index', ['levels' => $levels]);
     }
 
     /**
@@ -28,9 +31,9 @@ class LevelController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.level.create', ['parents' => ChallengeVersion::all()->sortBy('name')]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -39,7 +42,16 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:levels|max:255',
+        ]);
+
+        $level = Level::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect(route('admin.levels.index'));
     }
 
     /**
@@ -144,7 +156,10 @@ class LevelController extends Controller
      */
     public function edit(Level $level)
     {
-        //
+        return view('admin.level.edit', [
+            'level' => $level,
+            'parents' => ChallengeVersion::all()->sortBy('name')
+        ]);
     }
 
     /**
@@ -156,7 +171,11 @@ class LevelController extends Controller
      */
     public function update(Request $request, Level $level)
     {
-        //
+        $level->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect(route('admin.levels.index'));
     }
 
     /**
@@ -167,6 +186,7 @@ class LevelController extends Controller
      */
     public function destroy(Level $level)
     {
-        //
+        $level->delete();
+        return redirect(route('admin.levels.index'));
     }
 }
