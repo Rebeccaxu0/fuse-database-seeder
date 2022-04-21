@@ -25,11 +25,16 @@ class ChallengeVersion extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'challenge_id',
         'challenge_category_id',
+        'gallery_version_desc_short',
         'blurb',
+        'summary',
+        'chromebook_info',
+        'stuff_you_need',
+        'facilitator_notes',
         'prerequisite_challenge_version_id',
-        'slug',
         'info_article_url'
     ];
 
