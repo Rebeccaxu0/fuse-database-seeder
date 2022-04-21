@@ -16,7 +16,7 @@
 
         <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" :challengeversion="$challengeversion">
             <livewire:admin.quill-text name="summary" label="Summary" :challengeversion="$challengeversion">
-                ≈
+                <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" :challengeversion="$challengeversion">
                     <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" :challengeversion="$challengeversion">
                         <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" :challengeversion="$challengeversion">
                             <div class="quill bg-white mt-2 mb-6">

@@ -19,7 +19,7 @@ use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
-use App\Models\ChallengeVersion;
+//use App\Models\ChallengeVersion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -121,7 +121,6 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->group(function () {
             Route::resources([
                 'challenges'    => ChallengeController::class,
-                //'challengeversions'    => ChallengeVersionController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
                 'media'         => MediaController::class,
