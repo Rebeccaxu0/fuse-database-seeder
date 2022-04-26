@@ -55,7 +55,8 @@ class ChallengeVersionController extends Controller
      */
     public function index()
     {
-        //
+        $challengeversions = ChallengeVersion::all()->sortBy('name');
+        return view('admin.challengeversion.index', ['challengeversions' => $challengeversions]);
     }
 
 
@@ -81,6 +82,7 @@ class ChallengeVersionController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
         ]);
+
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
@@ -161,6 +163,7 @@ class ChallengeVersionController extends Controller
             'info_article_url' => $request->infourl
         ]);
 
+        $challengeversion->setLevelsOrder($request->level);
         return redirect(route('admin.challenges.index'));
     }
 

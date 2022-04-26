@@ -31,9 +31,11 @@ class LevelController extends Controller
      */
     public function create()
     {
-        return view('admin.level.create', ['parents' => ChallengeVersion::all()->sortBy('name')]);
+        $parents = ChallengeVersion::all()->sortBy('name');
+        $test = ChallengeVersion::first()->id;
+        return view('admin.level.create', ['parents' => $parents]);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -43,15 +45,31 @@ class LevelController extends Controller
     public function store(Request $request)
     {
         $request->flash();
-        $validated = $request->validate([
-            'name' => 'required|unique:levels|max:255',
-        ]);
 
         $level = Level::create([
-            'name' => $request->name,
+            'levelable_id' => $request->levelable_id,
+            'levelable_type' => 'App\Models\ChallengeVersion',
+            'blurb' => $request->blurb,
+            'challenge_desc' => $request->challenge_desc,
+            'stuff_you_need_desc' => $request->syn_desc,
+            'get_started_desc' => $request->gs_desc,
+            'how_to_complete_desc' => $request->htc_desc,
+            'get_help_desc' => $request->gh_desc,
+            'power_up_desc' => $request->pu_desc,
         ]);
 
-        return redirect(route('admin.levels.index'));
+        $level->save;
+
+        $order = [];
+        $i = 0;
+        foreach ($level->levelable->levels()->get() as $level) {
+            $i++;
+            $order[$level->id] = $i;
+        }
+        $level->level_number = $level->levelable->setLevelsOrder($order);
+        $level->save;
+
+        return redirect(route('admin.challengeversions.edit', $request->levelable_id));
     }
 
     /**
@@ -73,12 +91,14 @@ class LevelController extends Controller
             $fields['whats_next_text'] = __('Choose a new Challenge!');
             $fields['whats_next_route'] = route('student.challenges');
             if ($level->next()) {
-                $fields['whats_next_text'] = $level->next()->blurb;
-                $fields['whats_next_route'] = route('student.level',
+                $whats_next['text'] = $level->next()->blurb;
+                $whats_next['route'] = route(
+                    'student.level',
                     [
                         'challengeVersion' => $level->levelable,
                         'level' => $level->next(),
-                    ]);
+                    ]
+                );
             }
             return view('student.level-started', ['level' => $level, 'fields' => $fields]);
         }
@@ -89,54 +109,64 @@ class LevelController extends Controller
         $startable = $level->isStartable(Auth::user());
         $prerequisite_text = $prerequisite_route = '';
 
-        if (! $startable) {
-            if ($challengeVersion->challenge->prerequisiteChallenge
-                && ! $challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())) {
+        if (!$startable) {
+            if (
+                $challengeVersion->challenge->prerequisiteChallenge
+                && !$challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())
+            ) {
                 $prerequisiteChallengeVersion
                     = Auth::user()
-                          ->activeStudio
-                          ->activeChallenges
-                          ->intersect(
-                              $challengeVersion
-                                  ->challenge
-                                  ->prerequisiteChallenge
-                                  ->challengeVersions
-                          )
-                          ->first();
-                if (! $prerequisiteChallengeVersion) {
+                    ->activeStudio
+                    ->activeChallenges
+                    ->intersect(
+                        $challengeVersion
+                            ->challenge
+                            ->prerequisiteChallenge
+                            ->challengeVersions
+                    )
+                    ->first();
+                if (!$prerequisiteChallengeVersion) {
                     $available = false;
-                }
-                else {
+                } else {
                     $prerequisite_text
-                        = __('You must complete :prerequisite_challenge to unlock this challenge.',
-                        ['prerequisite_challenge' => $challengeVersion->challenge->prerequisiteChallenge->name]);
-                    $prerequisite_route = route('student.level',
+                        = __(
+                            'You must complete :prerequisite_challenge to unlock this challenge.',
+                            ['prerequisite_challenge' => $challengeVersion->challenge->prerequisiteChallenge->name]
+                        );
+                    $prerequisite_route = route(
+                        'student.level',
                         [
                             'challengeVersion' => $prerequisiteChallengeVersion,
                             'level' => $prerequisiteChallengeVersion->levels->last(),
-                        ]);
+                        ]
+                    );
                 }
-            }
-            else {
+            } else {
                 $prerequisite_text
-                  = __('You must complete level :number to unlock this level.',
-                    ['number' => $level->previous()->level_number]);
-                $prerequisite_route = route('student.level',
-                  [
-                    'challengeVersion' => $challengeVersion,
-                    'level' => $level->previous(),
-                  ]);
+                    = __(
+                        'You must complete level :number to unlock this level.',
+                        ['number' => $level->previous()->level_number]
+                    );
+                $prerequisite_route = route(
+                    'student.level',
+                    [
+                        'challengeVersion' => $challengeVersion,
+                        'level' => $level->previous(),
+                    ]
+                );
             }
         }
 
-        return view('student.level-unstarted',
+        return view(
+            'student.level-unstarted',
             [
-              'level' => $level,
-              'available' => $available,
-              'startable' => $startable,
-              'prerequisite_text' => $prerequisite_text,
-              'prerequisite_route' => $prerequisite_route,
-            ]);
+                'level' => $level,
+                'available' => $available,
+                'startable' => $startable,
+                'prerequisite_text' => $prerequisite_text,
+                'prerequisite_route' => $prerequisite_route,
+            ]
+        );
     }
 
     /**
@@ -172,7 +202,15 @@ class LevelController extends Controller
     public function update(Request $request, Level $level)
     {
         $level->update([
-            'name' => $request->name,
+            'levelable_id' => $request->levelable_id,
+            'levelable_type' => 'App\Models\ChallengeVersion',
+            'blurb' => $request->blurb,
+            'challenge_desc' => $request->challenge_desc,
+            'stuff_you_need_desc' => $request->syn_desc,
+            'get_started_desc' => $request->gs_desc,
+            'how_to_complete_desc' => $request->htc_desc,
+            'get_help_desc' => $request->gh_desc,
+            'power_up_desc' => $request->pu_desc,
         ]);
 
         return redirect(route('admin.levels.index'));

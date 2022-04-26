@@ -4,7 +4,7 @@
 
     <x-slot name="header">{{ __('Edit Challenge Version :name', ['name' => $challengeversion->name]) }}</x-slot>
 
-    <form class="mt-6" action="{{ route('admin.challengeversions.update', $challengeversion) }}" method="POST">
+    <form class="mt-6" id="editform" action="{{ route('admin.challengeversions.update', $challengeversion) }}" method="POST">
         @method('PUT')
         @csrf
         <x-form.input label="Name" name="name" required="true" :value="old('name', $challengeversion->name)" />
@@ -12,8 +12,16 @@
         <p> //preview image </p>
         <p> //gallery media </p>
         <p> //preview video </p>
+        <div>
+            <p class="mt-0 mb-0"> Levels </p>
+            <p class="mt-0 mb-0 text-xs"> Drag to reorder </p>
+            <ol class="list-none" name="order" id="sortlevels">
+                @foreach ($challengeversion->levels as $i => $level)
+                <li class="text-center list-none border-2 bg-slate-200 rounded-lg m-6 p-2 w-16"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden"/>  {{$level->level_number}}</li>
+                @endforeach
+            </ol>
+        </div>
         <x-form.textarea name="version description" sublabel="A short description to help differentiate between different versions of the same challenge." />
-
         <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" :challengeversion="$challengeversion">
             <livewire:admin.quill-text name="summary" label="Summary" :challengeversion="$challengeversion">
                 <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" :challengeversion="$challengeversion">
@@ -30,6 +38,7 @@
                             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
                                 <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Save Challenge Version') }}</button>
                             </div>
+
     </form>
 
     <!--<script src="https://cdn.quilljs.com/1.3.6/quill.js">
@@ -49,5 +58,57 @@
             tester.value = JSON.stringify(quill.getContents());
         };
     </script>-->
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            slist(document.getElementById("sortlevels"));
+        });
+
+        function slist(target) {
+            // get list items
+            let levels = target.getElementsByTagName("li"),
+                current = null;
+            // make draggable
+            for (let l of levels) {
+                l.draggable = true;
+                //on start of drag
+                l.ondragstart = (ev) => {
+                    current = l;
+                }
+                // drag over
+                l.ondragover = (evt) => {
+                    evt.preventDefault();
+                };
+                // on drop
+                l.ondrop = (evt) => {
+                    evt.preventDefault();
+                    if (l != current) {
+                        let currentpos = 0,
+                            droppedpos = 0;
+                        for (let le = 0; le <= levels.length; le++) {
+                            if (current == levels[le]) {
+                                currentpos = le;
+                            }
+                            if (l == levels[le]) {
+                                droppedpos = le;
+                            }
+                        }
+                        if (currentpos < droppedpos) {
+                            l.parentNode.insertBefore(current, l.nextSibling);
+                        } else {
+                            l.parentNode.insertBefore(current, l);
+                        }
+                    }
+                    order = [];
+                    i = 0;
+                    for (let l of levels) {
+                        i++;
+                        console.log(l.getElementsByTagName("input"));
+                        l.getElementsByTagName("input")[0].value = i;
+                    }
+                };
+            }
+        }
+    </script>
 
 </x-app-layout>

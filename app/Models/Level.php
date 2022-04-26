@@ -15,13 +15,32 @@ class Level extends Model
     use SoftDeletes;
     use HasTranslations;
 
-    public $translatable = ['stuff_you_need'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'levelable_id',
+        'levelable_type',
+        'prerequisite_level',
+        'blurb',
+        'challenge_desc',
+        'stuff_you_need_desc',
+        'get_started_desc',
+        'how_to_complete_desc',
+        'get_help_desc',
+        'power_up_desc',
+    ];
+
+
+    public $translatable = ['stuff_you_need_desc'];
+
 
     // Level number (level order) can only be set via the parent Challenge's
-    // `reorder_levels()` method.
+    // `reorder_levels()` method... or by default when level is created. 
     protected $guarded = ['level_number'];
 
-    /**
     /**
      * Get the previous level.
      */

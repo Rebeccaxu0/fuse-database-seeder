@@ -139,7 +139,8 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             //create, store require $challenge
             Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');    
             Route::post('challengeversions/{challenge}', [ChallengeVersionController::class, 'store'])->name('challengeversions.store');
-            
+
+            Route::get('challengeversions/', [ChallengeVersionController::class, 'index'])->name('challengeversions.index'); 
             Route::get('challengeversions/{challengeversion}/edit', [ChallengeVersionController::class, 'edit'])->name('challengeversions.edit');
             Route::put('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'update'])->name('challengeversions.update');
             Route::delete('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'destroy'])->name('challengeversions.destroy');
