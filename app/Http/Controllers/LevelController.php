@@ -34,7 +34,7 @@ class LevelController extends Controller
         $parents = ChallengeVersion::all()->sortBy('name');
         return view('admin.level.create', ['parents' => $parents]);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
