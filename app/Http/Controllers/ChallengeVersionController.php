@@ -83,6 +83,7 @@ class ChallengeVersionController extends Controller
             'name' => 'required|unique:challenge_versions|max:255',
         ]);
 
+
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
             'challenge_id' => $challenge->id,
@@ -162,6 +163,7 @@ class ChallengeVersionController extends Controller
             'info_article_url' => $request->infourl
         ]);
 
+        $challengeversion->setLevelsOrder($request->level);
         return redirect(route('admin.challenges.index'));
     }
 
