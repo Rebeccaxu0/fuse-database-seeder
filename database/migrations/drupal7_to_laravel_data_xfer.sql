@@ -105,6 +105,10 @@ ALTER TABLE `fuse_laravel_test`.activity_log ADD d7_trigger_id BIGINT UNSIGNED D
 CREATE INDEX activity_log_d7_trigger_id_IDX USING BTREE ON `fuse_laravel_test`.activity_log (d7_trigger_id);
 ALTER TABLE `fuse_laravel_test`.activity_log ADD d7_afilliated_studios VARCHAR(2048) DEFAULT NULL NULL;
 ALTER TABLE `fuse_laravel_test`.activity_log MODIFY COLUMN user_id bigint(20) unsigned NULL;
+ALTER TABLE `fuse_laravel_test`.media ADD d7_fid BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX media_d7_fid_IDX USING BTREE ON `fuse_laravel_test`.media (d7_fid);
+ALTER TABLE `fuse_laravel_test`.media ADD d7_user_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX media_uid_user_d7_school_id_IDX USING BTREE ON `fuse_laravel_test`.media (d7_user_id);
 
 -- Insert Challenge Taxonomy Terms
 INSERT INTO `fuse_laravel_test`.challenges (name, description, d7_id)
@@ -862,6 +866,32 @@ RIGHT JOIN `fuse`.field_data_field_teammates fdft ON fdft.entity_type = 'node' A
 RIGHT JOIN `fuse_laravel_test`.users u ON u.d7_id = fdft.field_teammates_target_id
 WHERE !ISNULL(a.d7_id);
 
+-- Files
+INSERT INTO `fuse_laravel_test`.media (
+    d7_fid, user_id,
+    disk,
+    directory,
+    filename,
+    extension,
+    mime_type, aggregate_type,
+    size,
+    created_at, updated_at
+)
+SELECT
+fm.fid, users.id,
+'public',
+-- Directory is URI from ofset (22) to strlen minus offset minus file.
+SUBSTR(fm.uri, 22, LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))),
+-- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
+SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 22 - (LENGTH(fm.uri) - 21 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '.', 1))),
+reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
+fm.filemime, fm.type,
+fm.filesize,
+FROM_UNIXTIME(fm.`timestamp`), FROM_UNIXTIME(fm.`timestamp`),
+FROM `fuse`.file_managed fm
+LEFT JOIN fuse_laravel_test.users ON users.d7_uid = fm.uid
+WHERE fm.uri LIKE 'storage-api-public://%' AND fm.status = 1;
+
 -- TODO: Comments
 
 -- TODO: Comment Seen
@@ -991,6 +1021,8 @@ WHERE !ISNULL(a.d7_id);
 -- ALTER TABLE `fuse_laravel_test`.grade_levels DROP d7_id;
 -- ALTER TABLE `fuse_laravel_test`.activity_log DROP d7_id;
 -- ALTER TABLE `fuse_laravel_test`.activity_log DROP d7_trigger_id;
+-- ALTER TABLE `fuse_laravel_test`.media DROP d7_fid;
+-- ALTER TABLE `fuse_laravel_test`.media DROP d7_user_id;
 -- ALTER TABLE `fuse_laravel_test`.activity_log MODIFY COLUMN affiliated_studios varchar(2047) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 -- ALTER TABLE `fuse_laravel_test`.activity_log MODIFY COLUMN studio_id bigint(20) unsigned NOT NULL;
 -- ALTER TABLE `fuse_laravel_test`.activity_log MODIFY COLUMN studio_name varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
