@@ -7,18 +7,8 @@ use Livewire\Component;
 
 class QuillText extends Component
 {
-    public $label;
-    public $sublabel;
-    public ChallengeVersion $challengeversion;
-
-    protected $rules = [
-        'challengeversion.facilitator_notes' => 'optional|string|max:1000',
-    ];
-
-    public function updatedChallengeVersion($name, $key)
-    {
-        $this->challengeversion->save();
-    }
+    public $name; //request parameter ex. challenge_desc
+    public $label; //label for text box
 
     public function render()
     {
