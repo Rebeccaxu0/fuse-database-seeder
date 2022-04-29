@@ -26,7 +26,9 @@ return new class extends Migration
                     $table->string('mime_type', 128);
                     $table->string('aggregate_type', 32);
                     $table->integer('size')->unsigned();
-                    $table->timestamps();
+                    $table->timestamp('created_at')->useCurrent();
+                    $table->timestamp('updated_at')->useCurrent();
+                    $table->softDeletes();
 
                     $table->unique(['disk', 'directory', 'filename', 'extension']);
                     $table->index('aggregate_type');
@@ -61,4 +63,5 @@ return new class extends Migration
         Schema::dropIfExists('mediables');
         Schema::dropIfExists('media');
     }
-}
+};
+

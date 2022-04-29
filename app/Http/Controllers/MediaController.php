@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Media;
 use App\Http\Requests\StoreFileRequest;
 use App\Http\Requests\UpdateFileRequest;
-use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
-class FileController extends Controller
+class MediaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,33 +18,34 @@ class FileController extends Controller
      */
     public function index(Request $request)
     {
-        $disp_count = 15;
-        $page = (int) $request->input('page') ?: 1;
-        $current_dir = $request->input('dir') ?: '';
-        $public = Storage::disk('public');
-        $s3_files = [];
-        $s3 = collect($public->files('/' . $current_dir));
-        $directories = $public->directories('/' . $current_dir);
-        $slice = $s3->slice(($page - 1) * $disp_count, $disp_count);
-        foreach ($slice as $file) {
-            $s3_files[$file] = [
-                'size' => $public->size($file),
-                'lastModified' => date('Y-m-d', $public->lastModified($file)),
-                'path' => $public->path($file),
-                'url' => $public->url($file),
-            ];
-        }
-        $paginator = new LengthAwarePaginator($s3_files, $s3->count(), $disp_count);
+        // $disp_count = 15;
+        // $page = (int) $request->input('page') ?: 1;
+        // $current_dir = $request->input('dir') ?: '';
+        // $public = Storage::disk('public');
+        // $s3_files = [];
+        // $s3 = collect($public->files('/' . $current_dir));
+        // $directories = $public->directories('/' . $current_dir);
+        // $slice = $s3->slice(($page - 1) * $disp_count, $disp_count);
+        // foreach ($slice as $file) {
+        //     $s3_files[$file] = [
+        //         'size' => $public->size($file),
+        //         'lastModified' => date('Y-m-d', $public->lastModified($file)),
+        //         'path' => $public->path($file),
+        //         'url' => $public->url($file),
+        //     ];
+        // }
+        // $paginator = new LengthAwarePaginator($s3_files, $s3->count(), $disp_count);
 
-        // $files = File::where('disk', 'public')
-        //     ->orderBy('updated_at')
-        //     ->paginate(15);
+        $current_dir = '';
+        $directories = [];
+        $media = Media::inDirectory('public', $current_dir)
+            ->orderBy('updated_at')
+            ->paginate(15);
         return view('admin.files.index', [
             'directories' => $directories,
             'current_dir' => $current_dir,
-            's3_files' => $s3_files
-        ])
-        ->with('s3_files', $paginator);
+            'media' => $media
+        ]);
     }
 
     /**

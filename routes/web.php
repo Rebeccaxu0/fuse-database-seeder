@@ -8,7 +8,6 @@ use App\Http\Controllers\FacilitatorAnnouncementsController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIPlatformController;
@@ -17,6 +16,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\Admin\UsersPage;
+use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
 use Illuminate\Support\Facades\Route;
@@ -123,7 +123,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
-                'files'         => FileController::class,
+                'media'         => MediaController::class,
                 'packages'      => PackageController::class,
                 'schools'       => SchoolController::class,
                 'studios'       => StudioController::class,
@@ -136,6 +136,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
 
             Route::get('users', UsersPage::class)->name('users.index');
+            Route::get('media', MediaManagerPage::class)->name('media.index');
         });
     });
 

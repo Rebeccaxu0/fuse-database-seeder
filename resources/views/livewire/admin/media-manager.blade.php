@@ -1,19 +1,26 @@
-<x-app-layout>
-
+<div>
     <x-slot name="title">{{ __('Media') }}</x-slot>
 
     <x-slot name="header">{{ __('Media') }}</x-slot>
 
-    <h2>{{ __('Media') }}</h2>
-
-    <a href="?dir=">Home</a>
-    <h2 class="text-sm">{{ __('Current Dir:') }}<br><span class="italic">{{ $current_dir }}</span></h2>
-    <h3 class="border m-0">{{ __('Subdirectories') }}</h3>
-    <ul class="border mb-4 pl-8">
-    @foreach ($directories as $directory)
-    <li class="m-0 p-0"><a href="?dir={{ $directory }}">{{ $directory }}</a></li>
-    @endforeach
-    </ul>
+    <livewire:toggle label="{{ __('Images Only') }}" event="toggleImages" >
+    @if ($onlyImages)
+    only images
+    @else
+    everything
+    @endif
+    {{-- <h3>{{ $query }}</h3> --}}
+    <details>
+        <summary>
+            <input class="inline-block" type="text" wire:model="current_dir" placeholder="{{ __('Current Directory') }}">
+        </summary>
+        <ul>
+            @foreach($directories as $directory)
+            <li class="p-0 m-0">{{ $directory->directory }}</li>
+            @endforeach
+        </ul>
+    </details>
+    <input wire:model.debounce.300ms="fileSearch" type="text" placeholder="{{ __('Filter by filename') }}">
     <table class="border">
         <tr>
             <th>Thumbnail</th>
@@ -21,7 +28,7 @@
             <th>Size (B)</th>
             <th>Last Modified</th>
         </tr>
-        @foreach ($media as $file)
+        @foreach ($files as $file)
         <tr>
             <td>
                 @if ($file->aggregate_type == 'image')
@@ -44,16 +51,6 @@
         </tr>
         @endforeach
     </table>
-    {{-- <ul>
-        @foreach ($files as $file)
-        <li>
-            <a href="{{ Storage::disk($file->disk)->url($file->filename) }}">
-                {{ $file->filename }}
-            </a>
-        </li>
-        @endforeach
-    </ul> --}}
 
-    {{ $media->links() }}
-
-</x-app-layout>
+    {{ $files->links() }}
+</div>
