@@ -12,12 +12,12 @@
             <div class="bg-gray-200 rounded-md p-2 mb-2">
                 <div class="float-right pl-2">
                     <a href="{{ route('admin.packages.edit', $package->id) }}">
-                        <button><img class="h-6 w-6" src="/editpencil.svg"></button>
+                    <button><x-icon icon="edit" width=25 height=25 class="ml-2 text-black" /></button>
                     </a>
                     <form method="post" action="{{ route('admin.packages.copy', $package) }}"
                         class="inline-block">
                         @csrf
-                        <button><img class="h-6 w-6" src="/copyicon.png"></button>
+                        <button><x-icon icon="copy" width=25 height=25 class="ml-2 text-black" /></button>
                     </form>
                     <form method="post" action="{{ route('admin.packages.destroy', $package->id) }}"
                         class="inline-block">

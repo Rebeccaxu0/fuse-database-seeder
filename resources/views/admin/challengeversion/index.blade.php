@@ -33,6 +33,12 @@
                                 <a href="{{ route('admin.levels.edit', $level->id) }}">
                                     <x-icon icon="edit" width=18 height=18 class="ml-2 text-black" />
                                 </a>
+                                <form method="post" action="{{ route('admin.levels.copy', $level) }}" class="inline-block">
+                                    @csrf
+                                    <button>
+                                        <x-icon icon="copy" width=25 height=25 class="ml-2 text-black" />
+                                    </button>
+                                </form>
                             </span>
                         </li>
                         @endforeach

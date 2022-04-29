@@ -94,7 +94,7 @@ class ChallengeVersionController extends Controller
             'info_article_url' => $request->infourl
         ]);
 
-        return redirect(route('admin.challenges.index'));
+        return redirect(route('admin.challengeversions.index'));
     } 
 /*
     public function store(Request $request)
@@ -164,7 +164,7 @@ class ChallengeVersionController extends Controller
         ]);
 
         $challengeversion->setLevelsOrder($request->level);
-        return redirect(route('admin.challenges.index'));
+        return redirect(route('admin.challengeversions.index'));
     }
 
     /**
