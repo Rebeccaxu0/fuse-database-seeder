@@ -3,6 +3,8 @@
         window.onscroll = function() {
             document.getElementById('student-navbar').classList.
             toggle('docked', toggleDock());
+            document.getElementsByTagName('html')[0].classList.
+            toggle('docked', toggleDock());
         };
         function toggleDock() {
             return document.documentElement.scrollTop > 50;
@@ -12,7 +14,7 @@
 
 <x-subnav id="student">
     <!-- Logo -->
-    <div class="absolute t-0 l-0 z-50 mt-3">
+    <div class="absolute t-0 l-0 z-10 mt-3">
         <a href="{{ route('student.dashboard') }}">
             <img src="/logo.png" alt="logo" class="w-20">
         </a>
@@ -45,7 +47,7 @@
     </x-subnav-ul>
     <div id="profile-env" class="h-16 flex flex-col justify-center absolute top-0 right-0 mr-16 md:mr-4">
         <button>
-            <x-avatar :user="auth()->user()" class="h-10 w-10 border-white border-2"/>
+            <x-avatar id="profile-pic" :user="auth()->user()" class="border-white border-2"/>
         </button>
     </div>
 </x-subnav>

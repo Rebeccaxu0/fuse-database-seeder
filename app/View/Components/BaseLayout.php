@@ -18,11 +18,12 @@ class BaseLayout extends Component
     {
         $this->roleClass = 'student';
 
-        if (Auth::user()->isFacilitator()) {
-            $this->roleClass = 'fac';
-        }
-        if (Auth::user()->isSuperFacilitator() || Auth::user()->isAdmin()) {
+        if (Auth::user()->isAdmin()) {
             $this->roleClass = 'admin';
+        }
+        else if (Auth::user()->isFacilitator()
+          || Auth::user()->isSuperFacilitator()) {
+            $this->roleClass = 'fac';
         }
     }
 

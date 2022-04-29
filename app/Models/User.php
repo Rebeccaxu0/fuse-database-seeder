@@ -438,6 +438,11 @@ class User extends Authenticatable
             || $this->hasCompletedChallengeVersion($challengeVersion->prerequisiteChallengeVersion);
     }
 
+    public function canStartLevel(Level $level)
+    {
+        return $level->isStartable($this);
+    }
+
     /**
       * Get a list of Studios the user is a member of, directly or not.
       *

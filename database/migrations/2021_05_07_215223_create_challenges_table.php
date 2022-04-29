@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')
               ->nullable();
+            $table->unsignedBigInteger('prerequisite_challenge_id')
+                  ->nullable()
+                  ->comment('Challenge to complete before starting this one (optional)');
+            $table->foreign('prerequisite_challenge_id')
+                  ->references('id')->on('challenges');
         });
     }
 

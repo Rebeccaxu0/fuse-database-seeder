@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 module.exports = {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
@@ -68,12 +70,20 @@ module.exports = {
                 },
                 center: true
             },
+            dropShadow: {
+                contrast: '1px 1px 3px rgb(0 0 0 / 0.75)',
+            },
             skew: {
-              '45': '45deg'
+                '45': '45deg'
             },
             spacing: {
                 '72': '18rem'
             }
+        },
+        textShadow: {
+            sm: '0 1px 2px var(--tw-shadow-color)',
+            DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+            lg: '0 8px 16px var(--tw-shadow-color)'
         }
     },
     variants: {},
@@ -81,6 +91,16 @@ module.exports = {
         require('tailwindcss'),
         require('autoprefixer'),
         require('@tailwindcss/forms'),
-        require('@tailwindcss/typography')
+        require('@tailwindcss/typography'),
+        plugin(function({ matchUtilities, theme }) {
+            matchUtilities(
+              {
+                  'text-shadow': (value) => ({
+                        textShadow: value
+                    })
+              },
+              { values: theme('textShadow') }
+            )
+        })
     ]
 }

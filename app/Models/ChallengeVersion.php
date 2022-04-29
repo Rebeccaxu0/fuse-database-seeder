@@ -6,12 +6,14 @@ use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plank\Mediable\Mediable;
 use Spatie\Translatable\HasTranslations;
 
 class ChallengeVersion extends Model
 {
     use HasFactory;
     use HasTranslations;
+    use Mediable;
     use SoftDeletes;
 
     public $translatable = ['blurb', 'facilitator_notes', 'gallery_note', 'name'];

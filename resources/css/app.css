@@ -1,6 +1,10 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   h1, h2, h3, h4 {
@@ -11,7 +15,7 @@
     @apply font-extrabold;
   }
   h2 {
-    @apply text-4xl text-center;
+    @apply text-4xl;
   }
   h3 {
     @apply text-2xl font-semibold text-gray-700;
@@ -35,7 +39,7 @@
   .btn, button.submit, [type='reset'], [type='submit'] {
     @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
-  .btn.destroy, button.destroy, [type='destroy']{
+  .btn.destroy, button.destroy, [type='destroy'] {
     @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
   .btn, button.btn:focus, [type='button']:focus, [type='reset']:focus, [type='submit']:focus {
@@ -120,6 +124,10 @@
     z-index: 10;
   }
 
+  .alert {
+      @apply text-red-500 italic;
+  }
+
   /* Add padding depending on the size of the top-menu */
   @screen md {
     body.student #env {
@@ -182,6 +190,9 @@
   nav #student-navbar {
     @apply transition-all duration-300 md:h-12;
     min-height: 4rem;
+  }
+  nav #profile-pic {
+    @apply w-10 h-10;
   }
   nav #student-navbar.docked {
     min-height: 2rem;
@@ -392,6 +403,27 @@
     }
   }
 
+  /* this only runs once.*/
+  /* TODO: https://css-tricks.com/how-to-animate-the-details-element-using-waapi/ */
+  #artifact-form-container:not([open]) summary ~ * {
+    animation: sweep-back 1s ease-in-out;
+  }
+  #artifact-form-container[open] summary ~ * {
+    animation: sweep 1s ease-in-out;
+  }
+  @keyframes sweep {
+    0%   { opacity: 0; transform: translateX(-10px)}
+    100% { opacity: 1; transform: translateX(0)}
+  }
+  @keyframes sweep-back {
+    0%   { opacity: 1; transform: translateX(0)}
+    100% { opacity: 0; transform: translateX(-10px)}
+  }
+
+  .status {
+      @apply rounded-lg px-4 py-2 my-4 bg-fuse-green-900 text-white;
+  }
+
   .scroll-box {
     @apply overflow-y-scroll;
     max-height: calc(100vh - 12rem);
@@ -399,6 +431,13 @@
 
   body.admin .scroll-box {
     max-height: calc(100vh - 14rem);
+  }
+
+  input[type='checkbox'].hidden + span {
+      @apply bg-white border rounded p-1 m-1;
+  }
+  input[type='checkbox'].hidden:checked + span {
+      @apply bg-fuse-green-100;
   }
 
   /* Quill.js editor resets */
@@ -410,4 +449,25 @@
     line-height: unset;
     text-transform: unset;
   }
+}
+
+/* Adjust inline anchors to respect fixed headers */
+/* These are base defaults that need to be adjusted via js */
+html.student {
+  scroll-padding-top: 4rem;
+}
+html.student.docked {
+  scroll-padding-top: 2rem;
+}
+html.admin {
+  scroll-padding-top: 8rem;
+}
+html.admin.docked {
+  scroll-padding-top: 6rem;
+}
+html.fac {
+  scroll-padding-top: 6rem;
+}
+html.fac.docked {
+  scroll-padding-top: 4rem;
 }

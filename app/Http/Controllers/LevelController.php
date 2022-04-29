@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 
 class LevelController extends Controller
 {
@@ -49,10 +51,89 @@ class LevelController extends Controller
      */
     public function show(ChallengeVersion $challengeVersion, Level $level)
     {
-        // Show different view based on level started status.
-        $level_view = $level->isStarted(Auth::user()) ? 'student.level-started' : 'student.level-unstarted';
-        // $challenges = Auth::user()->activeStudio->challengeVersions;
-        return view($level_view, ['level' => $level]);
+        // If a student has started this level, use started level template.
+        if (Auth::user()->hasStartedLevel($level)) {
+            // Run certain fields through Blade::render() to get our icons.
+            $icon_fields = ['get_started_desc', 'how_to_complete_desc', 'power_up_desc', 'get_help_desc'];
+            foreach ($icon_fields as $icon_field) {
+                $fields[$icon_field] = Blade::render($level->$icon_field);
+            }
+            $fields['whats_next_text'] = __('Choose a new Challenge!');
+            $fields['whats_next_route'] = route('student.challenges');
+            if ($level->next()) {
+                $fields['whats_next_text'] = $level->next()->blurb;
+                $fields['whats_next_route'] = route('student.level',
+                    [
+                        'challengeVersion' => $level->levelable,
+                        'level' => $level->next(),
+                    ]);
+            }
+            return view('student.level-started', ['level' => $level, 'fields' => $fields]);
+        }
+
+        // Default is to restrict the level.
+        $available = Auth::user()->isAdmin()
+            || Auth::user()->activeStudio->activeChallenges->contains($challengeVersion);
+        $startable = $level->isStartable(Auth::user());
+        $prerequisite_text = $prerequisite_route = '';
+
+        if (! $startable) {
+            if ($challengeVersion->challenge->prerequisiteChallenge
+                && ! $challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())) {
+                $prerequisiteChallengeVersion
+                    = Auth::user()
+                          ->activeStudio
+                          ->activeChallenges
+                          ->intersect(
+                              $challengeVersion
+                                  ->challenge
+                                  ->prerequisiteChallenge
+                                  ->challengeVersions
+                          )
+                          ->first();
+                if (! $prerequisiteChallengeVersion) {
+                    $available = false;
+                }
+                else {
+                    $prerequisite_text
+                        = __('You must complete :prerequisite_challenge to unlock this challenge.',
+                        ['prerequisite_challenge' => $challengeVersion->challenge->prerequisiteChallenge->name]);
+                    $prerequisite_route = route('student.level',
+                        [
+                            'challengeVersion' => $prerequisiteChallengeVersion,
+                            'level' => $prerequisiteChallengeVersion->levels->last(),
+                        ]);
+                }
+            }
+            else {
+                $prerequisite_text
+                  = __('You must complete level :number to unlock this level.',
+                    ['number' => $level->previous()->level_number]);
+                $prerequisite_route = route('student.level',
+                  [
+                    'challengeVersion' => $challengeVersion,
+                    'level' => $level->previous(),
+                  ]);
+            }
+        }
+
+        return view('student.level-unstarted',
+            [
+              'level' => $level,
+              'available' => $available,
+              'startable' => $startable,
+              'prerequisite_text' => $prerequisite_text,
+              'prerequisite_route' => $prerequisite_route,
+            ]);
+    }
+
+    /**
+     * Start the requested level, if startable.
+     */
+    public function start(LevelStartRequest $request, ChallengeVersion $challengeVersion, Level $level)
+    {
+        $level->start(Auth::user());
+        return redirect()->route('student.level', ['challengeVersion' => $challengeVersion, 'level' => $level]);
     }
 
     /**

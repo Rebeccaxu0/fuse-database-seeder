@@ -24,9 +24,11 @@ class InProgress extends Component
                    ->unique()
                    ->map(fn($level, $key) => $level->levelable)
                    ->unique()
+                   ->filter(fn($cv, $key) => $cv::class == ChallengeVersion::class)
                    ->filter(fn($cv, $key) => ! $user->hasCompletedChallengeVersion($cv))
                    ->intersect($activeChallengeVersions)
                    ->sortBy('name');
+        // TODO: Add ideas?
     }
 
     /**

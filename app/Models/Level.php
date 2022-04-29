@@ -6,6 +6,7 @@ use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 Use Spatie\Translatable\HasTranslations;
 
 class Level extends Model
@@ -19,6 +20,25 @@ class Level extends Model
     // Level number (level order) can only be set via the parent Challenge's
     // `reorder_levels()` method.
     protected $guarded = ['level_number'];
+
+    /**
+    /**
+     * Get the previous level.
+     */
+    public function previous(): ?Level
+    {
+        return $this->levelable
+                    ->levels
+                    ->firstWhere('level_number', $this->level_number - 1);
+    }
+
+    /**
+     * Associated preview image (File).
+     */
+    public function preview_image()
+    {
+        return $this->hasOne(File::class);
+    }
 
     /**
      * Get the artifacts on this level.
@@ -44,13 +64,11 @@ class Level extends Model
         return $this->morphTo();
     }
 
-    public function next()
+    public function next(): ?Level
     {
-        if ($this->levelable::class == ChallengeVersion::class) {
-            return $this->levelable
-                        ->levels
-                        ->firstWhere('level_number', $this->level_number + 1);
-        }
+        return $this->levelable
+                    ->levels
+                    ->firstWhere('level_number', $this->level_number + 1);
     }
 
     public function setLevelableIdAttribute(int $id)
@@ -70,8 +88,61 @@ class Level extends Model
         }
     }
 
+    public function isStartable(User $user): bool
+    {
+        $startable = false;
+
+        // Levels of an Idea belonging to the User are always startable.
+        if ($this->levelable::class == Idea::class
+            && $this->levelable->team->contains($user)) {
+            $startable = true;
+        }
+        else {
+            // Allow level start if user already has a start on this or any
+            // later level of this ChallengeVersion (e.g. via a team complete).
+            foreach ($this->levelable->levels->reverse() as $level) {
+              if ($user->hasStartedLevel($this)) {
+                $startable = true;
+                break;
+              }
+              if ($this == $level) {
+                break;
+              }
+            }
+            // If parent Challenge is startable...
+            if (! $startable && $this->levelable->challenge->isStartable($user)
+              // ...and it's the first level...
+              && ($this->id == $this->levelable->levels->first()->id
+                // ...or the previous level is completed
+                    || ($this->previous() && $user->hasCompletedLevel($this->previous()))
+                )) {
+                $startable = true;
+            }
+        }
+
+        return $startable;
+    }
+
     public function isStarted(User $user): bool
     {
         return $user->hasStartedLevel($this);
+    }
+
+    public function isCompleted(User $user): bool
+    {
+        return $user->hasCompletedLevel($this);
+    }
+
+    public function start(User $user): bool
+    {
+      if ($this->isStartable($user)) {
+        Start::firstOrCreate([
+            'level_id' => $this->id,
+            'user_id' => $user->id,
+        ]);
+        Cache::put("u{$user->id}_has_started_level_{$this->id}", true);
+        return true;
+      }
+      return false;
     }
 }

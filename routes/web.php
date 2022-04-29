@@ -16,6 +16,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\Admin\UsersPage;
+use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
 use Illuminate\Support\Facades\Route;
@@ -55,6 +56,14 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenge/{challengeVersion:slug}/level/{level:level_number}',
                 [LevelController::class, 'show']
                 )->name('level');
+            Route::post(
+                'challenge/{challengeVersion:slug}/level/{level:level_number}/start',
+                [LevelController::class, 'start']
+                )->name('level_start');
+            Route::post(
+                'artifact',
+                [ArtifactController::class, 'store']
+                )->name('save_artifact');
             Route::get('dashboard', function () {
                 return view('student.dashboard');
             })->name('dashboard');
@@ -114,6 +123,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
+                'media'         => MediaController::class,
                 'packages'      => PackageController::class,
                 'schools'       => SchoolController::class,
                 'studios'       => StudioController::class,
@@ -126,6 +136,7 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
 
             Route::get('users', UsersPage::class)->name('users.index');
+            Route::get('media', MediaManagerPage::class)->name('media.index');
         });
     });
 

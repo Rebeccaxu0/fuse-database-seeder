@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class GuestNav extends Component
+class GuestSubnav extends Component
 {
     /**
      * Create a new component instance.

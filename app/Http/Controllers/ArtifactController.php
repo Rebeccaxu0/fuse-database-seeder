@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LevelSaveOrCompleteRequest;
 use App\Models\Artifact;
+use App\Models\Level;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 
 class ArtifactController extends Controller
 {
@@ -57,9 +61,58 @@ class ArtifactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LevelSaveOrCompleteRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $user = User::find($validated['uid']);
+        $team[] = $user;
+        $level = Level::find($validated['lid']);
+        $artifact = new Artifact;
+        $artifact->level_id = $validated['lid'];
+        $artifact->type = $validated['type'];
+        $artifact->name = $validated['name'];
+        $artifact->notes = $validated['notes'];
+        $artifact->url = $validated['url'];
+
+        if ($validated['teammates']) {
+            $students = $user->activeStudio->students;
+            foreach ($validated['teammates'] as $teammate) {
+                if ($students->contains($teammate)) {
+                    $team[] = User::find($teammate);
+                }
+            }
+        }
+
+        if ($validated['uploadcode']) {
+            // TODO: convert to a file instance.
+        }
+        $artifact->save();
+        $artifact->team()->saveMany($team);
+
+        switch ($validated['type']) {
+        case 'save':
+            $destination = URL::previous();
+            break;
+
+        case 'complete':
+            foreach ($team as $teammate) {
+                Cache::forget("u{$teammate->id}_has_completed_level_{$level->id}");
+            }
+            if ($level->next()) {
+                $params = [
+                    'challengeVersion' => $level->next()->levelable,
+                    'level' => $level->next(),
+                ];
+                $destination = route('student.level', $params);
+            }
+            else {
+                $destination = route('student.challenges');
+            }
+            break;
+
+        }
+        return redirect($destination)->with('status', __('Save successful!'));
     }
 
     /**
