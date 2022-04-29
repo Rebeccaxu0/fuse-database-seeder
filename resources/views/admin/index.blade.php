@@ -13,7 +13,7 @@
         <li><a href="{{ route('admin.schools.index') }}">{{ __('Schools') }}</a></li>
         <li><a href="{{ route('admin.studios.index') }}">{{ __('Studios') }}</a></li>
         <li><a href="{{ route('admin.packages.index') }}">{{ __('Packages') }}</a></li>
-        <li><a href="{{ route('admin.files.index') }}">{{ __('Files') }}</a></li>
+        <li><a href="{{ route('admin.media.index') }}">{{ __('Files') }}</a></li>
     </ul>
 
     <hr>
