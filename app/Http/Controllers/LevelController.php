@@ -217,6 +217,31 @@ class LevelController extends Controller
     }
 
     /**
+     * Copy the level and allow user to edit from there. 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Package  $package
+     * @return \Illuminate\Http\Response
+     */
+    public function copy(Level $level)
+    {
+        $newlevel = Level::create([
+            'name' => $level->name . ' Copy',
+            'levelable_id' => $level->levelable_id,
+            'levelable_type' => 'App\Models\ChallengeVersion',
+            'blurb' => $level->blurb,
+            'challenge_desc' => $level->challenge_desc,
+            'stuff_you_need_desc' => $level->syn_desc,
+            'get_started_desc' => $level->gs_desc,
+            'how_to_complete_desc' => $level->htc_desc,
+            'get_help_desc' => $level->gh_desc,
+            'power_up_desc' => $level->pu_desc,
+        ]);
+        $newlevel->save();
+        return redirect(route('admin.levels.edit', $newlevel));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Level  $level
