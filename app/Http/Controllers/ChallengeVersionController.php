@@ -173,7 +173,12 @@ class ChallengeVersionController extends Controller
         $challengeversion->update([
             'name' => $request->name,
             'challenge_category_id' => $request->category_id,
+            'gallery_version_desc_short' => $request->versiondesc, 
             'blurb' => $request->blurb,
+            'summary' => $request->summary,
+            'stuff_you_need' => $request->stuffyouneed,
+            'facilitator_notes' => $request->facnotes,
+            'chromebook_info' => $request->chromeinfo,
             'prerequisite_challenge_version_id' => $request->prereqchal,
             'slug' => Str::of($request->name)->slug('-'),
             'info_article_url' => $request->infourl
