@@ -17,22 +17,16 @@
             <p class="mt-0 mb-0 text-xs"> Drag to reorder </p>
             <ol class="list-none" name="order" id="sortlevels">
                 @foreach ($challengeversion->levels as $i => $level)
-                <li class="text-center list-none border-2 bg-slate-200 rounded-lg m-6 p-2 w-16"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden"/>  {{$level->level_number}}</li>
+                <li class="text-center list-none border-2 bg-slate-200 rounded-lg m-6 p-2 w-16"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden" /> {{$level->level_number}}</li>
                 @endforeach
             </ol>
         </div>
         <x-form.textarea name="version description" sublabel="A short description to help differentiate between different versions of the same challenge." />
-        <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" :challengeversion="$challengeversion">
-            <livewire:admin.quill-text name="summary" label="Summary" :challengeversion="$challengeversion">
-                <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" :challengeversion="$challengeversion">
-                    <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" :challengeversion="$challengeversion">
-                        <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" :challengeversion="$challengeversion">
-                            <div class="quill bg-white mt-2 mb-6">
-                                <input name="test" type="hidden">
-                                <div id="editor">
-                                    <p> test </p>
-                                </div>
-                            </div>
+        <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" content="blurbcontent" old="{!! $challengeversion->blurb !!}">
+            <livewire:admin.quill-text name="summary" label="Summary" content="summarycontent" old="{!! $challengeversion->summary !!}">
+                <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" content="syncontent" old="{!! $challengeversion->stuff_you_need !!}">
+                    <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" content="fncontent" old="{!! $challengeversion->facilitator_notes!!}">
+                        <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" content="cbcontent" old="{!! $challengeversion->chromebook_info !!}">
                             <x-form.dropdown label="Prerequisite Challenge" :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)" name="prereqchal" :list="$challenges" />
                             <x-form.input label="Information Article URL" name="infourl" :value="old('info_article_url', $challengeversion->info_article_url)" />
                             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
@@ -41,23 +35,6 @@
 
     </form>
 
-    <!--<script src="https://cdn.quilljs.com/1.3.6/quill.js">
-        $var quill = new Quill('#editor', {
-            options = {
-                modules: {
-                    toolbar: toolbarOptions
-                },
-                theme: 'snow'
-            }
-        });
-
-        var form = document.querySelector('form');
-        form.onsubmit = function() {
-            // Populate hidden form on submit
-            var tester = document.querySelector('input[name=test]');
-            tester.value = JSON.stringify(quill.getContents());
-        };
-    </script>-->
 
     <script>
         window.addEventListener("DOMContentLoaded", () => {

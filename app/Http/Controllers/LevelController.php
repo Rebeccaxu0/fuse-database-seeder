@@ -205,12 +205,12 @@ class LevelController extends Controller
             'levelable_id' => $request->levelable_id,
             'levelable_type' => 'App\Models\ChallengeVersion',
             'blurb' => $request->blurb,
-            'challenge_desc' => $request->challenge_desc,
-            'stuff_you_need_desc' => $request->syn_desc,
-            'get_started_desc' => $request->gs_desc,
-            'how_to_complete_desc' => $request->htc_desc,
-            'get_help_desc' => $request->gh_desc,
-            'power_up_desc' => $request->pu_desc,
+            'challenge_desc' => $request->challenge,
+            'stuff_you_need_desc' => $request->stuffyouneed,
+            'get_started_desc' => $request->gs,
+            'how_to_complete_desc' => $request->htc,
+            'get_help_desc' => $request->gh,
+            'power_up_desc' => $request->pu,
         ]);
 
         return redirect(route('admin.levels.index'));
