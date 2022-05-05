@@ -27,20 +27,19 @@ END;
             $table->unsignedTinyInteger('level_number')
                   ->nullable()
                   ->comment($levelNumberComment);
-
-            $table->string('blurb', 1024)
+            $table->longtext('blurb')
                   ->nullable();
-            $table->text('challenge_desc')
+            $table->longtext('challenge_desc')
                   ->nullable();
-            $table->text('stuff_you_need_desc')
+            $table->longtext('stuff_you_need_desc')
                   ->nullable();
-            $table->text('get_started_desc')
+            $table->longtext('get_started_desc')
                   ->nullable();
-            $table->text('how_to_complete_desc')
+            $table->longtext('how_to_complete_desc')
                   ->nullable();
-            $table->text('get_help_desc')
+            $table->longtext('get_help_desc')
                   ->nullable();
-            $table->text('power_up_desc')
+            $table->longtext('power_up_desc')
                   ->nullable();
             $table->unique(['levelable_id', 'levelable_type', 'level_number']);
         });
