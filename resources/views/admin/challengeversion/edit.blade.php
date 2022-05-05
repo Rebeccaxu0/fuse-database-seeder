@@ -17,7 +17,13 @@
             <p class="mt-0 mb-0 text-xs"> Drag to reorder </p>
             <ol class="list-none" name="order" id="sortlevels">
                 @foreach ($challengeversion->levels as $i => $level)
-                <li class="text-center list-none border-2 bg-slate-200 rounded-lg m-6 p-2 w-16"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden" /> {{$level->level_number}}</li>
+                <li class="text-left list-none border-2 bg-slate-200 rounded-lg m-6 p-4"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden" />
+                    @if ($level->blurb)
+                        {!! $level->blurb !!}
+                    @else
+                        Current level {{ $level->level_number }} (no blurb)
+                    @endif
+                </li>
                 @endforeach
             </ol>
         </div>
