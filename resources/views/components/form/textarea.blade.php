@@ -8,7 +8,8 @@
         @endif
     </label>
     @if ($sublabel)
-    <p class="text-gray-700 text-xs mt-1">{{ $sublabel }}</p>
+    <br/>
+    <span class="text-gray-700 text-xs mb-2">{{ $sublabel }}</span>
     @endif
     <textarea class="form-textarea block w-full rounded" id="{{ $name }}" name="{{ $name }}"
         @if ($required)

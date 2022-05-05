@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
 use App\Models\Challenge;
@@ -184,11 +184,13 @@ class LevelController extends Controller
      * @param  \App\Models\Level  $level
      * @return \Illuminate\Http\Response
      */
-    public function edit(Level $level)
+    public function edit(Request $request, Level $level)
     {
+        //dd($request->session()->get('prev'));
         return view('admin.level.edit', [
             'level' => $level,
-            'parents' => ChallengeVersion::all()->sortBy('name')
+            'parents' => ChallengeVersion::all()->sortBy('name'),
+            'copy' => $request->session()->get('prev'),
         ]);
     }
 
@@ -212,8 +214,13 @@ class LevelController extends Controller
             'get_help_desc' => $request->gh,
             'power_up_desc' => $request->pu,
         ]);
-
-        return redirect(route('admin.challengeversions.index'));
+        if ($request->session()->get('prev') == 'Copy of'){
+            $request->session()->forget('prev');
+            return redirect(route('admin.challengeversions.edit', $request->levelable_id));
+        } else {
+            $request->session()->forget('prev');
+            return redirect(route('admin.challengeversions.index'));
+        }
     }
 
     /**
@@ -223,7 +230,7 @@ class LevelController extends Controller
      * @param  \App\Models\Package  $package
      * @return \Illuminate\Http\Response
      */
-    public function copy(Level $level)
+    public function copy(Request $request, Level $level)
     {
         $newlevel = Level::create([
             'levelable_id' => $level->levelable_id,
@@ -236,7 +243,6 @@ class LevelController extends Controller
             'get_help_desc' => $level->gh_desc,
             'power_up_desc' => $level->pu_desc,
         ]);
-        $newlevel->save;
 
         $order = [];
         $i = 0;
@@ -244,8 +250,10 @@ class LevelController extends Controller
             $i++;
             $order[$level->id] = $i;
         }
-        $newlevel->level_number = $newlevel->levelable->setLevelsOrder($order);
-        $newlevel->save;
+        $newlevel->levelable->setLevelsOrder($order);
+        $newlevel->save();
+        $request->session()->put('prev', 'Copy of');
+        //dd($route->uri);
         return redirect(route('admin.levels.edit', $newlevel));
     }
 
