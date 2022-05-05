@@ -8,8 +8,11 @@
     <select name="{{ $name }}" id="{{ $name }}" {!! $attributes->merge(['class' => 'mt-1 block w-full rounded']) !!}>
         <option> </option>
         @foreach ($list as $item)
-            <option value="{{ $item->id }}" @if ($item->id == $value) selected @endif>{{ $item->name }}
+            <option value="{{ $item->id }}" @if ($item->id == $value) selected @endif> {{ $item->name }}
             </option>
         @endforeach
     </select>
+    @error($name)
+        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+    @enderror
 </div>

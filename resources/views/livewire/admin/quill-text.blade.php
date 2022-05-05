@@ -6,13 +6,13 @@
 
 
   <span class="text-gray-700 mb-2">{{ $label }}</span>
+  <span class="text-gray-700 text-xs mb-2">{{ $sublabel }}</span>
 
   <!-- Create the toolbar container -->
-  <div id="toolbar">
+  <div id="{{ $name }}-toolbar">
   </div>
-
   <!-- Create the editor container -->
-  <div id="editor">
+  <div id="{{ $name }}-editor">
   </div>
   <br />
   <!-- Include the Quill library -->
@@ -20,11 +20,11 @@
 
   <!-- Initialize Quill editor -->
   <script>
-    var quill = new Quill('#editor', {
+    var {{ $name }} = new Quill('#{{ $name }}-editor', {
       modules: {
         toolbar: [
           ['bold', 'italic'],
-          ['link', 'blockquote', 'code-block', 'image'],
+          ['link', 'blockquote',],
           [{
             list: 'ordered'
           }, {
@@ -34,11 +34,11 @@
       },
       theme: 'snow'
     });
-
+    {{$name}}.root.innerHTML = "{!! $old !!}";
     // Set value for form submission
-    var content = document.getElementById("{{ $name }}");
-    quill.on('text-change', function() {
-      content.value = quill.root.innerHTML;
+    var {{ $content }} = document.getElementById("{{ $name }}");
+    {{ $name }}.on('text-change', function() {
+      {{ $content }}.value = {{$name}}.root.innerHTML;
     });
   </script>
 </div>

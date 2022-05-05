@@ -12,17 +12,6 @@ use Illuminate\Support\Str;
 class ChallengeVersionController extends Controller
 {
     /**
-     * Create the controller instance.
-     *
-     * @return void
-     
-    public function __construct()
-    {
-        $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
-    }
-    */
-
-    /**
      * Display a customized listing of the resource for students.
      *
      * @return \Illuminate\Http\Response
@@ -81,12 +70,14 @@ class ChallengeVersionController extends Controller
         $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
+            'challenge_id' => 'required',
+            'category_id' => 'required',
         ]);
 
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
-            'challenge_id' => $challenge->id,
+            'challenge_id' => $request->challenge_id,
             'challenge_category_id' => $request->category_id,
             'blurb' => $request->blurb,
             'prerequisite_challenge_version_id' => $request->prereqchal,
@@ -94,27 +85,9 @@ class ChallengeVersionController extends Controller
             'info_article_url' => $request->infourl
         ]);
 
-        return redirect(route('admin.challenges.index'));
+        return redirect(route('admin.challengeversions.index'));
     } 
-/*
-    public function store(Request $request)
-    {
-        $request->flash();
-        $validated = $request->validate([
-            'name' => 'required|unique:challenge_versions|max:255',
-        ]);
 
-        $challengeversion = ChallengeVersion::create([
-            'name' => $request->name,
-            //'challenge_id' => $challenge->id,
-            //'challenge_category_id' => $request->category_id,
-            //'slug' => Str::of($request->name)->slug('-'),
-        ]);
-
-        return redirect(route('admin.challenges.index'));
-    }
-
-*/
     /**
      * Display the specified resource.
      *
@@ -154,10 +127,11 @@ class ChallengeVersionController extends Controller
             'name' => $request->name,
             'slug' => Str::of($request->name)->slug('-'),
             'challenge_category_id' => $request->category_id,
-            'gallery_version_desc_short' => $request->versiondesc, //need to fix textarea parameters
+            'gallery_version_desc_short' => $request->versiondesc, 
             'blurb' => $request->blurb,
             'summary' => $request->summary,
             'stuff_you_need' => $request->stuffyouneed,
+            'facilitator_notes' => $request->facnotes,
             'chromebook_info' => $request->chromeinfo,
             'prerequisite_challenge_version_id' => $request->prereqchal,
             'info_article_url' => $request->infourl
