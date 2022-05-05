@@ -86,7 +86,7 @@ class ChallengeVersionController extends Controller
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
-            'challenge_id' => $challenge->id,
+            'challenge_id' => $request->challenge_id,
             'challenge_category_id' => $request->category_id,
             'blurb' => $request->blurb,
             'prerequisite_challenge_version_id' => $request->prereqchal,
