@@ -471,3 +471,8 @@ html.fac {
 html.fac.docked {
   scroll-padding-top: 4rem;
 }
+
+/* Filestack picker is CRAZY aggressive with x-index */
+.fsp-picker {
+    z-index: 1 !important;
+}

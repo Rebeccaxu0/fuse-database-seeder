@@ -29,7 +29,7 @@
             </button>
         </div>
     </form>
-    <script type="text/JavaScript">
+    <script>
         function addNew() {
                 var newinput = document.createElement('div');
                 newinput.innerHTML = "<input class='form-control rounded' name='createstudios[]' type='text'>";

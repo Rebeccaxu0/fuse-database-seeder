@@ -1,5 +1,5 @@
 @push('scripts')
-    <script type="text/javascript">
+    <script>
         window.onscroll = function() {
             document.getElementById('student-navbar').classList.
             toggle('docked', toggleDock());

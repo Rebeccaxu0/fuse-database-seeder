@@ -1,12 +1,12 @@
 @push('scripts')
-    <script type="text/javascript">
+    <script>
         document.getElementById('{{ $id }}-toggle').addEventListener('change', function() {
             document.getElementById('{{ $id }}-menu').classList.toggle('hidden');
         });
     </script>
 @endpush
 
-<div id={{ "{$id}-navbar" }} {{ $attributes->merge() }}>
+<div id="{{ "{$id}-navbar" }}" {{ $attributes->merge() }}>
     <div class="md:container md:h-full relative flow-root" style="padding: 0">
         <div class="burger-wrapper md:hidden float-right flex flex-col justify-center h-full mr-4">
             <label id="{{ $id }}-hamburger" for="{{ $id }}-toggle"

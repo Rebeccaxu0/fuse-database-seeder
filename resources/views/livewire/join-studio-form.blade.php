@@ -1,7 +1,6 @@
 <div class="cursor-pointer">
     <span
       wire:click="$set('showModalFlag', true)"
-      alt="{{ __('Join a new studio') }}"
       title="{{ __('Join a new studio') }}"
       class="cursor-pointer ml-2 leading-[0.9rem] border-2 border-fuse-green text-fuse-green rounded-xl h-5 w-5 text-center inline-block">+</span>
     <form wire:submit.prevent="submit">

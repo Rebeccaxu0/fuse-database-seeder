@@ -1,5 +1,5 @@
 @push('scripts')
-    <script type="text/javascript">
+    <script>
         document.getElementById('studio-list-toggle').addEventListener('change', function() {
             document.getElementById('studio-list-menu').classList.toggle('hidden');
         });
