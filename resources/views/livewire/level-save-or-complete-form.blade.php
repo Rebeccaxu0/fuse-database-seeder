@@ -17,41 +17,64 @@
         </div>
         @if ($previewUrl)
         <div class="flex flex-col items-center">
-            <img src="{!! $previewUrl !!}" />
-            <button wire:click.prevent="removePreview">{{ __('Remove') }}</button>
+            <div class="bg-fuse-teal-dk border border-white p-8">
+                <img class="w-[100px]" src="{!! $previewUrl !!}" />
+            </div>
+            <div>{{ $previewName }}</div>
+            <button class="btn" wire:click.prevent="removePreview">{{ __('Remove') }}</button>
+            <div class="w-full">
+                <label for="name" class="p-0">{{ ('Name (optional)') }}</label>
+                @error('name')
+                <span class="alert">{{ $message }}</span>
+                @enderror
+                <input id="name"
+                       name="name"
+                       placeholder="{{ __('Rename your artifact if you want') }}"
+                       value="{{ old('name') }}"
+                       class="px-1 @error('name') border border-red-500 @enderror placeholder-gray-300"
+                       />
+            </div>
+    @error('name')
+        <div class="alert">{{ $message }}</div>
+    @enderror
         </div>
         @endif
-        <livewire:filestack-picker />
+        {{-- <livewire:filestack-picker /> --}}
         @error('file')
             <div class="alert">{{ $message }}</div>
         @enderror
-        <livewire:upload-code />
+        {{-- <livewire:upload-code /> --}}
+    @if (! $uploadCodeDisappear)
+        <label class="pt-0" for="uploadcode">{{ ('Mobile Upload Code') }}</label>
+        @error('uploadcode')
+        <span class="alert">{{ $message }}</span>
+        @enderror
+        <input wire:model.debounce.500ms="uploadCode"
+               id="uploadcode"
+               name="uploadcode"
+               placeholder="{{ ('e.g. ABC123') }}"
+               value="{{ old('uploadcode') }}"
+               class="px-1 placeholder-gray-300"
+               {{-- @error('uploadcode') border border-red-500 @enderror --}}
+               @if ($uploadCodeDisabled) disabled @endif
+               />
+    @endif
+    @if (! $urlDisappear)
         <label class="pt-0" for="url">{{ __('URL') }}</label>
         @error('url')
-            <div class="alert">{{ $message }}</div>
+        <span class="alert">{{ $message }}</span>
         @enderror
         <input wire:model.debounce.750ms="url"
                id="url"
                name="url"
                placeholder="{{ __('e.g. https://www.duckduckgo.com') }}"
                value="{{ old('url') }}"
-               class="px-1 @error('url') border border-red-500 @enderror placeholder-gray-300"
+               class="px-1 placeholder-gray-300"
+               {{-- @error('url') border border-red-500 @enderror --}}
                @if ($urlDisabled) disabled @endif
                />
+    @endif
     </div>
-    <label for="name" class="p-0">{{ ('Name (optional)') }}</label>
-    @error('name')
-        <div class="alert">{{ $message }}</div>
-    @enderror
-    <input id="name"
-           name="name"
-           placeholder="{{ __('Name your artifact if you want') }}"
-           value="{{ old('name') }}"
-           class="px-1 @error('name') border border-red-500 @enderror placeholder-gray-300"
-           />
-    @error('name')
-        <div class="alert">{{ $message }}</div>
-    @enderror
     <livewire:artifact-teammates :user="auth()->user()"/>
     <label for="notes" class="p-0">{{ ('Notes (optional)') }}</label>
     @error('notes')

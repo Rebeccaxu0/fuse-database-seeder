@@ -2,11 +2,16 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class LevelSaveOrCompleteForm extends Component
 {
+    public bool $uploadCodeDisappear = false;
+    public bool $urlDisappear = false;
+    public bool $uploadCodeDisabled = false;
     public bool $urlDisabled = false;
+    public string $uploadCode = '';
     public string $url = '';
     public string $previewUrl = '';
     public int $level_id;
@@ -16,8 +21,6 @@ class LevelSaveOrCompleteForm extends Component
     protected $listeners = [
         'filestackUploadComplete',
         'filestackUploadDeleted',
-        'uploadCodeValid',
-        'uploadCodeInvalid',
         'makePreviewImage',
         'removePreview',
     ];
@@ -28,26 +31,14 @@ class LevelSaveOrCompleteForm extends Component
 
     public function filestackUploadComplete()
     {
+        $this->uploadCodeDisabled = true;
         $this->urlDisabled = true;
-        $this->emit('uploadCodeDisable');
     }
 
     public function filestackUploadDeleted()
     {
+        $this->uploadCodeDisabled = false;
         $this->urlDisabled = false;
-        $this->emit('uploadCodeEnable');
-    }
-
-    public function uploadCodeValid()
-    {
-        $this->urlDisabled = true;
-        $this->emit('filestackDisappear');
-    }
-
-    public function uploadCodeInvalid()
-    {
-        $this->urlDisabled = false;
-        $this->emit('filestackAppear');
     }
 
     public function enableURL()
@@ -56,27 +47,53 @@ class LevelSaveOrCompleteForm extends Component
         unset($this->previewUrl);
     }
 
-    public function updatedUrl($url)
+    public function updatedUploadCode($code)
     {
-        $this->validateOnly('url');
-        if ($url == '') {
-            $this->emit('urlInvalid');
+        if ($code == '') {
             $this->emit('filestackAppear');
-            $this->emit('uploadCodeEnable');
+            $this->urlDisabled = false;
         }
         else {
+            $this->url = '';
+            $this->urlDisabled = true;
             // Validate here.
-            $this->emit('urlValid');
+            $response = Http::get('https://api.fusestudio.net/validate/' . $code);
+            if ($response->ok()) {
+                $status = $response->json()['status'];
+                if ($status == 'ready') {
+                    $this->emit('filestackDisappear');
+                    $location = $response->json()['location'];
+                    $mimetype = $response->json()['mimetype'];
+                    $this->emit('makePreviewImage', 'mobile upload code', ['mime' => $mimetype, 'file_url' => $location]);
+                }
+            }
+        }
+    }
+
+    public function updatedUrl($url)
+    {
+        if ($url == '') {
+            $this->emit('filestackAppear');
+            $this->uploadCodeDisabled = false;
+            $this->validateOnly('url');
+        }
+        else {
+            $this->validateOnly('url');
             $this->emit('filestackDisappear');
+            $this->uploadCodeDisabled = true;
+            $this->makePreviewImage('url', ['url' => $url]);
         }
     }
 
     public function removePreview()
     {
+        $this->uploadCode = '';
+        $this->uploadCodeDisabled = false;
+        $this->uploadCodeDisappear = false;
         $this->url = '';
         $this->urlDisabled = false;
+        $this->urlDisappear = false;
         $this->emit('filestackAppear');
-        $this->emit('uploadCodeReset');
         unset($this->previewUrl);
     }
 
@@ -93,10 +110,22 @@ class LevelSaveOrCompleteForm extends Component
      */
     public function makePreviewImage(string $type, array $details)
     {
+        // If there's a valid preview, hide upload inputs.
+        $this->uploadCodeDisappear = true;
+        $this->urlDisappear = true;
+        $this->emit('filestackDisappear');
+
         $fskey = env('FILESTACK_API_KEY');
         $validTypes = ['filestack', 'mobile upload code', 'url'];
         if (! in_array($type, $validTypes)) {
             // Throw exception;
+            return;
+        }
+
+        if ('url' == $type) {
+            // TODO: see if we can use Filestack to get a screenshot of the URL for type 'url'.
+            $this->previewUrl = '/img/link.svg';
+            $this->previewName = $details['url'];
             return;
         }
 
@@ -106,21 +135,25 @@ class LevelSaveOrCompleteForm extends Component
             $filelink = new Filelink($details['handle'], $fskey);
             $mime = explode('/', $filelink->getMetaData()['mimetype']);
             $filename = $filelink->getMetaData()['filename'];
+            $this->previewName = $filename;
         }
         else if ($type == 'mobile upload code') {
             $mime = $details['mime'];
+            $url = $details['file_url'];
+            $exploded_url = explode('/', $url);
+            $this->previewName = $filename = array_pop($exploded_url);
         }
 
-        // TODO: see if we can use Filestack to get a screenshot of the URL for type 'url'.
         $mimetype = explode('/', $this->mimetype($mime, $filename));
+        $this->previewName = $this->previewName;
 
         switch($mimetype[0]) {
         case 'audio':
-            // TODO: Audio icon svg.
+            $this->previewUrl = '/img/audio.svg';
             break;
 
         case 'video':
-            // TODO: Video icon svg or preview still image.
+            $this->previewUrl = '/img/video.svg';
             break;
 
         case 'image':
@@ -133,6 +166,7 @@ class LevelSaveOrCompleteForm extends Component
             break;
 
         default:
+            $this->previewUrl = '/img/misc.svg';
         }
     }
 
@@ -162,7 +196,7 @@ class LevelSaveOrCompleteForm extends Component
      *  Updated mimetype.
      */
     function mimetype($filemime, $filename = '') {
-        if ($filemime != 'application/octet-stream' || $filename == '') {
+        if ($filename == '' || ($filemime != '' && $filemime != 'application/octet-stream')) {
             return $filemime;
         }
         $name_boom = explode('.', $filename);
@@ -184,6 +218,9 @@ class LevelSaveOrCompleteForm extends Component
         }
         else if ('avi' == $ext) {
             $filemime = 'video/avi';
+        }
+        else if ('mkv' == $ext) {
+            $filemime = 'video/x-matroska';
         }
         else if ('m1v' == $ext || 'm2v' == $ext || 'mpeg' == $ext || 'mpg' == $ext) {
             $filemime = 'video/mpeg';
