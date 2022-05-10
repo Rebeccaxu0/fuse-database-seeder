@@ -110,10 +110,10 @@ class LevelController extends Controller
         $startable = $level->isStartable(Auth::user());
         $prerequisite_text = $prerequisite_route = '';
 
-        if (!$startable) {
+        if (! $startable) {
             if (
                 $challengeVersion->challenge->prerequisiteChallenge
-                && !$challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())
+                && ! $challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())
             ) {
                 $prerequisiteChallengeVersion
                     = Auth::user()
@@ -126,7 +126,7 @@ class LevelController extends Controller
                             ->challengeVersions
                     )
                     ->first();
-                if (!$prerequisiteChallengeVersion) {
+                if (! $prerequisiteChallengeVersion) {
                     $available = false;
                 } 
                 else {
