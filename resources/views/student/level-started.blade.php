@@ -93,7 +93,7 @@
                 <details id="artifact-form-container" @if($errors->any()) open @endif>
                     <summary class="btn cursor-pointer">{{ __('Save or Complete') }}
                     </summary>
-                    <livewire:level-save-or-complete-form :level_id="$level->id"/>
+                    <livewire:level-save-or-complete-form :lid="$level->id"/>
                 </details>
             </section>
 

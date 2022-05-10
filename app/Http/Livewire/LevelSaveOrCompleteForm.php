@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Rules\UploadCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class LevelSaveOrCompleteForm extends Component
@@ -14,7 +17,13 @@ class LevelSaveOrCompleteForm extends Component
     public string $uploadCode = '';
     public string $url = '';
     public string $previewUrl = '';
-    public int $level_id;
+    public int $lid;
+    public int $uid;
+    public string $type = 'save';
+    public string $filestackHandle;
+    public string $artifactName;
+    public string $notes;
+    public string $teammates;
 
     // As the parent, this component is the only one that needs to know about
     // its children. Siblings shouldn't know about each other to stay modular.
@@ -23,10 +32,6 @@ class LevelSaveOrCompleteForm extends Component
         'filestackUploadDeleted',
         'makePreviewImage',
         'removePreview',
-    ];
-
-    protected $rules = [
-        'url' => 'url',
     ];
 
     public function filestackUploadComplete()
@@ -170,6 +175,11 @@ class LevelSaveOrCompleteForm extends Component
         }
     }
 
+    public function makeArtifact()
+    {
+        $this->validate();
+    }
+
     public function mount()
     {
     }
@@ -232,6 +242,21 @@ class LevelSaveOrCompleteForm extends Component
             $filemime = 'video/mp4';
         }
         return $filemime;
+    }
+
+    protected function rules()
+    {
+        return [
+            'lid' => 'int|exists:App\Models\Level,id',
+            'uid' => ['int', 'exists:App\Models\User,id', Rule::in([Auth::user()->id])],
+            'type' => ['required', 'regex:/^(save)|(complete)$/'],
+            'filestackHandle' => 'required_without_all:url,uploadcode',
+            'uploadCode' => ['required_without_all:file,url', 'max:10', new UploadCode],
+            'url' => 'required_without_all:file,uploadcode|nullable|url|max:2048',
+            'artifactName' => 'max:255',
+            'notes' => 'max:4098',
+            'teammates.*' => 'int',
+        ];
     }
 }
 

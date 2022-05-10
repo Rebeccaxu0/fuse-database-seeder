@@ -1,9 +1,7 @@
-<form method="POST"
-      action="{{ route('student.save_artifact') }}"
-      class="bg-slate-100 rounded-xl p-2">
+<form wire:submit.prevent="makeArtifact" class="bg-slate-100 rounded-xl p-2">
     @csrf
     <button id="close-btn" class="float-right"><x-icon icon="x-circle" /></button>
-    <input type="hidden" id="lid" name="lid" value="{{ $level_id }}" />
+    <input type="hidden" id="lid" name="lid" value="{{ $lid }}" />
     @error('lid')
     <div class="alert">{{ $message }}</div>
     @enderror
@@ -23,15 +21,13 @@
             <div>{{ $previewName }}</div>
             <button class="btn" wire:click.prevent="removePreview">{{ __('Remove') }}</button>
             <div class="w-full">
-                <label for="name" class="p-0">{{ ('Name (optional)') }}</label>
-                @error('name')
+                <label for="artifactName" class="p-0">{{ ('Name (optional)') }}</label>
+                @error('artifactName')
                 <span class="alert">{{ $message }}</span>
                 @enderror
-                <input id="name"
-                       name="name"
+                <input wire:model="artifactName"
                        placeholder="{{ __('Rename your artifact if you want') }}"
-                       value="{{ old('name') }}"
-                       class="px-1 @error('name') border border-red-500 @enderror placeholder-gray-300"
+                       class="px-1 @error('artifactName') border border-red-500 @enderror placeholder-gray-300"
                        />
             </div>
     @error('name')
@@ -46,16 +42,16 @@
         {{-- <livewire:upload-code /> --}}
     @if (! $uploadCodeDisappear)
         <label class="pt-0" for="uploadcode">{{ ('Mobile Upload Code') }}</label>
-        @error('uploadcode')
+        @error('uploadCode')
         <span class="alert">{{ $message }}</span>
         @enderror
         <input wire:model.debounce.500ms="uploadCode"
-               id="uploadcode"
-               name="uploadcode"
+               id="uploadCode"
+               name="uploadCode"
                placeholder="{{ ('e.g. ABC123') }}"
-               value="{{ old('uploadcode') }}"
+               value="{{ old('uploadCode') }}"
                class="px-1 placeholder-gray-300"
-               {{-- @error('uploadcode') border border-red-500 @enderror --}}
+               {{-- @error('uploadCode') border border-red-500 @enderror --}}
                @if ($uploadCodeDisabled) disabled @endif
                />
     @endif
