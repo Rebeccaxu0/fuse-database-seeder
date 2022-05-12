@@ -12,17 +12,6 @@ use Illuminate\Support\Str;
 class ChallengeVersionController extends Controller
 {
     /**
-     * Create the controller instance.
-     *
-     * @return void
-    */
-     
-    public function __construct()
-    {
-        $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
-    }
-
-    /**
      * Display a customized listing of the resource for students.
      *
      * @return \Illuminate\Http\Response
@@ -81,6 +70,8 @@ class ChallengeVersionController extends Controller
         $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
+            'challenge_id' => 'required',
+            'category_id' => 'required',
         ]);
 
 
@@ -94,27 +85,9 @@ class ChallengeVersionController extends Controller
             'info_article_url' => $request->infourl
         ]);
 
-        return redirect(route('admin.challenges.index'));
+        return redirect(route('admin.challengeversions.index'));
     } 
-/*
-    public function store(Request $request)
-    {
-        $request->flash();
-        $validated = $request->validate([
-            'name' => 'required|unique:challenge_versions|max:255',
-        ]);
 
-        $challengeversion = ChallengeVersion::create([
-            'name' => $request->name,
-            //'challenge_id' => $challenge->id,
-            //'challenge_category_id' => $request->category_id,
-            //'slug' => Str::of($request->name)->slug('-'),
-        ]);
-
-        return redirect(route('admin.challenges.index'));
-    }
-
-*/
     /**
      * Display the specified resource.
      *
