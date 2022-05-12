@@ -45,7 +45,7 @@ class LevelController extends Controller
 
         $level = Level::create([
             'levelable_id' => $request->levelable_id,
-            'levelable_type' => 'App\Models\ChallengeVersion',
+            'levelable_type' => ChallengeVersion::class,
             'blurb' => $request->blurb,
             'challenge_desc' => $request->challenge_desc,
             'stuff_you_need_desc' => $request->syn_desc,
@@ -204,7 +204,7 @@ class LevelController extends Controller
     {
         $level->update([
             'levelable_id' => $request->levelable_id,
-            'levelable_type' => 'App\Models\ChallengeVersion',
+            'levelable_type' => ChallengeVersion::class,
             'blurb' => $request->blurb,
             'challenge_desc' => $request->challenge,
             'stuff_you_need_desc' => $request->stuffyouneed,
@@ -234,7 +234,7 @@ class LevelController extends Controller
     {
         $newlevel = Level::create([
             'levelable_id' => $level->levelable_id,
-            'levelable_type' => 'App\Models\ChallengeVersion',
+            'levelable_type' => ChallengeVersion::class,
             'blurb' => $level->blurb,
             'challenge_desc' => $level->challenge_desc,
             'stuff_you_need_desc' => $level->syn_desc,
