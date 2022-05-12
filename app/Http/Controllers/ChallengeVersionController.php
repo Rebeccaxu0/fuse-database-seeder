@@ -56,7 +56,11 @@ class ChallengeVersionController extends Controller
      */
     public function create(Challenge $challenge)
     {
-        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name'), 'challenges' => Challenge::all()->sortBy('name')]);
+        return view('admin.challengeversion.create', [
+            'challenge' => $challenge, 
+            'categories' => ChallengeCategory::all()->sortBy('name'), 
+            'challenges' => Challenge::all()->sortBy('name')
+        ]);
     }
 
     /**
@@ -123,9 +127,17 @@ class ChallengeVersionController extends Controller
      */
     public function update(Request $request, ChallengeVersion $challengeversion)
     {
+        $request->flash();
+        $validated = $request->validate([
+            'name' => 'required|unique:challenge_versions|max:255',
+            'challenge_id' => 'required',
+            'category_id' => 'required',
+        ]);
+
         $challengeversion->update([
             'name' => $request->name,
             'slug' => Str::of($request->name)->slug('-'),
+            'challenge_id' => $request->challenge_id,
             'challenge_category_id' => $request->category_id,
             'gallery_version_desc_short' => $request->versiondesc, 
             'blurb' => $request->blurb,
@@ -139,6 +151,34 @@ class ChallengeVersionController extends Controller
 
         $challengeversion->setLevelsOrder($request->level);
         return redirect(route('admin.challenges.index'));
+    }
+
+    /**
+     * Copy the challenge version and allow user to edit from there. 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\ChallengeVersion $challengeversion
+     * @return \Illuminate\Http\Response
+     */
+    public function copy(Request $request, ChallengeVersion $challengeversion)
+    {
+        $newchallengeversion = ChallengeVersion::create([
+            'name' => $challengeversion->name,
+            'slug' => Str::of($challengeversion->name)->slug('-'),
+            'challenge_id' => $challengeversion->challenge_id,
+            'challenge_category_id' => $challengeversion->category_id,
+            'gallery_version_desc_short' => $challengeversion->versiondesc, 
+            'blurb' => $challengeversion->blurb,
+            'summary' => $challengeversion->summary,
+            'stuff_you_need' => $challengeversion->stuffyouneed,
+            'facilitator_notes' => $challengeversion->facnotes,
+            'chromebook_info' => $challengeversion->chromeinfo,
+            'prerequisite_challenge_version_id' => $challengeversion->prereqchal,
+            'info_article_url' => $challengeversion->infourl
+        ]);
+
+        $newchallengeversion->setLevelsOrder($challengeversion->level);
+        return redirect(route('admin.challengeversions.index'));
     }
 
     /**

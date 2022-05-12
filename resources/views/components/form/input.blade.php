@@ -1,7 +1,7 @@
 @props(['name', 'label', 'required' => false])
 
 <div class="mb-6">
-    <label class="text-base"for="{{ $name }}">
+    <label class="text-base" for="{{ $name }}">
         <span class="text-gray-700 form-required">{{ $label }}</span>
         @if ($required)
             <span class="form-required" title="This field is required.">*</span>

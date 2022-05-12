@@ -8,11 +8,13 @@ use Livewire\Component;
 
 class QuillText extends Component
 {
-    public $name; //request parameter ex. challenge_desc
-    public $label; //label for text box
-    public $sublabel; //sublabel
-    public $content; //name for content of quill editor box
-    public $old; //previous contents
+    // Name and request parameter.
+    public $name; 
+    public $label; 
+    public $sublabel; 
+    // Variable name for content of quill editor box.
+    public $content; 
+    public $old;
 
     public function render()
     {

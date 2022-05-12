@@ -8,6 +8,7 @@
         @method('PUT')
         @csrf
         <x-form.input label="Name" name="name" required="true" :value="old('name', $challengeversion->name)" />
+        <x-form.dropdown label="Parent Challenge" required="true" name="challenge_id" :value="old('challenge_id', $challengeversion->challenge_id)" :list="$challenges" />
         <x-form.dropdown label="Category" required="true" name="category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />
         <p> //preview image </p>
         <p> //gallery media </p>
@@ -19,25 +20,25 @@
                 @foreach ($challengeversion->levels as $i => $level)
                 <li class="text-left list-none border-2 bg-slate-200 rounded-lg m-6 p-4"> <input name="level[{{$level->id}}]" value="{{$i+1}}" type="hidden" />
                     @if ($level->blurb)
-                        {!! $level->blurb !!}
+                    {!! $level->blurb !!}
                     @else
-                        Current level {{ $level->level_number }} (no blurb)
+                    Current level {{ $level->level_number }} (no blurb)
                     @endif
                 </li>
                 @endforeach
             </ol>
         </div>
         <x-form.textarea name="version description" sublabel="A short description to help differentiate between different versions of the same challenge." />
-        <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" content="blurbcontent" old="{!! $challengeversion->blurb !!}">
-            <livewire:admin.quill-text name="summary" label="Summary" content="summarycontent" old="{!! $challengeversion->summary !!}">
-                <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" content="syncontent" old="{!! $challengeversion->stuff_you_need !!}">
-                    <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" content="fncontent" old="{!! $challengeversion->facilitator_notes!!}">
-                        <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" content="cbcontent" old="{!! $challengeversion->chromebook_info !!}">
-                            <x-form.dropdown label="Prerequisite Challenge" :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)" name="prereqchal" :list="$challenges" />
-                            <x-form.input label="Information Article URL" name="infourl" :value="old('info_article_url', $challengeversion->info_article_url)" />
-                            <div class="flex flex-wrap mt-4 -mx-3 mb-2">
-                                <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Save Challenge Version') }}</button>
-                            </div>
+        <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" content="blurbcontent" old="{!! $challengeversion->blurb !!}" />
+        <livewire:admin.quill-text name="summary" label="Summary" content="summarycontent" old="{!! $challengeversion->summary !!}" />
+        <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" content="syncontent" old="{!! $challengeversion->stuff_you_need !!}" />
+        <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" content="fncontent" old="{!! $challengeversion->facilitator_notes!!}" />
+        <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" content="cbcontent" old="{!! $challengeversion->chromebook_info !!}" />
+        <x-form.dropdown label="Prerequisite Challenge" :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)" name="prereqchal" :list="$challenges" />
+        <x-form.input label="Information Article URL" name="infourl" :value="old('info_article_url', $challengeversion->info_article_url)" />
+        <div class="flex flex-wrap mt-4 -mx-3 mb-2">
+            <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Save Challenge Version') }}</button>
+        </div>
 
     </form>
 

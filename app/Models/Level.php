@@ -90,11 +90,6 @@ class Level extends Model
                     ->firstWhere('level_number', $this->level_number + 1);
     }
 
-    // public function setLevelableIdAttribute(int $id)
-    // {
-    //     $this->attributes['levelable_id'] = $id;
-    //     $this->level_number = null;
-    // }
 
     public function setLevelNumberAttribute($value)
     {

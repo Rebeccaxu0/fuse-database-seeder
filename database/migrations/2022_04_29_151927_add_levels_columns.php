@@ -31,7 +31,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('levels', function (Blueprint $table) {
             $table->dropColumn('blurb', 'challenge_desc', 'stuff_you_need_desc', 'get_started_desc', 'how_to_complete_desc', 'get_help_desc', 'power_up_desc');
         });
     }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
@@ -127,7 +128,8 @@ class LevelController extends Controller
                     ->first();
                 if (!$prerequisiteChallengeVersion) {
                     $available = false;
-                } else {
+                } 
+                else {
                     $prerequisite_text
                         = __(
                             'You must complete :prerequisite_challenge to unlock this challenge.',
@@ -141,7 +143,8 @@ class LevelController extends Controller
                         ]
                     );
                 }
-            } else {
+            } 
+            else {
                 $prerequisite_text
                     = __(
                         'You must complete level :number to unlock this level.',
@@ -212,6 +215,46 @@ class LevelController extends Controller
             'get_help_desc' => $request->gh,
             'power_up_desc' => $request->pu,
         ]);
+        if ($request->session()->get('prev') == 'Copy of') {
+            $request->session()->forget('prev');
+            return redirect(route('admin.challengeversions.edit', $request->levelable_id));
+        } 
+        else {
+            $request->session()->forget('prev');
+            return redirect(route('admin.challengeversions.index'));
+        }
+    }
+
+    /**
+     * Copy the level and allow user to edit from there. 
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Package  $package
+     * @return \Illuminate\Http\Response
+     */
+    public function copy(Request $request, Level $level)
+    {
+        $newlevel = Level::create([
+            'levelable_id' => $level->levelable_id,
+            'levelable_type' => 'App\Models\ChallengeVersion',
+            'blurb' => $level->blurb,
+            'challenge_desc' => $level->challenge_desc,
+            'stuff_you_need_desc' => $level->syn_desc,
+            'get_started_desc' => $level->gs_desc,
+            'how_to_complete_desc' => $level->htc_desc,
+            'get_help_desc' => $level->gh_desc,
+            'power_up_desc' => $level->pu_desc,
+        ]);
+
+        $order = [];
+        $i = 0;
+        foreach ($newlevel->levelable->levels()->get() as $level) {
+            $i++;
+            $order[$level->id] = $i;
+        }
+        $newlevel->levelable->setLevelsOrder($order);
+        $newlevel->save();
+        $request->session()->put('prev', 'Copy of');
 
         return redirect(route('admin.levels.index'));
     }
