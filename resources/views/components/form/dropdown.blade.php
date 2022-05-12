@@ -1,7 +1,7 @@
-@props(['name', 'label', 'list', 'value', 'required'])
+@props(['name', 'label', 'list', 'value', 'required' => false])
 
 <div class="mb-6">
-    <span class="text-gray-700 mb-2 form-required">{{ $label }}</span>
+    <span class="text-gray-700 mb-2">{{ $label }}</span>
     @if ($required)
             <span class="form-required" title="This field is required.">*</span>
     @endif
