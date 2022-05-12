@@ -55,7 +55,7 @@ class MediaManagerPage extends Component
                        ->paginate(15);
         return view('livewire.admin.media-manager', [
             'directories' => $directories,
-            'files' => $files
+            'files' => $files,
         ]);
     }
 }

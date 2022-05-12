@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Media;
 use App\Http\Requests\StoreFileRequest;
 use App\Http\Requests\UpdateFileRequest;
+use App\Models\Media;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -44,7 +42,7 @@ class MediaController extends Controller
         return view('admin.files.index', [
             'directories' => $directories,
             'current_dir' => $current_dir,
-            'media' => $media
+            'media' => $media,
         ]);
     }
 

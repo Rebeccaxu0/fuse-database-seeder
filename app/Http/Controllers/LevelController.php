@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
-use App\Models\Challenge;
 use App\Models\Level;
-use App\Models\Idea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;

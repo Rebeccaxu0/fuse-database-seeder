@@ -57,9 +57,9 @@ class ChallengeVersionController extends Controller
     public function create(Challenge $challenge)
     {
         return view('admin.challengeversion.create', [
-            'challenge' => $challenge, 
-            'categories' => ChallengeCategory::all()->sortBy('name'), 
-            'challenges' => Challenge::all()->sortBy('name')
+            'challenge' => $challenge,
+            'categories' => ChallengeCategory::all()->sortBy('name'),
+            'challenges' => Challenge::all()->sortBy('name'),
         ]);
     }
 
@@ -86,11 +86,11 @@ class ChallengeVersionController extends Controller
             'blurb' => $request->blurb,
             'prerequisite_challenge_version_id' => $request->prereqchal,
             'slug' => Str::of($request->name)->slug('-'),
-            'info_article_url' => $request->infourl
+            'info_article_url' => $request->infourl,
         ]);
 
         return redirect(route('admin.challengeversions.index'));
-    } 
+    }
 
     /**
      * Display the specified resource.
@@ -113,7 +113,7 @@ class ChallengeVersionController extends Controller
     {
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
-            'categories' => ChallengeCategory::all()->sortBy('name'), 
+            'categories' => ChallengeCategory::all()->sortBy('name'),
             'challenges' => Challenge::all()->sortBy('name'),
         ]);
     }
@@ -139,14 +139,14 @@ class ChallengeVersionController extends Controller
             'slug' => Str::of($request->name)->slug('-'),
             'challenge_id' => $request->challenge_id,
             'challenge_category_id' => $request->category_id,
-            'gallery_version_desc_short' => $request->versiondesc, 
+            'gallery_version_desc_short' => $request->versiondesc,
             'blurb' => $request->blurb,
             'summary' => $request->summary,
             'stuff_you_need' => $request->stuffyouneed,
             'facilitator_notes' => $request->facnotes,
             'chromebook_info' => $request->chromeinfo,
             'prerequisite_challenge_version_id' => $request->prereqchal,
-            'info_article_url' => $request->infourl
+            'info_article_url' => $request->infourl,
         ]);
 
         $challengeversion->setLevelsOrder($request->level);
@@ -154,7 +154,7 @@ class ChallengeVersionController extends Controller
     }
 
     /**
-     * Copy the challenge version and allow user to edit from there. 
+     * Copy the challenge version and allow user to edit from there.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\ChallengeVersion $challengeversion
@@ -167,14 +167,14 @@ class ChallengeVersionController extends Controller
             'slug' => Str::of($challengeversion->name)->slug('-'),
             'challenge_id' => $challengeversion->challenge_id,
             'challenge_category_id' => $challengeversion->category_id,
-            'gallery_version_desc_short' => $challengeversion->versiondesc, 
+            'gallery_version_desc_short' => $challengeversion->versiondesc,
             'blurb' => $challengeversion->blurb,
             'summary' => $challengeversion->summary,
             'stuff_you_need' => $challengeversion->stuffyouneed,
             'facilitator_notes' => $challengeversion->facnotes,
             'chromebook_info' => $challengeversion->chromeinfo,
             'prerequisite_challenge_version_id' => $challengeversion->prereqchal,
-            'info_article_url' => $challengeversion->infourl
+            'info_article_url' => $challengeversion->infourl,
         ]);
 
         $newchallengeversion->setLevelsOrder($challengeversion->level);

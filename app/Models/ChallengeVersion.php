@@ -35,7 +35,7 @@ class ChallengeVersion extends Model
         'stuff_you_need',
         'facilitator_notes',
         'prerequisite_challenge_version_id',
-        'info_article_url'
+        'info_article_url',
     ];
 
     /**

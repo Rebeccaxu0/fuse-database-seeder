@@ -27,5 +27,4 @@
         </div>
     </form>
 
-
 </x-app-layout>

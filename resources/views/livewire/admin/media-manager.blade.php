@@ -15,7 +15,7 @@
             <input class="inline-block" type="text" wire:model="current_dir" placeholder="{{ __('Current Directory') }}">
         </summary>
         <ul>
-            @foreach($directories as $directory)
+            @foreach ($directories as $directory)
             <li class="p-0 m-0">{{ $directory->directory }}</li>
             @endforeach
         </ul>
