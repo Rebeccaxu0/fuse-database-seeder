@@ -16,7 +16,15 @@ class ChallengeVersion extends Model
     use Mediable;
     use SoftDeletes;
 
-    public $translatable = ['blurb', 'facilitator_notes', 'gallery_note', 'name'];
+    public $translatable = [
+        'blurb',
+        'chromebook_info',
+        'facilitator_notes',
+        'gallery_note',
+        'name',
+        'stuff_you_need',
+        'summary',
+    ];
 
     /**
      * The attributes that are mass assignable.

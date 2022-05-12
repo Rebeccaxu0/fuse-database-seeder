@@ -54,9 +54,9 @@ class SchoolController extends Controller
         ]);
     }
     /**
-     * 
      *
-     * 
+     *
+     *
      */
     public function addstudios(Request $request, School $school)
     {

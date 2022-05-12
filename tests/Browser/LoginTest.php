@@ -8,7 +8,7 @@ use Tests\DuskTestCase;
 
 class LoginTest extends DuskTestCase
 {
-    
+
     public function testSuccessfulLogin()
     {
         $this->browse(function (Browser $browser) {

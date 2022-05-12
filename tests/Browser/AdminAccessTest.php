@@ -9,7 +9,7 @@ use Tests\DuskTestCase;
 
 class AdminAccessTest extends DuskTestCase
 {
-    
+
     public function testAdminAccess()
     {
         $this->browse(function (Browser $browser) {

@@ -120,7 +120,7 @@ class LevelSaveOrCompleteForm extends Component
         $this->urlDisappear = true;
         $this->emit('filestackDisappear');
 
-        $fskey = env('FILESTACK_API_KEY');
+        $fskey = config('filestack.api_key');
         $validTypes = ['filestack', 'mobile upload code', 'url'];
         if (! in_array($type, $validTypes)) {
             // Throw exception;

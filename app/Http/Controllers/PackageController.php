@@ -112,7 +112,7 @@ class PackageController extends Controller
     }
 
     /**
-     * Copy the package and allow user to edit from there. 
+     * Copy the package and allow user to edit from there.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Package  $package

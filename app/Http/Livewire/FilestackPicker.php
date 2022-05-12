@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use Filestack\Filelink;
 use Filestack\FilestackClient;
 use Livewire\Component;
 
@@ -55,11 +54,11 @@ class FilestackPicker extends Component
 
     public function mount()
     {
-        $this->fsClient = new FilestackClient(env('FILESTACK_API_KEY'));
+        $this->fsClient = new FilestackClient(config('filestack.api_key'));
         $this->pickerOptions = [
             'cleanupImageExif' => [
                 'keepOrientation' => true,
-                'keepICCandAPP' => true
+                'keepICCandAPP' => true,
             ],
             'container' => '#Filestack-Picker',
             'disableTransformer' => true,
@@ -67,7 +66,7 @@ class FilestackPicker extends Component
             'dropPane' => [
                 'overlay' => false,
                 'showIcon' => true,
-                'showProgress' => true
+                'showProgress' => true,
             ],
             'fromSources' => ['local_file_system', 'googledrive', 'webcam', 'audio', 'video'],
             'maxFiles' => 1,
@@ -76,9 +75,9 @@ class FilestackPicker extends Component
                 'container' => 'fusestudio-student-uploads',
                 'location' => 's3',
                 'path' => auth()->user()->id . '/',
-                'region' => 'us-east-1'
+                'region' => 'us-east-1',
             ],
-            'uploadInBackground' => false
+            'uploadInBackground' => false,
         ];
     }
 

@@ -9,7 +9,7 @@ use Tests\DuskTestCase;
 
 class AdminCRUDTest extends DuskTestCase
 {
-    
+
     public function testAdminCreatePackage()
     {
         $this->browse(function (Browser $browser) {
