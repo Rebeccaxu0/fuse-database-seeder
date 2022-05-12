@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Challenge;
-use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +55,7 @@ class ChallengeVersionController extends Controller
      */
     public function create(Challenge $challenge)
     {
-        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name'), 'challenges' => Challenge::all()->sortBy('name')]);
+        return view('admin.challengeversions.create', ['challenge' => $challenge]);
     }
 
     /**
@@ -69,24 +68,16 @@ class ChallengeVersionController extends Controller
     {
         $request->flash();
         $validated = $request->validate([
-            'name' => 'required|unique:challenge_versions|max:255',
-            'challenge_id' => 'required',
-            'category_id' => 'required',
+            'name' => 'required|unique:challengeversions|max:255',
         ]);
-
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
-            'challenge_id' => $request->challenge_id,
-            'challenge_category_id' => $request->category_id,
-            'blurb' => $request->blurb,
-            'prerequisite_challenge_version_id' => $request->prereqchal,
-            'slug' => Str::of($request->name)->slug('-'),
-            'info_article_url' => $request->infourl
+            'description' => $request->description,
         ]);
 
-        return redirect(route('admin.challengeversions.index'));
-    } 
+        return redirect(route('admin.challenges.index'));
+    }
 
     /**
      * Display the specified resource.
@@ -107,10 +98,8 @@ class ChallengeVersionController extends Controller
      */
     public function edit(ChallengeVersion $challengeversion)
     {
-        return view('admin.challengeversion.edit', [
-            'challengeversion' => $challengeversion,
-            'categories' => ChallengeCategory::all()->sortBy('name'), 
-            'challenges' => Challenge::all()->sortBy('name'),
+        return view('admin.challengeversions.edit', [
+            'version' => $challengeVersion,
         ]);
     }
 
@@ -123,21 +112,11 @@ class ChallengeVersionController extends Controller
      */
     public function update(Request $request, ChallengeVersion $challengeversion)
     {
-        $challengeversion->update([
+        $challengeVersion->update([
             'name' => $request->name,
-            'slug' => Str::of($request->name)->slug('-'),
-            'challenge_category_id' => $request->category_id,
-            'gallery_version_desc_short' => $request->versiondesc, 
-            'blurb' => $request->blurb,
-            'summary' => $request->summary,
-            'stuff_you_need' => $request->stuffyouneed,
-            'facilitator_notes' => $request->facnotes,
-            'chromebook_info' => $request->chromeinfo,
-            'prerequisite_challenge_version_id' => $request->prereqchal,
-            'info_article_url' => $request->infourl
+            'description' => $request->description,
         ]);
 
-        $challengeversion->setLevelsOrder($request->level);
         return redirect(route('admin.challenges.index'));
     }
 
