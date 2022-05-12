@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Challenge;
+use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,17 @@ use Illuminate\Support\Str;
 
 class ChallengeVersionController extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+    */
+     
+    public function __construct()
+    {
+        $this->authorizeResource(ChallengeVersion::class, 'challenge_version');
+    }
+
     /**
      * Display a customized listing of the resource for students.
      *
@@ -55,7 +67,7 @@ class ChallengeVersionController extends Controller
      */
     public function create(Challenge $challenge)
     {
-        return view('admin.challengeversions.create', ['challenge' => $challenge]);
+        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name')]);
     }
 
     /**
@@ -68,12 +80,14 @@ class ChallengeVersionController extends Controller
     {
         $request->flash();
         $validated = $request->validate([
-            'name' => 'required|unique:challengeversions|max:255',
+            'name' => 'required|unique:challenge_versions|max:255',
         ]);
 
         $challengeversion = ChallengeVersion::create([
             'name' => $request->name,
-            'description' => $request->description,
+            'challenge_id' => $challenge->id,
+            'challenge_category_id' => $request->category_id,
+            'slug' => Str::of($request->name)->slug('-'),
         ]);
 
         return redirect(route('admin.challenges.index'));
@@ -98,8 +112,8 @@ class ChallengeVersionController extends Controller
      */
     public function edit(ChallengeVersion $challengeversion)
     {
-        return view('admin.challengeversions.edit', [
-            'version' => $challengeVersion,
+        return view('admin.challengeversion.edit', [
+            'challengeversion' => $challengeVersion,
         ]);
     }
 
@@ -114,7 +128,6 @@ class ChallengeVersionController extends Controller
     {
         $challengeVersion->update([
             'name' => $request->name,
-            'description' => $request->description,
         ]);
 
         return redirect(route('admin.challenges.index'));
@@ -128,7 +141,8 @@ class ChallengeVersionController extends Controller
      */
     public function destroy(ChallengeVersion $challengeversion)
     {
-        $challengeversion->delete();
+        dd($challengeVersion);
+        $challengeVersion->delete();
         return redirect(route('admin.challenges.index'));
     }
 }
