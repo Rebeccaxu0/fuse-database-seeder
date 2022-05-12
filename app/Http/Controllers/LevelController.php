@@ -128,7 +128,7 @@ class LevelController extends Controller
                     ->first();
                 if (! $prerequisiteChallengeVersion) {
                     $available = false;
-                } 
+                }
                 else {
                     $prerequisite_text
                         = __(
@@ -143,7 +143,7 @@ class LevelController extends Controller
                         ]
                     );
                 }
-            } 
+            }
             else {
                 $prerequisite_text
                     = __(
@@ -218,7 +218,7 @@ class LevelController extends Controller
         if ($request->session()->get('prev') == 'Copy of') {
             $request->session()->forget('prev');
             return redirect(route('admin.challengeversions.edit', $request->levelable_id));
-        } 
+        }
         else {
             $request->session()->forget('prev');
             return redirect(route('admin.challengeversions.index'));
@@ -226,7 +226,7 @@ class LevelController extends Controller
     }
 
     /**
-     * Copy the level and allow user to edit from there. 
+     * Copy the level and allow user to edit from there.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Package  $package

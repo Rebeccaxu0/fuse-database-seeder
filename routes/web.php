@@ -129,25 +129,25 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
                 'studios'       => StudioController::class,
                 'users'         => UserController::class,
             ]);
-                
+
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
 
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
 
             // Manual recreation of Challenge Version resource routes with added parameters.
-            Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');    
+            Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');
             Route::post('challengeversions/', [ChallengeVersionController::class, 'store'])->name('challengeversions.store');
-            Route::get('challengeversions/', [ChallengeVersionController::class, 'index'])->name('challengeversions.index'); 
+            Route::get('challengeversions/', [ChallengeVersionController::class, 'index'])->name('challengeversions.index');
             Route::get('challengeversions/{challengeversion}/edit', [ChallengeVersionController::class, 'edit'])->name('challengeversions.edit');
             Route::put('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'update'])->name('challengeversions.update');
             Route::delete('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'destroy'])->name('challengeversions.destroy');
             Route::post('challengeversions/{challengeversion}/copy', [ChallengeVersionController::class, 'copy'])->name('challengeversions.copy');
 
             // Manual recreation of Levels resource routes with added parameters.
-            Route::get('levels/create', [LevelController::class, 'create'])->name('levels.create');    
+            Route::get('levels/create', [LevelController::class, 'create'])->name('levels.create');
             Route::post('levels/', [LevelController::class, 'store'])->name('levels.store');
-            Route::get('levels/', [LevelController::class, 'index'])->name('levels.index'); 
+            Route::get('levels/', [LevelController::class, 'index'])->name('levels.index');
             Route::get('levels/{level}/edit', [LevelController::class, 'edit'])->name('levels.edit');
             Route::put('levels/{level}', [LevelController::class, 'update'])->name('levels.update');
             Route::delete('levels/{level}', [LevelController::class, 'destroy'])->name('levels.destroy');

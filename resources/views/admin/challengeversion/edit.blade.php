@@ -29,11 +29,11 @@
             </ol>
         </div>
         <x-form.textarea name="version description" sublabel="A short description to help differentiate between different versions of the same challenge." />
-        <livewire:admin.quill-text name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" content="blurbcontent" old="{!! $challengeversion->blurb !!}" />
-        <livewire:admin.quill-text name="summary" label="Summary" content="summarycontent" old="{!! $challengeversion->summary !!}" />
-        <livewire:admin.quill-text name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" content="syncontent" old="{!! $challengeversion->stuff_you_need !!}" />
-        <livewire:admin.quill-text name="facnotes" label="Facilitator Notes" content="fncontent" old="{!! $challengeversion->facilitator_notes!!}" />
-        <livewire:admin.quill-text name="chromeinfo" label="Chromebook Info" content="cbcontent" old="{!! $challengeversion->chromebook_info !!}" />
+        <x-form.quill-textarea name="blurb" label="Gallery Blurb" sublabel="ex. 'Design your own 3D balance toy.'" content="blurbcontent" :old="$challengeversion->blurb" />
+        <x-form.quill-textarea name="summary" label="Summary" content="summarycontent" :old="$challengeversion->summary" />
+        <x-form.quill-textarea name="stuffyouneed" label="Stuff You Need" sublabel="ex. 'Chromebook, LED lights.'" content="syncontent" :old="$challengeversion->stuff_you_need" />
+        <x-form.quill-textarea name="facnotes" label="Facilitator Notes" content="fncontent" :old="$challengeversion->facilitator_notes" />
+        <x-form.quill-textarea name="chromeinfo" label="Chromebook Info" content="cbcontent" :old="$challengeversion->chromebook_info" />
         <x-form.dropdown label="Prerequisite Challenge" :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)" name="prereqchal" :list="$challenges" />
         <x-form.input label="Information Article URL" name="infourl" :value="old('info_article_url', $challengeversion->info_article_url)" />
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
