@@ -17,11 +17,10 @@
                     <a href="{{ route('admin.levels.edit', $level->id) }}">
                         <x-icon icon="edit" width=25 height=25 class="ml-2 text-black" />
                     </a>
-                    <form method="post" action="{{ route('admin.levels.copy', $level) }}" class="inline-block">
+                    <form method="post" action="{{ route('admin.levels.copy', $level) }}"
+                        class="inline-block">
                         @csrf
-                        <button>
-                        <x-icon icon="copy" width=25 height=25 class="ml-2 text-black" />
-                        </button>
+                        <button><img class="h-6 w-6" src="/copyicon.png"></button>
                     </form>
                     <form method="post" action="{{ route('admin.levels.destroy', $level->id) }}">
                         @method('delete')

@@ -9,7 +9,7 @@
     <ul>
         <li><a href="{{ route('admin.users.index') }}">{{ __('Users') }}</a></li>
         <li><a href="{{ route('admin.challenges.index') }}">{{ __('Challenges') }}</a></li>
-        <li><a href="{{ route('admin.challengeversions.index') }}">{{ __('Challenge Versions') }}</a></li>
+        <li><a href="{{ route('admin.levels.index') }}">{{ __('Levels') }}</a></li>
         <li><a href="{{ route('admin.districts.index') }}">{{ __('Districts') }}</a></li>
         <li><a href="{{ route('admin.schools.index') }}">{{ __('Schools') }}</a></li>
         <li><a href="{{ route('admin.studios.index') }}">{{ __('Studios') }}</a></li>

@@ -61,12 +61,6 @@ class ChallengeVersionController extends Controller
 
 
     /**
-    public function create(Challenge $challenge)
-    {
-        return view('admin.challengeversion.create', ['challenge' => $challenge, 'categories' => ChallengeCategory::all()->sortBy('name')]);
-    }*/
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

@@ -19,7 +19,7 @@ use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
-use App\Models\ChallengeVersion;
+//use App\Models\ChallengeVersion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -121,7 +121,6 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
         ->group(function () {
             Route::resources([
                 'challenges'    => ChallengeController::class,
-                //'challengeversions'    => ChallengeVersionController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
                 'media'         => MediaController::class,
@@ -144,6 +143,17 @@ Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(functi
             Route::get('challengeversions/{challengeversion}/edit', [ChallengeVersionController::class, 'edit'])->name('challengeversions.edit');
             Route::put('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'update'])->name('challengeversions.update');
             Route::delete('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'destroy'])->name('challengeversions.destroy');
+
+            //manual recreation of Levels resource routes
+            //create, store require a ChallengeVersion or Idea parent....!!
+            Route::get('levels/create', [LevelController::class, 'create'])->name('levels.create');    
+            Route::post('levels/', [LevelController::class, 'store'])->name('levels.store');
+            
+            Route::get('levels/', [LevelController::class, 'index'])->name('levels.index'); 
+            Route::get('levels/{level}/edit', [LevelController::class, 'edit'])->name('levels.edit');
+            Route::put('levels/{level}', [LevelController::class, 'update'])->name('levels.update');
+            Route::delete('levels/{level}', [LevelController::class, 'destroy'])->name('levels.destroy');
+            Route::post('levels/{level}/copy', [LevelController::class, 'copy'])->name('levels.copy');
 
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('media', MediaManagerPage::class)->name('media.index');
