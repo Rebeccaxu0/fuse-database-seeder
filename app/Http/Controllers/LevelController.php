@@ -30,7 +30,6 @@ class LevelController extends Controller
     public function create()
     {
         $parents = ChallengeVersion::all()->sortBy('name');
-        $test = ChallengeVersion::first()->id;
         return view('admin.level.create', ['parents' => $parents]);
     }
 
@@ -60,6 +59,7 @@ class LevelController extends Controller
 
         $order = [];
         $i = 0;
+        $order[$level->id] = $i;
         foreach ($level->levelable->levels()->get() as $level) {
             $i++;
             $order[$level->id] = $i;
@@ -188,7 +188,8 @@ class LevelController extends Controller
     {
         return view('admin.level.edit', [
             'level' => $level,
-            'parents' => ChallengeVersion::all()->sortBy('name')
+            'parents' => ChallengeVersion::all()->sortBy('name'),
+            'copy' => $request->session()->get('prev'),
         ]);
     }
 
@@ -253,7 +254,7 @@ class LevelController extends Controller
         $newlevel->save();
         $request->session()->put('prev', 'Copy of');
 
-        return redirect(route('admin.levels.index'));
+        return redirect(route('admin.levels.edit', $newlevel));
     }
 
     /**
@@ -265,6 +266,6 @@ class LevelController extends Controller
     public function destroy(Level $level)
     {
         $level->delete();
-        return redirect(route('admin.levels.index'));
+        return redirect(route('admin.challengeversions.index'));
     }
 }

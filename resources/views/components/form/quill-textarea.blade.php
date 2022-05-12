@@ -18,7 +18,6 @@
   <span class="text-gray-700 text-xs mb-2">{{ $sublabel }}</span>
   @endif
 
-  {{-- <div id="{{ $name . '-editor' }}">{!! $old !!}</div> --}}
   <div
        x-data
        :id="$id('quill-editor')"
