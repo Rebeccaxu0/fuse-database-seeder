@@ -9,16 +9,17 @@
         </ul>
     </div>
 @endif
-    <x-slot name="title">{{ __('Edit Challenge Version :name', ['name' => $challengeversion->name]) }}</x-slot>
+    <x-slot name="title">{{ __('Edit Version of Challenge ":challenge"', ['challenge' => $challengeversion->challenge->name]) }}</x-slot>
 
-    <x-slot name="header">{{ __('Edit Challenge Version :name', ['name' => $challengeversion->name]) }}</x-slot>
+    <x-slot name="header">{{ __('Edit Version of Challenge ":challenge"', ['challenge' => $challengeversion->challenge->name]) }}</x-slot>
+
 
     <form class="mt-6" id="editform" action="{{ route('admin.challengeversions.update', $challengeversion) }}" method="POST">
         @method('PUT')
         @csrf
+        <input type="hidden" name="challenge_id" value="{{ $challengeversion->challenge_id }}">
         <x-form.input label="{{ __('Name') }}" name="name" required="true" :value="old('name', $challengeversion->name)" />
         <x-form.input label="{{ __('Challenge Gallery version suffix') }}" name="galleryNote" :value="old('galleryNote', $challengeversion->gallery_note)" />
-        <x-form.dropdown label="Parent Challenge" required="true" name="challenge_id" :value="old('challenge_id', $challengeversion->challenge_id)" :list="$challenges" />
         <x-form.dropdown label="Category" required="true" name="category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />
         <p> //preview image </p>
         <p> //gallery media </p>

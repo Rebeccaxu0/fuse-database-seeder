@@ -10,9 +10,9 @@ class WistiaPicker extends Component
     public string $thumbnail = '';
     public string $label = 'Wistia ID';
     public string $name = 'wistiaId';
-    public string $wistiaId = '';
+    public ?string $wistiaId = '';
 
-    public function mount(string $wistiaId = '')
+    public function mount(?string $wistiaId = '')
     {
         if ($wistiaId != '') {
             $this->updatedWistiaId($wistiaId);

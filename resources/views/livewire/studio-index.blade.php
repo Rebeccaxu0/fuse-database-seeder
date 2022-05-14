@@ -4,8 +4,13 @@
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
     </div>
-    <h3 class="mt-2 mb-2">{{ $school->name }}
-        [{{ $school->district ? $school->district->name : __('<No District>') }}]</h3>
+    <h3 class="mt-2 mb-2">{{ __('District: :district (:package)', [
+        'district' => $school->district ? $school->district->name : __('No District'),
+        'package' => $school->district ? ($school->district->package ? $school->district->package->name : __('No Package Set')) : __('No District')]) }}</h3>
+    <h3 class="mt-2 mb-2">{{ __('School: :school (:package)', [
+        'school' => $school->name,
+        'package' => $school->package ? $school->package->name : __('Inherited from district'),
+        ]) }} </h3>
     @livewire ('school-district-search-bar')
     <div class="mt-8">
         <table class="min-w-full leading-normal">
@@ -37,7 +42,7 @@
                         </td>
                         <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $studio->package->name ?? __('No package set') }}
+                            {{ $studio->package->name ??  __('Inherited') ?? __('No package set') }}
                             </p>
                         </td>
                         <td class="border-gray-200 text-sm">
@@ -49,13 +54,17 @@
                         </td>
                         <td class="border-gray-200 text-sm">
                             <a href="{{ route('admin.studios.edit', $studio->id) }}">
-                                <button type="reset"><img class="h-6 w-6" src="/editpencil.svg"></button>
+                                <button type="reset">
+                                    <x-icon icon="edit" />
+                                </button>
                             </a>
                             <form method="post" action="{{ route('admin.studios.destroy', $studio->id) }}"
                                 class="inline-block">
                                 @method('delete')
                                 @csrf
-                                <button type="destroy"><img class="h-6 w-6" src="/deletetrash.svg"></button>
+                                <button type="destroy">
+                                    <x-icon icon="trash" />
+                                </button>
                             </form>
                         </td>
                     </tr>

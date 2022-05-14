@@ -188,7 +188,6 @@ class LevelController extends Controller
     {
         return view('admin.level.edit', [
             'level' => $level,
-            'parents' => ChallengeVersion::all()->sortBy('name'),
             'copy' => $request->session()->get('prev'),
         ]);
     }
@@ -206,12 +205,12 @@ class LevelController extends Controller
             'levelable_id' => $request->levelable_id,
             'levelable_type' => ChallengeVersion::class,
             'blurb' => $request->blurb,
-            'challenge_desc' => $request->challenge,
-            'stuff_you_need_desc' => $request->stuffyouneed,
-            'get_started_desc' => $request->gs,
-            'how_to_complete_desc' => $request->htc,
-            'get_help_desc' => $request->gh,
-            'power_up_desc' => $request->pu,
+            'challenge_desc' => $request->challengeDesc,
+            'stuff_you_need_desc' => $request->stuffYouNeed,
+            'get_started_desc' => $request->getStarted,
+            'how_to_complete_desc' => $request->howToComplete,
+            'get_help_desc' => $request->getHelp,
+            'power_up_desc' => $request->powerUp,
         ]);
         if ($request->session()->get('prev') == 'Copy of') {
             $request->session()->forget('prev');

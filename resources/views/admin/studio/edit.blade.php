@@ -8,7 +8,7 @@
         @method('PATCH')
         @csrf
         <x-form.input label="Name" name="name" required="true" :value="old('name', $studio->name)" />
-        <x-form.defaultdropdown label="Package" name="package" value="old('package', $studio->package_id)"
+        <x-form.defaultdropdown label="Package" name="package" :value="old('package', $studio->package_id)"
             :inherited="$studio->school->deFactoPackage" :list="$packages" />
         <livewire:facilitator.studio-code :studio="$studio">
             <div class="flex flex-wrap mt-4 -mx-3 mb-2">
