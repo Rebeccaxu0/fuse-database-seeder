@@ -32,18 +32,20 @@ class ChallengeVersion extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'slug',
-        'challenge_id',
-        'challenge_category_id',
-        'gallery_version_desc_short',
         'blurb',
-        'summary',
+        'challenge_category_id',
+        'challenge_id',
         'chromebook_info',
-        'stuff_you_need',
         'facilitator_notes',
-        'prerequisite_challenge_version_id',
+        'gallery_note',
+        'gallery_version_desc_short',
+        'gallery_wistia_video_id',
         'info_article_url',
+        'name',
+        'prerequisite_challenge_version_id',
+        'slug',
+        'stuff_you_need',
+        'summary',
     ];
 
     /**

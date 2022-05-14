@@ -6,27 +6,23 @@ use Illuminate\View\Component;
 
 class QuillTextarea extends Component
 {
-    // Name and request parameter.
     public string $name;
     public string $label;
     public ?string $sublabel;
     public string $quillToolbarOptions;
-    // Variable name for content of quill editor box.
-    public string $content;
-    public ?string $old;
+    public ?string $value;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $name, string $label, string $content = '', ?string $old = '', ?string $sublabel = '', ?string $quillToolbarOptions = null)
+    public function __construct(string $name, string $label, ?string $value = '', ?string $sublabel = '', ?string $quillToolbarOptions = null)
     {
         $this->name = $name;
         $this->label = $label;
         $this->sublabel = $sublabel;
-        $this->content = $content;
-        $this->old = $old;
+        $this->value = $value;
         $this->quillToolbarOptions = $quillToolbarOptions ?? <<<JAVASCRIPT
 [
     ['bold', 'italic'],

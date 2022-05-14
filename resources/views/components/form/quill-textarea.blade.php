@@ -36,6 +36,6 @@
          document.getElementById($id('quill-data')).value = quill[$id('quill-editor')].root.innerHTML;
        "
   >
-  {!! $old !!}
+  {!! $value !!}
   </div>
 </div>

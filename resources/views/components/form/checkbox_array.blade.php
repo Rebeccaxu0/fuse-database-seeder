@@ -1,10 +1,13 @@
 @props(['name', 'value', 'label', 'active' => null])
 
 <div>
-    <input type="checkbox" class="form-checkbox" id="{{ "{$name}-{$value}" }}" name="{{ $name }}[]"
-        value="{{ $value }}"
-        {{ (old($name) && in_array($value, old($name))) || $active ? 'checked' : '' }}>
-    <label for="{{ "{$name}-{$value}" }}">
+    <label class="p-0 m-0">
+        <input type="checkbox"
+               class="form-checkbox"
+               id="{{ "{$name}-{$value}" }}"
+               name="{{ $name }}[]"
+               value="{{ $value }}"
+               {{ (old($name) && in_array($value, old($name))) || $active ? 'checked' : '' }}>
         <span class="mx-2 text-gray-700">{{ $label }}</span>
     </label>
     @error($name)

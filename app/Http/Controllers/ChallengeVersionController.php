@@ -66,27 +66,37 @@ class ChallengeVersionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\ChallengeVersion $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Challenge $challenge)
+    public function store(Request $request, ChallengeVersion $challengeversion)
     {
         $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
             'category_id' => 'required',
+            'infoUrl' => 'nullable|url',
+            'wistiaId' => 'nullable|string',
         ]);
 
 
         $challengeversion = ChallengeVersion::create([
-            'name' => $request->name,
-            'challenge_id' => $request->challenge_id,
-            'challenge_category_id' => $request->category_id,
             'blurb' => $request->blurb,
-            'prerequisite_challenge_version_id' => $request->prereqchal,
+            'challenge_category_id' => $request->category_id,
+            'challenge_id' => $request->challenge_id,
+            'chromebook_info' => $request->chromeInfo,
+            'facilitator_notes' => $request->facNotes,
+            'gallery_note' => $request->galleryNote,
+            'gallery_version_desc_short' => $request->versionDesc,
+            'gallery_wistia_video_id' => $request->wistiaId,
+            'info_article_url' => $request->infoUrl,
+            'name' => $request->name,
+            'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
             'slug' => Str::of($request->name)->slug('-'),
-            'info_article_url' => $request->infourl,
+            'stuff_you_need' => $request->stuffYouNeed,
+            'summary' => $request->summary,
         ]);
 
         return redirect(route('admin.challengeversions.index'));
@@ -132,21 +142,25 @@ class ChallengeVersionController extends Controller
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
             'category_id' => 'required',
+            'infoUrl' => 'nullable|url',
+            'wistiaId' => 'nullable|string',
         ]);
 
         $challengeversion->update([
-            'name' => $request->name,
-            'slug' => Str::of($request->name)->slug('-'),
-            'challenge_id' => $request->challenge_id,
-            'challenge_category_id' => $request->category_id,
-            'gallery_version_desc_short' => $request->versiondesc,
             'blurb' => $request->blurb,
+            'challenge_category_id' => $request->category_id,
+            'challenge_id' => $request->challenge_id,
+            'chromebook_info' => $request->chromeInfo,
+            'facilitator_notes' => $request->facNotes,
+            'gallery_note' => $request->galleryNote,
+            'gallery_version_desc_short' => $request->versionDesc,
+            'gallery_wistia_video_id' => $request->wistiaId,
+            'info_article_url' => $request->infoUrl,
+            'name' => $request->name,
+            'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
+            'slug' => Str::of($request->name)->slug('-'),
+            'stuff_you_need' => $request->stuffYouNeed,
             'summary' => $request->summary,
-            'stuff_you_need' => $request->stuffyouneed,
-            'facilitator_notes' => $request->facnotes,
-            'chromebook_info' => $request->chromeinfo,
-            'prerequisite_challenge_version_id' => $request->prereqchal,
-            'info_article_url' => $request->infourl,
         ]);
 
         $challengeversion->setLevelsOrder($request->level);

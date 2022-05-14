@@ -1,6 +1,6 @@
-@push('scripts')
+@pushOnce('scripts')
     <script src="https://fast.wistia.net/assets/external/E-v1.js" async></script>
-@endpush
+@endPushOnce
 
 <x-app-layout>
 
