@@ -17,7 +17,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->foreignId('current_connected_account_id')->nullable();
-            $table->text('profile_photo_path')->nullable();
+            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();

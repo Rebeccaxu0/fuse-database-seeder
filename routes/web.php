@@ -36,7 +36,12 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'hasActiveStudio', 'verified'])->group(function () {
+Route::middleware([
+    'auth:sanctum',
+    'hasActiveStudio',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
     Route::impersonate();
 
     Route::get('heartbeat', function() { return response()->noContent(); });
