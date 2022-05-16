@@ -1,4 +1,4 @@
-<div class="bg-white shadow-tile">
+<div class="bg-white shadow-tile rounded-xl border border-gray-300">
     <button wire:click="$set('showModalFlag', true)"
             class="w-full relative rounded-lg p-4 text-left">
         <div class="relative aspect-video w-full rounded-lg flex items-center justify-items-center"
@@ -12,12 +12,12 @@
             @endif
         </div>
         <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" />
-        <div class="font-bold text-xl">
+        <h4 class="font-semibold text-fuse-teal-dk text-xl">
             {{ $challengeVersion->challenge->name }}
             <span class="uppercase text-sm font-light text-fuse-nav-blue">
                 {{ $challengeVersion->gallery_note }}
             </span>
-        </div>
+        </h4>
         <div class="min-h-[4rem]">
             {{ $challengeVersion->blurb }}
         </div>
