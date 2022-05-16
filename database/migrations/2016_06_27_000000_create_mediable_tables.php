@@ -40,7 +40,7 @@ return new class extends Migration
             Schema::create(
                 'mediables',
                 function (Blueprint $table) {
-                    $table->integer('media_id')->unsigned();
+                    $table->unsignedBigInteger('media_id');
                     $table->string('mediable_type');
                     $table->integer('mediable_id')->unsigned();
                     $table->string('tag');
