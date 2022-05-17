@@ -9,6 +9,7 @@ use Livewire\Component;
 class ChallengeGalleryTile extends Component
 {
     public bool $showModalFlag = false;
+    public bool $continue = false;
     public ChallengeVersion $challengeVersion;
     public User $user;
 
@@ -16,6 +17,12 @@ class ChallengeGalleryTile extends Component
     {
         $this->challengeVersion = $challengeVersion;
         $this->user = $user;
+        // Always show the trailer, BUT below the the trailer display content
+        // based on current level of the challenge version.
+        $this->level = $challengeVersion->currentLevel($user);
+        if ($user->hasStartedLevel($this->level)){
+            $this->continue = true;
+        }
     }
 
     public function render()

@@ -24,8 +24,8 @@
     </button>
     <x-jet-modal wire:model="showModalFlag">
         <div class="py-4 text-center text-fuse-teal-dk text-3xl whitespace-nowrap">
-            <span class="tracking-tight mr-1">{{ $challengeVersion->challenge->name }}</span>
-            <button class="absolute right-0 top-0 -mt-1" wire:click="$set('showModalFlag', false)">
+            <span class="tracking-tight mr-1">{{ __(':challenge Level :number', ['challenge' => $challengeVersion->challenge->name, 'number' => $level->level_number]) }}</span>
+            <button class="absolute right-0 top-0 mt-1 mr-1" wire:click="$toggle('showModalFlag')">
                 <x-icon icon="x-circle" strokeWidth="1" width="30" height="30" />
             </button>
         </div>
@@ -37,11 +37,18 @@
         </div>
 
         <div class="text-right mx-4 mb-8">
-            @if (auth()->user()->canStartChallengeVersion($challengeVersion))
-            <button class="border rounded-xl uppercase p-2 text-xl font-bold text-slate-400">{{ __('Go to Level :number', ['number' => 1]) }}</button>
-            @else
+            @if (! auth()->user()->canStartChallengeVersion($challengeVersion))
             <x-icon icon="lock" />
             {{ __('Complete :requirement to unlock', ['requirement' => $challengeVersion->prerequisiteChallengeVersion->challenge->name]) }}
+            @else
+                @if ($continue)
+                <a class="btn border rounded-xl uppercase p-2 text-xl font-bold text-slate-400" href="{{ route('student.level', ['challengeVersion' => $challengeVersion, 'level' => $level]) }}">{{ __('Continue') }}</a>
+                @else
+                <form action="{{ route('student.level_start', ['challengeVersion' => $challengeVersion, 'level' => $level]) }}" method="POST">
+                @csrf
+                <button class="border rounded-xl uppercase p-2 text-xl font-bold text-slate-400">{{ __('Start') }}</button>
+                </form>
+                @endif
             @endif
         </div>
 
