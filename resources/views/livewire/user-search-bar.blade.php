@@ -5,7 +5,6 @@
     <div wire:loading class="absolute z-10 w-full bg-white shadow-lg">
         <div class="list-item">Searching...</div>
     </div>
-
     @if (!empty($query))
         <div class="relative top-0 bottom-0 left-0 right-0"></div>
 
