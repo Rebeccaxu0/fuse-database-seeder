@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class RedirectIfAlumni
+class RedirectIfRegistered
 {
     /**
      * Handle an incoming request.

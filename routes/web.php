@@ -37,9 +37,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
-Route::get('alumlobby', function () {
-    return view('auth.alumlobby');
-})->name('alumlobby');
+Route::get('registeredlobby', function () {
+    return view('auth.registeredlobby');
+})->name('registeredlobby');
 
 Route::get('lobby', function () {
     return view('auth.lobby');
@@ -47,9 +47,9 @@ Route::get('lobby', function () {
 
 
 Route::middleware(['auth:sanctum', 'alumni'])->group(function () {
-    Route::get('alumlobby', function () {
-        return view('auth.alumlobby');
-    })->name('alumlobby');
+    Route::get('registeredlobby', function () {
+        return view('auth.registeredlobby');
+    })->name('registeredlobby');
 });
 
 /*

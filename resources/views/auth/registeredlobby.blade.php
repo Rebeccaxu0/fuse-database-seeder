@@ -1,5 +1,5 @@
 <x-guest-logo-layout>
-    <x-slot name="title">{{ __('Alumni Lobby') }}</x-slot>
+    <x-slot name="title">{{ __('Registered Lobby') }}</x-slot>
     <div class="mt-6 grid grid-cols-1 gap-6 max-w-full">
         <x-jet-validation-errors />
         <h1 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Welcome back to FUSE!') }}</h1>
