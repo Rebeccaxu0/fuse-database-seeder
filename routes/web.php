@@ -37,13 +37,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
-Route::get('registeredlobby', function () {
-    return view('auth.registeredlobby');
-})->name('registeredlobby');
 
-Route::get('lobby', function () {
-    return view('auth.lobby');
-})->name('lobby');
+// Route::get('registeredlobby', function () {
+//     return view('auth.registeredlobby');
+// })->name('registeredlobby');
+
+// Route::get('lobby', function () {
+//     return view('auth.lobby');
+// })->name('lobby');
+
+Route::get('register', function () {
+    return view('livewire.custom-registration');
+})->name('register');
 
 
 Route::middleware(['auth:sanctum', 'alumni'])->group(function () {

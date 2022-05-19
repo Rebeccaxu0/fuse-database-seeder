@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use Livewire\Component;
+
+class CustomRegistration extends Component
+{
+    public string $studioCode = '';
+    public bool $showReg = false;
+
+    protected $rules = [
+        'studioCode' => 'required',
+    ];
+
+    public function codecheck() {
+        $this->validate();
+        $studio = Studio::where('join_code', $this->studioCode)->first();
+        if (! $studio) {
+            $this->addError('studioCode', __('Sorry, that code does not match any studios'));
+        }
+        else if (Auth::user()->deFactoStudios()->contains($studio)) {
+            $this->addError('studioCode', __('You are already a member of that studio.'));
+        }
+        else {
+            $user = Auth::user();
+            $user->studios()->attach($studio->id);
+            $user->activeStudio()->associate($studio);
+            $user->save();
+            Cache::forget("u{$user->id}_studios");
+            $this->showReg = true;
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.custom-registration');
+    }
+}
