@@ -258,6 +258,11 @@ class User extends Authenticatable
         // return Studio::find($this->active_studio);
     }
 
+    public function announcementsSeen()
+    {
+        return $this->belongsToMany(Announcement::class, 'announcement_seen', 'user_id', 'announcement_id');
+    }
+
     /**
      * Check if user has admin role.
      */

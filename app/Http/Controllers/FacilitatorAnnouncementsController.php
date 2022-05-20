@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
+
 class FacilitatorAnnouncementsController extends Controller
 {
     /**
@@ -20,6 +22,11 @@ class FacilitatorAnnouncementsController extends Controller
      */
     public function index()
     {
-        return view('facilitator.announcements', []);
+        $now = new \DateTime();
+        $announcements
+            = Announcement::where('start', '<=', $now->format('Y-m-d h:m:s'))
+                ->where('end', '>=', $now->format('Y-m-d h:m:s'))
+                ->get();
+        return view('facilitator.announcements', ['announcements' => $announcements]);
     }
 }
