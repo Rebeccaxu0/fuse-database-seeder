@@ -46,8 +46,8 @@
         </li>
     </x-subnav-ul>
     <div id="profile-env" class="h-16 flex flex-col justify-center absolute top-0 right-0 mr-16 md:mr-4">
-        <button>
+        <a href="{{ route('profile.show') }}">
             <x-avatar id="profile-pic" :user="auth()->user()" class="border-white border-2"/>
-        </button>
+        </a>
     </div>
 </x-subnav>
