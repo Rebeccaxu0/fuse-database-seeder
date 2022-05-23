@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Announcement;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -17,7 +18,7 @@ class AnnouncementBanner extends Component
         if (! $user->isStudent()) {
             $unread_announcement_ids = Cache::remember(
                 "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
-                    $now = new \DateTime();
+                    $now = new DateTime();
                     return Announcement::where('start', '<=', $now->format('Y-m-d h:m:s'))
                         ->where('end', '>=', $now->format('Y-m-d h:m:s'))
                         ->whereNotIn('id', function ($query) use ($user) {

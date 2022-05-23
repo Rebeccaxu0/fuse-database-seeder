@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use DateTime;
 
 class FacilitatorAnnouncementsController extends Controller
 {
@@ -22,7 +23,7 @@ class FacilitatorAnnouncementsController extends Controller
      */
     public function index()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $announcements
             = Announcement::where('start', '<=', $now->format('Y-m-d h:m:s'))
                 ->where('end', '>=', $now->format('Y-m-d h:m:s'))
