@@ -26,7 +26,7 @@
 
         @if ($comments)
         <div class="absolute right-[1rem]">
-            <livewire:comment-count :artifact="$artifact" />
+            <livewire:comment-count :artifact="$artifact" :user="auth()->user()" />
         </div>
         @endif
     </div>

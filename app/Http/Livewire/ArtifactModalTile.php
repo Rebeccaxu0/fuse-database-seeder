@@ -15,6 +15,13 @@ class ArtifactModalTile extends Component
     public string $title = '';
     public string $title_modifier = '';
 
+    public function updatedShowModalFlag($value)
+    {
+        if ($value) {
+            $this->emitTo('artifact-comment-thread', 'markCommentsAsSeen', $this->artifact->id);
+        }
+    }
+
     public function mount()
     {
         if ($this->artifact->level->levelable::class == ChallengeVersion::class) {

@@ -258,11 +258,17 @@ class User extends Authenticatable
         // return Studio::find($this->active_studio);
     }
 
+    /**
+     * The announcements marked as having been viewed by this user.
+     */
     public function announcementsSeen()
     {
         return $this->belongsToMany(Announcement::class, 'announcement_seen', 'user_id', 'announcement_id');
     }
 
+    /**
+     * The comments marked as having been viewed by this user.
+     */
     public function commentsSeen()
     {
         return $this->belongsToMany(Comment::class, 'comment_seen', 'user_id', 'comment_id');

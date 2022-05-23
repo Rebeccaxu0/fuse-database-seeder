@@ -27,7 +27,7 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $with = ['user'];
+    protected $with = ['user', 'seenBy'];
 
     public function artifact()
     {
@@ -39,7 +39,7 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function readers()
+    public function seenBy()
     {
         return $this->belongsToMany(User::class, 'comment_seen', 'comment_id', 'user_id');
     }
