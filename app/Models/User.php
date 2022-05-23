@@ -263,6 +263,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Announcement::class, 'announcement_seen', 'user_id', 'announcement_id');
     }
 
+    public function commentsSeen()
+    {
+        return $this->belongsToMany(Comment::class, 'comment_seen', 'user_id', 'comment_id');
+    }
+
     /**
      * Check if user has admin role.
      */

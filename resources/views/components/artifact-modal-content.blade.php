@@ -25,9 +25,9 @@
         </div>
 
         @if ($comments)
-        <span class="absolute right-[1rem] flex items-center font-bold">
-            <x-icon icon="comment" strokeWidth="1.5" class="text-slate-500" /> {{ $commentCount }}
-        </span>
+        <div class="absolute right-[1rem]">
+            <livewire:comment-count :artifact="$artifact" />
+        </div>
         @endif
     </div>
 
@@ -40,9 +40,6 @@
 </div>
 
 @if ($comments)
-<div class="border-l p-2 float-right height-full">
-    <div class="uppercase font-medium text-lg">{{ __('Add Comment') }}</div>
-    <textarea id="comment" name="comment" placeholder="{{ __('Write your comment here...') }}"></textarea>
-</div>
+<livewire:artifact-comment-thread :artifact="$artifact" :user="auth()->user()" />
 </div>
 @endif

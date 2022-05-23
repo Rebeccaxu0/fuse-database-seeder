@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->longText('body');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
@@ -17,7 +18,6 @@ return new class extends Migration
                   ->constrained();
             $table->foreignId('user_id')
                   ->constrained();
-            $table->longText('body');
         });
 
         Schema::create('comment_seen', function (Blueprint $table) {

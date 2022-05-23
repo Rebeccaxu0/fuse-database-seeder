@@ -6,7 +6,9 @@
 <div>
     <span class="text-slate-500 uppercase">{{ $timeAgo }} ({{ $artifact->created_at->format('Y-m-d') }})</span>
     @if ($comments)
-    <span class="float-right flex items-center font-bold"><x-icon icon="comment" strokeWidth="1.5" class="text-slate-500" />{{ $commentCount }}</span>
+    <div class="float-right">
+        <livewire:comment-count :artifact="$artifact" />
+    </div>
     @endif
 </div>
 
