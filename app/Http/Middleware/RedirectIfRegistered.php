@@ -32,7 +32,6 @@ class RedirectIfRegistered
                 $user->roles()->detach();
                 Cache::forget("u{$user->id}_has_role_*");
             }
-            //return redirect(route('alumlobby'));
         }
 
         return $next($request);

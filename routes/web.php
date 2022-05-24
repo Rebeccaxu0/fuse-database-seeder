@@ -40,11 +40,27 @@ Route::get('/', function () {
 });
 
 
-// Rewriting register routes.
+/*
+|------------------------------------------------------------------------
+| Registration routes
+|------------------------------------------------------------------------
+*/
 
-Route::get('registerlobby', function () {
-    return view('auth.custom-registration');
-})->name('registerlobby');
+// Manual new user lobby.
+
+Route::get('registrationlobby', function () {
+    return view('auth.registrationlobby');})
+    ->name('registrationlobby')
+    ->middleware('guest');
+
+// Alumni user lobby.
+
+Route::get('registeredlobby', function () {
+        return view('auth.registeredlobby');})
+        ->name('registeredlobby')
+        ->middleware('alum');
+
+// Recreating Fortify registration routes. 
 
 Route::get('register', [RegisteredUserController::class, 'create'])
         ->middleware(['guest:'.config('fortify.guard')])

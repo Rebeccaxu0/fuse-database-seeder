@@ -3,9 +3,9 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Models\Studio;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Cache;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
@@ -21,24 +21,30 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => $this->passwordRules(),
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-        ])->validate();
-
-        return User::create([
+        $studio = Studio::where('join_code', $input['studio'])->first();
+        if ($studio->require_email) {
+            Validator::make($input, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => $this->passwordRules(),
+                'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
+            ])->validate();
+        } else {
+            Validator::make($input, [
+                'name' => ['required', 'string', 'max:255'],
+                'password' => $this->passwordRules(),
+                'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
+            ])->validate();
+        }
+        $newuser = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'active_studio' => $studio->id,
             'password' => Hash::make($input['password']),
         ]);
-        // $studio = $input['studio'];
-        // dd($studio);
-        // $user->studios()->attach($studio->id);
-        // $user->activeStudio()->associate($studio);
-        // $user->save();
-        // Cache::forget("u{$user->id}_studios");
+        $newuser->studios()->attach($studio->id);
+        $newuser->activeStudio()->associate($studio);
+        $newuser->save();
+        return $newuser;
     }
 }

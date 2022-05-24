@@ -6,11 +6,12 @@ use Livewire\Component;
 use App\Models\Studio;
 use Illuminate\Support\Facades\Auth;
 
-class CustomRegistration extends Component
+class Registration extends Component
 {
     public string $studioCode = '';
     public bool $showReg = false;
     public bool $showEmail = false;
+    public $studio = null;
 
     protected $rules = [
         'studioCode' => 'required',
@@ -18,16 +19,13 @@ class CustomRegistration extends Component
 
     public function codecheck() {
         $this->validate();
-        $studio = Studio::where('join_code', $this->studioCode)->first();
-        if (! $studio) {
+        $this->studio = Studio::where('join_code', $this->studioCode)->first();
+        if (! $this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
         }
-        // else if (Auth::user()->deFactoStudios()->contains($studio)) {
-        //     $this->addError('studioCode', __('You are already a member of that studio.'));
-        // }
         else {
             $this->showReg = true;
-            if ($studio->require_email) {
+            if ($this->studio->require_email) {
                 $this->showEmail = true;
             }
         }
@@ -35,6 +33,6 @@ class CustomRegistration extends Component
 
     public function render()
     {
-        return view('livewire.custom-registration');
+        return view('livewire.registration');
     }
 }
