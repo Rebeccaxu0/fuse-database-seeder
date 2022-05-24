@@ -22,6 +22,7 @@
     <h2>{{ __('Uncommon Tasks') }}</h2>
 
     <ul>
+      <li><a href="{{ route('admin.announcements.index') }}">{{ __('Announcements') }}</a></li>
       <li><a href="{{ route('admin.lti_platforms.index') }}">{{ __('LTI') }}</a></li>
       <li><a href="{{ route('admin.levels.index') }}">{{ __('Levels') }}</a></li>
     </ul>

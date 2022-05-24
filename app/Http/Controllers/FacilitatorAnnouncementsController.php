@@ -25,8 +25,8 @@ class FacilitatorAnnouncementsController extends Controller
     {
         $now = new DateTime();
         $announcements
-            = Announcement::where('start', '<=', $now->format('Y-m-d h:m:s'))
-                ->where('end', '>=', $now->format('Y-m-d h:m:s'))
+            = Announcement::where('start_at', '<=', $now->format('Y-m-d h:m:s'))
+                ->where('end_at', '>=', $now->format('Y-m-d h:m:s'))
                 ->get();
         return view('facilitator.announcements', ['announcements' => $announcements]);
     }

@@ -19,8 +19,8 @@ class AnnouncementBanner extends Component
             $unread_announcement_ids = Cache::remember(
                 "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
                     $now = new DateTime();
-                    return Announcement::where('start', '<=', $now->format('Y-m-d h:m:s'))
-                        ->where('end', '>=', $now->format('Y-m-d h:m:s'))
+                    return Announcement::where('start_at', '<=', $now->format('Y-m-d h:m:s'))
+                        ->where('end_at', '>=', $now->format('Y-m-d h:m:s'))
                         ->whereNotIn('id', function ($query) use ($user) {
                             $query->select('id')
                                   ->from('announcement_seen')

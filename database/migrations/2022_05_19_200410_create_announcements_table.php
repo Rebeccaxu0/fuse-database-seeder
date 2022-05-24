@@ -14,9 +14,9 @@ return new class extends Migration
             $table->longText('url')
                   ->nullable();
             $table->longText('body');
-            $table->timestamp('start')
+            $table->timestamp('start_at')
                   ->nullable();
-            $table->timestamp('end')
+            $table->timestamp('end_at')
                   ->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('created_at')->useCurrent();

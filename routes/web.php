@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
@@ -124,6 +125,7 @@ Route::middleware([
         ->name('admin.')
         ->group(function () {
             Route::resources([
+                'announcements' => AnnouncementController::class,
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
                 'lti_platforms' => LTIPlatformController::class,
