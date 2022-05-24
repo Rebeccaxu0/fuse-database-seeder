@@ -51,7 +51,6 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:packages|max:255',
         ]);
@@ -61,7 +60,6 @@ class PackageController extends Controller
             'description' => $request->description,
             'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
         ]);
-        $package->save();
         $package->challenges()->attach($request->challenges);
 
         return redirect(route('admin.packages.index'));
