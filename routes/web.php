@@ -21,6 +21,7 @@ use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,24 +39,22 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
-// Route::get('registeredlobby', function () {
-//     return view('auth.registeredlobby');
-// })->name('registeredlobby');
 
-// Route::get('lobby', function () {
-//     return view('auth.lobby');
-// })->name('lobby');
+// Rewriting register routes.
 
-Route::get('register', function () {
-    return view('livewire.custom-registration');
-})->name('register');
+Route::get('registerlobby', function () {
+    return view('auth.custom-registration');
+})->name('registerlobby');
+
+Route::get('register', [RegisteredUserController::class, 'create'])
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('register');
+
+Route::post('register', [RegisteredUserController::class, 'store'])
+    ->middleware(['guest:'.config('fortify.guard')]);
 
 
-Route::middleware(['auth:sanctum', 'alumni'])->group(function () {
-    Route::get('registeredlobby', function () {
-        return view('auth.registeredlobby');
-    })->name('registeredlobby');
-});
+
 
 /*
 |------------------------------------------------------------------------

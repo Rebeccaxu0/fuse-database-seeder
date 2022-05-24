@@ -3,11 +3,14 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use App\Models\Studio;
+use Illuminate\Support\Facades\Auth;
 
 class CustomRegistration extends Component
 {
     public string $studioCode = '';
     public bool $showReg = false;
+    public bool $showEmail = false;
 
     protected $rules = [
         'studioCode' => 'required',
@@ -19,16 +22,14 @@ class CustomRegistration extends Component
         if (! $studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
         }
-        else if (Auth::user()->deFactoStudios()->contains($studio)) {
-            $this->addError('studioCode', __('You are already a member of that studio.'));
-        }
+        // else if (Auth::user()->deFactoStudios()->contains($studio)) {
+        //     $this->addError('studioCode', __('You are already a member of that studio.'));
+        // }
         else {
-            $user = Auth::user();
-            $user->studios()->attach($studio->id);
-            $user->activeStudio()->associate($studio);
-            $user->save();
-            Cache::forget("u{$user->id}_studios");
             $this->showReg = true;
+            if ($studio->require_email) {
+                $this->showEmail = true;
+            }
         }
     }
 
