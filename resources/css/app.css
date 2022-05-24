@@ -86,7 +86,7 @@
   }
 
   label {
-    @apply mb-2 pt-6 text-gray-700 text-sm;
+    @apply mt-2 text-gray-700 text-sm;
   }
 }
 
