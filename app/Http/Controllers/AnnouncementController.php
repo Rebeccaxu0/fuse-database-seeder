@@ -26,8 +26,8 @@ class AnnouncementController extends Controller
      */
     public function create()
     {
-        $announcement = new Announcement();
-        $nowDateTime = date(DATE_ATOM);
+        $announcement = new Announcement(['type' => 'new']);
+        $nowDateTime = date('Y-m-d\TH:i');
         return view('admin.announcement.create', ['announcement' => $announcement, 'now' => $nowDateTime]);
     }
 
@@ -84,7 +84,8 @@ class AnnouncementController extends Controller
      */
     public function edit(Announcement $announcement)
     {
-        return view('admin.announcement.edit', ['announcement' => $announcement]);
+        $nowDateTime = date('Y-m-d\TH:i');
+        return view('admin.announcement.edit', ['announcement' => $announcement, 'now' => $nowDateTime]);
     }
 
     /**
@@ -94,9 +95,32 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Announcement $announcement)
     {
-        //
+        $validated = $request->validate([
+            'type' => [
+                'required',
+                Rule::in(['new', 'update', 'alert']),
+            ],
+            'url' => 'nullable|url',
+            'message' => 'required|string',
+            'start_at' => 'required|date_format:Y-m-d\TH:i',
+            'end_at' => [
+                'required',
+                'date_format:Y-m-d\TH:i',
+                'after:start_at'
+            ]
+        ]);
+
+        $announcement->update([
+            'type'     => $validated['type'],
+            'url'      => $validated['url'],
+            'body'     => $validated['message'],
+            'start_at' => $validated['start_at'],
+            'end_at'   => $validated['end_at'],
+        ]);
+
+        return redirect(route('admin.announcements.index'));
     }
 
     /**
@@ -105,8 +129,10 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Announcement $announcement)
     {
-        //
+        $announcement->delete();
+
+        return redirect(route('admin.announcements.index'));
     }
 }

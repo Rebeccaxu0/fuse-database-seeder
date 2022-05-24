@@ -1,11 +1,12 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('New Announcement') }}</x-slot>
+    <x-slot name="title">{{ __('Edit Announcement') }}</x-slot>
 
-    <x-slot name="header">{{ __('New Announcement') }}</x-slot>
+    <x-slot name="header">{{ __('Edit Announcement') }}</x-slot>
 
-    <form class="mt-6" action="{{ route('admin.announcements.store') }}" method="POST">
+    <form class="mt-6" action="{{ route('admin.announcements.update', ['announcement' => $announcement]) }}" method="POST">
         @csrf
+        @method('PATCH')
         <fieldset class="border border-black p-2">
             <legend>{{ __('Announcement Type *') }}</legend>
             @error('type')
@@ -48,7 +49,7 @@
                 <input type="datetime-local"
                        id="start_at"
                        name="start_at"
-                       value="{{ old('start_at') }}"
+                       value="{{ old('start_at', date('Y-m-d\TH:i', strtotime($announcement->start_at))) }}"
                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
                        required
                        >
@@ -63,7 +64,7 @@
                        id="end_at"
                        name="end_at"
                        min="{{ $now }}"
-                       value="{{ old('end_at') }}"
+                       value="{{ old('end_at', date('Y-m-d\TH:i', strtotime($announcement->end_at))) }}"
                        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
                        required
                        >
@@ -86,7 +87,7 @@
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit"
                 class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white"
-                id="btn-submit">{{ __('Save New Announcement') }}</button>
+                id="btn-submit">{{ __('Save Announcement') }}</button>
         </div>
     </form>
 
