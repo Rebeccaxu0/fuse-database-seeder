@@ -18,7 +18,7 @@
         <tbody>
             @foreach ($announcements as $announcement)
             <tr>
-                <td class="announcement-tag {{ $announcement->type }}">{{ $announcement->type }}</td>
+                <td class="text-white announcement-tag {{ $announcement->type }}">{{ $announcement->type }}</td>
                 <td>
                     <div>
                         <span class="font-bold">{{ __('Start:') }}</span> {{ $announcement->start_at }}

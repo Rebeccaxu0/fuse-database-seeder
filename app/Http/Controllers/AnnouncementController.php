@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AnnouncementController extends Controller
 {
@@ -25,7 +26,9 @@ class AnnouncementController extends Controller
      */
     public function create()
     {
-        //
+        $announcement = new Announcement();
+        $nowDateTime = date(DATE_ATOM);
+        return view('admin.announcement.create', ['announcement' => $announcement, 'now' => $nowDateTime]);
     }
 
     /**
@@ -36,7 +39,30 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'type' => [
+                'required',
+                Rule::in(['new', 'update', 'alert']),
+            ],
+            'url' => 'nullable|url',
+            'message' => 'required|string',
+            'start_at' => 'required|date_format:Y-m-d\TH:i',
+            'end_at' => [
+                'required',
+                'date_format:Y-m-d\TH:i',
+                'after:start_at'
+            ]
+        ]);
+
+        Announcement::create([
+            'type'     => $validated['type'],
+            'url'      => $validated['url'],
+            'body'     => $validated['message'],
+            'start_at' => $validated['start_at'],
+            'end_at'   => $validated['end_at'],
+        ]);
+
+        return redirect(route('admin.announcements.index'));
     }
 
     /**
@@ -56,9 +82,9 @@ class AnnouncementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Announcement $announcement)
     {
-        //
+        return view('admin.announcement.edit', ['announcement' => $announcement]);
     }
 
     /**
