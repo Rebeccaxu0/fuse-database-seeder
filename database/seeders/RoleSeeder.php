@@ -16,8 +16,7 @@ class RoleSeeder extends Seeder
         6 => 'Pre-Super Facilitator',
         7 => 'Facilitator',
         8 => 'Pre-facilitator',
-        9 => 'Student',
-        10 => 'Anonymous Student',
+        9 => 'Anonymous Student',
     ];
 
     /**
@@ -34,9 +33,5 @@ class RoleSeeder extends Seeder
                 'name' => $name,
             ]);
         }
-        //$student_role = Role::where('name', 'Student')->first();
-        //$student_role->users()->attach(User::all());
-        // $admin_role = Role::where('name', 'FUSE Administrator')->first();
-        // $admin_role->users()->attach(User::all());
-    }
+
 }

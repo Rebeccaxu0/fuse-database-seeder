@@ -19,8 +19,7 @@ class Role extends Model
     public const PRE_SUPER_FACILITATOR_ID = 6;
     public const FACILITATOR_ID           = 7;
     public const PRE_FACILITATOR_ID       = 8;
-    public const STUDENT_ID               = 9;
-    public const ANONYMOUS_STUDENT_ID     = 10;
+    public const ANONYMOUS_STUDENT_ID     = 9;
 
     /**
      * The users associated with this role.

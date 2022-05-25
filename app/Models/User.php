@@ -32,15 +32,21 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     /**
-     * The attributes that are searchable.
+     * The accessors to append to the model's array form.
      *
-     * @var string[]
+     * @var array
      */
-    protected $searchable = [
-        'email',
-        'full_name',
-        'id',
-        'name',
+    protected $appends = [
+        'profile_photo_url',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -67,22 +73,21 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that are searchable.
      *
-     * @var array
+     * @var string[]
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+    protected $searchable = [
+        'email',
+        'full_name',
+        'id',
+        'name',
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * The relationships that should always be loaded.
      */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    protected $with = ['roles'];
 
     #[SearchUsingFullText(['email', 'full_name', 'name'])]
     /**
@@ -275,27 +280,67 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has root role.
+     */
+    public function isRoot(): bool
+    {
+        return (bool) $this->roles()->where('role_id', ROLE::ROOT_ID)->count();
+    }
+
+    /**
      * Check if user has admin role.
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->hasRole(Role::ADMIN_ID);
+        return (bool) $this->roles()->where('role_id', ROLE::ADMIN_ID)->count();
+    }
+
+    /**
+     * Check if user has report viewer role.
+     */
+    public function isReportViewer(): bool
+    {
+        return (bool) $this->roles()->where('role_id', ROLE::REPORT_VIEWER_ID)->count();
+    }
+
+    /**
+     * Check if user has challenge author role.
+     */
+    public function isChallengeAuthor(): bool
+    {
+        return (bool) $this->roles()->where('role_id', ROLE::CHALLENGE_AUTHOR_ID)->count();
     }
 
     /**
      * Check if user has super facilitator role.
      */
-    public function isSuperFacilitator()
+    public function isSuperFacilitator(): bool
     {
-        return $this->hasRole(Role::SUPER_FACILITATOR_ID);
+        return (bool) $this->roles()->where('role_id', ROLE::SUPER_FACILITATOR_ID)->count();
+    }
+
+    /**
+     * Check if user has pre-super facilitator role.
+     */
+    public function isPreSuperFacilitator(): bool
+    {
+        return (bool) $this->roles()->where('role_id', ROLE::PRE_SUPER_FACILITATOR_ID)->count();
     }
 
     /**
      * Check if user has facilitator role.
      */
-    public function isFacilitator()
+    public function isFacilitator(): bool
     {
-        return $this->hasRole(Role::FACILITATOR_ID);
+        return (bool) $this->roles()->where('role_id', ROLE::FACILITATOR_ID)->count();
+    }
+
+    /**
+     * Check if user has pre-facilitator role.
+     */
+    public function isPreFacilitator(): bool
+    {
+        return (bool) $this->roles()->where('role_id', ROLE::PRE_FACILITATOR_ID)->count();
     }
 
     /**
@@ -303,7 +348,8 @@ class User extends Authenticatable
      */
     public function isStudent()
     {
-        return $this->hasRole(Role::STUDENT_ID);
+        return $this->isAnonymousStudent()
+            || ! (bool) $this->roles->count();
     }
 
     /**
@@ -311,24 +357,9 @@ class User extends Authenticatable
      */
     public function isAnonymousStudent()
     {
-        return $this->hasRole(Role::ANONYMOUS_STUDENT_ID);
+        return (bool) $this->roles()->where('role_id', ROLE::ANONYMOUS_STUDENT_ID)->count();
     }
 
-    /**
-     * User has a given role.
-     *
-     * @param int $role_id
-     * @param bool $fresh
-     *
-     * @return boolean
-     */
-    public function hasRole(int $role_id, bool $fresh = false)
-    {
-        if ($fresh) Cache::forget("u{$this->id}_has_role_{$role_id}");
-        return Cache::remember("u{$this->id}_has_role_{$role_id}", 3600, function () use ($role_id) {
-            return $this->roles()->where('role_id', $role_id)->get()->count();
-        });
-    }
     /**
      * @return bool
      */
