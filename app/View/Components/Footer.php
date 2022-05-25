@@ -26,6 +26,13 @@ class Footer extends Component
     public $schools;
 
     /**
+     * Number of schools.
+     *
+     * @var int
+     */
+    public $states = 20;
+
+    /**
      * Create a new component instance.
      *
      * @param int $students

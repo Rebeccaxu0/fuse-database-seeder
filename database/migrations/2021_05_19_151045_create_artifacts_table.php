@@ -19,7 +19,7 @@ return new class extends Migration
                   ->restrictOnDelete();
             $table->string('type', 63)
                   ->default('Complete')
-                  ->comment("Valid values: 'Save', 'Complete'");
+                  ->comment("Valid values: 'save', 'complete'");
             $table->string('name')->nullable();
             $table->longText('notes')->nullable();
             $table->boolean('request_feedback')->default(0);

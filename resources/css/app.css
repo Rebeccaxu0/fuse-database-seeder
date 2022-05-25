@@ -7,7 +7,7 @@
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-bold font-display leading-tight text-fuse-teal-dk my-4;
   }
   h1 {
@@ -23,6 +23,9 @@
   h4 {
     @apply text-xl text-gray-700;
   }
+  h5 {
+    @apply text-lg text-gray-700;
+  }
 
   p {
     @apply font-sans text-gray-700 leading-normal max-w-prose my-4 text-lg;
@@ -37,7 +40,7 @@
   }
 
   .btn, button.submit, [type='reset'], [type='submit'] {
-    @apply inline-block bg-green-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
+    @apply inline-block bg-emerald-700 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2 ring-transparent;
   }
   .btn.destroy, button.destroy, [type='destroy'] {
     @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;

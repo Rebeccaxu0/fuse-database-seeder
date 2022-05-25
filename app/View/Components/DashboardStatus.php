@@ -10,6 +10,7 @@ use Illuminate\View\Component;
 class DashboardStatus extends Component
 {
     public User $user;
+    public bool $explore = false;
     public string $buttonLink;
     public string $buttonText;
 
@@ -121,6 +122,7 @@ class DashboardStatus extends Component
 
     private function explore()
     {
+        $this->explore = true;
         $this->buttonText = __('Explore challenges');
         $this->buttonLink = route('student.challenges');
     }

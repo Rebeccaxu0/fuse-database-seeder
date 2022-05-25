@@ -30,7 +30,7 @@ class ArtifactComponent extends Component
         $this->studio = $studio;
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
         $this->comments = (bool) $studio->allow_comments;
-        $this->commentCount = 0;
+        $this->commentCount = $artifact->comments->count();
         if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
             $this->artifact->level->type = 'level';
             $this->level = $this->artifact->level;

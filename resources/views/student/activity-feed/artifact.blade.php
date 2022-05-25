@@ -10,8 +10,8 @@
           <a href="{{ route('student.their_stuff', $user) }}">
             <x-avatar :user="$user" class="h-7 w-7 mr-2" /> {{ $user->firstName() }} {{ $user->abbreviatedLastName() }}
           </a>
-          @if ($loop->index == 2 && $loop->count > 2)
-              {{ __(', and :remaining more', ['remaining' => $loop->count - 3]) }}
+          @if ($loop->index == 2 && $loop->count > 3)
+          {!! __(', and <span title=":team">:remaining more</span>', ['remaining' => $loop->count - 3, 'team' => $activity->team->implode('full_name', ', ')]) !!}
           @endif
         </li>
     @endforeach
