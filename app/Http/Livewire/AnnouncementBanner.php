@@ -16,13 +16,14 @@ class AnnouncementBanner extends Component
     public function mount(User $user)
     {
         if (! $user->isStudent()) {
-            $unread_announcement_ids = Cache::remember(
+            $unread_announcement_ids = Cache::tags(['announcements'])
+                ->remember(
                 "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
                     $now = new DateTime();
-                    return Announcement::where('start_at', '<=', $now->format('Y-m-d h:m:s'))
-                        ->where('end_at', '>=', $now->format('Y-m-d h:m:s'))
+                    return Announcement::where('start_at', '<=', $now->format('Y-m-d H:i:s'))
+                        ->where('end_at', '>=', $now->format('Y-m-d H:i:s'))
                         ->whereNotIn('id', function ($query) use ($user) {
-                            $query->select('id')
+                            $query->select('announcement_id')
                                   ->from('announcement_seen')
                                   ->where('user_id', '=', $user->id);
                         })
@@ -40,8 +41,8 @@ class AnnouncementBanner extends Component
         $user = Auth::user();
         $announcement = Announcement::find($announcementId);
         $announcement->readers()->save(Auth::user());
-        Cache::forget("u{$user->id}_unseen_announcement_ids");
         $this->announcements = $this->announcements->whereNotIn('id', $announcementId);
+        Cache::tags(['announcements'])->forget("u{$user->id}_unseen_announcement_ids");
     }
 
     public function render()

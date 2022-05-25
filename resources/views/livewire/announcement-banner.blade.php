@@ -2,7 +2,7 @@
     @foreach ($announcements as $a)
     <div class="bg-fuse-lt-blue py-8 grid grid-cols-12">
         <div class="col-span-2 lg:col-span-1">
-            <span class="float-right mr-2 text-white bg-fuse-green rounded-xl py-1 px-3 uppercase text-sm">{{ __($a->type) }}</span>
+            <span class="float-right mr-2 text-white announcement-tag {{ $a->type }} rounded-xl py-1 px-3 uppercase text-sm">{{ __($a->type) }}</span>
         </div>
         <div class="col-span-9 lg:col-span-10">
             @if ($a->url)
