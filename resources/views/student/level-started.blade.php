@@ -19,13 +19,7 @@
     window.addEventListener('scroll', scrollProgressBar);
     window.addEventListener('resize', scrollProgressBar);
 
-    const artifactForm = document.getElementById('artifact-form-container');
-    function closeArtifactForm() {
-        }
-    document.getElementById('close-btn').addEventListener('click', function(e) {e.preventDefault(); artifactForm.open = false}, false);
-
-    function openArtifactForm(type) {
-            artifactForm.open = true;
+    function setArtifactFormType(type) {
             if (type == 'save') {
                     document.getElementById('save_type').checked = true;
                     document.getElementById('complete_type').checked = false;
@@ -37,13 +31,14 @@
         }
     const saveBtn = document.getElementById('save-btn');
     const completeBtn = document.getElementById('complete-btn');
-    saveBtn.addEventListener('click', function() { openArtifactForm('save')}, false);
-    completeBtn.addEventListener('click', function() { openArtifactForm('complete')}, false);
+    saveBtn.addEventListener('click', function() { setArtifactFormType('save')}, false);
+    completeBtn.addEventListener('click', function() { setArtifactFormType('complete')}, false);
 </script>
 @endpush
 
 <x-app-layout>
 
+    <div x-data="{ saveCompleteFormOpen: false}" >
     <h1>
         <span class="font-bold">{{ $level->levelable->challenge->name }}</span>
         <span class="font-medium">{{ __('Level :number', ['number' => $level->level_number]) }}</span>
@@ -90,11 +85,18 @@
                 <h2 class="text-black text-lg font-bold">{{ __('How to Complete This Level') }}</h2>
                 {!! $fields['how_to_complete_desc'] !!}
                 <a name="save-complete"></a>
-                <details id="artifact-form-container" @if ($errors->any()) open @endif>
-                    <summary class="btn cursor-pointer">{{ __('Save or Complete') }}
-                    </summary>
-                    <livewire:level-save-or-complete-form :lid="$level->id"/>
-                </details>
+                    <a href="#save-complete"
+                       class="btn"
+                       @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+                       >{{ __('Save or Complete') }}</a>
+                    <div x-show="saveCompleteFormOpen"
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 scale-50"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-500"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-50"
+                         ><livewire:level-save-or-complete-form :lid="$level->id"/></div>
             </section>
 
             <section class="bg-white rounded-xl shadow mt-8 p-4">
@@ -147,11 +149,20 @@
                 <x-progress-bar :levelable="$level->levelable" :user="auth()->user()" class="h-4" />
             </div>
             <div class="flex-1 flex">
-                <a id="save-btn" class="btn" href="#save-complete">{{ __('Save') }}</a>
-                <a id="complete-btn" class="btn" href="#save-complete">{{ __('Complete') }}</a>
+                <a href="#save-complete"
+                   id="save-btn"
+                   class="btn"
+                   @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+                   >{{ __('Save') }}</a>
+                <a href="#save-complete"
+                   id="complete-btn"
+                   class="btn"
+                   @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+                   >{{ __('Complete') }}</a>
             </div>
         </div>
     </footer>
+    </div>
 
 </x-app-layout>
 

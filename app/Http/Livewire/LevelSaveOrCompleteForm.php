@@ -2,10 +2,16 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Artifact;
+use App\Models\Level;
+use App\Models\User;
 use App\Rules\UploadCode;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+// use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class LevelSaveOrCompleteForm extends Component
@@ -16,14 +22,17 @@ class LevelSaveOrCompleteForm extends Component
     public bool $urlDisabled = false;
     public string $uploadCode = '';
     public string $url = '';
+    public bool $previewOpen = false;
     public string $previewUrl = '';
+    public string $previewName = '';
     public int $lid;
-    public int $uid;
     public string $type = 'save';
-    public string $filestackHandle;
-    public string $artifactName;
-    public string $notes;
-    public string $teammates;
+    public string $filestackHandle = '';
+    public string $artifactName = '';
+    public string $notes = '';
+    public $studioMembers;
+    public array $teammates = [];
+    public array $teamNames = [];
 
     // As the parent, this component is the only one that needs to know about
     // its children. Siblings shouldn't know about each other to stay modular.
@@ -49,7 +58,16 @@ class LevelSaveOrCompleteForm extends Component
     public function enableURL()
     {
         $this->urlDisabled = false;
+        $this->previewOpen = false;
         unset($this->previewUrl);
+    }
+
+    public function updatedTeammates($value)
+    {
+        $this->teamNames = [];
+        foreach ($this->teammates as $k => $uid) {
+            $this->teamNames[] = User::find($uid)->full_name;
+        }
     }
 
     public function updatedUploadCode($code)
@@ -99,6 +117,8 @@ class LevelSaveOrCompleteForm extends Component
         $this->urlDisabled = false;
         $this->urlDisappear = false;
         $this->emit('filestackAppear');
+        $this->previewOpen = false;
+        $this->previewName = '';
         unset($this->previewUrl);
     }
 
@@ -129,6 +149,7 @@ class LevelSaveOrCompleteForm extends Component
 
         if ('url' == $type) {
             // TODO: see if we can use Filestack to get a screenshot of the URL for type 'url'.
+            $this->previewOpen = true;
             $this->previewUrl = '/img/link.svg';
             $this->previewName = $details['url'];
             return;
@@ -150,6 +171,7 @@ class LevelSaveOrCompleteForm extends Component
         }
 
         $mimetype = explode('/', $this->mimetype($mime, $filename));
+        $this->previewOpen = true;
         $this->previewName = $this->previewName;
 
         switch($mimetype[0]) {
@@ -177,11 +199,84 @@ class LevelSaveOrCompleteForm extends Component
 
     public function makeArtifact()
     {
-        $this->validate();
+        $validated = $this->validate();
+        $user = Auth::user();
+        $team = [$user];
+        $filestackHandle = $validated['filestackHandle'];
+        $artifact = new Artifact;
+        $artifact->level_id = $validated['lid'];
+        $artifact->type = $validated['type'];
+        $artifact->name = $validated['artifactName'];
+        $artifact->notes = $validated['notes'];
+        $artifact->url = $validated['url'];
+
+        if ($validated['teammates']) {
+            $students = $user->activeStudio->students;
+            foreach ($validated['teammates'] as $teammate) {
+                if ($students->contains($teammate)) {
+                    $team[] = User::find($teammate);
+                }
+            }
+        }
+
+        if ($validated['uploadCode']) {
+            $src = '/tmp/' . $this->previewName;
+            // We should probably use the upload code to remove the prefix.
+            // For now we just assume 6 char code plus dash is 7 char offset.
+            $newFilename = substr($this->previewName, 7);
+            $dest = '/' . Auth::user()->id . "/{$newFilename}";
+            if (Storage::disk('artifacts')->exists($src)) {
+                Storage::disk('artifacts')->copy($src, $dest);
+                Storage::disk('artifacts')->delete($src);
+                // TODO: convert to a media instance.
+                // dd('boop');
+            }
+            else {
+                // dd('beep');
+            }
+        }
+        // dd('gronk');
+        $artifact->save();
+        $artifact->users()->saveMany($team);
+
+        switch ($validated['type']) {
+        case 'save':
+            $statusMsg = __('Save added.');
+            $destination = URL::previous();
+            break;
+
+        case 'complete':
+            $statusMsg = __('Level completed!');
+            $level = Level::find($validated['lid']);
+            foreach ($team as $teammate) {
+                Cache::forget("u{$teammate->id}_has_completed_level_{$level->id}");
+            }
+            if ($level->next()) {
+                $params = [
+                    'challengeVersion' => $level->next()->levelable,
+                    'level' => $level->next(),
+                ];
+                $destination = route('student.level', $params);
+            }
+            else {
+                $destination = route('student.challenges');
+            }
+            break;
+
+        }
+        return redirect($destination)->with('status', $statusMsg);
     }
 
     public function mount()
     {
+        $user = Auth::user();
+        $this->studioMembers = $user->activeStudio->students->except($user->id);
+        for ($i = 0; $i < count($this->studioMembers); $i++) {
+            if (old("teammates.{$i}")) {
+                $this->teammates[] = old("teammates.{$i}");
+            }
+        }
+        $this->updatedTeammates($this->teammates);
     }
 
     public function render()
@@ -248,11 +343,10 @@ class LevelSaveOrCompleteForm extends Component
     {
         return [
             'lid' => 'int|exists:App\Models\Level,id',
-            'uid' => ['int', 'exists:App\Models\User,id', Rule::in([Auth::user()->id])],
             'type' => ['required', 'regex:/^(save)|(complete)$/'],
-            'filestackHandle' => 'required_without_all:url,uploadcode',
+            'filestackHandle' => 'required_without_all:url,uploadCode',
             'uploadCode' => ['required_without_all:file,url', 'max:10', new UploadCode],
-            'url' => 'required_without_all:file,uploadcode|nullable|url|max:2048',
+            'url' => 'required_without_all:file,uploadCode|nullable|url|max:2048',
             'artifactName' => 'max:255',
             'notes' => 'max:4098',
             'teammates.*' => 'int',
