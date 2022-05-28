@@ -8,7 +8,7 @@
 
     <x-slot name="header">{{ __('My Dashboard') }}</x-slot>
 
-    <div class="bg-neutral-200 rounded-xl py-4 px-4">
+    <div class="md:bg-neutral-200 rounded-xl py-4 md:px-4">
         <div class="lg:grid lg:grid-cols-3 lg:gap-12 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <section class="bg-neutral-100 px-2 py-4 rounded-xl lg:col-span-2">
                 <h5 class="ml-4 mt-4 mb-1 uppercase">
