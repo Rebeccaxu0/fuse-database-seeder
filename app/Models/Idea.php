@@ -16,15 +16,7 @@ class Idea extends Model
      */
     public function users()
     {
-        return $this->team();
-    }
-
-    /**
-     * Users who thought of or own this idea.
-     */
-    public function team()
-    {
-        return $this->morphToMany(User::class, 'teamable', 'teams');
+        return $this->belongsToMany(User::class);
     }
 
     /**

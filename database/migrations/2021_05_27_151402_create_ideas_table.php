@@ -23,6 +23,17 @@ return new class extends Migration
                   ->on('levels');
         });
 
+        Schema::create('idea_user', function (Blueprint $table) {
+            $table->foreignId('idea_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+            $table->foreignId('user_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+        });
+
         Schema::create('idea_inspirations', function (Blueprint $table) {
             $table->foreignId('idea_id')
                   ->index()

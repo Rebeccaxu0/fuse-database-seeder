@@ -18,7 +18,7 @@ class StartSeeder extends Seeder
     {
         // Every Idea gets a start.
         foreach (Idea::all() as $idea) {
-            foreach ($idea->team as $user) {
+            foreach ($idea->users as $user) {
                 $start = Start::factory()
                     ->for($idea->levels->first())
                     ->for($user)

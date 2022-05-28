@@ -27,6 +27,17 @@ return new class extends Migration
             $table->string('url', 2048)->nullable();
             $table->string('url_title', 255)->nullable();
         });
+
+        Schema::create('artifact_user', function (Blueprint $table) {
+            $table->foreignId('artifact_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+            $table->foreignId('user_id')
+                  ->onDelete('cascade')
+                  ->onUpdate('restrict')
+                  ->constrained();
+        });
     }
 
     public function down()

@@ -22,19 +22,10 @@ return new class extends Migration
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
         });
-
-        Schema::create('teams', function (Blueprint $table) {
-          $table->morphs('teamable');
-          $table->foreignId('user_id')
-                ->onDelete('cascade')
-                ->onUpdate('restrict')
-                ->constrained();
-        });
     }
 
     public function down()
     {
-        Schema::dropIfExists('teams');
         Schema::dropIfExists('users');
     }
 };

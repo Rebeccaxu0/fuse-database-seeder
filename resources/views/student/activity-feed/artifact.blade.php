@@ -4,14 +4,14 @@
     </span>
     <livewire:student.activity-artifact :artifact="$activity" :studio="$studio" />
     <ul>
-    @foreach ($activity->team->sortBy('name') as $user)
+    @foreach ($activity->users->sortBy('name') as $user)
         @break($loop->index > 2)
         <li class="list-none m-0">
           <a href="{{ route('student.their_stuff', $user) }}">
             <x-avatar :user="$user" class="h-7 w-7 mr-2" /> {{ $user->firstName() }} {{ $user->abbreviatedLastName() }}
           </a>
           @if ($loop->index == 2 && $loop->count > 3)
-          {!! __(', and <span title=":team">:remaining more</span>', ['remaining' => $loop->count - 3, 'team' => $activity->team->implode('full_name', ', ')]) !!}
+          {!! __(', and <span title=":team">:remaining more</span>', ['remaining' => $loop->count - 3, 'team' => $activity->users->implode('full_name', ', ')]) !!}
           @endif
         </li>
     @endforeach

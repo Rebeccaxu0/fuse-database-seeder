@@ -11,10 +11,9 @@ class Start extends Model
 
     const UPDATED_AT = null;
 
-    protected $fillable = [
-        'level_id',
-        'user_id',
-    ];
+    protected $fillable = ['level_id', 'user_id'];
+
+    protected $with = ['level', 'user'];
 
     /**
      * The user that created this start.

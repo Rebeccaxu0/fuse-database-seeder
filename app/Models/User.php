@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use JoelButcher\Socialstream\HasConnectedAccounts;
 use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
 use Lab404\Impersonate\Models\Impersonate;
@@ -146,12 +145,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+
     /**
      * The artifacts created by this user.
      */
     public function artifacts()
     {
-        return $this->morphedByMany(Artifact::class, 'teamable', 'teams');
+        return $this->belongsToMany(Artifact::class);
     }
 
     /**
@@ -167,7 +167,7 @@ class User extends Authenticatable
      */
     public function ideas()
     {
-        return $this->morphedByMany(Idea::class, 'teamable', 'teams');
+        return $this->belongsToMany(Idea::class);
     }
 
     /**
@@ -376,6 +376,7 @@ class User extends Authenticatable
     }
 
     /**
+     * Is a user actively online now?
      * @return bool
      */
     public function isOnline(): bool
@@ -411,12 +412,7 @@ class User extends Authenticatable
         return Cache::remember(
             "u{$this->id}_has_completed_level_{$level->id}",
             3600,
-            fn() => DB::table('artifacts')
-                ->join('teams', function ($join) {
-                    $join->on('artifacts.id', '=', 'teams.teamable_id')
-                         ->where('teams.teamable_type', 'artifact')
-                         ->where('teams.user_id', $this->id);
-                })
+            fn() => Artifact::whereRelation('users', 'id', $this->id)
                 ->where('type', 'complete')
                 ->where('level_id', $level->id)
                 ->exists()

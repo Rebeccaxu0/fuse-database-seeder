@@ -36,7 +36,7 @@ class ActivityFeed extends Component
         $starts = Start::whereIn('user_id', $students)
             ->limit($limit)
             ->get();
-        $artifacts = Artifact::whereHas('team', function (Builder $query) use ($students) {
+        $artifacts = Artifact::whereHas('users', function (Builder $query) use ($students) {
                 $query->whereIn('user_id', $students);
             })
             ->limit($limit)

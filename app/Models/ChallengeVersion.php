@@ -226,6 +226,23 @@ class ChallengeVersion extends Model
     }
 
     /**
+     * Get highest Completed level for a given User.
+     *
+     * @param User $user
+     *
+     * @return ?Level
+     */
+    public function highestCompletedLevel(User $user): ?Level
+    {
+        $complete = Artifact::whereIn('level_id', $this->levels->pluck('id'))
+            ->whereRelation('users', 'id', $user->id)
+            ->get()
+            ->sortBy('level.level_number')
+            ->pop();
+        return $complete ? $complete->level : null;
+    }
+
+    /**
      * Is the challengeVersion completed?
      *
      * @param User $user

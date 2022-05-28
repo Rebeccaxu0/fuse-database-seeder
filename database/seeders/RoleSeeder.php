@@ -33,5 +33,6 @@ class RoleSeeder extends Seeder
                 'name' => $name,
             ]);
         }
+    }
 
 }

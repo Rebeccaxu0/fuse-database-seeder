@@ -16,14 +16,12 @@ class Artifact extends Model
      */
     public function users()
     {
-        return $this->team();
+        return $this->belongsToMany(User::class);
     }
 
-    public function team()
-    {
-        return $this->morphToMany(User::class, 'teamable', 'teams');
-    }
-
+    /**
+     * The comments attached to this Artifact.
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class);

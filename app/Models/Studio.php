@@ -23,6 +23,13 @@ class Studio extends Organization
     ];
 
     /**
+     * The relationships that should always be eager-loaded.
+     *
+     * @var array
+     */
+    protected $with = ['users'];
+
+    /**
      * The Package associated with this studio or the parent School/District.
      */
     public function deFactoPackage()
