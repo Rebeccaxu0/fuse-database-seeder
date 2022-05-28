@@ -51,8 +51,8 @@ class AnnouncementController extends Controller
             'end_at' => [
                 'required',
                 'date_format:Y-m-d\TH:i',
-                'after:start_at'
-            ]
+                'after:start_at',
+            ],
         ]);
 
         Announcement::create([
@@ -110,8 +110,8 @@ class AnnouncementController extends Controller
             'end_at' => [
                 'required',
                 'date_format:Y-m-d\TH:i',
-                'after:start_at'
-            ]
+                'after:start_at',
+            ],
         ]);
 
         $announcement->update([
