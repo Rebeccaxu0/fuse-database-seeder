@@ -49,25 +49,26 @@ Route::get('/', function () {
 // Manual new user lobby.
 
 Route::get('registrationlobby', function () {
-    return view('auth.registrationlobby');})
+    return view('auth.registrationlobby');
+})
     ->name('registrationlobby')
     ->middleware('guest');
 
 // Alumni user lobby.
 
 Route::get('registeredlobby', function () {
-        return view('auth.registeredlobby');})
-        ->name('registeredlobby')
-        ->middleware('alum');
+    return view('auth.registeredlobby');
+})
+    ->name('registeredlobby');
 
 // Recreating Fortify registration routes. 
 
 Route::get('register', [RegisteredUserController::class, 'create'])
-        ->middleware(['guest:'.config('fortify.guard')])
-        ->name('register');
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('register');
 
 Route::post('register', [RegisteredUserController::class, 'store'])
-    ->middleware(['guest:'.config('fortify.guard')]);
+    ->middleware(['guest:' . config('fortify.guard')]);
 
 
 
@@ -93,7 +94,9 @@ Route::middleware([
 ])->group(function () {
     Route::impersonate();
 
-    Route::get('heartbeat', function() { return response()->noContent(); });
+    Route::get('heartbeat', function () {
+        return response()->noContent();
+    });
     Route::put('studios/{studio}/switch', [StudioController::class, 'switch'])->name('switch_studio');
 
     /*
@@ -157,7 +160,9 @@ Route::middleware([
                 'comments', [FacilitatorCommentsController::class, 'index']
             )->name('comments');
             Route::get(
-                'settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
+                'settings',
+                [FacilitatorSettingsController::class, 'index']
+            )->name('settings');
             Route::get(
                 'announcements', [FacilitatorAnnouncementsController::class, 'index']
             )->name('announcements');
@@ -166,7 +171,7 @@ Route::middleware([
         return '<h1>' . __('TODO') . '</h1>';
     })->name('support');
 
-     /*
+    /*
     |------------------------------------------------------------------------
     | admin routes
     |------------------------------------------------------------------------
@@ -214,4 +219,3 @@ Route::middleware([
             Route::get('media', MediaManagerPage::class)->name('media.index');
         });
 });
-

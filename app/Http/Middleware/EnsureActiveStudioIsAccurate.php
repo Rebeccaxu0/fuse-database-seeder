@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
+
 class EnsureActiveStudioIsAccurate
 {
     /**
@@ -20,6 +21,7 @@ class EnsureActiveStudioIsAccurate
     {
         $user = Auth::user();
         // If a user is NOT a member of any org and NOT an admin
+
         if ($user->deFactoStudios()->count() == 0 && (! $user->isAdmin() || $user->isRoot())) {
             // Ensure active_studio is null.
             if (! is_null($user->activeStudio)) {
