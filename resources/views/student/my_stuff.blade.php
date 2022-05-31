@@ -21,4 +21,5 @@
     </div>
 
     {{ $artifacts->links() }}
+    <x-jet-banner/>
 </x-app-layout>
