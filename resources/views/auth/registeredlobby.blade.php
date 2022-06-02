@@ -3,6 +3,7 @@
     <main class="container flex-shrink flex-grow
                  min-h-screen mx-auto py-16
                  lg:px-4">
+        <x-jet-banner />
         <div class="mx-auto mt-16 my-auto p-8 w-2/3
                bg-gradient-to-t from-fuse-teal-100 to-white
                rounded-lg border
@@ -14,6 +15,5 @@
                 <livewire:alum-registration />
             </div>
         </div>
-        <x-jet-banner/>
     </main>
 </x-alum-layout>

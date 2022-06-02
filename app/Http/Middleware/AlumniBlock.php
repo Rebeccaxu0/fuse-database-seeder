@@ -38,18 +38,17 @@ class AlumniBlock
             if (str_contains($from, "login")) {
                 return redirect(RouteServiceProvider::REGISTEREDLOBBY);
             }
-            if (str_contains($from, "registeredlobby") && ($goingto == "mystuff")) {
+            if ($goingto == "mystuff") {
             } else if (str_contains($from, "mystuff") && ($goingto == "registeredlobby")) {
             } else if ((str_contains($from, "mystuff") ||  str_contains($from, "registeredlobby")) && ($goingto == "challenges")) {
-                return redirect()->to('https://www.fusestudio.net/challenges/')->with('status','Join a studio to access this page!');
+                return redirect()->to('https://www.fusestudio.net/challenges/')->with('status', 'Join a studio to access this page!');
             } else {
                 // Flash message.  
-                session()->flash('flash.banner', 'Join a studio to access this page!');
+                session()->flash('flash.banner', 'Join a studio to access that page!');
                 session()->flash('flash.bannerStyle', 'danger');
                 return redirect()->back();
             }
         }
-
         return $next($request);
     }
 }

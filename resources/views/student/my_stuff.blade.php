@@ -3,6 +3,7 @@
     <x-slot name="title">{{ __('MyStuff') }}</x-slot>
 
     <x-slot name="header">{{ __('MyStuff') }}</x-slot>
+    <x-jet-banner/>
 
     <div class="my-6">
       Knobs and dials - Filters and sorts
@@ -21,5 +22,4 @@
     </div>
 
     {{ $artifacts->links() }}
-    <x-jet-banner/>
 </x-app-layout>
