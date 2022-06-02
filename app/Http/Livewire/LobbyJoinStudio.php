@@ -30,7 +30,6 @@ class LobbyJoinStudio extends Component
             $user->activeStudio()->associate($studio);
             $user->save();
             Cache::forget("u{$user->id}_studios");
-
             return redirect(request()->header('Referer'));
         }
     }

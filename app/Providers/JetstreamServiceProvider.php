@@ -19,10 +19,6 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return view('auth.register');
         });
-
-        // Fortify::registerView(function () {
-        //     return view('auth.lobby');
-        // });
     }
 
     /**

@@ -24,10 +24,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
-        //Fortify::ignoreRoutes();  
+        //
     }
-
     /**
      * Bootstrap any application services.
      *
@@ -61,14 +59,4 @@ class FortifyServiceProvider extends ServiceProvider
             }
         });
     }
-
-        // Fortify::authenticateThrough(function (Request $request) {
-        //     return array_filter([
-        //             config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
-        //             Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
-        //             AttemptToAuthenticate::class,
-        //             PrepareAuthenticatedSession::class,
-        //     ]);
-        // });
-
-        }
+}

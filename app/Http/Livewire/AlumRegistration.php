@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Studio;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\RouteServiceProvider;
@@ -22,26 +21,26 @@ class AlumRegistration extends Component
         'studioCode' => 'required',
     ];
 
-    public function codecheck() {
+    public function codecheck()
+    {
         $user = Auth::user();
         $this->validate();
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
         $this->studioName = $this->studio->name;
         $this->school = $this->studio->school->name;
-        if (! $this->studio) {
+        if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
-        }
-        else {
+        } else {
             // If studio requires email and alumni user has no email attached to their account.
-            if ($this->studio->require_email && (! $user->email)) {
+            if ($this->studio->require_email && (!$user->email)) {
                 $this->showEmail = true;
             }
             $this->showJoin = true;
-            //show school and studio
         }
     }
 
-    public function join(){
+    public function join()
+    {
         $user = Auth::user();
         $user->studios()->attach($this->studio->id);
         $user->activeStudio()->associate($this->studio);
