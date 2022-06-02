@@ -1,9 +1,7 @@
 <x-app-layout>
-
-    <x-slot name="title">{{ __('MyStuff') }}</x-slot>
-
-    <x-slot name="header">{{ __('MyStuff') }}</x-slot>
     <x-jet-banner/>
+    <x-slot name="title">{{ __('MyStuff') }}</x-slot>
+    <x-slot name="header">{{ __('MyStuff') }}</x-slot>
 
     <div class="my-6">
       Knobs and dials - Filters and sorts
