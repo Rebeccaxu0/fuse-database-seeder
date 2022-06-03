@@ -28,6 +28,7 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('restrict')
                 ->constrained();
+            $table->primary(['challenge_id', 'package_id']);
         });
     }
 

@@ -9,7 +9,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table( 'media', function (Blueprint $table) {
+        Schema::table('media', function (Blueprint $table) {
             $table->string('variant_name', 255)
                   ->after('size')
                   ->nullable();

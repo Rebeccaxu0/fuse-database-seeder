@@ -32,6 +32,7 @@ return new class extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
+            $table->primary(['idea_id', 'user_id']);
         });
 
         Schema::create('idea_inspirations', function (Blueprint $table) {

@@ -37,6 +37,7 @@ return new class extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('restrict')
                   ->constrained();
+            $table->primary(['artifact_id', 'user_id']);
         });
     }
 

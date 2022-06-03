@@ -9,9 +9,7 @@ return new class extends Migration
     public function up()
     {
         if (! Schema::hasTable('media')) {
-            Schema::create(
-                'media',
-                function (Blueprint $table) {
+            Schema::create('media', function (Blueprint $table) {
                     $table->id();
                     $table->foreignId('user_id')
                           ->nullable()
@@ -37,9 +35,7 @@ return new class extends Migration
         }
 
         if (! Schema::hasTable('mediables')) {
-            Schema::create(
-                'mediables',
-                function (Blueprint $table) {
+            Schema::create('mediables', function (Blueprint $table) {
                     $table->unsignedBigInteger('media_id');
                     $table->string('mediable_type');
                     $table->integer('mediable_id')->unsigned();
