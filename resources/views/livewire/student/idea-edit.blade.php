@@ -20,7 +20,7 @@
             </div>
 
             <div class="mx-4 mb-4 text-3xl text-fuse-teal-dk text-center font-semibold">
-                {{  $title }}
+                {{ $title }}
             </div>
 
             <label for="idea" class="font-bold block">{{ __('My Idea') }} *

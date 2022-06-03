@@ -36,7 +36,7 @@
         <div>
             @if ($idea)
             <a href="{{ $levelRoute }}">{{ $title }}</a> | {{ __('My Idea') }}
-            <div>{{ __('Inspiration: :inspiration', ['inspiration' => $inspiration])}}</div>
+            <div>{{ __('Inspiration: :inspiration', ['inspiration' => $inspiration]) }}</div>
             @else
             <a href="{{ $levelRoute }}">{{ $title_modifier }}</a> | {{ $title }}</a>
             @endif
