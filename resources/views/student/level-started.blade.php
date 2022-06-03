@@ -37,8 +37,10 @@
 @endpush
 
 <x-app-layout>
+    <x-slot name="title">{{ __(':challenge - Level :number', ['challenge' => $level->levelable->challenge->name, 'number' => $level->level_number]) }}</x-slot>
 
     <div x-data="{ saveCompleteFormOpen: false}" >
+
     <h1>
         <span class="font-bold">{{ $level->levelable->challenge->name }}</span>
         <span class="font-medium">{{ __('Level :number', ['number' => $level->level_number]) }}</span>

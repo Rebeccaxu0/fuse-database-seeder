@@ -15,8 +15,8 @@
 <div class="text-right uppercase font-bold text-slate-500">{{ $artifact->name }}</div>
 <div class="text-right uppercase font-bold">{{ $title }}</div>
 <div class="absolute bottom-0 left-0 m-4 flex items-center">
-    @if ($artifact->level->levelable::class == Idea::class)
-    <x-icon icon="idea" viewBox="60.4 90.6" fill="currentColor" alt="{{ __('idea') }}" class="text-orange-500"/>
+    @if ($artifact->level->levelable::class == App\Models\Idea::class)
+    <x-icon icon="idea" width=35 height=35 alt="{{ __('Idea') }}" class="text-orange-500"/>
     @else
     <span class="text-blue-400 text-2xl font-bold">{{ __('L:number', ['number' => $artifact->level->level_number]) }}</span>
     @endif

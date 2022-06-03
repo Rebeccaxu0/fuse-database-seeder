@@ -77,6 +77,9 @@ Route::middleware([
                 'ideas', [IdeaController::class, 'index']
                 )->name('ideas');
             Route::get(
+                'idea/{idea}', [IdeaController::class, 'show']
+                )->name('idea');
+            Route::get(
                 'help_finder', [ChallengeVersionController::class, 'student_help_finder']
                 )->name('help_finder');
             Route::get(

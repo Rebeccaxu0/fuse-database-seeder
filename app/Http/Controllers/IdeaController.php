@@ -15,7 +15,7 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        return view('student.ideas', ['ideas' => Auth::user()->ideas]);
+        return view('student.ideas.index', ['ideas' => Auth::user()->ideas]);
     }
 
     /**
@@ -47,7 +47,7 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        //
+        return view('student.ideas.show', ['idea' => $idea]);
     }
 
     /**

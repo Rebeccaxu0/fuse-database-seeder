@@ -210,7 +210,7 @@ class LevelSaveOrCompleteForm extends Component
         $artifact->notes = $validated['notes'];
         $artifact->url = $validated['url'];
 
-        if ($validated['teammates']) {
+        if (array_key_exists('teammates', $validated)) {
             $students = $user->activeStudio->students;
             foreach ($validated['teammates'] as $teammate) {
                 if ($students->contains($teammate)) {
@@ -349,7 +349,7 @@ class LevelSaveOrCompleteForm extends Component
             'url' => 'required_without_all:file,uploadCode|nullable|url|max:2048',
             'artifactName' => 'max:255',
             'notes' => 'max:4098',
-            'teammates.*' => 'int',
+            'teammates.*' => 'int|nullable',
         ];
     }
 }

@@ -19,7 +19,7 @@
         @endif
 
         <div class="inline-block ml-3">
-            Team information<br>
+            {{ __('Submitted by :team', ['team' => $teamnames]) }}<br/>
             <span class="uppercase">{{ $timeAgo }}</span>
             ({{ $artifact->created_at->format('Y-m-d') }})
         </div>
@@ -31,12 +31,29 @@
         @endif
     </div>
 
-    <div class="font-medium clear-both">
+    <div class="uppercase font-medium clear-both">
         <div>{{ $artifact->name }}</div>
         <div>
-          <a href="{{ $levelRoute }}">{{ $title_modifier }}</a> | {{ $title }}
+            @if ($idea)
+            <a href="{{ $levelRoute }}">{{ $title }}</a> | {{ __('My Idea') }}
+            <div>{{ __('Inspiration: :inspiration', ['inspiration' => $inspiration])}}</div>
+            @else
+            <a href="{{ $levelRoute }}">{{ $title_modifier }}</a> | {{ $title }}</a>
+            @endif
         </div>
     </div>
+    @if ($related->count())
+    <div class="uppercase font-semibold">
+        {!! __('Saves &amp; completes from this level') !!}
+    </div>
+    <ul>
+        @foreach ($related as $artifact)
+        <li>
+            {{ $artifact->name }}
+        </li>
+        @endforeach
+    </ul>
+    @endif
 </div>
 
 @if ($comments)

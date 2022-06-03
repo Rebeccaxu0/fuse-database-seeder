@@ -4,15 +4,23 @@ namespace App\View\Components;
 
 use App\Models\Artifact;
 use App\Models\ChallengeVersion;
+use App\Models\Idea;
 use App\Models\Studio;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class ArtifactComponent extends Component
 {
     public Artifact $artifact;
     public Studio $studio;
+    public ?Idea $idea;
+    public Collection $related;
+    public string $inspiration;
     public string $levelRoute;
+    public string $teamnames;
     public string $title;
     public string $title_modifier;
     public string $timeAgo;
@@ -31,6 +39,9 @@ class ArtifactComponent extends Component
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
         $this->comments = (bool) $studio->allow_comments;
         $this->commentCount = $artifact->comments->count();
+        $this->teamnames = Arr::join($artifact->users->pluck('full_name')->all(), ', ', ' and ');
+        $this->related = Auth::user()->artifacts->except([$artifact->id])->where('level_id', $artifact->level->id);
+        $this->inspiration = __('none');
         if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
             $this->artifact->level->type = 'level';
             $this->level = $this->artifact->level;
@@ -41,10 +52,10 @@ class ArtifactComponent extends Component
         else {
             $this->artifact->level->type = 'idea';
             $this->idea = $this->artifact->level->levelable;
+            $inspiration = $this->idea->inspirationListToStr();
             $this->title = $this->idea->name;
-            $this->title_modifier = '';
-            $this->levelRoute = '';
-            // $this->levelRoute = route('student.idea', [$this->idea]);
+            $this->title_modifier = __('Idea');
+            $this->levelRoute = route('student.idea', $this->idea);
         }
     }
 

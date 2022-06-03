@@ -58,4 +58,31 @@ class Idea extends Model
     {
         return $this->hasMany(Artifact::class);
     }
+
+    /**
+     * Render inspiration Challenge names to a string.
+     * N.B. This is likely not very localization-friendly.
+     */
+    public function inspirationListToStr()
+    {
+        $inspiration = $this->inspiration->map(function ($challengeVersion, $key) {
+            return $challengeVersion->challenge->name;
+        })->join(', ', ' and ');
+
+        return $inspiration
+            ? $inspiration
+            : __('none');
+    }
+
+    /**
+     * Render users (teammates) names to a string.
+     * N.B. This is likely not very localization-friendly.
+     */
+    public function usersListToStr()
+    {
+        return $this->users->map(function ($user, $key) {
+            return $user->full_name;
+        })->join(', ', ' and ');
+    }
 }
+
