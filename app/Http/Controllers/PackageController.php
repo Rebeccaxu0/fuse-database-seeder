@@ -16,7 +16,7 @@ class PackageController extends Controller
      */
     public function __construct()
     {
-        $this->authorizeResource(Package::class, 'package');
+        // $this->authorizeResource(Package::class, 'package');
     }
 
     /**

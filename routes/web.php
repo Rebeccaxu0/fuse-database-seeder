@@ -11,6 +11,7 @@ use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\LTIController;
 use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
@@ -31,11 +32,24 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
+
+/*
+|------------------------------------------------------------------------
+| LTI routes
+|------------------------------------------------------------------------
+ */
+Route::prefix('lti')
+    ->name('lti.')
+    ->group(function () {
+        Route::get('login', [LTIController::class, 'login'])->name('login');
+        Route::get('launch', [LTIController::class, 'launch'])->name('launch');
+    });
+
 
 Route::middleware([
     'auth:sanctum',
@@ -52,49 +66,49 @@ Route::middleware([
     |------------------------------------------------------------------------
     | student routes
     |------------------------------------------------------------------------
-    */
+     */
     Route::name('student.')
         ->group(function () {
             Route::get(
                 'challenges', [ChallengeVersionController::class, 'student_index']
-                )->name('challenges');
+            )->name('challenges');
             Route::get(
                 'challenge/{challengeVersion:slug}/level/{level:level_number}',
                 [LevelController::class, 'show']
-                )->name('level');
+            )->name('level');
             Route::post(
                 'challenge/{challengeVersion:slug}/level/{level:level_number}/start',
                 [LevelController::class, 'start']
-                )->name('level_start');
+            )->name('level_start');
             Route::post(
                 'artifact',
                 [ArtifactController::class, 'store']
-                )->name('save_artifact');
+            )->name('save_artifact');
             Route::get('dashboard', function () {
                 return view('student.dashboard');
             })->name('dashboard');
             Route::get(
                 'ideas', [IdeaController::class, 'index']
-                )->name('ideas');
+            )->name('ideas');
             Route::get(
                 'idea/{idea}', [IdeaController::class, 'show']
-                )->name('idea');
+            )->name('idea');
             Route::get(
                 'help_finder', [ChallengeVersionController::class, 'student_help_finder']
-                )->name('help_finder');
+            )->name('help_finder');
             Route::get(
                 '{user}/mystuff', [ArtifactController::class, 'artifact_gallery']
-                )->name('their_stuff');
+            )->name('their_stuff');
             Route::get(
                 'mystuff', [ArtifactController::class, 'my_stuff_index']
-                )->name('my_stuff');
+            )->name('my_stuff');
         });
 
     /*
     |------------------------------------------------------------------------
     | facilitator routes
     |------------------------------------------------------------------------
-    */
+     */
     Route::prefix('facilitator')
         ->name('facilitator.')
         ->group(function () {
@@ -104,15 +118,15 @@ Route::middleware([
             Route::get('activity/export/{studio}', [StudioController::class, 'exportActivity'])->name('export_activity');
             Route::get(
                 'challenges', [FacilitatorChallengesController::class, 'index']
-                )->name('challenges');
+            )->name('challenges');
             Route::get(
                 'comments', [FacilitatorCommentsController::class, 'index']
-                )->name('comments');
+            )->name('comments');
             Route::get(
                 'settings', [FacilitatorSettingsController::class, 'index'])->name('settings');
             Route::get(
                 'announcements', [FacilitatorAnnouncementsController::class, 'index']
-                )->name('announcements');
+            )->name('announcements');
         });
     Route::get('support', function () {
         return '<h1>' . __('TODO') . '</h1>';
@@ -122,7 +136,7 @@ Route::middleware([
     |------------------------------------------------------------------------
     | admin routes
     |------------------------------------------------------------------------
-    */
+      */
     Route::view('admin', 'admin.index')->name('admin');
     Route::prefix('admin')
         ->name('admin.')
@@ -131,7 +145,7 @@ Route::middleware([
                 'announcements' => AnnouncementController::class,
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
-                'lti_platforms' => LTIPlatformController::class,
+                'ltiplatforms' => LTIPlatformController::class,
                 'media'         => MediaController::class,
                 'packages'      => PackageController::class,
                 'schools'       => SchoolController::class,
@@ -165,5 +179,5 @@ Route::middleware([
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('media', MediaManagerPage::class)->name('media.index');
         });
-    });
+});
 

@@ -30,7 +30,7 @@ class LTIPlatformPolicy
      */
     public function view(User $user, LTIPlatform $lTIPlatform)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class LTIPlatformPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class LTIPlatformPolicy
      */
     public function update(User $user, LTIPlatform $lTIPlatform)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class LTIPlatformPolicy
      */
     public function delete(User $user, LTIPlatform $lTIPlatform)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class LTIPlatformPolicy
      */
     public function restore(User $user, LTIPlatform $lTIPlatform)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class LTIPlatformPolicy
      */
     public function forceDelete(User $user, LTIPlatform $lTIPlatform)
     {
-        //
+        return $user->isAdmin();
     }
 }

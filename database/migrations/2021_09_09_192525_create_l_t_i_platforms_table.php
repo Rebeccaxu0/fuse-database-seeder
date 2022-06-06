@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('key_set_url', 255);
             $table->string('private_key', 2047);
             $table->json('deployment_json', 255);
-            $table->string('lineitems', 255);
-            $table->json('scope', 1024);
+            $table->string('line_items_url', 255);
+            $table->json('scope_urls', 1024);
             $table->string('api_token', 255)->nullable();
             $table->string('api_secret', 255)->nullable();
             $table->string('api_endpoint', 255)->nullable();

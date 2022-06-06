@@ -4,24 +4,23 @@
 
     <x-slot name="header">{{ __('LTI PLatforms') }}</x-slot>
 
-    <a href="{{ route('admin.packages.create') }}">
+    <a href="{{ route('admin.ltiplatforms.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add platform</button>
     </a>
-    @foreach ($lti_platform as $lti)
-        <h3 class="mt-2 mb-2">{{ $lti->name }}
+    @foreach ($lti_platforms as $lti)
+        <h3 class="mt-2 mb-2">{{ $lti->client_id }}
             <span class="pl-2">
-                <a href="{{ route('admin.lti_platforms.edit', $lti->id) }}">
-                    <button><img class="h-6 w-6" src="/editpencil.svg"></button>
+                <a href="{{ route('admin.ltiplatforms.edit', $lti) }}">
+                    <button><x-icon icon="edit" width=25 height=25 class="ml-2 text-black" /></button>
                 </a>
-                <form method="post" action="{{ route('admin.lti_platforms.destroy', $lti->id) }}"
+                <form method="post" action="{{ route('admin.ltiplatforms.destroy', $lti) }}"
                     class="inline-block">
                     @method('delete')
                     @csrf
-                    <button type="submit"><img class="h-6 w-6" src="/deletetrash.svg"></button>
+                        <button><x-icon icon="trash" width=25 height=25 class="ml-2 text-black" /></button>
                 </form>
             </span>
         </h3>
-        <span class="text-xs">{{ $lti->description }}</span>
     @endforeach
 
 </x-app-layout>

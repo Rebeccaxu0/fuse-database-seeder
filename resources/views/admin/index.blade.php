@@ -23,7 +23,7 @@
 
     <ul>
       <li><a href="{{ route('admin.announcements.index') }}">{{ __('Announcements') }}</a></li>
-      <li><a href="{{ route('admin.lti_platforms.index') }}">{{ __('LTI') }}</a></li>
+      <li><a href="{{ route('admin.ltiplatforms.index') }}">{{ __('LTI') }}</a></li>
       <li><a href="{{ route('admin.levels.index') }}">{{ __('Levels') }}</a></li>
     </ul>
 

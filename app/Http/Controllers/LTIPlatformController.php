@@ -14,7 +14,7 @@ class LTIPlatformController extends Controller
      */
     public function __construct()
     {
-      $this->authorizeResource(LTIPlatform::class, 'lti_platform');
+      $this->authorizeResource(LTIPlatform::class, 'ltiplatform');
     }
 
     /**
@@ -24,7 +24,7 @@ class LTIPlatformController extends Controller
      */
     public function index()
     {
-        return view('admin.lti_platform.index', ['lti_platform' => LTIPlatform::all()]);
+        return view('admin.lti_platform.index', ['lti_platforms' => LTIPlatform::all()]);
     }
 
     /**
@@ -34,7 +34,13 @@ class LTIPlatformController extends Controller
      */
     public function create()
     {
-        //
+        $header = $title = __('Create LTI Platform');
+        return view('admin.lti_platform.edit', [
+            'header' => $header,
+            'title' => $title,
+            'verb' => 'store',
+            'platform' => new LTIPlatform
+        ]);
     }
 
     /**
@@ -45,7 +51,38 @@ class LTIPlatformController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate & Save
+        $validated = $request->validate([
+            'domain' => 'required',
+            'clientId' => 'required',
+            'authLoginURL' => 'required|url',
+            'authTokenURL' => 'required|url',
+            'keySetURL' => 'required|url',
+            'privateKey' => 'required',
+            'jsonDeploymentString' => 'required',
+            'lineItemsURL' => 'required|url',
+            'scopeURLs' => 'required',
+            'apiToken' => 'required',
+            'apiSecret' => 'required',
+            'apiEndpoint' => 'required',
+        ]);
+
+        $platform = LTIPlatform::create([
+            'domain' => $request->domain,
+            'client_id' => $request->clientId,
+            'auth_login_url' => $request->authLoginURL,
+            'auth_token_url' => $request->authTokenURL,
+            'key_set_url' => $request->keySetURL,
+            'private_key' => $request->privateKey,
+            'deployment_json' => $request->jsonDeploymentString,
+            'line_items_url' => $request->lineItemsURL,
+            'scope_urls' => $request->scopeURLs,
+            'api_token' => $request->apiToken,
+            'api_secret' => $request->apiSecret,
+            'api_endpoint' => $request->apiEndpoint,
+        ]);
+
+        return redirect(route('admin.ltiplatforms.index'));
     }
 
     /**
@@ -54,7 +91,7 @@ class LTIPlatformController extends Controller
      * @param  \App\Models\LTIPlatform  $lTIPlatform
      * @return \Illuminate\Http\Response
      */
-    public function show(LTIPlatform $lTIPlatform)
+    public function show(LTIPlatform $ltiplatform)
     {
         //
     }
@@ -65,9 +102,15 @@ class LTIPlatformController extends Controller
      * @param  \App\Models\LTIPlatform  $lTIPlatform
      * @return \Illuminate\Http\Response
      */
-    public function edit(LTIPlatform $lTIPlatform)
+    public function edit(LTIPlatform $ltiplatform)
     {
-        //
+        $header = $title = __('Edit LTI Platform');
+        return view('admin.lti_platform.edit', [
+            'header' => $header,
+            'title' => $title,
+            'verb' => 'update',
+            'platform' => $ltiplatform
+        ]);
     }
 
     /**
@@ -77,9 +120,41 @@ class LTIPlatformController extends Controller
      * @param  \App\Models\LTIPlatform  $lTIPlatform
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LTIPlatform $lTIPlatform)
+    public function update(Request $request, LTIPlatform $ltiplatform)
     {
-        //
+        // Validate & Save
+        $validated = $request->validate([
+            'domain' => 'required',
+            'clientId' => 'required',
+            'authLoginURL' => 'required|url',
+            'authTokenURL' => 'required|url',
+            'keySetURL' => 'required|url',
+            'privateKey' => 'required',
+            'jsonDeploymentString' => 'required',
+            'lineItemsURL' => 'required|url',
+            'scopeURLs' => 'required',
+            'apiToken' => 'required',
+            'apiSecret' => 'required',
+            'apiEndpoint' => 'required',
+        ]);
+
+        $ltiplatform->fill([
+            'domain' => $request->domain,
+            'client_id' => $request->clientId,
+            'auth_login_url' => $request->authLoginURL,
+            'auth_token_url' => $request->authTokenURL,
+            'key_set_url' => $request->keySetURL,
+            'private_key' => $request->privateKey,
+            'deployment_json' => $request->jsonDeploymentString,
+            'line_items_url' => $request->lineItemsURL,
+            'scope_urls' => $request->scopeURLs,
+            'api_token' => $request->apiToken,
+            'api_secret' => $request->apiSecret,
+            'api_endpoint' => $request->apiEndpoint,
+        ]);
+        $ltiplatform->save();
+
+        return redirect(route('admin.ltiplatforms.index'));
     }
 
     /**
@@ -88,8 +163,9 @@ class LTIPlatformController extends Controller
      * @param  \App\Models\LTIPlatform  $lTIPlatform
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LTIPlatform $lTIPlatform)
+    public function destroy(LTIPlatform $ltiplatform)
     {
-        //
+        $ltiplatform->delete();
+        return redirect(route('admin.ltiplatforms.index'));
     }
 }
