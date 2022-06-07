@@ -44,7 +44,6 @@ class CreateNewUser implements CreatesNewUsers
         ]);
         $newuser->studios()->attach($studio->id);
         $newuser->activeStudio()->associate($studio);
-        $newuser->save();
         return $newuser;
     }
 }

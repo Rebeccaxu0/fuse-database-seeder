@@ -12,6 +12,6 @@
                   {{ $message }}
                 </span>
                 @enderror
-                <button type="submit"> Join </button>
+                <button type="submit">{{ __('Join') }}<</button>
     </form>
 </div>

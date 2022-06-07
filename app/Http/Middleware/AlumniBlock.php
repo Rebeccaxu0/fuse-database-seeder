@@ -21,9 +21,9 @@ class AlumniBlock
     {
         $user = Auth::user();
         // If a user is NOT a member of any org and NOT an admin
-        if ($user->deFactoStudios()->count() == 0 && (!$user->isAdmin() || $user->isRoot())) {
+        if ($user->deFactoStudios()->count() == 0 && ! $user->isAdmin() && ! $user->isRoot()) {
             // Ensure active_studio is null.
-            if (!is_null($user->activeStudio)) {
+            if (! is_null($user->activeStudio)) {
                 $user->active_studio = null;
                 $user->save();
             }
@@ -35,14 +35,16 @@ class AlumniBlock
             // You are either sent back to a sanctioned page or allowed to proceed to a sanctioned page (Registered lobby/ My Stuff).
             $from = $request->header('referer');
             $goingto = $request->path();
+            $whitelist = ['mystuff', 'registeredlobby'];
+
             if (str_contains($from, "login")) {
                 return redirect(RouteServiceProvider::REGISTEREDLOBBY);
             }
-            if ($goingto == "mystuff") {
-            } else if (str_contains($from, "mystuff") && ($goingto == "registeredlobby")) {
-            } else if ((str_contains($from, "mystuff") ||  str_contains($from, "registeredlobby")) && ($goingto == "challenges")) {
+            if ((str_contains($from, 'mystuff') ||  str_contains($from, 'registeredlobby')) && ($goingto == 'challenges')) {
                 return redirect()->to('https://www.fusestudio.net/challenges/')->with('status', 'Join a studio to access this page!');
-            } else {
+            }
+            // If not in whitelist:
+            else if (! in_array($goingto, $whitelist)) {
                 // Flash message.  
                 session()->flash('flash.banner', 'Join a studio to access that page!');
                 session()->flash('flash.bannerStyle', 'danger');

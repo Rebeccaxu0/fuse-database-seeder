@@ -23,7 +23,6 @@ class AlumRegistration extends Component
 
     public function codecheck()
     {
-        $user = Auth::user();
         $this->validate();
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
         $this->studioName = $this->studio->name;
@@ -32,7 +31,7 @@ class AlumRegistration extends Component
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
         } else {
             // If studio requires email and alumni user has no email attached to their account.
-            if ($this->studio->require_email && (!$user->email)) {
+            if ($this->studio->require_email && (! Auth::user()->email)) {
                 $this->showEmail = true;
             }
             $this->showJoin = true;
@@ -44,8 +43,6 @@ class AlumRegistration extends Component
         $user = Auth::user();
         $user->studios()->attach($this->studio->id);
         $user->activeStudio()->associate($this->studio);
-        $user->active_studio = $this->studio->id;
-        $user->save();
         Cache::forget("u{$user->id}_studios");
         return redirect(RouteServiceProvider::HOME);
     }

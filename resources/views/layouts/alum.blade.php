@@ -21,9 +21,7 @@
 <body class="bg-fuse-teal-500">
 
     <x-navbar>
-        <x-admin-subnav />
         <x-student-subnav />
-        <x-facilitator-subnav />
     </x-navbar>
 
     {{ $slot }}
