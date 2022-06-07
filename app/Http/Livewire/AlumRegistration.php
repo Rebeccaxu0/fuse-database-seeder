@@ -7,6 +7,7 @@ use App\Models\Studio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AlumRegistration extends Component
 {
@@ -23,11 +24,12 @@ class AlumRegistration extends Component
 
     public function codecheck()
     {
-        $this->validate();
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
         if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
+            $this->showJoin = false;
         } else {
+            $this->resetErrorBag();
             $this->studioName = $this->studio->name;
             $this->school = $this->studio->school->name;
             // If studio requires email and alumni user has no email attached to their account.

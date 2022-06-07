@@ -5,7 +5,7 @@
     <div class="mb-6">
         <form wire:submit.prevent="codecheck">
             <label class="text-lg" for="studio_code">{{ __('Studio Code') }}</label>
-            <input type="text" name="studio_code" id="studio_code" placeholder="{{ __('e.g. White Wolf 123') }}" wire:model="studioCode" wire:keyup.debounce.300ms="codecheck" />
+            <input type="text" name="studio_code" id="studio_code" placeholder="{{ __('e.g. White Wolf 123') }}" wire:model="studioCode" wire:keyup.debounce.300ms="codecheck"/>
             @error('studioCode')
             <span class="text-red-500">
                 {{ $message }}
