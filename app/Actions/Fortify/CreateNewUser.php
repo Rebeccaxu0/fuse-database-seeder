@@ -21,7 +21,10 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        $studio = Studio::where('join_code', $input['studio'])->first();
+        Validator::make($input, [
+            'studiocode' => ['required', 'regex:/^[a-zA-Z-]+ [a-zA-Z-]+ \d+$/'],
+        ])->validate();
+        $studio = Studio::where('join_code', $input['studiocode'])->first();
         if ($studio->require_email) {
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255'],
