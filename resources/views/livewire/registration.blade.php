@@ -65,7 +65,7 @@
     </div>
     <p class="rounded py-2 text-fuse-dk-teal text-base md:text-sm text-center">
     <a class="ml-6 underline" href="https://www.fusestudio.net/">{{ __('Why Fuse?') }}</a>
-    <a class="ml-6 underline" href="https://www.fusestudio.net/">{{ __('Free Trial) }}</a>
+    <a class="ml-6 underline" href="https://www.fusestudio.net/">{{ __('Free Trial') }}</a>
     <a class="ml-6 underline" href="https://www.fusestudio.net/">{{ __('For Teachers') }}</a>
     </p>
 </div>
