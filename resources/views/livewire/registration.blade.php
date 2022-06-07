@@ -11,7 +11,7 @@
         </span>
         @enderror
     </div>
-    <div x-show="! openR">
+    <div x-show="openR">
         <p> {{ $studioName }} in {{ $school }} </p>
         <form method="POST" action="{{ route('register') }}">
             @csrf

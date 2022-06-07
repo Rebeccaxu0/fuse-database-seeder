@@ -25,6 +25,7 @@ class Registration extends Component
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
         if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
+            $this->showManualRegistrationForm = false;
             $this->showJoin = false;
         } else {
             $this->resetErrorBag();
