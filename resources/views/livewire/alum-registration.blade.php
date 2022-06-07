@@ -3,7 +3,7 @@
     <x-jet-validation-errors />
     <h1 class="mt-6 mb-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Welcome back to FUSE!') }}</h1>
     <div class="mb-6">
-        <form wire:submit.prevent="codecheck">
+        <form wire:submit.prevent="codecheck" onkeydown="return event.key != 'Enter';">
             <label class="text-lg" for="studio_code">{{ __('Studio Code') }}</label>
             <input type="text" name="studio_code" id="studio_code" placeholder="{{ __('e.g. White Wolf 123') }}" wire:model="studioCode" wire:keyup.debounce.300ms="codecheck"/>
             @error('studioCode')
