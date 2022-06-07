@@ -25,11 +25,11 @@ class AlumRegistration extends Component
     {
         $this->validate();
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
-        $this->studioName = $this->studio->name;
-        $this->school = $this->studio->school->name;
         if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
         } else {
+            $this->studioName = $this->studio->name;
+            $this->school = $this->studio->school->name;
             // If studio requires email and alumni user has no email attached to their account.
             if ($this->studio->require_email && (! Auth::user()->email)) {
                 $this->showEmail = true;

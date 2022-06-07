@@ -25,12 +25,11 @@ class Registration extends Component
         $user = Auth::user();
         $this->validate();
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
-        $this->studioName = $this->studio->name;
-        $this->school = $this->studio->school->name;
-        if (! $this->studio) {
+        if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
-        }
-        else {
+        } else {
+            $this->studioName = $this->studio->name;
+            $this->school = $this->studio->school->name;
             if ($this->studio->require_email) {
                 $this->showEmail = true;
             }
