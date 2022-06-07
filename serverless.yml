@@ -8,7 +8,6 @@ provider:
     # The stage of the application, e.g. dev, production, staging… ('dev' is the default)
     stage: stage
     runtime: provided.al2
-    lambdaHashingVersion: 20201221
 
 package:
     # Directories to exclude from deployment
