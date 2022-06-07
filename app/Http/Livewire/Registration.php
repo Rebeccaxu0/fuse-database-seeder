@@ -11,7 +11,7 @@ use App\Providers\RouteServiceProvider;
 class Registration extends Component
 {
     public string $studioCode = '';
-    public bool $showEmail = false;
+    public bool $showEmailForm = false;
     public bool $showManualRegistrationForm = false;
     public $studio = null;
     public string $studioName = '';
@@ -26,13 +26,14 @@ class Registration extends Component
         if (!$this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
             $this->showManualRegistrationForm = false;
+            $this->showEmailForm = false;
             $this->showJoin = false;
         } else {
             $this->resetErrorBag();
             $this->studioName = $this->studio->name;
             $this->school = $this->studio->school->name;
             if ($this->studio->require_email) {
-                $this->showEmail = true;
+                $this->showEmailForm = true;
             }
             $this->showManualRegistrationForm = true;
         }
