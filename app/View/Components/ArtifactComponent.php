@@ -16,7 +16,7 @@ class ArtifactComponent extends Component
 {
     public Artifact $artifact;
     public Studio $studio;
-    public ?Idea $idea;
+    public ?Idea $idea = null;
     public Collection $related;
     public string $inspiration;
     public string $levelRoute;
