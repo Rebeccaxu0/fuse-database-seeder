@@ -88,6 +88,7 @@ Route::prefix('lti')
 
 Route::middleware([
     'auth:sanctum',
+    'alum',
     'hasActiveStudio',
     config('jetstream.auth_session'),
     'verified',
