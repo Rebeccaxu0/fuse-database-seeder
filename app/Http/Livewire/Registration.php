@@ -34,8 +34,9 @@ class Registration extends Component
             $this->school = $this->studio->school->name;
             if ($this->studio->require_email) {
                 $this->showEmailForm = true;
+            } else {
+                $this->showManualRegistrationForm = true;
             }
-            $this->showManualRegistrationForm = true;
         }
     }
 
