@@ -25,6 +25,7 @@
     </x-navbar>
 
     {{ $slot }}
+    <x-footer />
 
 
     @stack('modals')

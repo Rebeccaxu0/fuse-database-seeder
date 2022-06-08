@@ -7,24 +7,24 @@
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-bold font-display leading-tight text-fuse-teal-dk my-4;
+  h1, h2, h3, h4 {
+    @apply font-bold font-display leading-tight mt-16 text-fuse-teal-dk;
   }
   h1 {
-    @apply text-5xl;
-    @apply font-extrabold;
+    @apply text-5xl mb-6;
+    @apply font-extrabold mt-12;
   }
   h2 {
-    @apply text-4xl;
+    @apply text-4xl text-center mt-20;
   }
   h3 {
-    @apply text-2xl font-semibold text-gray-700;
+    @apply text-2xl font-semibold text-gray-700 mt-8 mb-4;
   }
   h4 {
-    @apply text-xl text-gray-700;
+    @apply text-xl text-gray-700 mt-8 mb-4;
   }
   h5 {
-    @apply text-lg text-gray-700;
+    @apply text-xs text-gray-700 mt-4 mb-2 ml-4 uppercase tracking-wide;
   }
 
   p {
@@ -32,7 +32,13 @@
   }
 
   a {
-    @apply text-fuse-teal no-underline;
+    @apply no-underline font-semibold text-fuse-teal-dk;
+  }
+  a:focus, a:hover {
+    @apply underline;
+  }
+  a:hover {
+    @apply font-semibold;
   }
 
   li {
