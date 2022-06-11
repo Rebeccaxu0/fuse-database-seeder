@@ -26,6 +26,7 @@ class IdeaSeeder extends Seeder
                 $inspiration = ChallengeVersion::all()->random(rand(0, 4));
                 $team = Studio::find($user->active_studio)
                     ->students
+                    ->except([$user->id])
                     ->random(rand(0, 2))
                     ->push($user);
                 Idea::factory()

@@ -19,7 +19,9 @@ class ArtifactSeeder extends Seeder
         $starts = Start::all();
         foreach ($starts as $start) {
             if (rand(1, 100) < 25) {
-              $team = Studio::find($start->user->active_studio)->students
+                $team = Studio::find($start->user->active_studio)
+                    ->students
+                    ->except([$start->user->id])
                     ->random(rand(0, 2))
                     ->push($start->user);
                 Artifact::factory()
