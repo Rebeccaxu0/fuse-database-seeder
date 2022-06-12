@@ -33,7 +33,7 @@
     @stack('scripts')
     @livewireScripts
     @if (! auth()->user()->isStudent())
-    <script src="/js/zendesk.js" defer></script>
+    <script src="{{ asset('/js/zendesk.js') }}" defer></script>
     @endif
 </body>
 

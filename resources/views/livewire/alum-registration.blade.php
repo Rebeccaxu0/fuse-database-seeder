@@ -3,14 +3,14 @@
     <div class="p-12 bg-transparent rounded-xl shadow-xl border md:container md:p-24">
         <div class="md:flex md:flex-row bg-white rounded-xl shadow-xl p-8 md:p-8 px-1 mx-auto md:container">
             <div class="hidden invisible md:visible md:block mx-auto">
-                <img class="object-contain h-96" src='/img/interest.svg'>
+                <img class="object-contain h-96" src="{{ asset('/img/interest.svg') }}">
             </div>
 
             <div x-data="{ openJ: @entangle('showJoin').defer, openE: @entangle('showEmail').defer }" class="mt-6 grid grid-cols-1 gap-6 max-w-full">
                 <x-slot name="title">{{ __('Lobby') }}</x-slot>
                 <div class="p-12 md:pt-8 pb-8 mx-auto">
                     <div>
-                        <span><img class="h-16 rounded-full" src="/img/default_avatar.jpg"></span>
+                        <span><img class="h-16 rounded-full" src="{{ asset('/img/default_avatar.jpg') }}"></span>
                         <span class="text-xl">username </span>
                     </div>
                     <h1>{{ __('Welcome Back!') }}</h1>
@@ -44,15 +44,15 @@
 
         <div class="flex flex-row p-8 gap-8">
             <div class="grow mx-auto text-center">
-                <img class="h-24 mx-auto mb-4" src='/img/youtube.svg'>
+                <img class="h-24 mx-auto mb-4" src="{{ asset('/img/youtube.svg') }}">
                 <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/try">Free Trial</a></span>
             </div>
             <div class="grow mx-auto text-center">
-                <img class="h-24 mx-auto mb-4" src='/img/smile.svg'>
+                <img class="h-24 mx-auto mb-4" src="{{ asset('/img/smile.svg') }}">
                 <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/">Why FUSE?</a></span>
             </div>
             <div class="grow mx-auto text-center">
-                <img class="fill-white h-24 mx-auto mb-4" src='/img/users.svg'>
+                <img class="fill-white h-24 mx-auto mb-4" src="{{ asset('/img/users.svg') }}">
                 <span class="text-fuse-teal-700 font-bold mx-auto"> <a href="https://www.fusestudio.net/get-started">For Teachers</a></span>
             </div>
         </div>
