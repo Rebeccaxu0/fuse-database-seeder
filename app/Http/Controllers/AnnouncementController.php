@@ -62,7 +62,7 @@ class AnnouncementController extends Controller
             'start_at' => $validated['start_at'],
             'end_at'   => $validated['end_at'],
         ]);
-        // Cache::tags(['announcements'])->flush();
+        Cache::tags(['announcements'])->flush();
 
         return redirect(route('admin.announcements.index'));
     }
@@ -121,7 +121,7 @@ class AnnouncementController extends Controller
             'start_at' => $validated['start_at'],
             'end_at'   => $validated['end_at'],
         ]);
-        // Cache::tags(['announcements'])->flush();
+        Cache::tags(['announcements'])->flush();
 
         return redirect(route('admin.announcements.index'));
     }
@@ -135,7 +135,7 @@ class AnnouncementController extends Controller
     public function destroy(Announcement $announcement)
     {
         $announcement->delete();
-        // Cache::tags(['announcements'])->flush();
+        Cache::tags(['announcements'])->flush();
 
         return redirect(route('admin.announcements.index'));
     }
