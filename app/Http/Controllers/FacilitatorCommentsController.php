@@ -26,7 +26,7 @@ class FacilitatorCommentsController extends Controller
     {
         $studioUsers = Auth::user()->activeStudio->users->pluck('id');
         $artifacts = Artifact::whereHas(
-            'team', function (Builder $query) use ($studioUsers) {
+            'users', function (Builder $query) use ($studioUsers) {
                 $query->whereIn('user_id', $studioUsers);
             })
             ->has('comments')
