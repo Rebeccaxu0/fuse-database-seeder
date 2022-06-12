@@ -2,30 +2,34 @@ service: laravel
 
 params:
   default:
-    debug: true
+    app_key: ${ssm:/laravel/app_key}
     cache_instance_size: cache.t3.micro
     db_database: fuse
     db_host: ${ssm:/laravel/db_host}
     db_password: ${ssm:/laravel/db_pwd}
     db_port: ${ssm:/laravel/db_port}
-    public_route_table_id: ${ssm:/laravel/public_route_table_id}
+    db_username: fuse
+    debug: true
     private_route_table_1a_id: ${ssm:/laravel/private_route_table_1a_id}
     private_route_table_1b_id: ${ssm:/laravel/private_route_table_1b_id}
-    public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
-    public_subnet_1b_id: ${ssm:/laravel/public_subnet_1b_id}
     private_subnet_1a_id: ${ssm:/laravel/private_subnet_1a_id}
     private_subnet_1b_id: ${ssm:/laravel/private_subnet_1b_id}
     private_subnet_db1_id: ${ssm:/laravel/private_subnet_db1_id}
     private_subnet_db2_id: ${ssm:/laravel/private_subnet_db2_id}
-    db_username: fuse
+    public_route_table_id: ${ssm:/laravel/public_route_table_id}
+    public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
+    public_subnet_1b_id: ${ssm:/laravel/public_subnet_1b_id}
     vpc_id: ${ssm:/laravel/vpc_id}
   dev:
-    domain: dev.fusestudio.net
+    asset_bucket_name: dev.assets.fusestudio.net
+    domain: dev.my.fusestudio.net
   prod:
+    asset_bucket_name: assets.fusestudio.net
     domain: my.fusestudio.net
     debug: false
   stage:
-    domain: stage.fusestudio.net
+    asset_bucket_name: stage.assets.fusestudio.net
+    domain: stage.my.fusestudio.net
 
 provider:
   name: aws
@@ -43,7 +47,15 @@ provider:
     DB_PORT: ${param:db_port}
     DB_PASSWORD: ${param:db_password}
     DB_USERNAME: ${param:db_username}
+    APP_KEY: ${param:app_key}
+    APP_STORAGE: /tmp
+    # Serve static assets via CloudFront
+    ASSET_URL: ${self:custom.asset_url}
+    LIVEWIRE_ASSET_URL: ${self:custom.asset_url}
+    MIX_ASSET_URL: ${self:custom.asset_url}
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
+    # SESSION_DRIVER: redis
+    VIEW_COMPILED_PATH: /tmp/storage/framework/views
 
 package:
   # Directories to exclude from deployment
@@ -100,9 +112,14 @@ plugins:
   # We need to include the Bref plugin
   - ./vendor/bref/bref
   - ./vendor/bref/extra-php-extensions
+  - serverless-s3-sync
 
 resources:
   Resources:
+    AssetsBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${param:asset_bucket_name}
     SubnetRouteTableAssociationLambdaPrivateA:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties:
@@ -161,3 +178,13 @@ resources:
         NumCacheNodes: 1
         VpcSecurityGroupIds:
           - !GetAtt ServerlessRedisSecurityGroup.GroupId
+
+custom:
+  s3Sync:
+    # Sync public dir with assets to the assets bucket
+    # TODO: put this bucket behind CloudFront CDN
+    - bucketName: ${param:asset_bucket_name}
+      localDir: public
+      deleteRemoved: true
+      acl: public-read
+  asset_url: https://s3.us-east-2.amazonaws.com/${param:asset_bucket_name}
