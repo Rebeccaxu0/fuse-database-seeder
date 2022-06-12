@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="container mt-8">
-        <livewire:locale-switcher />
+        {{-- <livewire:locale-switcher /> --}}
         {{ __('Copyright © 2012-:current. All rights reserved.', ['current' => date('Y')]) }}
     </div>
 </footer>
