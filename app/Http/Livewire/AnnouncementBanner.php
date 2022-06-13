@@ -16,9 +16,9 @@ class AnnouncementBanner extends Component
     public function mount(User $user)
     {
         if (! $user->isStudent()) {
-            // $unread_announcement_ids = Cache::tags(['announcements'])
-            //     ->remember(
-            //     "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
+            $unread_announcement_ids = Cache::tags(['announcements'])
+                ->remember(
+                "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
                     $now = new DateTime();
                     return Announcement::where('start_at', '<=', $now->format('Y-m-d H:i:s'))
                         ->where('end_at', '>=', $now->format('Y-m-d H:i:s'))
@@ -28,8 +28,8 @@ class AnnouncementBanner extends Component
                                   ->where('user_id', '=', $user->id);
                         })
                         ->pluck('id');
-            //     }
-            // );
+                }
+            );
             if ($unread_announcement_ids->count()) {
                 $this->announcements = Announcement::whereIn('id', $unread_announcement_ids)->get();
             }
