@@ -18,8 +18,6 @@ class UsersPage extends Component
 
     public Collection $districts;
     public Collection $schools;
-    public District $district;
-    public School $school;
     public int $districtFilter = 0;
     public int $schoolFilter = 0;
     public string $userSearch = '';
@@ -52,18 +50,6 @@ class UsersPage extends Component
 
     public function toggleOnline() {
         $this->onlyOnline = ! $this->onlyOnline;
-    }
-
-    public function updatedDistrictFilter()
-    {
-        if ($this->districtFilter) {
-            $this->district = $this->districts->find($this->districtFilter);
-            $this->schools = $this->district->schools->sortBy('name');
-        }
-        else {
-            unset($this->district);
-            $this->schools = School::all()->sortBy('name');
-        }
     }
 
     public function updatedUserSearch()
@@ -103,28 +89,29 @@ class UsersPage extends Component
       }
 
       if ($this->schoolFilter) {
-          $this->school = $this->schools->find($this->schoolFilter);
-          $users = $users->where(function ($outerQuery) {
+          $school = School::find($this->schoolFilter);
+          $users = $users->where(function ($outerQuery) use ($school) {
               $outerQuery
                   ->orWhereHas('schools', function (Builder $innerQuery) {
-                      $innerQuery->whereIn('id', $this->school->pluck('id'));
+                      $innerQuery->where('id', $this->schoolFilter);
                   })
-                  ->orWhereHas('studios', function (Builder $innerQuery) {
-                      $innerQuery->whereIn('id', $this->school->studios->pluck('id'));
+                  ->orWhereHas('studios', function (Builder $innerQuery) use ($school) {
+                      $innerQuery->whereIn('id', $school->studios->pluck('id'));
                   });
           });
       }
       else if ($this->districtFilter) {
-          $users = $users->where(function ($outerQuery) {
+          $district = District::find($this->districtFilter);
+          $users = $users->where(function ($outerQuery) use ($district) {
               $outerQuery
                   ->orWhereHas('districts', function (Builder $innerQuery) {
                       $innerQuery->where('id', $this->districtFilter);
                   })
-                  ->orWhereHas('schools', function (Builder $innerQuery) {
-                      $innerQuery->whereIn('id', $this->district->schools->pluck('id'));
+                  ->orWhereHas('schools', function (Builder $innerQuery) use ($district) {
+                      $innerQuery->whereIn('id', $district->schools->pluck('id'));
                   })
-                  ->orWhereHas('studios', function (Builder $innerQuery) {
-                      $innerQuery->whereIn('id', $this->district->studios->pluck('id'));
+                  ->orWhereHas('studios', function (Builder $innerQuery) use ($district) {
+                      $innerQuery->whereIn('id', $district->studios->pluck('id'));
                   });
           });
       }
