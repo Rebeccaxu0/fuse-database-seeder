@@ -16,7 +16,7 @@
     <!-- Logo -->
     <div class="absolute t-0 l-0 z-10 mt-3">
         <a href="{{ route('student.dashboard') }}">
-            <img src="{{ asset('/logo.png') }}" alt="logo" class="w-20">
+            <img src="{{ asset('/img/logo.png') }}" alt="logo" class="w-20">
         </a>
     </div>
     <x-subnav-ul id="student-menu" class="md:pl-3 md:pr-20 md:ml-16">
