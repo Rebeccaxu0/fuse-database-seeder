@@ -61,7 +61,7 @@ Route::get('registeredlobby', function () {
 })
     ->name('registeredlobby');
 
-// Recreating Fortify registration routes. 
+// Recreating Fortify registration routes.
 
 Route::get('register', [RegisteredUserController::class, 'create'])
     ->middleware(['guest:' . config('fortify.guard')])
