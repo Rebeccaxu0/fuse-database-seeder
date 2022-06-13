@@ -16,8 +16,8 @@ class Toggle extends Component
 
     public function toggle()
     {
-      $this->is_active = ! $this->is_active;
-      $this->emitUp($this->event);
+        $this->is_active = ! $this->is_active;
+        $this->emitUp($this->event);
     }
 
     public function render()
