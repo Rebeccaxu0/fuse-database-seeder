@@ -135,7 +135,7 @@ class User extends Authenticatable
      */
     protected function defaultProfilePhotoUrl()
     {
-        return '/img/default_avatar.jpg';
+        return asset('/img/default_avatar.jpg');
     }
 
     /**
