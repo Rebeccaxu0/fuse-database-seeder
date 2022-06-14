@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class ServerlessStorageServiceProvider extends ServiceProvider
 {
-
     /**
      * Register any application services.
      *
