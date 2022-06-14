@@ -1,5 +1,19 @@
 # FUSE authenticated website 4.x (Laravel)
 
+## Infrastructure
+
+In production and dev/stage environments, the project is meant to be run
+serverless on AWS Lambda using the Bref framework. The minimum framework
+infrastructure needs are captured in the `serverless.yml` file, which is
+mostly the Lambda layers and the S3 bucket for assets. This file references
+many resources managed in Terraform outside of Bref[^1] including the VPC
+and database. However, the following are not captured in either:
+
+* Certificate creation
+* DNS entries
+
+These need to be managed manually.
+
 ## Roadmap
 
 * Data relationships and migrations
@@ -35,3 +49,10 @@ written in conjunction with factory and seeder files. Only after we are
 confident our data relationships are working properly (`$ php artisan tinker`
 is your friend), will we start to write the concommitant MYSQL code to move
 legacy data to the new tables.
+
+[^1]: It is not very convenient to create resources in Bref that will need to
+be shared to other resources. We take the stance that Bref should only describe
+Laravel-specific resources, viz the lambda layers, the Redis cache, and the S3
+bucket for assets. The VPC, subnets, security groups, and other resources are
+captured in Terraform and salient resource ids are passed to Bref via AWS
+Parameter Store.
