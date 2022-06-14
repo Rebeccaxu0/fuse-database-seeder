@@ -4,6 +4,7 @@ params:
   default:
     app_key: ${ssm:/laravel/app_key}
     cache_instance_size: cache.t3.micro
+    certificate_arn: ${ssm:/laravel/certificate_arn}
     db_database: fuse
     db_host: ${ssm:/laravel/db_host}
     db_password: ${ssm:/laravel/db_pwd}
@@ -21,13 +22,16 @@ params:
     public_subnet_1b_id: ${ssm:/laravel/public_subnet_1b_id}
     vpc_id: ${ssm:/laravel/vpc_id}
   dev:
+    app_env: dev
     asset_bucket_name: dev.assets.fusestudio.net
     domain: dev.my.fusestudio.net
   prod:
+    app_env: production
     asset_bucket_name: assets.fusestudio.net
     domain: my.fusestudio.net
     debug: false
   stage:
+    app_env: local
     asset_bucket_name: stage.assets.fusestudio.net
     domain: stage.my.fusestudio.net
 
@@ -41,20 +45,22 @@ provider:
   runtime: provided.al2
   environment:
     APP_DEBUG: ${param:debug}
-    APP_URL: ${param:domain}
+    APP_ENV: ${param:app_env}
+    APP_KEY: ${param:app_key}
+    APP_STORAGE: /tmp
+    APP_URL: https://${param:domain}
     DB_DATABASE: ${param:db_database}
     DB_HOST: ${param:db_host}
     DB_PORT: ${param:db_port}
     DB_PASSWORD: ${param:db_password}
     DB_USERNAME: ${param:db_username}
-    APP_KEY: ${param:app_key}
-    APP_STORAGE: /tmp
+    LOG_CHANNEL: stderr
     # Serve static assets via CloudFront
-    ASSET_URL: ${self:custom.asset_url}
-    LIVEWIRE_ASSET_URL: ${self:custom.asset_url}
-    MIX_ASSET_URL: ${self:custom.asset_url}
+    ASSET_URL: https://${param:domain}
+    LIVEWIRE_ASSET_URL: https://${param:domain}
+    MIX_ASSET_URL: https://${param:domain}
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
-    # SESSION_DRIVER: redis
+    SESSION_DRIVER: redis
     VIEW_COMPILED_PATH: /tmp/storage/framework/views
 
 package:
@@ -71,11 +77,14 @@ functions:
   # This function runs the Laravel website/API
   web:
     handler: public/index.php
+    environment:
+      APP_RUNTIME: octane
+      BREF_LOOP_MAX: 250
+      OCTANE_PERSIST_DATABASE_SESSIONS: 1
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
     layers:
       - ${bref:layer.php-81-fpm}
       - ${bref-extra:newrelic-php-81}
-        # - ${bref-extra:pgsql-php-81}
       - ${bref-extra:redis-php-81}
     events:
       - httpApi: '*'
@@ -109,17 +118,12 @@ functions:
         - ${param:private_subnet_db2_id}
 
 plugins:
-  # We need to include the Bref plugin
   - ./vendor/bref/bref
   - ./vendor/bref/extra-php-extensions
-  - serverless-s3-sync
+  - serverless-lift
 
 resources:
   Resources:
-    AssetsBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${param:asset_bucket_name}
     SubnetRouteTableAssociationLambdaPrivateA:
       Type: AWS::EC2::SubnetRouteTableAssociation
       Properties:
@@ -163,8 +167,6 @@ resources:
         SubnetIds:
           - ${param:private_subnet_1a_id}
           - ${param:private_subnet_1b_id}
-          # - Ref: PrivateSubnetA
-          # - Ref: PrivateSubnetB
 
     ElasticCacheCluster:
       DependsOn: ServerlessRedisSecurityGroup
@@ -179,12 +181,19 @@ resources:
         VpcSecurityGroupIds:
           - !GetAtt ServerlessRedisSecurityGroup.GroupId
 
-custom:
-  s3Sync:
-    # Sync public dir with assets to the assets bucket
-    # TODO: put this bucket behind CloudFront CDN
-    - bucketName: ${param:asset_bucket_name}
-      localDir: public
-      deleteRemoved: true
-      acl: public-read
-  asset_url: https://s3.us-east-2.amazonaws.com/${param:asset_bucket_name}
+constructs:
+  website:
+    type: server-side-website
+    assets:
+      # Directories: routes must end with '/*'
+      '/css/*': public/css
+      '/img/*': public/img
+      '/js/*': public/js
+      '/vendor/*': public/vendor
+      # Files:
+      '/favicon.ico': public/favicon.ico
+      '/mix-manifest.json': public/mix-manifest.json
+      '/robots.txt': public/favicon.ico
+    certificate: ${param:certificate_arn}
+    domain: ${param:domain}
+
