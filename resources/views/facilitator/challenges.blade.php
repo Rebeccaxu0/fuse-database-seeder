@@ -15,7 +15,7 @@
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
-                                @livewire ('studio-challenge-toggle', ['studioId' => $studio->id, 'challengeVersionId' => $challengeVersion->id], key("{$studio->id}-{$challengeVersion->id}"))
+                                @livewire ('studio-challenge-toggle', ['studio' => $studio, 'challengeVersion' => $challengeVersion], key("{$studio->id}-{$challengeVersion->id}"))
                                 <div class="inline-block border border-gray-400 rounded-lg py-2 pl-8 pr-1"
                                     style="width: calc(100% - 3.5rem)">
                                     {{ $challengeVersion->name }}
@@ -42,7 +42,7 @@
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
-                                @livewire ('studio-challenge-toggle', ['studioId' => $studio->id, 'challengeVersionId' => $challengeVersion->id], key("{$studio->id}-{$challengeVersion->id}"))
+                                @livewire ('studio-challenge-toggle', ['studio' => $studio, 'challengeVersion' => $challengeVersion], key("{$studio->id}-{$challengeVersion->id}"))
                                 <div class="inline-block ml-2 border border-gray-400 rounded-lg py-2 pl-8 pr-1"
                                     style="width: calc(100% - 3.5rem)">
                                     {{ $challengeVersion->name }}
