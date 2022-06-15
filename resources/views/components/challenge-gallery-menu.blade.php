@@ -16,6 +16,7 @@
         </a>
         @endif
         </li>
+        @if (auth()->user()->activeStudio->allow_ideas)
         <li class="m-0 p-0 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('student.ideas')) bg-neutral-100 @endif ">
             @if (request()->routeIs('student.ideas'))
@@ -31,6 +32,7 @@
             </a>
             @endif
         </li>
+        @endif
         <li class="m-0 p-0 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('student.help_finder')) bg-neutral-100 @endif ">
             @if (request()->routeIs('student.help_finder'))

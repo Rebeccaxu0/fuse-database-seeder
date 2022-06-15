@@ -15,6 +15,9 @@ class IdeaController extends Controller
      */
     public function index()
     {
+        if (! Auth::user()->activeStudio->allow_ideas) {
+            abort(403);
+        }
         return view('student.ideas.index', ['ideas' => Auth::user()->ideas]);
     }
 
