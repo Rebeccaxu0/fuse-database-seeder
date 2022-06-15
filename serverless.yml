@@ -25,23 +25,26 @@ params:
     app_env: dev
     asset_bucket_name: dev.assets.fusestudio.net
     domain: dev.my.fusestudio.net
+    profile: terraform-dev
   prod:
     app_env: production
     asset_bucket_name: assets.fusestudio.net
     domain: my.fusestudio.net
     debug: false
+    profile: terraform-prod
   stage:
     app_env: local
     asset_bucket_name: stage.assets.fusestudio.net
     domain: stage.my.fusestudio.net
+    profile: terraform-stage
 
 provider:
   name: aws
-  profile: terraform-stage
+  profile: ${param:profile}
   # The AWS region in which to deploy (us-east-1 is the default)
   region: us-east-2
   # The stage of the application, e.g. dev, production, staging… ('dev' is the default)
-  stage: stage
+  stage: ${opt:stage, 'stage'}
   runtime: provided.al2
   environment:
     APP_DEBUG: ${param:debug}
