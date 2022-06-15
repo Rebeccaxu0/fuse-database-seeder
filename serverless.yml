@@ -196,4 +196,16 @@ constructs:
       '/robots.txt': public/favicon.ico
     certificate: ${param:certificate_arn}
     domain: ${param:domain}
+    forwardedHeaders:
+      - Accept
+      - Accept-Language
+      - Authorization
+      - Content-Type
+      - Origin
+      - Referer
+      - User-Agent
+      - X-Forwarded-Host
+      - X-Requested-With
+      - X-Csrf-Token
+      - X-Livewire
 
