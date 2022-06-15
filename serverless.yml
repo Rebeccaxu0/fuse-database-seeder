@@ -33,7 +33,7 @@ params:
     debug: false
     profile: terraform-prod
   stage:
-    app_env: local
+    app_env: stage
     asset_bucket_name: stage.assets.fusestudio.net
     domain: stage.my.fusestudio.net
     profile: terraform-stage
@@ -211,4 +211,5 @@ constructs:
       - X-Requested-With
       - X-Csrf-Token
       - X-Livewire
+      - X-Xsrf-Token
 
