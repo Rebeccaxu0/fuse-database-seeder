@@ -14,6 +14,27 @@ and database. However, the following are not captured in either:
 
 These need to be managed manually.
 
+Additionally, you will need to set the APP_KEY parameter key.
+
+```Bash
+aws ssm put-parameter --name "/laravel/app_key" \
+--type "SecureString" --value "$(php artisan key:generate --show)" \
+--profile terraform-prod
+```
+
+### Certificate Creation
+
+**Important, make sure you issue the certifcate in us-east-1.**
+Manually request a certificate in the account for the given stage. Then switch
+to the prod account to add the verification CNAME entries in Route 53. While
+you wait, you can add the certificate's ARN to the parameter store.
+
+```Bash
+aws ssm put-parameter --name "/laravel/certificate_arn" \
+--type "String" --value "arn::aws:acm:us-east-2:1234567890:certificate/123-123--123-123" \
+--profile terraform-prod
+```
+
 ## Roadmap
 
 * Data relationships and migrations
