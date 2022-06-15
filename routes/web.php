@@ -39,7 +39,6 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
-
 /*
 |------------------------------------------------------------------------
 | Registration routes
