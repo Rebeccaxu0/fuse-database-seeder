@@ -56,7 +56,6 @@ class StudioActivityPage extends Component
             $this->populateArtifacts();
         }
     }
-
     public function render()
     {
         return view('livewire.facilitator.studio-activity-page');
@@ -73,8 +72,7 @@ class StudioActivityPage extends Component
         $this->artifacts
             = $this->activeStudent
                    ->artifacts
-                   ->where('artifactable_type', 'level')
-                   ->whereIn('artifactable_id', $levelIds);
+                   ->whereIn('level_id', $levelIds);
     }
 
     private function populateChallenges()
