@@ -45,7 +45,7 @@ class AlumniBlock
             }
             // If not in whitelist:
             else if (! in_array($goingto, $whitelist)) {
-                // Flash message.  
+                // Flash message.
                 session()->flash('flash.banner', 'Join a studio to access that page!');
                 session()->flash('flash.bannerStyle', 'danger');
                 return redirect()->back();
