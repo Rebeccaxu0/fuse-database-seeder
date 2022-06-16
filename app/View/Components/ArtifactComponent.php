@@ -15,7 +15,7 @@ use Illuminate\View\Component;
 class ArtifactComponent extends Component
 {
     public Artifact $artifact;
-    public Studio $studio;
+    public ?Studio $studio;
     public ?Idea $idea = null;
     public Collection $related;
     public string $inspiration;
@@ -32,12 +32,12 @@ class ArtifactComponent extends Component
      *
      * @return void
      */
-    public function __construct(Artifact $artifact, Studio $studio)
+    public function __construct(Artifact $artifact, ?Studio $studio)
     {
         $this->artifact = $artifact;
         $this->studio = $studio;
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
-        $this->comments = (bool) $studio->allow_comments;
+        $this->comments = (bool) ($studio) ? $studio->allow_comments : false;
         $this->commentCount = $artifact->comments->count();
         $this->teamnames = Arr::join($artifact->users->pluck('full_name')->all(), ', ', ' and ');
         $this->related = Auth::user()->artifacts->except([$artifact->id])->where('level_id', $artifact->level->id);

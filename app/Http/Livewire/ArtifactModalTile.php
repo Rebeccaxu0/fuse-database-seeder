@@ -11,7 +11,7 @@ class ArtifactModalTile extends Component
 {
     public bool $showModalFlag = false;
     public Artifact $artifact;
-    public Studio $studio;
+    public ?Studio $studio;
     public string $title = '';
     public string $title_modifier = '';
 
