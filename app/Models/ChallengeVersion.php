@@ -204,7 +204,7 @@ class ChallengeVersion extends Model
 
             // If the most recent activity is NOT the ChallengeVersion
             // completion artifact, then use most recent activity level.
-            $finalLevel = $challengeVersion->levels()->latest('level_number')->first();
+            $finalLevel = $this->levels()->latest('level_number')->first();
             $CVCompletionArtifact
                 = $user->artifacts()
                        ->where('type', 'Complete')
