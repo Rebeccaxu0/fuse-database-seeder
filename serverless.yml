@@ -202,7 +202,6 @@ constructs:
     forwardedHeaders:
       - Accept
       - Accept-Language
-      - Authorization
       - Content-Type
       - Origin
       - Referer
@@ -211,5 +210,4 @@ constructs:
       - X-Requested-With
       - X-Csrf-Token
       - X-Livewire
-      - X-Xsrf-Token
 
