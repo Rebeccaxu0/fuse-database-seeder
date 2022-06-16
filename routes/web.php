@@ -34,7 +34,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
 Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
@@ -44,9 +43,7 @@ Route::get('/', function () {
 | Registration routes
 |------------------------------------------------------------------------
 */
-
 // Manual new user lobby.
-
 Route::get('registrationlobby', function () {
     return view('auth.registrationlobby');
 })
@@ -54,22 +51,18 @@ Route::get('registrationlobby', function () {
     ->middleware('guest');
 
 // Alumni user lobby.
-
 Route::get('registeredlobby', function () {
     return view('auth.registeredlobby');
 })
     ->name('registeredlobby');
 
 // Recreating Fortify registration routes.
-
 Route::get('register', [RegisteredUserController::class, 'create'])
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register');
 
 Route::post('register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')]);
-
-
 
 
 /*
