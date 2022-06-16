@@ -10,8 +10,8 @@
                 <x-slot name="title">{{ __('Lobby') }}</x-slot>
                 <div class="p-12 md:pt-8 pb-8 mx-auto">
                     <div>
-                        <span><img class="h-16 rounded-full" src="{{ asset('/img/default_avatar.jpg') }}"></span>
-                        <span class="text-xl">username </span>
+                        <span><img class="h-16 rounded-full" src="{{ auth()->user()->getPhotoUrl() }}"></span>
+                        <span class="text-xl">{{ auth()->user()->name }}</span>
                     </div>
                     <h1>{{ __('Welcome Back!') }}</h1>
                     <div>
@@ -27,15 +27,15 @@
                                 <x-jet-label for="email" value="{{ __('Email') }}" />
                                 <x-jet-input id="email" class="block mt-1 rounded text-slate-500 w-full" type="text" name="email" :value="old('email')" />
                             </div>
-                            <p class="mt-6" x-show="openJ"> {{ $studioName }} in {{ $school }} </p>
+                            <p class="mt-6" x-show="openJ">{{ __(':studio in :school', ['studio' => $studioName, 'school' => $school]) }}</p>
                             <button type="submit" x-show="openJ" wire:click="join">{{ __('Join') }}</button>
                         </form>
                     </div>
                     <div x-show="! openJ">
                         <h3>{{ __('No Studio Code?') }}</h3>
                         <ul>
-                            <li>You can still access your <a href="/my-stuff">My Stuff</a></li>
-                            <li>Try our <a href="https://www.fusestudio.net/try">Free Trial</a> version of FUSE</li>
+                            <li>{!! __('You can still access your <a href=":mystuff">My Stuff</a>', ['mystuff' => route('student.my_stuff')]) !!}</li>
+                            <li>{!! __('Try our <a href="https://www.fusestudio.net/try">Free Trial</a> version of FUSE') !!}</li>
                         </ul>
                     </div>
                 </div>
@@ -45,18 +45,16 @@
         <div class="flex flex-row p-8 gap-8">
             <div class="grow mx-auto text-center">
                 <img class="h-24 mx-auto mb-4" src="{{ asset('/img/youtube.svg') }}">
-                <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/try">Free Trial</a></span>
+                <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/try">{{ __('Free Trial') }}</a></span>
             </div>
             <div class="grow mx-auto text-center">
                 <img class="h-24 mx-auto mb-4" src="{{ asset('/img/smile.svg') }}">
-                <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/">Why FUSE?</a></span>
+                <span class="font-bold mx-auto"><a href="https://www.fusestudio.net/">{{ __('Why FUSE?') }}</a></span>
             </div>
             <div class="grow mx-auto text-center">
                 <img class="fill-white h-24 mx-auto mb-4" src="{{ asset('/img/users.svg') }}">
-                <span class="text-fuse-teal-700 font-bold mx-auto"> <a href="https://www.fusestudio.net/get-started">For Teachers</a></span>
+                <span class="text-fuse-teal-700 font-bold mx-auto"> <a href="https://www.fusestudio.net/get-started">{{ __('For Teachers') }}</a></span>
             </div>
         </div>
     </div>
-</div>
-</div>
 </div>
