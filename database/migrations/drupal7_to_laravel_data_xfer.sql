@@ -341,7 +341,7 @@ ORDER BY fdfc.field_challenge_nid ASC;
 -- Update foreign keys
 UPDATE `fuse_laravel`.levels levels
 LEFT JOIN `fuse_laravel`.challenge_versions cv ON levels.d7_challenge_version_id = cv.d7_id
-SET levels.levelable_id = cv.id, levels.levelable_type = 'App\Models\ChallengeVersion'
+SET levels.levelable_id = cv.id, levels.levelable_type = 'App\\Models\\ChallengeVersion'
 WHERE !ISNULL(cv.id);
 
 -- Prerequisite level
@@ -687,6 +687,39 @@ WHERE u.uid <> 0
 -- Do not import 'oggo', uid = 96176
 AND u.uid != 96176
 ORDER BY u.uid;
+
+-- Assign roles to non-students.
+-- Role map --
+-- name              | Drupal ID | Laravel ID
+-- root              | -         | 1
+-- admin             | 6         | 2
+-- report viewer     | 14        | 3
+-- Challenge Author  | 9         | 4
+-- Super Fac         | 16        | 5
+-- Pre-Super Fac     | -         | 6
+-- Facilitator       | 4         | 7
+-- Pre-Facilitator   | -         | 8
+-- Anonymous Student | 12        | 9
+
+INSERT INTO fuse_laravel.roles (id, name, description, d7_id)
+values
+(1, 'Root', '', 0),
+(2, 'Administrator', '', 6),
+(3, 'Report Viewer', '', 14),
+(4, 'Challenge Author', '', 9),
+(5, 'Super Facilitator', '', 16),
+(6, 'Pre-Super Facilitator', '', NULL),
+(7, 'Facilitator', '', 4),
+(8, 'Pre-Facilitator', '', NULL),
+(9, 'Anonymous Student', '', 12);
+
+INSERT INTO `fuse_laravel`.role_user (role_id, user_id)
+SELECT r.id, u.id
+FROM `fuse_laravel`.users u
+RIGHT JOIN `d7-fuse`.users_roles ur ON ur.uid = u.d7_id
+RIGHT JOIN `fuse_laravel`.roles r ON r.d7_id = ur.rid
+WHERE NOT ISNULL(r.d7_id)
+AND NOT ISNULL(u.id);
 
 -- Remove bad ethnicity data.
 UPDATE `fuse_laravel`.users SET ethnicity = NULL
