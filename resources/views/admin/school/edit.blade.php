@@ -22,26 +22,26 @@
             class="text-gray-700 text-lg mb-6">{{ __('District: :name', ['name' => $school->district ? $school->district->name : __('<none>')]) }}</span>
 
         <fieldset class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
-            <legend class="text-gray-700">{{ __('Grade Levels') }}</legend>
+            <legend class="text-gray-700 font-bold">{{ __('Grade Levels') }}</legend>
             @foreach (\App\Models\GradeLevel::all()->sort() as $glevel)
                 <x-form.checkbox_array name="gradelevels" :value="$glevel->id" :label="$glevel->name" />
             @endforeach
         </fieldset>
 
         <fieldset id="partners" class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
-            <legend class="text-gray-700">{{ __('Partnerships') }}</legend>
+            <legend class="text-gray-700 font-bold">{{ __('Partnerships') }}</legend>
             @foreach (\App\Models\Partner::all()->sortBy('name') as $partner)
                 <x-form.exclusive_checkbox_array name="partner" :value="$partner->id" :label="$partner->name" />
             @endforeach
         </fieldset>
 
         <fieldset class="border p-2">
-            <legend class="text-gray-700">{{ __('Facilitators') }}</legend>
+            <legend class="text-gray-700 font-bold">{{ __('Facilitators') }}</legend>
             @if ($school->facilitators()->count() > 0)
-                <div class="text-gray-700 mb-4">{{ __('Current Super Facilitators') }}</div>
+                <div class="text-gray-700 mb-4">{{ __('Current Facilitators') }}</div>
                 <div class="grid gap-x-4 grid-cols-2 md:grid-cols-3">
                     <p class="text-xs">{{ __('Mark for removal') }}</p>
-                    @foreach ($school->facilitators() as $facilitator)
+                    @foreach ($school->facilitators as $facilitator)
                         <x-form.checkbox_array name="facilitatorsToRemove" :value="$facilitator->id"
                             :label="$facilitator->name" />
                     @endforeach
@@ -55,7 +55,7 @@
         </fieldset>
 
         <fieldset class="border p-2">
-            <legend class="text-gray-700 mb-4">{{ __('Studios') }}</legend>
+            <legend class="text-gray-700 font-bold">{{ __('Studios') }}</legend>
             @if ($school->studios()->count() > 0)
                 <div class="text-gray-700 mb-4">
                     {{ __('Current Studios (:count)', ['count' => $school->studios()->count()]) }}</div>
