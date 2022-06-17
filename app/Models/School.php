@@ -211,42 +211,42 @@ class School extends Organization
     }
 
     /**
-     * Add superfacilitators to a School.
+     * Add facilitators to a School.
      *
-     * @param int[] $super_facilitator_ids
-     *  List of super facilitator ids.
+     * @param int[] $facilitatorId
+     *  List of facilitator ids.
      */
-    public function addSuperFacilitators(array $super_facilitator_ids)
+    public function addFacilitators(array $facilitatorId)
     {
-        $district = $this->district->id;
-        foreach ($super_facilitator_ids as $id) {
-            $sfuser = User::find($id);
-            if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
-                $sfuser->districts()->attach($district);
+        foreach ($facilitatorId as $id) {
+            $facilitator = User::find($id);
+            if (! (in_array($this->id, $facilitator->schools->pluck('id')->toArray()))) {
+                $facilitator->schools()->attach($this);
             }
-            if (! $sfuser->isSuperFacilitator()) {
-                $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                Cache::forget("u{$sfuser->id}_has_role_" . Role::SUPER_FACILITATOR_ID);
+            if (! $facilitator->isFacilitator()) {
+                $facilitator->roles()->attach(Role::FACILITATOR_ID);
+                Cache::forget("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID);
             }
         }
     }
 
     /**
-     * Remove superfacilitators from a School.
+     * Remove facilitators from a School.
      *
-     * @param int[] $super_facilitators
-     *  List of super facilitator ids.
+     * @param int[] $facilitators
+     *  List of facilitator ids.
      */
-    public function removeSuperFacilitators(array $super_facilitator_ids)
+    public function removeFacilitators(array $facilitatorIds)
     {
-        $district = $this->district->id;
-        foreach ($this->superFacilitators as $sf) {
-            if (in_array($sf->id, $super_facilitator_ids)) {
-                $sf->districts()->detach($district);
-                $sf->save();
+        foreach ($this->facilitators as $facilitator) {
+            if (in_array($facilitator->id, $facilitatorIds)) {
+                $facilitator->schools()->detach($this);
+                $facilitator->save();
                 // TODO: emit event to say a user associations have changed.
-                // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
-                // Then I guess you’re not a super facilitator anymore”
+                if ($facilitator->schools->count() == 0) {
+                    $facilitator->roles()->detach(Role::FACILITATOR_ID);
+                    Cache::forget("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID);
+                }
             }
         }
     }

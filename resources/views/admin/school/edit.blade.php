@@ -36,21 +36,21 @@
         </fieldset>
 
         <fieldset class="border p-2">
-            <legend class="text-gray-700">{{ __('Super Facilitators') }}</legend>
-            @if ($school->superFacilitators()->count() > 0)
+            <legend class="text-gray-700">{{ __('Facilitators') }}</legend>
+            @if ($school->facilitators()->count() > 0)
                 <div class="text-gray-700 mb-4">{{ __('Current Super Facilitators') }}</div>
                 <div class="grid gap-x-4 grid-cols-2 md:grid-cols-3">
                     <p class="text-xs">{{ __('Mark for removal') }}</p>
-                    @foreach ($school->superFacilitators() as $user)
-                        <x-form.checkbox_array name="superFacilitatorsToRemove" :value="$user->id"
-                            :label="$user->name" />
+                    @foreach ($school->facilitators() as $facilitator)
+                        <x-form.checkbox_array name="facilitatorsToRemove" :value="$facilitator->id"
+                            :label="$facilitator->name" />
                     @endforeach
                 </div>
             @endif
 
             <p class="text-xs">{{ __('Search to add') }}</p>
             <div>
-                @livewire('add-super-facilitator')
+                @livewire('add-facilitator')
             </div>
         </fieldset>
 

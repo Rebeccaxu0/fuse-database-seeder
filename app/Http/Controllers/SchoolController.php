@@ -138,12 +138,12 @@ class SchoolController extends Controller
             $school->addStudios($request->studiosToAdd);
         }
 
-        if (! empty($request->superFacilitatorsToRemove)) {
-            $school->removeSuperFacilitators($request->superFacilitatorsToRemove);
+        if (! empty($request->facilitatorsToRemove)) {
+            $school->removeFacilitators($request->facilitatorsToRemove);
         }
 
-        if (! empty($request->superFacilitatorsToAdd)) {
-            $school->addSuperFacilitators($request->superFacilitatorsToAdd);
+        if (! empty($request->facilitatorsToAdd)) {
+            $school->addFacilitators($request->facilitatorsToAdd);
         }
 
         if (! $request->boolean('license_status')) {

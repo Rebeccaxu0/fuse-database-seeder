@@ -127,13 +127,13 @@
                         <td class="border-gray-200">
                             <span>
                                 <a href="{{ route('admin.schools.edit', $school->id) }}">
-                                    <button type="reset"><img class="h-6 w-6" src="/editpencil.svg"></button>
+                                    <button type="reset"><x-icon icon="edit" /></button>
                                 </a>
                                 <form method="post" action="{{ route('admin.schools.destroy', $school->id) }}"
                                     class="inline-block">
                                     @method('delete')
                                     @csrf
-                                    <button type="destroy"><img class="h-6 w-6" src="/deletetrash.svg"></button>
+                                    <button type="destroy"><x-icon icon="trash" /></button>
                                 </form>
                             </span>
                         </td>
