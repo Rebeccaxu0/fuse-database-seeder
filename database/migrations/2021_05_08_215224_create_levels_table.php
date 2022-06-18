@@ -47,7 +47,7 @@ END;
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('current_level')
                   ->nullable()
-                  ->comment("The level a student is currently working on.");
+                  ->comment("The last level a student is interacted with  (start/save/complete).");
             $table->foreign('current_level')
                   ->references('id')
                   ->on('levels')

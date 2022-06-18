@@ -125,6 +125,7 @@ class ChallengeVersion extends Model
     public function activeStudents(Studio $studio)
     {
         return 0;
+        // TODO: convert code below from Legacy Drupal to Laravel.
         $others_working = db_select('users', 'u');
         $others_working->join('field_data_field_current_level', 'c_l', 'c_l.entity_id = u.uid');
         $others_working->condition('c_l.field_current_level_nid', $list_of_challenge_levels, 'IN');

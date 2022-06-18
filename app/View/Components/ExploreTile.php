@@ -22,7 +22,7 @@ class ExploreTile extends Component
         $this->started
             = $user->startedLevels
                    ->unique()
-                   ->map(fn($level, $key) => $level->challengeVersion)
+                   ->map(fn($level, $key) => $level->levelable)
                    ->unique()
                    ->intersect($activeChallengeVersions)
                    ->count();

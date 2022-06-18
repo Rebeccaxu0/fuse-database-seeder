@@ -4,6 +4,8 @@
 
     <x-slot name="header">{{ __('Levels') }}</x-slot>
 
+    <x-admin.challenge-subnav />
+
     <a href="{{ route('admin.levels.create') }}">
         <button class="text-md h-12 px-6 m-2 mb-6 bg-fuse-green rounded-lg text-white">Add level</button>
     </a>

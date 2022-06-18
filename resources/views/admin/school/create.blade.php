@@ -14,15 +14,15 @@
             @livewire('add-district')
         </div>
         <div id="partner">
-            <span class="text-gray-700 mb-4">Partnerships</span>
+            <span class="text-gray-700 mb-4 font-semibold">Partnership:</span>
             @foreach (\App\Models\Partner::all() as $partner)
                 <x-form.exclusive_checkbox_array name="partner" :value="$partner->id" :label="$partner->name" />
             @endforeach
         </div>
         <br />
-        <span class="text-gray-700 mb-4">Grade Levels</span>
-        @foreach (\App\Models\GradeLevel::all() as $glevel)
-            <x-form.checkbox_array name="gradelevels" :value="$glevel->id" :label="$glevel->name" />
+        <span class="text-gray-700 mb-4 font-semibold">Grade Levels:</span>
+        @foreach (\App\Models\GradeLevel::all() as $grade_level)
+            <x-form.checkbox_array name="gradelevels" :value="$grade_level->id" :label="$grade_level->name" />
         @endforeach
         <br />
         <x-form.checkbox label="Active Studio License" name="license_status" :checked="old('license_status', 0)" />

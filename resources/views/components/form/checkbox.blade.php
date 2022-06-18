@@ -3,7 +3,7 @@
 <div class="mb-6">
     <input type="checkbox" class="form-checkbox" id="{{ $name }}" name="{{ $name }}"
         {{ $checked ? 'checked' : '' }}>
-    <label for="{{ $name }}">
+    <label for="{{ $name }}" class="font-semibold">
         <span class="mx-2 text-gray-700">{{ ucwords($label) }}</span>
     </label>
     @error($name)

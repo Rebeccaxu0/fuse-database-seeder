@@ -4,6 +4,8 @@
 
     <x-slot name="header">{{ __('Districts') }}</x-slot>
 
+    <x-admin.district-subnav />
+
     <a href="{{ route('admin.districts.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add district</button>
     </a>

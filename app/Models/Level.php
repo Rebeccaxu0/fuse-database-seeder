@@ -82,6 +82,14 @@ class Level extends Model
     }
 
     /**
+     * Get the users currently on this level.
+     */
+    public function currentUsers()
+    {
+        return $this->hasMany(User::class, 'current_level');
+    }
+
+    /**
      * Get the parent (ChallengeVersion or Idea) of this level.
      */
     public function levelable()
@@ -118,25 +126,35 @@ class Level extends Model
             $startable = true;
         }
         else {
-            // Allow level start if user already has a start on this or any
-            // later level of this ChallengeVersion (e.g. via a team complete).
-            foreach ($this->levelable->levels->reverse() as $level) {
-              if ($user->hasStartedLevel($this)) {
-                $startable = true;
-                break;
-              }
-              if ($this == $level) {
-                break;
-              }
-            }
-            // If parent Challenge is startable...
-            if (! $startable && $this->levelable->challenge->isStartable($user)
-              // ...and it's the first level...
-              && ($this->id == $this->levelable->levels->first()->id
-                // ...or the previous level is completed
+            $activeLevels
+                = $user
+                    ->activeStudio
+                    ->activeChallenges
+                    ->map(fn($challengeVersion, $key) => $challengeVersion->levels)
+                    ->flatten()
+                    ->pluck('id');
+            // If this challenge is active in the user's studio
+            if ($activeLevels->contains($this->id)) {
+                // Allow level start if user already has a start on this or any
+                // later level of this ChallengeVersion (e.g. via a team complete).
+                foreach ($this->levelable->levels->reverse() as $level) {
+                    if ($user->hasStartedLevel($this)) {
+                        $startable = true;
+                        break;
+                    }
+                    if ($this == $level) {
+                        break;
+                    }
+                }
+                // If parent Challenge is startable...
+                if (! $startable && $this->levelable->challenge->isStartable($user)
+                    // ...and it's the first level...
+                    && ($this->id == $this->levelable->levels->first()->id
+                    // ...or the previous level is completed
                     || ($this->previous() && $user->hasCompletedLevel($this->previous()))
-                )) {
-                $startable = true;
+                    )) {
+                        $startable = true;
+                }
             }
         }
 

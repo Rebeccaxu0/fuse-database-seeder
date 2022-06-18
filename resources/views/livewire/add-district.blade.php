@@ -1,12 +1,12 @@
 <div class="relative">
-    @livewire ('district-search-bar')
-
-    @foreach ($selecteddistricts as $id => $district)
+    @if (! $district)
+        @livewire ('district-search-bar')
+    @else
         <div>
-            <input type="hidden" name="districtsToAdd[]" value="{{ $id }}">{{ $district['name'] }}
-            <button class="inline-flex" wire:click="removeDistrict({{ $id }})">
-                <img class="h-6 w-6" src="/deletetrash.svg">
+            <input type="hidden" name="district" value="{{ $district->id }}">{{ $district->name }}
+            <button class="inline-flex" wire:click="removeDistrict()">
+                <x-icon icon="trash" />
             </button>
         </div>
-    @endforeach
+    @endif
 </div>

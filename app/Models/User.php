@@ -187,6 +187,14 @@ class User extends Authenticatable
         return $this->belongsToMany(School::class);
     }
 
+    /*
+     * The last level a user interacted with (start/save/complete).
+     */
+    public function currentLevel()
+    {
+        return $this->belongsTo(Level::class, 'current_level');
+    }
+
     /**
      * The Starts for a Level of a ChallengeVersion or Idea associated with this user.
      */

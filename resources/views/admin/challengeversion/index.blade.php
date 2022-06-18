@@ -1,8 +1,10 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Challenge Versions') }}</x-slot>
+    <x-slot name="title">{{ __('Challenges') }}</x-slot>
 
-    <x-slot name="header">{{ __('Challenge Versions') }}</x-slot>
+    <x-slot name="header">{{ __('Challenges') }}</x-slot>
+
+    <x-admin.challenge-subnav />
 
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
         @foreach ($challengeversions as $challengeversion)

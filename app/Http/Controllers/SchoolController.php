@@ -73,21 +73,37 @@ class SchoolController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:schools|max:255',
+            'district' => 'required|exists:App\Models\District,id',
+            'package' => 'nullable|exists:App\Models\Package,id',
+            'partner.*' => 'nullable|exists:App\Models\Partner,id',
+            'gradelevels.*' => 'nullable|exists:App\Models\GradeLevel,id',
+            'salesforce_acct_id' => 'nullable|string',
+            'license_status' => 'nullable|accepted',
         ]);
 
+        $schoolValues = [
+            'name' => $validated['name'],
+        ];
+        if (isset($validated['package'])) {
+            $schoolValues['package_id'] = $validated['package'];
+        }
+        if (isset($validated['partner'])) {
+            $schoolValues['partner_id'] = $validated['partner'][0];
+        }
+        if (isset($validated['salesforce_acct_id'])) {
+            $schoolValues['salesforce_acct_id'] = $validated['salesforce_acct_id'];
+        }
+        if (isset($validated['license_status'])) {
+            $schoolValues['license_status'] = 1;
+        }
+        $school = School::create($schoolValues);
+        $school->districts->save($validated['district']);
 
-        $school = School::create([
-            'name' => $request->name,
-            'package_id' => $request->get('package'),
-            'salesforce_acct_id' => $request->salesforce_acct_id,
-            'partner_id' => $request->get('partner')[0],
-        ]);
-        $school->addDistrict($request->districtsToAdd);
-        $school->gradelevels()->attach($request->gradelevels);
-        $school->save();
+        if (isset($validated['gradelevels'])) {
+            $school->gradelevels()->attach($validated['gradelevels']);
+        }
 
         return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
     }
