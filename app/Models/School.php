@@ -23,6 +23,7 @@ class School extends Organization
         'package_id',
         'salesforce_acct_id',
         'partner_id',
+        'district_id',
     ];
 
     /**

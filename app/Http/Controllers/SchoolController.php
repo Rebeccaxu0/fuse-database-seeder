@@ -25,10 +25,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        $schools = School::with(['district', 'studios'])
-            ->orderBy('name')
-            ->paginate(20);
-        return view('admin.school.index', ['schools' => $schools]);
+        // Full-page Livewire component - see App\Http\Livewire\Admin\SchoolsPage
     }
     /**
      * Show the form for creating a new resource.
@@ -85,6 +82,7 @@ class SchoolController extends Controller
 
         $schoolValues = [
             'name' => $validated['name'],
+            'district_id' => $validated['district'],
         ];
         if (isset($validated['package'])) {
             $schoolValues['package_id'] = $validated['package'];
@@ -99,7 +97,6 @@ class SchoolController extends Controller
             $schoolValues['license_status'] = 1;
         }
         $school = School::create($schoolValues);
-        $school->districts->save($validated['district']);
 
         if (isset($validated['gradelevels'])) {
             $school->gradelevels()->attach($validated['gradelevels']);

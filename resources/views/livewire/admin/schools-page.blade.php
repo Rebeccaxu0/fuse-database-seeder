@@ -1,10 +1,22 @@
 <div class="relative">
+    <x-admin.district-subnav />
+
+    <x-slot name="header">{{ __('Schools') }}</x-slot>
+    <a href="{{ route('admin.schools.create') }}">
+        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add School</button>
+    </a>
+
     <div>
-        @livewire ('district-search-bar')
-        <div>
-            <input type="hidden" name="currentdistrict" value="{{ $activeDistrict->id }}">
-            <h4 class="mt-2 mb-2"> District: {{ $activeDistrict['name'] }} </h4>
-        </div>
+        <label>
+            <span class="font-bold">{{ __('District: ')}}</span>
+            <select wire:model="districtFilter">
+                <option value="0">{{ __('All') }}</option>
+                <option value="-1">{{ __('Unafilliated') }}</option>
+                @foreach ($districts as $district)
+                <option value="{{ $district->id }}">{{ $district->name }}</option>
+                @endforeach
+            </select>
+        </label>
     </div>
     <div class="mt-8" x-data="{ open: @entangle('showSchools') }">
         <table class="min-w-full leading-normal">
@@ -13,9 +25,11 @@
                     <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Name') }}
                     </th>
+                    @if (! $districtFilter)
                     <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('District') }}
                     </th>
+                    @endif
                     <th scope="col" class="bg-white border-gray-200 text-left text-black bold">
                         {{ __('Package') }}
                     </th>
@@ -37,7 +51,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($activeDistrict->schools as $school)
+                @foreach ($schools as $school)
                     <tr class="odd:bg-white even:bg-gray-100">
                         <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
@@ -50,17 +64,19 @@
                                 </div>
                             </div>
                         </td>
+                        @if (! $districtFilter)
                         <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0">
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ $school->district->name }}
+                                    {{ $school->district ? $school->district->name : __('NONE') }}
                                     </p>
                                 </div>
                             </div>
                         </td>
+                        @endif
                         <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
                                 {{ $school->package->name ?? __('No package set') }}
@@ -141,6 +157,8 @@
                 @endforeach
             </tbody>
         </table>
+
+        {{ $schools->links() }}
 
     </div>
 </div>
