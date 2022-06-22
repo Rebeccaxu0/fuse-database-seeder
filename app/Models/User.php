@@ -55,6 +55,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'full_name',
+        'birthday',
         'email',
         'password',
         'active_studio',

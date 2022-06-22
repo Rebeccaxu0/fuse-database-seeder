@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // return view('admin.user.index', ['users' => User::paginate(15)]);
+        // Full-page Livewire component - see App\Http\Livewire\Admin\UsersPage
     }
 
     /**
@@ -46,7 +47,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('admin.user.show', ['user' => $user]);
     }
 
     /**
@@ -57,7 +58,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('admin.user.edit', ['user' => $user]);
     }
 
     /**
@@ -69,7 +70,21 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'string',
+            'fullName' => 'string',
+            'email' => 'nullable|email',
+            'birthday' => 'nullable|date',
+        ]);
+
+        $user->update([
+            'name' => $validated['name'],
+            'full_name' => $validated['fullName'],
+            'email' => $validated['email'],
+            'birthday' => $validated['birthday'],
+        ]);
+
+        return redirect(route('admin.users.show', ['user' => $user]));
     }
 
     /**
@@ -80,7 +95,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect(route('admin.users.index'));
+    }
+
+    /**
+     * Change current user to an Admin.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function makeAdmin(Request $request, User $user)
+    {
+        $adminRole = Role::find(Role::ADMIN_ID);
+        $user->roles()->sync([$adminRole->id]);
+
+        return redirect(route('admin.users.show', ['user' => $user]));
     }
 
 }

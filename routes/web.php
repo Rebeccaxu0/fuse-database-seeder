@@ -190,6 +190,8 @@ Route::middleware([
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
 
             Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
+            // Users
+            Route::post('users/{user}/make-admin', [UserController::class, 'makeAdmin'])->name('users.makeAdmin');
 
             // Manual recreation of Challenge Version resource routes with added parameters.
             Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');
