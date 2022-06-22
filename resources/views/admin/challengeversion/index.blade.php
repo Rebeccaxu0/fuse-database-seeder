@@ -26,12 +26,12 @@
                 <p class="text-gray-900 ml-5 whitespace-no-wrap">
                 <details>
                     <summary>{{ __(':count level(s)', ['count' => count($challengeVersion->levels)]) }}</summary>
-                    <ul>
+                    <ol class="list-decimal">
                         @foreach ($challengeVersion->levels as $level)
-                        <li class="my-0">
+                        <li class="list-decimal my-0">
                             <span class="flex">
                                 <a title="{{ __('edit') }}" href="{{ route('admin.levels.edit', $level->id) }}">
-                                    {{ __('Level :number', ['number' => $level->level_number]) }}
+                                    {{ strip_tags(str()->words($level->blurb, 5)) }}
                                     <x-icon icon="edit" width=18 height=18 class="inline ml-2 text-black" />
                                 </a>
                             <form method="post" action="{{ route('admin.levels.copy', $level) }}" class="inline-block">
@@ -43,7 +43,7 @@
                             </span>
                         </li>
                         @endforeach
-                    </ul>
+                    </ol>
                     <a href="{{ route('admin.levels.create', ['challengeVersion' => $challengeVersion->id]) }}">
                         <button class="text-sm h-6 px-2 m-2 bg-fuse-green rounded-lg text-white">add level</button>
                     </a>
