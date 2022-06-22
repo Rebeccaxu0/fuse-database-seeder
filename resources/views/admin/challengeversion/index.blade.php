@@ -7,15 +7,15 @@
     <x-admin.challenge-subnav />
 
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-        @foreach ($challengeversions as $challengeversion)
+        @foreach ($challengeVersions as $challengeVersion)
         <div class="bg-gray-200 rounded-md p-2 mb-2">
             <div class="pl-2">
                 <div class="flex">
-                    <a class="flex font-bold text-2xl" href="{{ route('admin.challengeversions.edit', $challengeversion->id) }}">
-                        {{ $challengeversion->name }}
+                    <a class="flex font-bold text-2xl" href="{{ route('admin.challengeversions.edit', $challengeVersion->id) }}">
+                        {{ $challengeVersion->name }}
                         <x-icon icon="edit" width=25 height=25 class="inline ml-2 text-fuse-teal-dk" />
                     </a>
-                    <form class="inline" method="post" action="{{ route('admin.challengeversions.destroy', $challengeversion->id) }}">
+                    <form class="inline" method="post" action="{{ route('admin.challengeversions.destroy', $challengeVersion->id) }}">
                         @method('delete')
                         @csrf
                         <button>
@@ -25,9 +25,9 @@
                 </div>
                 <p class="text-gray-900 ml-5 whitespace-no-wrap">
                 <details>
-                    <summary>{{ __(':count level(s)', ['count' => count($challengeversion->levels)]) }}</summary>
+                    <summary>{{ __(':count level(s)', ['count' => count($challengeVersion->levels)]) }}</summary>
                     <ul>
-                        @foreach ($challengeversion->levels as $level)
+                        @foreach ($challengeVersion->levels as $level)
                         <li class="my-0">
                             <span class="flex">
                                 <a title="{{ __('edit') }}" href="{{ route('admin.levels.edit', $level->id) }}">
@@ -44,7 +44,7 @@
                         </li>
                         @endforeach
                     </ul>
-                    <a href="{{ route('admin.levels.create') }}">
+                    <a href="{{ route('admin.levels.create', ['challengeVersion' => $challengeVersion->id]) }}">
                         <button class="text-sm h-6 px-2 m-2 bg-fuse-green rounded-lg text-white">add level</button>
                     </a>
                 </details>

@@ -25,6 +25,9 @@
         <p> //gallery media </p>
         <livewire:admin.wistia-picker name="wistiaId" label="{{ __('Challenge Gallery Preview Video - Wistia ID') }}" :wistiaId="$challengeversion->gallery_wistia_video_id" />
         <div>
+            <a href="{{ route('admin.levels.create', ['challengeVersion' => $challengeversion]) }}" class="float-right">
+                Add Level
+            </a>
             <p class="mt-0 mb-0">{{ __('Levels') }}</p>
             <p class="mt-0 mb-0 text-xs">{{ __('Drag to reorder') }}</p>
             <ol class="list-none" name="order" id="sortlevels">

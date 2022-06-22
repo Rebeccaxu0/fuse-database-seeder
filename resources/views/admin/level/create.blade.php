@@ -7,18 +7,41 @@
 
     <form id="frm" class="mt-6" action="{{ route('admin.levels.store') }}" method="POST">
         @csrf
-        <p> //preview image </p>
-        <x-form.quill-textarea name="challenge_desc" label="The Challenge" />
-        <x-form.dropdown label="Parent Challenge" required="true" name="levelable_id" :value="old('levelable_id')" :list="$parents" />
+        <x-form.dropdown label="{{ __('Challenge') }}" required="true" name="levelable_id" :value="old('levelable_id', $challengeVersion)" :list="$challengeVersions" />
+        <p>// preview image</p>
+        <x-form.quill-textarea
+            name="challengeDesc"
+            label="{{ __('The Challenge') }}"
+            :value="old('challengeDesc')" />
+        <x-form.quill-textarea
+            name="blurb"
+            label="{{ __('Blurb') }}"
+            :value="old('blurb')" />
         <p> //stuff you need images </p>
-        <x-form.quill-textarea name="syn_desc" label="Stuff You Need" />
-        <x-form.quill-textarea name="gs_desc" label="Get Started" />
-        <x-form.quill-textarea name="htc_desc" label="How To Complete" />
-        <x-form.quill-textarea name="gh_desc" label="Get Help" />
-        <x-form.quill-textarea name="pu_desc" label="Power Up" />
+        <x-form.quill-textarea
+            name="stuffYouNeed"
+            label="{{ __('Stuff You Need') }}"
+            sublabel="{{ __('ex. \'Chromebook, LED lights.\'') }}"
+            :value="old('stuffYouNeed')" />
+        <x-form.quill-textarea
+            name="getStarted"
+            label="{{ __('Get Started') }}"
+            :value="old('getStarted')" />
+        <x-form.quill-textarea
+            name="howToComplete"
+            label="{{ __('How To Complete') }}"
+            :value="old('howToComplete')" />
+        <x-form.quill-textarea
+            name="getHelp"
+            label="{{ __('Get Help') }}"
+            :value="old('getHelp')" />
+        <x-form.quill-textarea
+            name="powerUp"
+            label="{{ __('Power Up') }}"
+            :value="old('powerUp')" />
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">
-                Create Level
+                {{ __('Create Level') }}
             </button>
         </div>
     </form>

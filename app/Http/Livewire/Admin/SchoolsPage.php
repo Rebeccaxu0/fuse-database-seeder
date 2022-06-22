@@ -13,6 +13,7 @@ class SchoolsPage extends Component
 {
     use WithPagination;
 
+    public ?array $createSchoolQueryString;
     public Collection $districts;
     public int $districtFilter = 0;
     public string $query = '';
@@ -31,7 +32,9 @@ class SchoolsPage extends Component
 
     public function render()
     {
+        $this->createSchoolQueryString = null;
         if ($this->districtFilter > 0) {
+            $this->createSchoolQueryString = ['district' => $this->districtFilter];
             $schools = School::whereHas('district', function (Builder $query) {
                 $query->where('id', $this->districtFilter);
             });

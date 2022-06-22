@@ -40,7 +40,8 @@ return new class extends Migration
                   ->default(true);
             $table->boolean('demo_studio')
                   ->default(false);
-            $table->string('join_code', 255);
+            $table->string('join_code', 255)
+                  ->nullable();
             $table->text('dashboard_message')
                   ->nullable();
         });

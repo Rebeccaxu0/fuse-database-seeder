@@ -172,9 +172,19 @@ class School extends Organization
     {
         foreach ($studios_to_create as $name) {
             $studio = new Studio(['name' => $name]);
+            $studio->setNewStudioCode();
             $studio->package()->associate($this->package);
             $studio->school()->associate($this);
             $studio->save();
+        }
+
+        // Clear deFactoStudios cache for every direct member (non-student)
+        // in this school and district.
+        foreach ($this->users as $user) {
+            Cache::forget("u{$user->id}_studios");
+        }
+        foreach ($this->district->users as $user) {
+            Cache::forget("u{$user->id}_studios");
         }
     }
 

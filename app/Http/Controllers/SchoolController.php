@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\Models\Package;
 use App\Models\School;
 use App\Models\Studio;
@@ -32,9 +33,12 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $district = $request->query('district');
         return view('admin.school.create', [
+            'districtQueryValue' => $district,
+            'districts' => District::all()->sortBy('name'),
             'packages' => Package::all()->sortBy('name'),
         ]);
     }
@@ -77,7 +81,7 @@ class SchoolController extends Controller
             'partner.*' => 'nullable|exists:App\Models\Partner,id',
             'gradelevels.*' => 'nullable|exists:App\Models\GradeLevel,id',
             'salesforce_acct_id' => 'nullable|string',
-            'license_status' => 'nullable|accepted',
+            'license_status' => 'nullable|boolean',
         ]);
 
         $schoolValues = [
@@ -102,7 +106,7 @@ class SchoolController extends Controller
             $school->gradelevels()->attach($validated['gradelevels']);
         }
 
-        return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
+        return redirect(route('admin.schools.index', ['district' => $school->district->id]));
     }
     /**
      * Display the specified resource.
@@ -175,6 +179,5 @@ class SchoolController extends Controller
     {
         $school->delete();
         return redirect(route('admin.schools.index'));
-        //not really a thing
     }
 }

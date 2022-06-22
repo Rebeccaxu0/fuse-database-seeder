@@ -27,10 +27,14 @@ class LevelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $parents = ChallengeVersion::all()->sortBy('name');
-        return view('admin.level.create', ['parents' => $parents]);
+        $challengeVersion = $request->input('challengeVersion');
+        $challengeVersions = ChallengeVersion::all()->sortBy('name');
+        return view('admin.level.create', [
+            'challengeVersion' => $challengeVersion,
+            'challengeVersions' => $challengeVersions
+        ]);
     }
 
     /**
@@ -41,31 +45,30 @@ class LevelController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
-
-        $level = Level::create([
-            'levelable_id' => $request->levelable_id,
-            'levelable_type' => ChallengeVersion::class,
-            'blurb' => $request->blurb,
-            'challenge_desc' => $request->challenge_desc,
-            'stuff_you_need_desc' => $request->syn_desc,
-            'get_started_desc' => $request->gs_desc,
-            'how_to_complete_desc' => $request->htc_desc,
-            'get_help_desc' => $request->gh_desc,
-            'power_up_desc' => $request->pu_desc,
+        $validated = $request->validate([
+            'levelable_id' => 'required|exists:App\Models\ChallengeVersion,id',
+            'challengeDesc' => 'nullable|string',
+            'blurb' => 'nullable|string',
+            'stuffYouNeed' => 'nullable|string',
+            'getStarted' => 'nullable|string',
+            'howToComplete' => 'nullable|string',
+            'getHelp' => 'nullable|string',
+            'powerUp' => 'nullable|string',
         ]);
 
-        $level->save;
-
-        $order = [];
-        $i = 0;
-        $order[$level->id] = $i;
-        foreach ($level->levelable->levels()->get() as $level) {
-            $i++;
-            $order[$level->id] = $i;
-        }
-        $level->level_number = $level->levelable->setLevelsOrder($order);
-        $level->save;
+        $challengeVersion = ChallengeVersion::find($validated['levelable_id']);
+        $level = Level::create([
+            'levelable_id' => $validated['levelable_id'],
+            'levelable_type' => ChallengeVersion::class,
+            'challenge_desc' => $validated['challengeDesc'],
+            'blurb' => $validated['blurb'],
+            'stuff_you_need_desc' => $validated['stuffYouNeed'],
+            'get_started_desc' => $validated['getStarted'],
+            'how_to_complete_desc' => $validated['howToComplete'],
+            'get_help_desc' => $validated['getHelp'],
+            'power_up_desc' => $validated['powerUp'],
+            'level_number' => $challengeVersion->levels->count() + 1,
+        ]);
 
         return redirect(route('admin.challengeversions.edit', $request->levelable_id));
     }

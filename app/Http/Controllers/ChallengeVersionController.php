@@ -44,10 +44,9 @@ class ChallengeVersionController extends Controller
      */
     public function index()
     {
-        $challengeversions = ChallengeVersion::all()->sortBy('name');
-        return view('admin.challengeversion.index', ['challengeversions' => $challengeversions]);
+        $challengeVersions = ChallengeVersion::all()->sortBy('name');
+        return view('admin.challengeversion.index', ['challengeVersions' => $challengeVersions]);
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -72,7 +71,6 @@ class ChallengeVersionController extends Controller
      */
     public function store(Request $request, ChallengeVersion $challengeversion)
     {
-        $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
@@ -137,7 +135,6 @@ class ChallengeVersionController extends Controller
      */
     public function update(Request $request, ChallengeVersion $challengeversion)
     {
-        $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
@@ -164,7 +161,7 @@ class ChallengeVersionController extends Controller
         ]);
 
         $challengeversion->setLevelsOrder($request->level);
-        return redirect(route('admin.challenges.index'));
+        return redirect(route('admin.challengeversions.index'));
     }
 
     /**

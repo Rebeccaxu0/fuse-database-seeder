@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\ChallengeVersion;
+use App\Models\Idea;
 use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,16 +33,17 @@ class Level extends Model
      * @var array
      */
     protected $fillable = [
-        'levelable_id',
-        'levelable_type',
-        'prerequisite_level',
         'blurb',
         'challenge_desc',
-        'stuff_you_need_desc',
+        'get_help_desc',
         'get_started_desc',
         'how_to_complete_desc',
-        'get_help_desc',
+        'level_number',
+        'levelable_id',
+        'levelable_type',
         'power_up_desc',
+        'prerequisite_level',
+        'stuff_you_need_desc',
     ];
 
     // Level number (level order) can only be set via the parent Challenge's
@@ -108,9 +111,20 @@ class Level extends Model
     public function setLevelNumberAttribute($value)
     {
         if (! is_null($value)) {
-            $e = 'Cannot set the level order number from the level directly. '
-                 . 'See App\Models\ChallengeVersion::setLevelsOrder()';
-            throw new LevelException($e);
+            if ($this->attributes['levelable_type'] == ChallengeVersion::class) {
+                $parent = ChallengeVersion::find($this->attributes['levelable_id']);
+            }
+            else {
+                $parent = Idea::find($this->attributes['levelable_id']);
+            }
+            if (in_array($value, $parent->levels->pluck('level_number')->all())) {
+                $e = 'That level_number already exists. Cannot set.'
+                    . 'See App\Models\ChallengeVersion::setLevelsOrder()';
+                throw new LevelException($e);
+            }
+            else {
+                $this->attributes['level_number'] = $value;
+            }
         } else {
             $this->attributes['level_number'] = null;
         }

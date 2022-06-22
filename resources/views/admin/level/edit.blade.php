@@ -13,8 +13,9 @@
     <form class="mt-6" action="{{ route('admin.levels.update', $level) }}" method="POST">
         @method('PUT')
         @csrf
-        <p> //preview image </p>
         <input type="hidden" name="levelable_id" value="{{ $level->levelable->id }}">
+
+        <p> //preview image </p>
         <x-form.quill-textarea
             name="challengeDesc"
             label="{{ __('The Challenge') }}"
