@@ -1,13 +1,26 @@
 <x-app-layout>
 
     <div class="pl-8">
-        <x-slot name="title">{{ __('My Studio Settings') }}</x-slot>
-        <x-slot name="header">{{ __('My Studio Settings') }}</x-slot>
+        <x-slot name="title">{{ __("Settings for Studio ':studio'", ['studio' => $studio->name]) }}</x-slot>
+        <x-slot name="header">{{ __("Settings for Studio ':studio'", ['studio' => $studio->name]) }}</x-slot>
 
 
+        <h2 class="-ml-8 uppercase text-left">{{ __('Studio Name') }}</h2>
+        <form action="{{ route('facilitator.update_studio_name', ['studio' => $studio]) }}" method="POST">
+            @csrf
+            <div class="flex justify-items-center">
+                <input class="max-w-xs" type="text" name="name" value="{{ old('name', $studio->name) }}">
+                <button class="btn">{{ __('Update') }}</button>
+            </div>
+            @error('name')
+            <div class="text-red-500">
+                {{ $message }}
+            </div>
+            @enderror
+        </form>
         <h2 class="-ml-8 uppercase text-left">{{ __('Studio Code') }}</h2>
-
         <livewire:facilitator.studio-code :studio="$studio" >
+
         <div class="text-sm border rounded p-2 ml-4">{!!
         __('Reminder: Users under 13 must have signed <a href="https://fusestudio.zendesk.com/hc/en-us/articles/360010468912-Permission-Slips-and-Accounts-for-students-under-13">permission forms</a> before starting FUSE.')
         !!}</div>
@@ -36,15 +49,6 @@
               property="require_email"
               :label="__('Collect Student Email')">
         </div>
-
-        <livewire:facilitator.studio-bool-toggle :studio="$studio"
-              property="allow_non_binary_gender_options"
-              :label="__('Allow Non-binary Gender Options')">
-
-        <p class="text-sm border rounded p-2 ml-4">
-        {{ __('Traditional gender choices: Girl/Boy/Prefer not to say') }}<br>
-        {{ __('Non-binary gender choices: Female/Male/Non-binary/Prefer not to say') }}
-        </p>
 
         <h3 class="text-fuse-teal-dk">{{ __('Website Features') }}</h3>
 

@@ -157,6 +157,10 @@ Route::middleware([
                 'settings',
                 [FacilitatorSettingsController::class, 'index']
             )->name('settings');
+            Route::post(
+                'settings/update-studio-name/{studio}',
+                [FacilitatorSettingsController::class, 'updateStudioName']
+            )->name('update_studio_name');
             Route::get(
                 'announcements', [FacilitatorAnnouncementsController::class, 'index']
             )->name('announcements');
