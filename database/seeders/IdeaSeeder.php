@@ -29,11 +29,14 @@ class IdeaSeeder extends Seeder
                     ->except([$user->id])
                     ->random(rand(0, 2))
                     ->push($user);
-                Idea::factory()
+                $idea = Idea::factory()
                     ->hasAttached($team)
                     ->hasAttached($inspiration)
                     ->has(Level::factory()->count(1))
                     ->create();
+                $level = $idea->levels->first();
+                $level->level_number = 1;
+                $level->save();
             }
         }
     }

@@ -17,7 +17,7 @@ class DistrictSeeder extends Seeder
      */
     public function run()
     {
-        $districts = District::factory()->count(2)
+        $districts = District::factory()->count(30)
             ->has(
                 School::factory()->count(3)
                     ->has(
@@ -25,5 +25,9 @@ class DistrictSeeder extends Seeder
                     )
             )
             ->create(['package_id' => Package::all()->random()]);
+
+        foreach (Studio::all() as $studio) {
+            $studio->activeChallenges()->sync($studio->deFactoPackage->challenges->random(4));
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Idea;
+use App\Models\Level;
 use App\Models\Start;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -16,6 +17,10 @@ class StartSeeder extends Seeder
      */
     public function run()
     {
+        // Get first level for every challenge.
+        $firstLevels = Level::where('level_number', '=', 1)
+            ->where('levelable_type', '=', 'App\Models\ChallengeVersion')
+            ->get();
         // Every Idea gets a start.
         foreach (Idea::all() as $idea) {
             foreach ($idea->users as $user) {
@@ -27,11 +32,10 @@ class StartSeeder extends Seeder
         }
         foreach (User::doesntHave('roles')->get() as $student) {
             // A few Challenges get a start.
-            $started_challenges
-                = $student->studios->first()->deFactoPackage->challenges->random(3);
-            foreach ($started_challenges as $challenge) {
-                $cv = $challenge->challengeVersions->random();
-                $level = $cv->levels->first();
+            $startedChallengeVersions
+                = $student->deFactoStudios()->first()->activeChallenges->random(3);
+            $startedLevels = $firstLevels->filter(fn($value, $key) => $startedChallengeVersions->contains($value->levelable));
+            foreach ($startedLevels as $level) {
                 Start::factory()
                     ->for($level)
                     ->for($student)
