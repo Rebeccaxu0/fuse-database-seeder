@@ -75,25 +75,6 @@
                 @error('student.birthday')<span class="text-red-500">{{ $message }}</span>@enderror
               </div>
               <div>
-                <div>{{ __('Gender') }}</div>
-                @foreach ($genderOptions as $val => $label)
-                <label><input type="radio" wire:model="student.gender" value="{{ $val }}" />{{ $label }}</label>
-                @endforeach
-                @error('student.gender')<span class="text-red-500">{{ $message }}</span>@enderror
-              </div>
-              <div>
-                <label for="ethnicity">{{ __('Ethnicity') }}</label>
-                <select
-                    name="ethnicity"
-                    id="ethnicity"
-                    wire:model="student.ethnicity">
-                    @foreach ($ethnicityOptions as $val => $label)
-                        <option value="{{ $val }}" />{{ $label }}</option>
-                    @endforeach
-                  </select>
-                @error('student.ethnicity')<span class="text-red-500">{{ $message }}</span>@enderror
-              </div>
-              <div>
                 <input
                     type="checkbox"
                     name="permission"
