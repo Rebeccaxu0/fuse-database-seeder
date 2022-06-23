@@ -78,9 +78,6 @@
                   @endforelse
               @endif
             </div>
-        @empty
-        {{ __('You have not yet added any students to this studio.') }}
-        @endforelse
         </div>
         <div class="hidden lg:block col-start-2 scroll-box">
             @forelse ($challenges as $challenge)
@@ -115,5 +112,8 @@
                 @endforelse
             @endif
         </div>
+        @empty
+        {{ __('You have not yet added any students to this studio.') }}
+        @endforelse
     </div>
 </div>
