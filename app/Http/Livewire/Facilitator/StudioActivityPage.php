@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Facilitator;
 
-use app\Models\ChallengeVersion;
 use app\Models\Studio;
 use app\Models\User;
 use DateTime;

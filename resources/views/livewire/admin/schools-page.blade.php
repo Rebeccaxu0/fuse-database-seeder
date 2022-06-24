@@ -8,7 +8,7 @@
 
     <div>
         <label>
-            <span class="font-bold">{{ __('District: ')}}</span>
+            <span class="font-bold">{{ __('District: ') }}</span>
             <select wire:model="districtFilter">
                 <option value="0">{{ __('All') }}</option>
                 <option value="-1">{{ __('Unafilliated') }}</option>

@@ -2,11 +2,8 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\Studio;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use App\Providers\RouteServiceProvider;
+use Livewire\Component;
 
 class Registration extends Component
 {
@@ -16,30 +13,31 @@ class Registration extends Component
     public $studio = null;
     public string $studioName = '';
     public string $school = '';
-    
+
     protected $rules = [
         'studioCode' => 'required',
     ];
 
     public function codecheck() {
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
-        if (!$this->studio) {
+        if (! $this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
             $this->showManualRegistrationForm = false;
             $this->showEmailForm = false;
             $this->showJoin = false;
-        } else {
+        }
+        else {
             $this->resetErrorBag();
             $this->studioName = $this->studio->name;
             $this->school = $this->studio->school->name;
             if ($this->studio->require_email) {
                 $this->showEmailForm = true;
-            } else {
+            }
+            else {
                 $this->showManualRegistrationForm = true;
             }
         }
     }
-
 
     public function render()
     {

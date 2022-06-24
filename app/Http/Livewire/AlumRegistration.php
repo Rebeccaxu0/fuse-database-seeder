@@ -2,12 +2,11 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\Studio;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Validator;
+use Livewire\Component;
 
 class AlumRegistration extends Component
 {
@@ -25,7 +24,7 @@ class AlumRegistration extends Component
     public function codecheck()
     {
         $this->studio = Studio::where('join_code', $this->studioCode)->first();
-        if (!$this->studio) {
+        if (! $this->studio) {
             $this->addError('studioCode', __('Sorry, that code does not match any studios'));
             $this->showJoin = false;
         } else {

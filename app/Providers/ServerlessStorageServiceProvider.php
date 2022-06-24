@@ -13,7 +13,7 @@ class ServerlessStorageServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (in_array(env('SERVER_SOFTWARE'), ['bref', 'vapor'])) {
+        if (in_array(config('SERVER_SOFTWARE'), ['bref', 'vapor'])) {
             $path = '/tmp/storage';
             $directories = [
                 '/app',

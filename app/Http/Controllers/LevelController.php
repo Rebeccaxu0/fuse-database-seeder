@@ -33,7 +33,7 @@ class LevelController extends Controller
         $challengeVersions = ChallengeVersion::all()->sortBy('name');
         return view('admin.level.create', [
             'challengeVersion' => $challengeVersion,
-            'challengeVersions' => $challengeVersions
+            'challengeVersions' => $challengeVersions,
         ]);
     }
 

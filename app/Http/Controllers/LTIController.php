@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\LTI\Database;
 use Illuminate\Http\Request;
-use Packback\Lti1p3\LtiOidcLogin;
 use Packback\Lti1p3\LtiMessageLaunch;
+use Packback\Lti1p3\LtiOidcLogin;
 
 class LTIController extends Controller
 {

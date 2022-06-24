@@ -39,7 +39,7 @@ class LTIPlatformController extends Controller
             'header' => $header,
             'title' => $title,
             'verb' => 'store',
-            'platform' => new LTIPlatform
+            'platform' => new LTIPlatform,
         ]);
     }
 
@@ -109,7 +109,7 @@ class LTIPlatformController extends Controller
             'header' => $header,
             'title' => $title,
             'verb' => 'update',
-            'platform' => $ltiplatform
+            'platform' => $ltiplatform,
         ]);
     }
 

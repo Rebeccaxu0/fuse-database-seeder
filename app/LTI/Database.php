@@ -3,10 +3,9 @@
 namespace App\LTI;
 
 use App\Models\Issuer;
-use App\Models\Deployment;
 use Packback\Lti1p3\Interfaces\IDatabase;
-use Packback\Lti1p3\LtiRegistration;
 use Packback\Lti1p3\LtiDeployment;
+use Packback\Lti1p3\LtiRegistration;
 use Packback\Lti1p3\OidcException;
 
 class Database implements IDatabase
@@ -26,7 +25,7 @@ class Database implements IDatabase
     public function findRegistrationByIssuer($issuer, $client_id = null)
     {
         $issuer = self::findIssuer($issuer, $client_id);
-        if (!$issuer) {
+        if (! $issuer) {
             return false;
         }
 
@@ -43,11 +42,11 @@ class Database implements IDatabase
     public function findDeployment($issuer, $deployment_id, $client_id = null)
     {
         $issuerModel = self::findIssuer($issuer, $client_id);
-        if (!$issuerModel) {
+        if (! $issuerModel) {
             return false;
         }
         $deployment = $issuerModel->deployments()->where('deployment_id', $deployment_id)->first();
-        if (!$deployment) {
+        if (! $deployment) {
             return false;
         }
 
@@ -59,7 +58,7 @@ class Database implements IDatabase
         if (empty($platforms[$iss]['deployment'][$deployment_id])) {
             return false;
         }
-        $deployment = new LTI\LTI_Deployment();
+        $deployment = new LtiDeployment();
         return $deployment
             ->set_deployment_id($deployment_id);
 
@@ -68,7 +67,7 @@ class Database implements IDatabase
     // Old FUSE Code.
     private function get_platforms() {
         // $platforms = &drupal_static(__CLASS__ . __METHOD__);
-        // if (!isset($platforms)) {
+        // if (! isset($platforms)) {
              // if ($cache = cache_get('LTI-platforms', 'fuse')) {
              //   $platforms = $cache->data;
              // }
@@ -78,7 +77,7 @@ class Database implements IDatabase
                     ->fields('p')
                     ->execute();
 
-                if (!empty($platform_results)) {
+                if (! empty($platform_results)) {
                     foreach ($platform_results as $platform) {
                         $platforms[$platform->domain] = [
                             'client_id' => $platform->client_id,
@@ -102,7 +101,7 @@ class Database implements IDatabase
         if (empty($platforms) || empty($platforms[$iss])) {
             return false;
         }
-        $registration = new LTI\LTI_Registration();
+        $registration = new LtiRegistration();
         return $registration
             ->set_auth_login_url($platforms[$iss]['auth_login_url'])
             ->set_auth_token_url($platforms[$iss]['auth_token_url'])

@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Exceptions\LevelException;
 use App\Models\ChallengeVersion;
 use App\Models\Idea;
 use App\Models\Start;
-use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
-Use Spatie\Translatable\HasTranslations;
+use Spatie\Translatable\HasTranslations;
 
 class Level extends Model
 {

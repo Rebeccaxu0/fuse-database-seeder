@@ -2,7 +2,7 @@
 
 namespace App\LTI;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cache as LaraCache;
 use Packback\Lti1p3\Interfaces\ICache;
 
 class Cache implements ICache
@@ -11,40 +11,40 @@ class Cache implements ICache
 
     public function getLaunchData(string $key): ?array
     {
-        return Cache::get($key);
+        return LaraCache::get($key);
     }
 
     public function cacheLaunchData(string $key, array $jwtBody): void
     {
         $duration = Config::get('cache.duration.default');
-        Cache::put($key, $jwtBody, $duration);
+        LaraCache::put($key, $jwtBody, $duration);
     }
 
     public function cacheNonce(string $nonce, string $state): void
     {
         $duration = Config::get('cache.duration.default');
-        Cache::put(static::NONCE_PREFIX.$nonce, $state, $duration);
+        LaraCache::put(static::NONCE_PREFIX . $nonce, $state, $duration);
     }
 
     public function checkNonceIsValid(string $nonce, string $state): bool
     {
-        return Cache::get(static::NONCE_PREFIX.$nonce, false) === $state;
+        return LaraCache::get(static::NONCE_PREFIX . $nonce, false) === $state;
     }
 
     public function cacheAccessToken(string $key, string $accessToken): void
     {
         $duration = Config::get('cache.duration.min');
-        Cache::put($key, $accessToken, $duration);
+        LaraCache::put($key, $accessToken, $duration);
     }
 
     public function getAccessToken(string $key): ?string
     {
-        return Cache::has($key) ? Cache::get($key) : null;
+        return LaraCache::has($key) ? LaraCache::get($key) : null;
     }
 
     public function clearAccessToken(string $key): void
     {
-        Cache::forget($key);
+        LaraCache::forget($key);
     }
 }
 

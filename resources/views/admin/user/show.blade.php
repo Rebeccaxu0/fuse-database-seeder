@@ -49,29 +49,30 @@
         @endforelse
     </div>
 
-    <a href="{{ route('admin.users.edit', ['user' => $user])}}">
+    <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
         <button class="btn">
             {{ __('Edit') }}
         </button>
     </a>
-    <form action="{{ route('admin.users.makeAdmin', ['user' => $user])}}" method="POST">
+    <form action="{{ route('admin.users.makeAdmin', ['user' => $user]) }}" method="POST">
         @csrf
         <button class="btn">
             {{ __('Make User an Admin') }}
         </button>
         {{ __('NB - This will add the role \'admin\' and remove all other roles.') }}
     </form>
-    <form action="{{ route('admin.users.destroy', ['user' => $user])}}" method="POST">
+    <form action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST">
         @method('DELETE')
         @csrf
         <button class="btn bg-red-500">
             {{ __('delete') }}
         </button>
     </form>
-    <a href="{{ route('student.their_stuff', ['user' => $user])}}">
+    <a href="{{ route('student.their_stuff', ['user' => $user]) }}">
         <button class="btn">
         {{ __('Artifacts') }}
         </button>
     </a>
 
 </x-app-layout>
+
