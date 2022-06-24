@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Cache;
 
 class Studio extends Organization
 {
@@ -34,7 +35,7 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0 || ! $this->school) {
+        if ($this->assignedPackage() || ! $this->assignedSchool()) {
             return $this->package();
         }
         return $this->school->deFactoPackage();
@@ -121,6 +122,14 @@ class Studio extends Organization
     }
 
     /**
+     * Cacheable function to determine if studio belongs to a school.
+     */
+    public function assignedSchool() : bool
+    {
+        return Cache::remember("s{$this->id}_has_school", 3600, fn () => (bool) $this->school );
+    }
+
+    /**
      * The grandparent org (district) above this studio.
      */
     public function district()
@@ -134,6 +143,14 @@ class Studio extends Organization
     public function package()
     {
         return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * Cacheable function to determine if studio is directly assigned a package.
+     */
+    public function assignedPackage() : bool
+    {
+        return Cache::remember("studio_{$this->id}_has_package", 3600, fn () => (bool) $this->package );
     }
 
     /**

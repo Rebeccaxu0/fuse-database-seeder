@@ -18,9 +18,17 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        // TODO: Add logic to account for Alumni/Freemium accounts.
         $activeStudio = Auth::user()->activeStudio;
-        $challengeVersions = $activeStudio ? $activeStudio->challengeVersions->sortBy('name') : [];
+        // Filter active challengeversions by studio's package.
+        // If the package has been edited, or if the studio's package has been
+        // changed, we need to adjust results to comport with that limit.
+        // TODO: change this into a subquery instead of two queries.
+        $packageChallenges = $activeStudio->deFactoPackage
+                                          ->challenges
+                                          ->pluck('id');
+        $challengeVersions = $activeStudio->challengeVersions
+                                          ->whereIn('challenge_id', $packageChallenges)
+                                          ->sortBy('name');
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 

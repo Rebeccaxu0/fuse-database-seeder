@@ -31,7 +31,7 @@ class School extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->package()->count() > 0 || ! $this->district) {
+        if ($this->assignedPackage() || ! $this->assignedDistrict()) {
             return $this->package();
         }
         return $this->district->package();
@@ -98,6 +98,14 @@ class School extends Organization
     }
 
     /**
+     * Cacheable function to determine if school belongs to a district.
+     */
+    public function assignedDistrict() : bool
+    {
+        return Cache::remember("s{$this->id}_has_district", 3600, fn () => (bool) $this->district );
+    }
+
+    /**
      * The studios associated with this school.
      */
     public function studios()
@@ -119,6 +127,14 @@ class School extends Organization
     public function package()
     {
         return $this->belongsTo(Package::class);
+    }
+
+    /**
+     * Cacheable function to determine if school is directly assigned a package.
+     */
+    public function assignedPackage() : bool
+    {
+        return Cache::remember("school_{$this->id}_has_package", 3600, fn () => (bool) $this->package );
     }
 
     /**
