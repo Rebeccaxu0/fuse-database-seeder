@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Facilitator;
 use app\Models\ChallengeVersion;
 use app\Models\Studio;
 use app\Models\User;
+use DateTime;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -15,15 +16,26 @@ class StudioActivityPage extends Component
     public Collection $challenges;
     public Collection $ideas;
     public Collection $students;
-    public ChallengeVersion $activeChallenge;
+    public $activeChallenge = null;
     public Studio $studio;
     public User $activeStudent;
+    public string $startDate = '';
+    public string $endDate = '';
 
     protected $listeners = ['activateChallenge', 'activateStudent'];
+    protected $queryString = [
+      'startDate' => ['except' => 0, 'as' => 'start'],
+      'endDate' => ['except' => 0, 'as' => 'end'],
+    ];
 
-    public function activateChallenge(int $id)
+    public function activateChallenge(string $levelableType, int $levelableId)
     {
-        $this->activeChallenge = $this->challenges->find($id);
+        if ($levelableType == 'idea') {
+            $this->activeChallenge = $this->ideas->find($levelableId);
+        }
+        else {
+            $this->activeChallenge = $this->challenges->find($levelableId);
+        }
         $this->populateArtifacts();
     }
 
@@ -32,11 +44,23 @@ class StudioActivityPage extends Component
         $this->activeStudent = $this->students->find($id);
         $this->populateChallenges();
         $this->populateArtifacts();
-        // $this->populateIdeas();
+        $this->populateIdeas();
     }
 
     public function mount()
     {
+        if (! $this->startDate) {
+            // Default to start of academic year - previous Aug 1.
+            $now = new DateTime();
+            $start = new DateTime(date('Y') . '-08-01');
+            if ($start > $now) {
+                $start->modify('-1 year');
+            }
+            $this->startDate = $start->format('Y-m-d');
+        }
+        if (! $this->endDate) {
+            $this->endDate = date('Y-m-d');
+        }
         $this->studio = Auth::user()->activeStudio;
         $eager = [
           'artifacts',
@@ -72,7 +96,8 @@ class StudioActivityPage extends Component
         $this->artifacts
             = $this->activeStudent
                    ->artifacts
-                   ->whereIn('level_id', $levelIds);
+                   ->whereIn('level_id', $levelIds)
+                   ->whereBetween('created_at', [$this->startDate . ' 00:00:00', $this->endDate . ' 23:59:59']);
     }
 
     private function populateChallenges()
@@ -94,5 +119,8 @@ class StudioActivityPage extends Component
     private function populateIdeas()
     {
         $this->ideas = $this->activeStudent->ideas;
+        if ($this->ideas->count() && ! $this->activeChallenge) {
+            $this->activeChallenge = $this->ideas->first();
+        }
     }
 }

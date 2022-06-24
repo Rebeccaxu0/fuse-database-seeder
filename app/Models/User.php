@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Carbon;
 use JoelButcher\Socialstream\HasConnectedAccounts;
 use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
 use Lab404\Impersonate\Models\Impersonate;
@@ -430,16 +433,29 @@ class User extends Authenticatable
         );
     }
 
-    public function lastActivityOnChallengeVersionOrIdea(ChallengeVersion|Idea $levelable)
+    public function lastActivityOnChallengeVersionOrIdea(ChallengeVersion|Idea $levelable) : string
     {
-        return __('Never');
-        // TODO: Implement.
-        if ($this->startedChallengeVersion($challengeVersion)) {
-            return 'beep';
-        }
-        else {
-            return __('Never');
-        }
+        $class = class_basename($levelable::class);
+        $cacheKey = "u{$this->id}_last_activity_on_{$class}_{$levelable->id}";
+        return Cache::remember($cacheKey, 30, function () use ($levelable) {
+            $mostRecent = $base = Carbon::createFromDate(2000, 1, 1);
+            foreach ($levelable->levels as $level) {
+                if ($artifact = $level->mostRecentArtifact($this)) {
+                    if ($artifact->created_at->greaterThan($mostRecent)) {
+                        $mostRecent = $artifact->created_at;
+                    }
+                }
+                if ($start = $level->mostRecentStart($this)) {
+                    if ($start->created_at->greaterThan($mostRecent)) {
+                        $mostRecent = $start->created_at;
+                    }
+                }
+            }
+
+            return $mostRecent->greaterThan($base)
+                ? $mostRecent->toDateString()
+                : __('Never');
+        });
     }
 
     /**

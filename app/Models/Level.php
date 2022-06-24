@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\ChallengeVersion;
 use App\Models\Idea;
+use App\Models\Start;
 use App\Exceptions\LevelException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -108,6 +109,31 @@ class Level extends Model
     }
 
 
+    /**
+     * The most recent artifact for a given user.
+     */
+    public function mostRecentArtifact(User $user) : ?Artifact
+    {
+        return $user->artifacts()
+                    ->where('level_id', $this->id)
+                    ->get()
+                    ->sort()
+                    ->last();
+    }
+
+    /**
+     * The most recent start for a given user.
+     * Really there should only even be one, but things happen. Let's just
+     * always only return one and it's the latest.
+     */
+    public function mostRecentStart(User $user) : ?Start
+    {
+        return $this->starts
+                    ->where('user_id', '=', $user->id)
+                    ->sort()
+                    ->last();
+    }
+
     public function setLevelNumberAttribute($value)
     {
         if (! is_null($value)) {
@@ -136,7 +162,7 @@ class Level extends Model
 
         // Levels of an Idea belonging to the User are always startable.
         if ($this->levelable::class == Idea::class
-            && $this->levelable->team->contains($user)) {
+            && $this->levelable->users->contains($user)) {
             $startable = true;
         }
         else {

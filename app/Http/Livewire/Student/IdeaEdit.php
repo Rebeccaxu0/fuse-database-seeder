@@ -89,8 +89,12 @@ class IdeaEdit extends Component
         $idea->save();
 
         if ($idea->levels->count() == 0) {
-            $level = new Level(['level_number' => 1]);
+            // TODO: there are less DB intensive ways to do this, but this will do.
+            $level = new Level();
             $idea->levels()->save($level);
+            $level->level_number = 1;
+            $level->save();
+            $level->start($user);
         }
 
         if (array_key_exists('inspirations', $validated)) {
