@@ -1,4 +1,4 @@
-@props(['title' => ''])
+@props(['title' => '', 'login' => false])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -21,7 +21,7 @@
 
 <body>
     <x-navbar>
-        <x-guest-subnav />
+        <x-guest-subnav :login="$login" />
     </x-navbar>
 
     <div class="pt-12 bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
