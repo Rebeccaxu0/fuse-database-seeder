@@ -27,6 +27,50 @@
                   {{ $message }}
                 </span>
                 @enderror
+
+                <label for="full_name-{{ $user->id }}">{{ __('Full Name') }}</label>
+                <input type="text"
+                       name="full_name-{{ $user->id }}"
+                       id="full_name-{{ $user->id }}"
+                       wire:model="user.full_name" />
+                @error('user.full_name')
+                <span class="text-red-500">
+                  {{ $message }}
+                </span>
+                @enderror
+
+                <label for="email-{{ $user->id }}">{{ __('Email') }}</label>
+                <input type="email"
+                       name="email-{{ $user->id }}"
+                       id="email-{{ $user->id }}"
+                       wire:model="user.email" />
+                @error('user.email')
+                <span class="text-red-500">
+                  {{ $message }}
+                </span>
+                @enderror
+
+                <div class="md:grid grid-cols-2 gap-2">
+                    <div>
+                        <label for="password-{{ $user->id }}">{{ __('Password') }}</label>
+                        <input type="password"
+                               name="password-{{ $user->id }}"
+                               id="password-{{ $user->id }}"
+                               wire:model="password" />
+                        @error('password')
+                        <span class="text-red-500">
+                            {{ $message }}
+                        </span>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="password-{{ $user->id }}_confirmation">{{ __('Confirm Password') }}</label>
+                        <input type="password"
+                               name="password-{{ $user->id }}_confirmation"
+                               id="password-{{ $user->id }}_confirmation"
+                               wire:model="password_confirmation" />
+                    </div>
+                </div>
             </x-slot>
 
             <x-slot name="footer">

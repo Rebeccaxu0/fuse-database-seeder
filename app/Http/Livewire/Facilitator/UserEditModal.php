@@ -4,16 +4,28 @@ namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class UserEditModal extends Component
 {
     public bool $showEditModal = false;
+    public string $password = '';
+    public string $password_confirmation = '';
     public Studio $studio;
     public User $user;
 
     public function submit() {
+        $this->validate();
+        if ($this->password) {
+            $this->user->forceFill([
+                'password' => Hash::make($this->password),
+            ]);
+        }
         $this->user->save();
+        $this->password = '';
+        $this->password_confirmation = '';
 
         $this->emitUp('updateStudents');
         $this->showEditModal = false;
@@ -26,13 +38,17 @@ class UserEditModal extends Component
 
     protected function rules() {
         return [
+            'user.name' => [
+                'required',
+                'string',
+                Rule::unique('users', 'name')->ignore($this->user->id),
+            ],
             'user.full_name' => 'required|string',
-            'user.name' => 'required|string|unique:users,name',
-            'user.email' => 'email|unique:users,email',
-            'user.birthday' => 'required|date',
-            'user.gender' => 'nullable',
-            'user.ethnicity' => 'nullable',
-            'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
+            'user.email' => [
+                'email',
+                Rule::unique('users', 'email')->ignore($this->user->id),
+            ],
+            'password' =>  'string|min:8|confirmed',
         ];
     }
 }
