@@ -19,22 +19,28 @@ class AlumniBlock
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        // If a user is NOT a member of any org and NOT an admin
+        // If a user is unaffiliated (not a member of any studio/school/district)
+        // and NOT an admin.
         if ($user->deFactoStudios()->count() == 0 && ! $user->isAdmin() && ! $user->isRoot()) {
-            // You are either sent back to a sanctioned page or allowed to proceed to a sanctioned page (Registered lobby/ My Stuff).
-            $from = $request->header('referer');
-            $goingto = $request->path();
-            $whitelist = ['mystuff', 'registeredlobby', 'registrationlobby'];
+            // If the user has any starts, they are an alumni user and should
+            // have access to their My Stuff page.
+            // Otherwise, they are a new user via SSO and should be locked in
+            // the lobby.
 
-            if (str_contains($from, "login")) {
-                return redirect(RouteServiceProvider::REGISTEREDLOBBY);
+            $goingTo = $request->path();
+
+            // You can always go to the public Challenge Gallery.
+            if ($goingTo == 'challenges') {
+                return redirect()->to('https://www.fusestudio.net/challenges/');
             }
-            if ((str_contains($from, 'mystuff') ||  str_contains($from, 'registrationlobby') ||  str_contains($from, 'registeredlobby')) && ($goingto == 'challenges')) {
-                return redirect()->to('https://www.fusestudio.net/challenges/')->with('status', 'Join a studio to access this page!');
+            // New SSO registrations need to stay in the lobby.
+            if ($user->starts->count() == 0) {
+                if ($goingTo != 'registeredlobby') {
+                    return redirect(RouteServiceProvider::REGISTEREDLOBBY);
+                }
             }
-            // If not in whitelist:
-            else if (! in_array($goingto, $whitelist)) {
-                // Flash message.
+            // Alumni users are allowed to see their My Stuff page, too.
+            else if ($goingTo != 'registeredlobby' && $goingTo != 'mystuff') {
                 session()->flash('flash.banner', 'Join a studio to access that page!');
                 session()->flash('flash.bannerStyle', 'danger');
                 return redirect(RouteServiceProvider::REGISTEREDLOBBY);

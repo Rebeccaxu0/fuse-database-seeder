@@ -55,6 +55,7 @@ Route::get('registrationlobby', function () {
 Route::get('registeredlobby', function () {
     return view('auth.registeredlobby');
 })
+    ->middleware('alum')
     ->name('registeredlobby');
 
 // Recreating Fortify registration routes.
