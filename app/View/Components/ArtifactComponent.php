@@ -18,7 +18,7 @@ class ArtifactComponent extends Component
     public ?Studio $studio;
     public ?Idea $idea = null;
     public Collection $related;
-    public string $inspiration;
+    public string $inspiration = '';
     public string $levelRoute;
     public string $teamnames;
     public string $title;
@@ -41,7 +41,6 @@ class ArtifactComponent extends Component
         $this->commentCount = $artifact->comments->count();
         $this->teamnames = Arr::join($artifact->users->pluck('full_name')->all(), ', ', ' and ');
         $this->related = Auth::user()->artifacts->except([$artifact->id])->where('level_id', $artifact->level->id);
-        $this->inspiration = __('none');
         if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
             $this->artifact->level->type = 'level';
             $this->level = $this->artifact->level;
@@ -52,7 +51,7 @@ class ArtifactComponent extends Component
         else {
             $this->artifact->level->type = 'idea';
             $this->idea = $this->artifact->level->levelable;
-            $inspiration = $this->idea->inspirationListToStr();
+            $this->inspiration = $this->idea->inspirationListToStr();
             $this->title = $this->idea->name;
             $this->title_modifier = __('Idea');
             $this->levelRoute = route('student.idea', $this->idea);
