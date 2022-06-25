@@ -139,6 +139,7 @@ class District extends Organization
             $sfuser = User::find($id);
             if (! (in_array($this->id, $sfuser->districts->pluck('id')->toArray()))) {
                 $sfuser->districts()->attach($this);
+                Cache::forget("u{$id}_studios");
             }
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
@@ -158,7 +159,8 @@ class District extends Organization
         foreach ($this->superFacilitators as $sf) {
             if (in_array($sf->id, $super_facilitator_ids)) {
                 $sf->districts()->detach($this);
-                $sf->save();
+                Cache::forget("u{$sf->id}_studios");
+
                 // TODO: emit event to say a user associations have changed.
                 // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
                 // Then I guess you’re not a super facilitator anymore”

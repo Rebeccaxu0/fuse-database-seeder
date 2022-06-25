@@ -249,6 +249,7 @@ class School extends Organization
             $facilitator = User::find($id);
             if (! (in_array($this->id, $facilitator->schools->pluck('id')->toArray()))) {
                 $facilitator->schools()->attach($this);
+                Cache::forget("u{$id}_studios");
             }
             if (! $facilitator->isFacilitator()) {
                 $facilitator->roles()->attach(Role::FACILITATOR_ID);
@@ -268,7 +269,7 @@ class School extends Organization
         foreach ($this->facilitators as $facilitator) {
             if (in_array($facilitator->id, $facilitatorIds)) {
                 $facilitator->schools()->detach($this);
-                $facilitator->save();
+                Cache::forget("u{$facilitator->id}_studios");
                 // TODO: emit event to say a user associations have changed.
                 if ($facilitator->schools->count() == 0) {
                     $facilitator->roles()->detach(Role::FACILITATOR_ID);
