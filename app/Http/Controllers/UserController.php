@@ -47,7 +47,22 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', ['user' => $user]);
+        $inheritedDistricts = $inheritedSchools = null;
+        $studioMember = $user->deFactoStudios()->count() > 0;
+        $active = $user->starts->count() > 0;
+        if ($studioMember) {
+            $inheritedDistricts = $user->deFactoDistricts()
+                ->except($user->districts->pluck('id')->all());
+            $inheritedSchools = $user->deFactoSchools()
+                ->except($user->schools->pluck('id')->all());
+        }
+        return view('admin.user.show', [
+            'user' => $user,
+            'studioMember' => $studioMember,
+            'active' => $active,
+            'inheritedDistricts' => $inheritedDistricts,
+            'inheritedSchools' => $inheritedSchools,
+        ]);
     }
 
     /**
