@@ -2,13 +2,15 @@
 
 namespace App\View\Components;
 
+use App\Models\Studio;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
 class StudioSwitcher extends Component
 {
-    public $activeStudio = null;
+    public ?Studio $activeStudio = null;
     public $otherStudios = null;
+    public bool $multipleSchools = false;
 
     /**
      * Create a new component instance.
@@ -23,6 +25,8 @@ class StudioSwitcher extends Component
                 Auth::user()
                     ->deFactoStudios()
                     ->except([$this->activeStudio->id]);
+            $this->multipleSchools =
+                $this->otherStudios->pluck('school_id')->unique()->count() > 1;
         }
     }
 

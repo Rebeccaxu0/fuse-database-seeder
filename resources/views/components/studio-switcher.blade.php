@@ -9,23 +9,29 @@
 <div class="py-4 px-12 relative">
     <div class="float-right uppercase flex items-center">
     @if ($activeStudio)
-      <label for="studio-list-toggle" class="m-0 p-0 @if (! empty($otherStudios)) cursor-pointer @endif">
-        @if ($activeStudio->school) {{ $activeStudio->school->name }} &ndash; @endif {{ $activeStudio->name }} @if (! empty($otherStudios))<span class="text-fuse-blue">&#9660;</span> @endif
-      </label>
-      <input type="checkbox" id="studio-list-toggle" name="studio-list-toggle" class="hidden">
-      <livewire:join-studio-form />
+    <label for="studio-list-toggle" class="m-0 p-0 @if ($otherStudios->count()) cursor-pointer @endif">
+        @if ($multipleSchools && $activeStudio->school)
+        {{ $activeStudio->school->name }} &ndash;
+        @endif
+        {{ $activeStudio->name }}
+        @if ($otherStudios->count())
+        <span class="text-fuse-blue">&#9660;</span>
+        @endif
+    </label>
+    <input type="checkbox" id="studio-list-toggle" name="studio-list-toggle" class="hidden">
+    <livewire:join-studio-form />
     <ul id="studio-list-menu"
-      class="absolute top-0 right-0 mt-12 mr-4 z-10
-      max-w-xs max-h-48
+      class="absolute top-0 right-0 p-2 mt-12 mr-4 z-10
+      w-64 max-h-48
       bg-gray-100
       overflow-scroll hidden border rounded-md">
     @foreach ($otherStudios as $studio)
-    <li class="list-none -indent-8 pl-8">
+    <li class="list-none m-0">
         <form action="{{ route('switch_studio', $studio) }}" method="POST">
             @csrf
             @method('PUT')
-            <button>
-                @if ($studio->school)
+            <button class="w-full text-left">
+                @if ($multipleSchools && $studio->school)
                     {{ $studio->school->name }} &ndash;
                 @endif
                 {{ $studio->name }}
@@ -35,7 +41,6 @@
     @endforeach
     </ul>
     @else
-    {{ __('Join a Studio') }}
     <livewire:join-studio-form />
     @endif
     </div>
