@@ -62,10 +62,12 @@ class AddStudentToStudioByCreation extends Component
         return [
             'student.full_name' => 'required|string',
             'student.name' => 'required|string|unique:users,name',
-            'student.email' => 'email|unique:users,email',
-            'student.birthday' => 'required|date',
-            'student.gender' => 'nullable',
-            'student.ethnicity' => 'nullable',
+            // There's an argument that student.email collection should be
+            // required or not based on studio settings. But, if a facilitator
+            // doesn't have a student's email, they would need to temporarily
+            // disable email in the studio to create. If we don't enforce, then
+            // the student will be asked to add email on login.
+            'student.email' => 'nullable|email|unique:users,email',
             'password' => ($this->studio->require_email) ? 'required|' : '' . 'string|confirmed',
         ];
     }

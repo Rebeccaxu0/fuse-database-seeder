@@ -66,15 +66,6 @@
                 @error('student.email')<span class="text-red-500">{{ $message }}</span>@enderror
               </div>
               <div>
-                <label for="birthday">{{ __('Birthday') }}</label>
-                <input
-                    type="date"
-                    name="birthday"
-                    id="birthday"
-                    wire:model="student.birthday" />
-                @error('student.birthday')<span class="text-red-500">{{ $message }}</span>@enderror
-              </div>
-              <div>
                 <input
                     type="checkbox"
                     name="permission"
