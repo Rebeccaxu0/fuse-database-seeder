@@ -16,38 +16,42 @@
     <div>
         <span class="font-bold">{{ __('Birthday:') }}</span> {{ $user->birthday }}
     </div>
-    <div>
-        <span class="font-bold">{{ __('Roles:') }}</span>
-        @forelse ($user->roles as $role)
-        {{ $role->name }}@if (! $loop->last), @endif
-        @empty
-        {{ __('student') }}
-        @endforelse
-    </div>
-    <div>
-        <span class="font-bold">{{ __('Districts:') }}</span>
-        @forelse ($user->districts as $district)
-        {{ $district->name }}@if (! $loop->last), @endif
-        @empty
-        {{ __('<none>') }}
-        @endforelse
-    </div>
-    <div>
-        <span class="font-bold">{{ __('Schools:') }}</span>
-        @forelse ($user->schools as $school)
-        {{ $school->name }}@if (! $loop->last), @endif
-        @empty
-        {{ __('<none>') }}
-        @endforelse
-    </div>
-    <div>
-        <span class="font-bold">{{ __('Studios:') }}</span>
-        @forelse ($user->studios as $studio)
-        {{ $studio->name }}@if (! $loop->last), @endif
-        @empty
-        {{ __('<none>') }}
-        @endforelse
-    </div>
+    @if (! $studioMember)
+        <div>
+            @if ($active)
+            {{ __('Alum Member') }}
+            @else
+            {{ __('No Activity (Abandoned SSO?)') }}
+            @endif
+        </div>
+    @else
+        <div>
+            <span class="font-bold">{{ __('Roles:') }}</span>
+                @forelse ($user->roles as $role)
+                {{ $role->name }}@if (! $loop->last), @endif
+                @empty
+                {{ __('student') }}
+                @endforelse
+        </div>
+        <div>
+            <span class="font-bold">{{ __('Districts:') }}</span>
+            @foreach ($user->deFactoDistricts() as $district)
+                {{ $district->name }}@if (! $loop->last), @endif
+            @endforeach
+        </div>
+        <div>
+            <span class="font-bold">{{ __('Schools:') }}</span>
+            @foreach ($user->deFactoSchools() as $school)
+                {{ $school->name }}@if (! $loop->last), @endif
+            @endforeach
+        </div>
+        <div>
+            <span class="font-bold">{{ __('Studios:') }}</span>
+            @foreach ($user->deFactoStudios() as $studio)
+                {{ $studio->name }}@if (! $loop->last), @endif
+            @endforeach
+        </div>
+    @endif
 
     <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
         <button class="btn">
