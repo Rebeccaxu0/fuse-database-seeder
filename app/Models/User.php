@@ -514,12 +514,10 @@ class User extends Authenticatable
     /**
       * Get a list of Studios the user is a member of, directly or not.
       *
-      * @param bool $fresh
-      * @return array [Studio]
+      * @return Collection [Studio]
      */
-    public function deFactoStudios(bool $fresh = false)
+    public function deFactoStudios()
     {
-        if ($fresh) Cache::forget("u{$this->id}_studios");
         return Cache::remember("u{$this->id}_studios", 3600, function () {
             $studios = new Collection;
 
@@ -545,6 +543,45 @@ class User extends Authenticatable
             }
             return $studios;
         });
+    }
+
+    /**
+      * Get a list of schools the user is a member of, directly or not.
+      *
+      * @return Collection [Studio]
+     */
+    public function deFactoSchools()
+    {
+        $schools = new Collection;
+        foreach ($this->deFactoStudios() as $studio) {
+            $schools = $schools->push($studio->school);
+        }
+
+        if (! empty($schools)) {
+            $schools = $schools->unique()
+                               ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
+                               ->sortBy('district.name', SORT_STRING | SORT_FLAG_CASE);
+        }
+        return $schools;
+    }
+
+    /**
+      * Get a list of districts the user is a member of, directly or not.
+      *
+      * @return Collection [District]
+     */
+    public function deFactoDistricts()
+    {
+        $districts = new Collection;
+        foreach ($this->deFactoStudios() as $studio) {
+            $districts = $districts->push($studio->school->district);
+        }
+
+        if (! empty($districts)) {
+            $districts = $districts->unique()
+                               ->sortBy('name', SORT_STRING | SORT_FLAG_CASE);
+        }
+        return $districts;
     }
 
     /**
