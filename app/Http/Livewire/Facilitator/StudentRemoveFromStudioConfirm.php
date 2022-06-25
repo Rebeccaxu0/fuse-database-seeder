@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class StudentRemoveFromStudioConfirm extends Component
@@ -19,6 +20,7 @@ class StudentRemoveFromStudioConfirm extends Component
 
     public function submit() {
         $this->studio->students()->detach($this->student);
+        Cache::forget("u{$this->student->id}_studios");
 
         $this->emitUp('updateStudents');
         $this->showDeleteModal = false;

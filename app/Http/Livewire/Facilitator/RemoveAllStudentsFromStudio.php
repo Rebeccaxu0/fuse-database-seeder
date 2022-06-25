@@ -22,6 +22,7 @@ class RemoveAllStudentsFromStudio extends Component
     public function submit() {
         foreach ($this->studio->students as $student) {
             $student->studios()->detach($this->studio->id);
+            Cache::forget("u{$student->id}_studios");
         }
         $this->emitUp('updateStudents');
         $this->showRemoveModal = false;

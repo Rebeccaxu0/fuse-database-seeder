@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Facilitator;
 use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class AddStudentToStudioBySearch extends Component
@@ -16,6 +17,7 @@ class AddStudentToStudioBySearch extends Component
     public function add(User $student)
     {
         $this->studio->students()->attach($student);
+        Cache::forget("u{$student->id}_studios");
         $this->search = '';
         $this->emitUp('updateStudents');
     }
