@@ -14,6 +14,7 @@ class IdeaEdit extends Component
     public int $ideaId;
     public bool $showModalFlag = false;
     public bool $create = false;
+    public bool $levelPage = false;
     public string $title = '';
     public string $body = '';
     public string $name = '';
@@ -31,9 +32,14 @@ class IdeaEdit extends Component
         'teammates.*' => 'int|exists:App\Models\User,id',
     ];
 
-    public function mount()
+    public function mount($inspiration = null)
     {
         $user = Auth::user();
+        if ($inspiration) {
+            $this->levelPage = true;
+            $this->inspirations[] = $inspiration->id;
+            $this->inspirationNames[] = $inspiration->challenge->name;
+        }
         if (isset($this->ideaId)) {
             $idea = Idea::find($this->ideaId);
             $this->body = $idea->body;

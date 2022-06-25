@@ -129,6 +129,11 @@
                 </a>
             </section>
 
+            <section>
+                <h2 class="uppercase text-black text-sm font-medium mb-2 ml-4">{{ __("Idea Project") }}</h2>
+                <livewire:student.idea-edit :inspiration="$level->levelable" />
+            </section>
+
         </aside>
     </div>
 

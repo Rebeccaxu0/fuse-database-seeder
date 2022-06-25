@@ -1,11 +1,21 @@
 <div class="inline">
     @if ($create)
-    <button wire:click="$set('showModalFlag', true)"
-            class="p-4 bg-white border shadow rounded-xl text-fuse-teal-dk text-4xl text-center">
-        <x-icon icon="idea-new" width="150" height="150"
-            fill="currentColor"
-            alt="{{ __('New Idea') }}" />
-    </button>
+        @if ($levelPage)
+        <button wire:click="$set('showModalFlag', true)"
+                class="p-4 bg-white border shadow rounded-xl text-fuse-teal-dk text-4xl text-center">
+            <x-icon icon="idea-new" width="150" height="150"
+                fill="currentColor"
+                alt="{{ __('New Idea') }}" />
+                {{ __('Create your own!') }}
+        </button>
+        @else
+        <button wire:click="$set('showModalFlag', true)"
+                class="p-4 bg-white border shadow rounded-xl text-fuse-teal-dk text-4xl text-center">
+            <x-icon icon="idea-new" width="150" height="150"
+                fill="currentColor"
+                alt="{{ __('New Idea') }}" />
+        </button>
+        @endif
     @else
     <button wire:click="$set('showModalFlag', true)">
         <x-icon icon="edit" class="inline" alt="{{ __('Edit Idea') }}" />
