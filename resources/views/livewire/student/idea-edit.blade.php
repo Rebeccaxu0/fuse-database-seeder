@@ -6,7 +6,7 @@
             <x-icon icon="idea-new" width="150" height="150"
                 fill="currentColor"
                 alt="{{ __('New Idea') }}" />
-                {{ __('Create your own!') }}
+                {{ __('Make your own!') }}
         </button>
         @else
         <button wire:click="$set('showModalFlag', true)"

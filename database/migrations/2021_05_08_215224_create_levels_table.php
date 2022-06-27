@@ -41,6 +41,8 @@ END;
                   ->nullable();
             $table->longtext('power_up_desc')
                   ->nullable();
+            $table->longtext('facilitator_notes_desc')
+                  ->nullable();
             $table->unique(['levelable_id', 'levelable_type', 'level_number']);
         });
 

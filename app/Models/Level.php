@@ -26,6 +26,7 @@ class Level extends Model
         'how_to_complete_desc',
         'get_help_desc',
         'power_up_desc',
+        'facilitator_notes_desc',
     ];
 
     /**

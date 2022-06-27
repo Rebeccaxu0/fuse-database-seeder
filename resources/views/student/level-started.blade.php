@@ -70,10 +70,15 @@
                 <div class="lg:flex gap-4">
                     <div class="flex-1 border p-4">
                         {!! $level->stuff_you_need_desc !!}
+                        <h4>TODO: if STUFF YOU NEED IMAGES</h4>
+                        <h4>TODO: if Materials needed</h4>
+                        <h4>TODO: if files needed</h4>
                     </div>
+                    @if ($level->levelable->chromebook_info)
                     <div class="flex-1 border p-4">
-                        {!! __('Works on a Chromebook?') !!}
+                        {!! $level->levelable->chromebook_info !!}
                     </div>
+                    @endif
                 </div>
             </section>
 
@@ -101,10 +106,19 @@
                          ><livewire:level-save-or-complete-form :lid="$level->id"/></div>
             </section>
 
+            @if ($fields['power_up_desc'])
             <section class="bg-white rounded-xl shadow mt-8 p-4">
                 <h2 class="text-black text-lg font-bold">{{ __('Power-up') }}</h2>
                 {!! $fields['power_up_desc'] !!}
             </section>
+            @endif
+
+            @if ($fields['facilitator_notes_desc'] && ! auth()->user()->isStudent())
+            <section class="bg-white rounded-xl shadow mt-8 p-4">
+                <h2 class="text-black text-lg font-bold">{{ __('Facilitator Notes') }}</h2>
+                {!! $fields['facilitator_notes_desc'] !!}
+            </section>
+            @endif
         </article>
 
         <aside id="sidebar">
@@ -125,6 +139,7 @@
             <section>
                 <h2 class="uppercase text-black text-sm font-medium mb-2 ml-4">{{ __("What's Next") }}</h2>
                 <a href="{{ $fields['whats_next_route'] }}" class="block py-4 rounded-xl bg-white text-black p-4">
+                    <h3>{{ __("What's Next?") }}</h3>
                     {{ $fields['whats_next_text'] }}
                 </a>
             </section>

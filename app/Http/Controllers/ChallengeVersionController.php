@@ -93,15 +93,12 @@ class ChallengeVersionController extends Controller
             'challenge_category_id' => $request->category_id,
             'challenge_id' => $request->challenge_id,
             'chromebook_info' => $request->chromeInfo,
-            'facilitator_notes' => $request->facNotes,
             'gallery_note' => $request->galleryNote,
-            'gallery_version_desc_short' => $request->versionDesc,
             'gallery_wistia_video_id' => $request->wistiaId,
             'info_article_url' => $request->infoUrl,
             'name' => $request->name,
             'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
             'slug' => Str::of($request->name)->slug('-'),
-            'stuff_you_need' => $request->stuffYouNeed,
             'summary' => $request->summary,
         ]);
 
@@ -156,15 +153,12 @@ class ChallengeVersionController extends Controller
             'challenge_category_id' => $request->category_id,
             'challenge_id' => $request->challenge_id,
             'chromebook_info' => $request->chromeInfo,
-            'facilitator_notes' => $request->facNotes,
             'gallery_note' => $request->galleryNote,
-            'gallery_version_desc_short' => $request->versionDesc,
             'gallery_wistia_video_id' => $request->wistiaId,
             'info_article_url' => $request->infoUrl,
             'name' => $request->name,
             'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
             'slug' => Str::of($request->name)->slug('-'),
-            'stuff_you_need' => $request->stuffYouNeed,
             'summary' => $request->summary,
         ]);
 
@@ -179,24 +173,14 @@ class ChallengeVersionController extends Controller
      * @param  \App\Models\ChallengeVersion $challengeversion
      * @return \Illuminate\Http\Response
      */
-    public function copy(Request $request, ChallengeVersion $challengeversion)
+    public function copy(Request $request, ChallengeVersion $challengeVersion)
     {
-        $newchallengeversion = ChallengeVersion::create([
-            'name' => $challengeversion->name,
-            'slug' => Str::of($challengeversion->name)->slug('-'),
-            'challenge_id' => $challengeversion->challenge_id,
-            'challenge_category_id' => $challengeversion->category_id,
-            'gallery_version_desc_short' => $challengeversion->versiondesc,
-            'blurb' => $challengeversion->blurb,
-            'summary' => $challengeversion->summary,
-            'stuff_you_need' => $challengeversion->stuffyouneed,
-            'facilitator_notes' => $challengeversion->facnotes,
-            'chromebook_info' => $challengeversion->chromeinfo,
-            'prerequisite_challenge_version_id' => $challengeversion->prereqchal,
-            'info_article_url' => $challengeversion->infourl,
-        ]);
+        $newChallengeVersion = $challengeVersion
+            ->replicate(['id'])
+            ->fill(['name' => $challengeVersion->name . ' COPY']);
+        $newChallengeVersion->save();
 
-        $newchallengeversion->setLevelsOrder($challengeversion->level);
+        $newChallengeVersion->setLevelsOrder($challengeVersion->level);
         return redirect(route('admin.challengeversions.index'));
     }
 

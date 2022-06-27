@@ -112,6 +112,11 @@ CREATE INDEX media_d7_fid_IDX USING BTREE ON `fuse_laravel`.media (d7_fid);
 ALTER TABLE `fuse_laravel`.media ADD d7_user_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX media_uid_user_d7_school_id_IDX USING BTREE ON `fuse_laravel`.media (d7_user_id);
 
+-- Change all instances of 'und' to 'en'
+UPDATE IGNORE `d7-fuse`.node
+SET language = 'en'
+WHERE language = 'und';
+
 -- Insert Challenge Taxonomy Terms
 INSERT INTO `fuse_laravel`.challenges (name, description, d7_id)
 SELECT name, description, tid as d7_id from `d7-fuse`.taxonomy_term_data ttd WHERE ttd.vid = (
@@ -239,15 +244,24 @@ GROUP BY n.nid
 ORDER BY n.title ASC;
 
 -- Add translation fields one by one
--- Summary
-UPDATE `fuse_laravel`.challenge_versions cv
-JOIN (
-  SELECT entity_id, JSON_OBJECTAGG(`language`, body_value) as summary
-  FROM `d7-fuse`.field_data_body
-  WHERE entity_type = 'node' AND bundle = 'challenge'
-  GROUP BY entity_id) as s
-ON cv.d7_id = s.entity_id
-SET cv.summary = s.summary;
+
+-- UPDATE `d7-fuse`.field_data_body
+-- SET language = 'en'
+-- WHERE language = 'und';
+--
+-- -- Summary
+-- UPDATE `fuse_laravel`.challenge_versions cv
+-- JOIN (
+--   SELECT entity_id, JSON_OBJECTAGG(`language`, body_value) as summary
+--   FROM `d7-fuse`.field_data_body
+--   WHERE entity_type = 'node' AND bundle = 'challenge'
+--   GROUP BY entity_id) as s
+-- ON cv.d7_id = s.entity_id
+-- SET cv.summary = s.summary;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_blurb
+SET language = 'en'
+WHERE language = 'und';
 
 -- Blurb
 UPDATE `fuse_laravel`.challenge_versions cv
@@ -259,6 +273,10 @@ JOIN (
 ON cv.d7_id = b.entity_id
 SET cv.blurb = b.blurb;
 
+UPDATE IGNORE `d7-fuse`.field_data_field_cg_version_details
+SET language = 'en'
+WHERE language = 'und';
+
 -- Challenge Gallery Title Modifier Note
 UPDATE `fuse_laravel`.challenge_versions cv
 JOIN (
@@ -269,16 +287,9 @@ JOIN (
 ON cv.d7_id = s.entity_id
 SET cv.gallery_note  = s.gallery_note;
 
-
--- Stuff You Need
-UPDATE `fuse_laravel`.challenge_versions cv
-JOIN (
-  SELECT entity_id, JSON_OBJECTAGG(`language`, field_materials_needed_value) as stuff_you_need
-  FROM `d7-fuse`.field_data_field_materials_needed
-  WHERE entity_type = 'node' AND bundle = 'challenge'
-  GROUP BY entity_id) as syn
-ON cv.d7_id = syn.entity_id
-SET cv.stuff_you_need = syn.stuff_you_need;
+UPDATE IGNORE `d7-fuse`.field_data_field_chromebook_info
+SET language = 'en'
+WHERE language = 'und';
 
 -- Chromebook Info
 UPDATE `fuse_laravel`.challenge_versions cv
@@ -290,33 +301,14 @@ JOIN (
 ON cv.d7_id = ci.entity_id
 SET cv.chromebook_info = ci.chromebook_info;
 
--- Facilitator Notes
-UPDATE `fuse_laravel`.challenge_versions cv
-JOIN (
-  SELECT entity_id, JSON_OBJECTAGG(`language`, field_facilitator_notes_value) as facilitator_notes
-  FROM `d7-fuse`.field_data_field_facilitator_notes
-  WHERE entity_type = 'node' AND bundle = 'challenge'
-  GROUP BY entity_id) as fn
-ON cv.d7_id = fn.entity_id
-SET cv.facilitator_notes = fn.facilitator_notes;
-
--- Gallery Version Description (short)
-UPDATE `fuse_laravel`.challenge_versions cv
-JOIN (
-  SELECT entity_id, JSON_OBJECTAGG(`language`, field_facilitator_notes_value) as facilitator_notes
-  FROM `d7-fuse`.field_data_field_facilitator_notes
-  WHERE entity_type = 'node' AND bundle = 'challenge'
-  GROUP BY entity_id) as fn
-ON cv.d7_id = fn.entity_id
-SET cv.facilitator_notes = fn.facilitator_notes;
-
 -- Update foreign keys
 -- ASSUMPTION: 'legacy' challenge id is 1, and 'legacy' challenge category id is 7.
 UPDATE `fuse_laravel`.challenge_versions cv
 LEFT JOIN `fuse_laravel`.challenges c ON cv.d7_challenge_id = c.d7_id
 LEFT JOIN `fuse_laravel`.challenge_categories cc ON cv.d7_challenge_category_id = cc.d7_id
-LEFT JOIN `fuse_laravel`.challenge_versions prereq ON cv.d7_prereq_challenge_id = prereq.d7_id
-SET cv.challenge_id = COALESCE(c.id, 1), cv.challenge_category_id = COALESCE(cc.id, 7), cv.prerequisite_challenge_version_id = prereq.id;
+-- LEFT JOIN `fuse_laravel`.challenge_versions prereq ON cv.d7_prereq_challenge_id = prereq.d7_id
+SET cv.challenge_id = COALESCE(c.id, 1), cv.challenge_category_id = COALESCE(cc.id, 7);
+-- , cv.prerequisite_challenge_version_id = prereq.id;
 
 -- Insert Levels
 INSERT INTO `fuse_laravel`.levels
@@ -337,6 +329,125 @@ WHERE
   AND !ISNULL(fdfc.field_challenge_nid)
   AND n.nid IN (SELECT fdfcl.field_child_levels_nid FROM `d7-fuse`.field_data_field_child_levels fdfcl)
 ORDER BY fdfc.field_challenge_nid ASC;
+
+UPDATE IGNORE `d7-fuse`.field_data_body
+SET language = 'en'
+WHERE language = 'und';
+
+-- LEVEL FIELDS
+-- The Challenge
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, body_value) as challenge_desc
+  FROM `d7-fuse`.field_data_body
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as cd
+ON levels.d7_id = cd.entity_id
+SET levels.challenge_desc = cd.challenge_desc;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_materials_needed
+SET language = 'en'
+WHERE language = 'und';
+
+-- Blurb
+-- Should use body summary or the node title. Prefer body summary.
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT nid, JSON_OBJECTAGG(`language`, title) as value
+  FROM `d7-fuse`.node
+  WHERE type = 'level'
+  GROUP BY nid) as label
+ON levels.d7_id = label.nid
+SET levels.blurb = label.value;
+
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, body_summary) as value
+  FROM `d7-fuse`.field_data_body
+  WHERE entity_type = 'node' AND bundle = 'level' AND (!ISNULL(body_summary) && body_summary != '')
+  GROUP BY entity_id) as blurb
+ON levels.d7_id = blurb.entity_id
+SET levels.blurb = blurb.value;
+
+-- Get Started
+UPDATE IGNORE `d7-fuse`.field_data_field_getting_started
+SET language = 'en'
+WHERE language = 'und';
+
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_getting_started_value) as value
+  FROM `d7-fuse`.field_data_field_getting_started
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as gs
+ON levels.d7_id = gs.entity_id
+SET levels.get_started_desc = gs.value;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_get_points
+SET language = 'en'
+WHERE language = 'und';
+
+-- How to Complete
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_get_points_value) as value
+  FROM `d7-fuse`.field_data_field_get_points
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as htc
+ON levels.d7_id = htc.entity_id
+SET levels.how_to_complete_desc = htc.value;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_power_up
+SET language = 'en'
+WHERE language = 'und';
+
+-- Get Help
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_power_up_value) as value
+  FROM `d7-fuse`.field_data_field_power_up
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as gh
+ON levels.d7_id = gh.entity_id
+SET levels.get_help_desc = gh.value;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_powerup
+SET language = 'en'
+WHERE language = 'und';
+
+-- Power Up
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_powerup_value) as value
+  FROM `d7-fuse`.field_data_field_powerup
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as pu
+ON levels.d7_id = pu.entity_id
+SET levels.power_up_desc = pu.value;
+
+UPDATE IGNORE `d7-fuse`.field_data_field_facilitator_notes
+SET language = 'en'
+WHERE language = 'und';
+
+-- Power Up
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_facilitator_notes_value) as value
+  FROM `d7-fuse`.field_data_field_facilitator_notes
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as fn
+ON levels.d7_id = fn.entity_id
+SET levels.facilitator_notes_desc = fn.value;
+
+-- Level Number
+-- UPDATE `fuse_laravel`.levels levels
+-- JOIN (
+--   SELECT entity_id, JSON_OBJECTAGG(`language`, _value) as value
+--   FROM `d7-fuse`.field_data_
+--   WHERE entity_type = 'node' AND bundle = 'level'
+--   GROUP BY entity_id) as __
+-- ON levels.d7_id = __.entity_id
+-- SET levels.get_started_desc = __.value;
 
 -- Update foreign keys
 UPDATE `fuse_laravel`.levels levels

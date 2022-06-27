@@ -22,20 +22,10 @@ return new class extends Migration
                   ->nullable();
             $table->json('gallery_note')
                   ->nullable();
-            $table->json('summary')
-                  ->nullable();
-            $table->json('stuff_you_need')
-                  ->nullable();
             $table->json('chromebook_info')
-                  ->nullable();
-            $table->json('facilitator_notes')
                   ->nullable();
             // $table->string('gallery_image');
             $table->string('gallery_wistia_video_id')
-                  ->nullable();
-            $table->string('gallery_version_desc_short')
-                  ->nullable();
-            $table->string('gallery_version_desc_long')
                   ->nullable();
             $table->string('slug')
                   ->unique()
