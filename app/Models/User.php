@@ -190,7 +190,7 @@ class User extends Authenticatable
         return $this->belongsToMany(School::class);
     }
 
-    /*
+    /**
      * The last level a user interacted with (start/save/complete).
      */
     public function currentLevel()
@@ -300,11 +300,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has a given role.
+     */
+    public function hasRole(int $roleId): bool
+    {
+        return Cache::tags(["u{$this->id}_roles"])
+            ->rememberForever("u{$this->id}_has_role_{$roleId}", function () use ($roleId) {
+                return (bool) $this->roles()->where('role_id', $roleId)->count();
+            });
+    }
+
+    /**
      * Check if user has admin role.
      */
     public function isAdmin(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::ADMIN_ID)->count();
+        return $this->hasRole(ROLE::ADMIN_ID);
     }
 
     /**
@@ -312,7 +323,7 @@ class User extends Authenticatable
      */
     public function isReportViewer(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::REPORT_VIEWER_ID)->count();
+        return $this->hasRole(ROLE::REPORT_VIEWER_ID);
     }
 
     /**
@@ -320,7 +331,7 @@ class User extends Authenticatable
      */
     public function isChallengeAuthor(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::CHALLENGE_AUTHOR_ID)->count();
+        return $this->hasRole(ROLE::CHALLENGE_AUTHOR_ID);
     }
 
     /**
@@ -328,7 +339,7 @@ class User extends Authenticatable
      */
     public function isSuperFacilitator(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::SUPER_FACILITATOR_ID)->count();
+        return $this->hasRole(ROLE::SUPER_FACILITATOR_ID);
     }
 
     /**
@@ -336,7 +347,7 @@ class User extends Authenticatable
      */
     public function isPreSuperFacilitator(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::PRE_SUPER_FACILITATOR_ID)->count();
+        return $this->hasRole(ROLE::PRE_SUPER_FACILITATOR_ID);
     }
 
     /**
@@ -344,7 +355,7 @@ class User extends Authenticatable
      */
     public function isFacilitator(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::FACILITATOR_ID)->count();
+        return $this->hasRole(ROLE::FACILITATOR_ID);
     }
 
     /**
@@ -352,7 +363,7 @@ class User extends Authenticatable
      */
     public function isPreFacilitator(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::PRE_FACILITATOR_ID)->count();
+        return $this->hasRole(ROLE::PRE_FACILITATOR_ID);
     }
 
     /**
@@ -360,8 +371,11 @@ class User extends Authenticatable
      */
     public function isStudent()
     {
-        return $this->isAnonymousStudent()
-            || ! (bool) $this->roles->count();
+        return Cache::tags(["u{$this->id}_roles"])
+            ->rememberForever("u{$this->id}_is_student", function () {
+                return $this->isAnonymousStudent()
+                    || ! (bool) $this->roles->count();
+            });
     }
 
     /**
@@ -369,7 +383,7 @@ class User extends Authenticatable
      */
     public function isAnonymousStudent()
     {
-        return (bool) $this->roles()->where('role_id', ROLE::ANONYMOUS_STUDENT_ID)->count();
+        return $this->hasRole(ROLE::ANONYMOUS_STUDENT_ID);
     }
 
     /**

@@ -89,6 +89,12 @@ class ArtifactController extends Controller
         }
         $artifact->save();
         $artifact->team()->saveMany($team);
+        foreach ($team as $teammate) {
+            Cache::forever("u{$teammate->id}_current_level_on_levelable_{$level->levelable->id}", $level);
+            if ($validated['type'] == 'complete') {
+                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true);
+            }
+        }
 
         switch ($validated['type']) {
         case 'save':
@@ -96,9 +102,6 @@ class ArtifactController extends Controller
             break;
 
         case 'complete':
-            foreach ($team as $teammate) {
-                Cache::forget("u{$teammate->id}_has_completed_level_{$level->id}");
-            }
             if ($level->next()) {
                 $params = [
                     'challengeVersion' => $level->next()->levelable,

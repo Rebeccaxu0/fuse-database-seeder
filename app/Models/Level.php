@@ -129,8 +129,8 @@ class Level extends Model
      */
     public function mostRecentStart(User $user) : ?Start
     {
-        return $this->starts
-                    ->where('user_id', '=', $user->id)
+        return $user->starts
+                    ->where('level_id', '=', $this->id)
                     ->sort()
                     ->last();
     }
@@ -220,6 +220,7 @@ class Level extends Model
             'user_id' => $user->id,
         ]);
         Cache::put("u{$user->id}_has_started_level_{$this->id}", true);
+        Cache::forever("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this);
         return true;
       }
       return false;
