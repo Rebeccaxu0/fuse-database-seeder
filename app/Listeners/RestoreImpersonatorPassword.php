@@ -25,6 +25,7 @@ class RestoreImpersonatorPassword
     public function handle(LeaveImpersonation $event)
     {
         session()->put([
+            'password_hash_sanctum' =>  $event->impersonator->getAuthPassword(),
             'password_hash_web' =>  $event->impersonator->getAuthPassword(),
         ]);
     }
