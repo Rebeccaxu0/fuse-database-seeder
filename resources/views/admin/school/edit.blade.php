@@ -11,15 +11,15 @@
         <div class="grid md:grid-cols-2 gap-x-4">
             <div>
                 <x-form.defaultdropdown label="Package" name="package" value="old('package', $school->package_id)"
-                    :inherited="$school->district->package" :list="$packages" />
+                    :inherited="$school->district ? $school->district->package : null" :list="$packages" />
             </div>
             <div>
                 <x-form.input label="Salesforce Account ID" name="salesforce_acct_id"
                     :value="old('salesforce_acct_id', $school->salesforce_acct_id)" />
             </div>
         </div>
-        <span
-            class="text-gray-700 text-lg mb-6">{{ __('District: :name', ['name' => $school->district ? $school->district->name : __('<none>')]) }}</span>
+        <x-form.dropdown label="District" name="district" :value="old('district', $school->district ? $school->district->id : null)"
+            :list="$districts" />
 
         <fieldset class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
             <legend class="text-gray-700 font-bold">{{ __('Grade Levels') }}</legend>

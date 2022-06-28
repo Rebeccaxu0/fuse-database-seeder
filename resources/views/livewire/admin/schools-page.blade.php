@@ -59,7 +59,9 @@
                                 </div>
                                 <div class="ml-3">
                                     <p class="text-gray-900 whitespace-no-wrap">
+                                    <a href="{{ route('admin.studios.index', ['school' => $school->id]) }}">
                                         {{ $school->name }}
+                                    </a>
                                     </p>
                                 </div>
                             </div>
@@ -108,7 +110,7 @@
                                     </summary>
                                     <ul>
                                         @foreach ($school->facilitators as $user)
-                                            <li><span class="text-xs">{{ $user->name }}</span></li>
+                                        <li><a href="{{ route('admin.users.show', [$user]) }}" class="text-xs">{{ $user->name }}</a></li>
                                         @endforeach
                                     </ul>
                                 </details>

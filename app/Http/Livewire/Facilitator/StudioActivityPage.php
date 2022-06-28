@@ -64,7 +64,6 @@ class StudioActivityPage extends Component
         $eager = [
           'artifacts',
           'startedLevels',
-          // 'startedLevels.challengeVersion',
         ];
         $this->students = $this->studio
                                ->students()
@@ -75,7 +74,6 @@ class StudioActivityPage extends Component
             $this->activeStudent = $this->students->first();
             $this->populateIdeas();
             $this->populateChallenges();
-            // $this->artifacts = new Collection;
             $this->populateArtifacts();
         }
     }

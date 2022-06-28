@@ -10,11 +10,11 @@
         <div class="relative top-0 bottom-0 left-0 right-0"></div>
 
         <div class="relative z-10 w-full bg-white rounded-t-none shadow-lg list-group">
-            @forelse ($dss as $ds)
+            @forelse ($schools as $school)
                 <div class="mb-6">
-                    <button wire:click="selectDs({{ $ds->id }})">
-                        {{ $ds->name }}
-                        [{{ $ds->district ? $ds->district->name : __('<No District>') }}]
+                    <button wire:click="selectSchool({{ $school->id }})">
+                        {{ $school->name }}
+                        [{{ $school->district ? $school->district->name : __('<No District>') }}]
                     </button>
                 </div>
             @empty

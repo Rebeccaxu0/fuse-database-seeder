@@ -72,6 +72,11 @@
             {{ __('delete') }}
         </button>
     </form>
+    <a href="{{ route('impersonate', $user->id) }}">
+        <button class="btn">
+            {{ __('Masquerade as :user', ['user' => $user->full_name]) }}
+        </button>
+    </a>
     <a href="{{ route('student.their_stuff', ['user' => $user]) }}">
         <button class="btn">
         {{ __('Artifacts') }}

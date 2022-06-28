@@ -10,15 +10,15 @@ class SchoolDistrictSearchBar extends Component
 {
     public $query;
 
-    public function selectDs($id)
+    public function selectSchool($id)
     {
-        $this->emitUp('dsSelected', $id);
+        $this->emitUp('schoolSelected', $id);
         $this->query = '';
     }
 
     public function updatedQuery()
     {
-        $this->dss = School::where('name', 'like', "%{$this->query}%")
+        $this->schools = School::where('name', 'like', "%{$this->query}%")
             ->orWhereHas(
                 'district',
                 function (Builder $query) {

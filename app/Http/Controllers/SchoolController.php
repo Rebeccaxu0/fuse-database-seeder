@@ -127,10 +127,12 @@ class SchoolController extends Controller
     public function edit(School $school)
     {
         return view('admin.school.edit', [
+            'districts' => District::all()->sortBy('name'),
             'packages' => Package::all()->sortBy('name'),
             'school' => $school,
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -142,10 +144,12 @@ class SchoolController extends Controller
     {
         $school->update([
             'name' => $request->name,
+            'district_id' => $request->district,
             'package_id' => $request->package,
             'salesforce_acct_id' => $request->salesforce_acct_id,
             'license_status' => $request->boolean('license_status'),
         ]);
+        $school->fresh();
 
         if (! empty($request->studiosToRemove)) {
             $school->removeStudios($request->studiosToRemove);
@@ -167,7 +171,11 @@ class SchoolController extends Controller
             School::destroy($school);
         }
 
-        return redirect(route('admin.schools.index', ['districtFilter' => $school->district->id]));
+        $params = [];
+        if ($school->district) {
+            $params = ['district' => $school->district->id];
+        }
+        return redirect(route('admin.schools.index', $params));
     }
     /**
      * Remove the specified resource from storage.
