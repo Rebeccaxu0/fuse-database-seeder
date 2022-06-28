@@ -1,10 +1,10 @@
 @push('scripts')
   {{-- Naive implementation to keep 'online' in sync by pinging
-        server once a minute. Ways to improve:
+        server once every five minutes. Ways to improve:
         + heartbeat endpoint on separate server
         + put fetch on background thread (web/service worker) --}}
     <script>
-        setInterval(() => fetch('/heartbeat'), 60000);
+        setInterval(() => fetch('/heartbeat'), 300000);
     </script>
 @endpush
 
