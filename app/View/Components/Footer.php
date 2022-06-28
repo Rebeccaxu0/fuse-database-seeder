@@ -42,10 +42,10 @@ class Footer extends Component
      */
     public function __construct()
     {
-        $students = Cache::remember('student_count', 3600, function () {
+        $students = Cache::rememberForever('student_count', function () {
             return User::count();
         });
-        $schools = Cache::remember('school_count', 3600, function () {
+        $schools = Cache::rememberForever('school_count', function () {
             return School::count();
         });
         $ordinal = NumberFormatter::create(App::currentLocale(), NumberFormatter::DEFAULT_STYLE);
