@@ -19,6 +19,7 @@ use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\Admin\MediaManagerPage;
 use App\Http\Livewire\Admin\SchoolsPage;
+use App\Http\Livewire\Admin\StudiosPage;
 use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
@@ -217,6 +218,7 @@ Route::middleware([
             Route::post('levels/{level}/copy', [LevelController::class, 'copy'])->name('levels.copy');
 
             Route::get('schools', SchoolsPage::class)->name('schools.index');
+            Route::get('studios', StudiosPage::class)->name('studios.index');
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('media', MediaManagerPage::class)->name('media.index');
         });

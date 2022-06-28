@@ -30,14 +30,7 @@ class StudioController extends Controller
      */
     public function index()
     {
-        $studios = Studio
-            ::with(['school', 'students', 'facilitators'])
-            ->orderBy('name')
-            ->paginate(20);
-        return view('admin.studio.index', [
-            'districts' => District::all()->sortBy('name'),
-            'schools' => School::all()->sortBy('name'),
-        ]);
+        // Full-page Livewire component - see App\Http\Livewire\Admin\StudioPage
     }
 
     /**
