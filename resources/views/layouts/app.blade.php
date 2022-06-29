@@ -13,6 +13,11 @@
 
     <div id='env' class="flex flex-col container p-0 min-h-screen">
         <livewire:announcement-banner :user="auth()->user()" />
+        @impersonating
+        <div class="relative">
+        <a href="{{ route('impersonate.leave') }}">Stop Masquerading as `{{ Auth::user()->name}}`</a>
+        </div>
+        @endImpersonating
 
         <x-studio-switcher />
 

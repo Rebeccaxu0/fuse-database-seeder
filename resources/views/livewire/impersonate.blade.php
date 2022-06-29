@@ -44,8 +44,3 @@
 </div>
 @endCanImpersonate
 
-@impersonating
-<div class="relative">
-  <a href="{{ route('impersonate.leave') }}">Stop Masquerading as `{{ Auth::user()->name}}`</a>
-</div>
-@endImpersonating
