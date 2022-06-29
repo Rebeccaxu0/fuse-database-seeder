@@ -62,6 +62,7 @@ provider:
     DB_PASSWORD: ${param:db_password}
     DB_USERNAME: ${param:db_username}
     LOG_CHANNEL: stderr
+    SERVER_SOFTWARE: bref
     # SSO Settings
     CLEVER_CLIENT_ID: ${param:clever_client_id}
     CLEVER_CLIENT_SECRET: ${param:clever_client_secret}
