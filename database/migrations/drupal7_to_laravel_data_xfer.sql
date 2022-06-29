@@ -587,6 +587,16 @@ LEFT JOIN `d7-fuse`.fuse_studio_message AS fsm ON
   (fsm.studio_nid = n.nid)
 WHERE n.type = 'space' AND n.nid <> 934966;
 
+// Studio active challenge (version)
+INSERT INTO `fuse_laravel`.challenge_version_studio (challenge_version_id, studio_id)
+SELECT cv.id as challenge_id, studios.id as studio_id
+FROM `d7-fuse`.field_data_field_challenge as fdfc
+LEFT JOIN `fuse_laravel`.studios as studios ON
+  (studios.d7_id = fdfc.entity_id)
+LEFT JOIN `fuse_laravel`.challenge_versions as cv ON
+  (cv.d7_id = fdfc.field_challenge_nid)
+WHERE fdfc.entity_type = 'node';
+
 -- LTI Platform associations
 -- UPDATE `fuse_laravel`.studios studios SET studios.l_t_i_platform_id = 
 -- 1 WHERE ISNULL(levels.prerequisite_level);
