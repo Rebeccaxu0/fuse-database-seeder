@@ -11,12 +11,35 @@
         <x-form.input label="{{ __('Full Name') }}" name="fullName" required="true" :value="old('fullName', $user->full_name)" />
         <x-form.input label="{{ __('Email') }}" name="email" required="false" :value="old('email', $user->email)" />
         <div>
+            <label for="password">{{ __('Password') }}</label>
+            <input type="password" name="password" id="password" />
+            @error('password')
+            <span class="text-red-500">
+                {{ $message }}
+            </span>
+            @enderror
+        </div>
+        <div>
+            <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+            <input type="password" name="password_confirmation" id="password_confirmation" />
+        </div>
+        <div>
             <span class="font-bold">{{ __('Birthday:') }}</span>
             <input type="date" name="birthday" value="{{ old('birthday', $user->birthday) }}" >
+            @error('birthday')
+            <span class="text-red-500">
+                {{ $message }}
+            </span>
+            @enderror
+            @foreach ($errors->all() as $error)
+            {{ $error }}
+            @endforeach
         </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
-            <button type="submit" id="btn-submit"
-                    class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Save') }}</button>
+            <button type="submit"
+                    id="btn-submit"
+                    class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white"
+                    >{{ __('Save') }}</button>
         </div>
     </form>
 

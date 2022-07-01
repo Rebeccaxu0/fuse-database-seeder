@@ -38,16 +38,13 @@ class ChallengeVersion extends Model
         'challenge_category_id',
         'challenge_id',
         'chromebook_info',
-        'facilitator_notes',
         'gallery_note',
-        'gallery_version_desc_short',
         'gallery_wistia_video_id',
+        'gallery_thumbnail_url',
         'info_article_url',
         'name',
         'prerequisite_challenge_version_id',
         'slug',
-        'stuff_you_need',
-        'summary',
     ];
 
     /**

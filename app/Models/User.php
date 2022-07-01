@@ -259,6 +259,21 @@ class User extends Authenticatable
     }
 
     /**
+     * ChallengeVersions a user has started.
+     */
+    public function startedChallengeVersions()
+    {
+        return Cache::remember("u{$this->id}_started_challenge_versions", 3600, function () {
+
+            return $this->startedChallengeVersionLevels()
+                        ->get()
+                        ->unique()
+                        ->map(fn($level, $key) => $level->levelable)
+                        ->unique();
+        });
+    }
+
+    /**
      * The studios associated with this user.
      */
     public function studios()
@@ -568,10 +583,12 @@ class User extends Authenticatable
     {
         $schools = new Collection;
         foreach ($this->deFactoStudios() as $studio) {
-            $schools = $schools->push($studio->school);
+            if ($studio->school) {
+                $schools = $schools->push($studio->school);
+            }
         }
 
-        if (! empty($schools)) {
+        if ($schools->count() > 0) {
             $schools = $schools->unique()
                                ->sortBy('name', SORT_STRING | SORT_FLAG_CASE)
                                ->sortBy('district.name', SORT_STRING | SORT_FLAG_CASE);
@@ -588,10 +605,12 @@ class User extends Authenticatable
     {
         $districts = new Collection;
         foreach ($this->deFactoStudios() as $studio) {
-            $districts = $districts->push($studio->school->district);
+            if ($studio->school && $studio->school->district) {
+                $districts = $districts->push($studio->school->district);
+            }
         }
 
-        if (! empty($districts)) {
+        if ($districts->count() > 0) {
             $districts = $districts->unique()
                                ->sortBy('name', SORT_STRING | SORT_FLAG_CASE);
         }

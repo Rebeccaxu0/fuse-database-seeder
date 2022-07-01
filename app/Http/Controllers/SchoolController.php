@@ -38,7 +38,7 @@ class SchoolController extends Controller
         $district = $request->query('district');
         return view('admin.school.create', [
             'districtQueryValue' => $district,
-            'districts' => District::all()->sortBy('name'),
+            'districts' => District::with('package')->get()->sortBy('name'),
             'packages' => Package::all()->sortBy('name'),
         ]);
     }
@@ -50,7 +50,6 @@ class SchoolController extends Controller
     public function createstudios(School $school)
     {
         return view('admin.school.createstudios', [
-            'studios' => Studio::all()->sortBy('name'),
             'school' => $school,
         ]);
     }
@@ -64,7 +63,7 @@ class SchoolController extends Controller
         if (! empty($request->createstudios)) {
             $school->createStudios($request->createstudios);
         }
-        return redirect(route('admin.studios.index', ['id' => $school->id]));
+        return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
     /**
      * Store a newly created resource in storage.

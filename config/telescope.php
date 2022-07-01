@@ -97,6 +97,7 @@ return [
 
     'ignore_paths' => [
         'nova-api*',
+        'heartbeat',
     ],
 
     'ignore_commands' => [

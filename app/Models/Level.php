@@ -159,47 +159,49 @@ class Level extends Model
 
     public function isStartable(User $user): bool
     {
-        $startable = false;
+        return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 3600, function () use ($user) {
+            $startable = false;
 
-        // Levels of an Idea belonging to the User are always startable.
-        if ($this->levelable::class == Idea::class
-            && $this->levelable->users->contains($user)) {
-            $startable = true;
-        }
-        else {
-            $activeLevels
-                = $user
-                    ->activeStudio
-                    ->activeChallenges
-                    ->map(fn($challengeVersion, $key) => $challengeVersion->levels)
-                    ->flatten()
-                    ->pluck('id');
-            // If this challenge is active in the user's studio
-            if ($activeLevels->contains($this->id)) {
-                // Allow level start if user already has a start on this or any
-                // later level of this ChallengeVersion (e.g. via a team complete).
-                foreach ($this->levelable->levels->reverse() as $level) {
-                    if ($user->hasStartedLevel($this)) {
-                        $startable = true;
-                        break;
+            // Levels of an Idea belonging to the User are always startable.
+            if ($this->levelable::class == Idea::class
+                && $this->levelable->users->contains($user)) {
+                $startable = true;
+            }
+            else {
+                $activeLevels
+                    = $user
+                        ->activeStudio
+                        ->activeChallenges
+                        ->map(fn($challengeVersion, $key) => $challengeVersion->levels)
+                        ->flatten()
+                        ->pluck('id');
+                // If this challenge is active in the user's studio
+                if ($activeLevels->contains($this->id)) {
+                    // Allow level start if user already has a start on this or any
+                    // later level of this ChallengeVersion (e.g. via a team complete).
+                    foreach ($this->levelable->levels->reverse() as $level) {
+                        if ($user->hasStartedLevel($this)) {
+                            $startable = true;
+                            break;
+                        }
+                        if ($this == $level) {
+                            break;
+                        }
                     }
-                    if ($this == $level) {
-                        break;
+                    // If parent Challenge is startable...
+                    if (! $startable && $this->levelable->challenge->isStartable($user)
+                        // ...and it's the first level...
+                        && ($this->id == $this->levelable->levels->first()->id
+                        // ...or the previous level is completed
+                        || ($this->previous() && $user->hasCompletedLevel($this->previous()))
+                        )) {
+                            $startable = true;
                     }
-                }
-                // If parent Challenge is startable...
-                if (! $startable && $this->levelable->challenge->isStartable($user)
-                    // ...and it's the first level...
-                    && ($this->id == $this->levelable->levels->first()->id
-                    // ...or the previous level is completed
-                    || ($this->previous() && $user->hasCompletedLevel($this->previous()))
-                    )) {
-                        $startable = true;
                 }
             }
-        }
 
-        return $startable;
+            return $startable;
+        });
     }
 
     public function isStarted(User $user): bool

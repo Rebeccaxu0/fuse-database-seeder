@@ -10,6 +10,9 @@
                class="rounded"
                placeholder="{{ __('Wistia Code') }}"
                type="text">
+        @error($name)
+        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
+        @enderror
     </label>
     @if ($thumbnail)
     <div class="flex-1 px-4">

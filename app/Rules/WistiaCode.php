@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Http;
 
-class UploadCode implements Rule
+class WistiaCode implements Rule
 {
     /**
      * Create a new rule instance.
@@ -26,8 +26,11 @@ class UploadCode implements Rule
      */
     public function passes($attribute, $value)
     {
-        // TODO: call out to FUSE mobile Uploader API to validate code.
-        return true;
+        $response = Http::acceptJson()
+            ->withToken(config('wistia.token'))
+            ->get('https://api.wistia.com/v1/medias/' . $value);
+
+        return $response->ok();
     }
 
     /**
@@ -37,6 +40,6 @@ class UploadCode implements Rule
      */
     public function message()
     {
-        return __("Sorry, that upload code doesn't work. It may contain a typo, or has already been claimed.");
+        return __("Sorry, I can't find that Wistia code. Please check the number and dial again.");
     }
 }

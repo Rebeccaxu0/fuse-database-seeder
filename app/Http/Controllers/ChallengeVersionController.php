@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Challenge;
 use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
+use App\Rules\WistiaCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class ChallengeVersionController extends Controller
@@ -27,6 +29,7 @@ class ChallengeVersionController extends Controller
                                           ->challenges
                                           ->pluck('id');
         $challengeVersions = $activeStudio->challengeVersions
+                                          ->load(['challenge', 'levels'])
                                           ->whereIn('challenge_id', $packageChallenges)
                                           ->sortBy('name');
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
@@ -84,22 +87,29 @@ class ChallengeVersionController extends Controller
             'challenge_id' => 'required',
             'category_id' => 'required',
             'infoUrl' => 'nullable|url',
-            'wistiaId' => 'nullable|string',
+            'wistiaId' => ['nullable', new WistiaCode],
         ]);
 
+        $gallery_thumbnail_url = null;
+        if ($request->wistiaId) {
+            $wistia = Http::acceptJson()
+                ->withToken(config('wistia.token'))
+                ->get('https://api.wistia.com/v1/medias/' . $request->wistiaId);
+            $gallery_thumbnail_url = $wistia->json('thumbnail.url');
+        }
 
         $challengeversion = ChallengeVersion::create([
             'blurb' => $request->blurb,
             'challenge_category_id' => $request->category_id,
             'challenge_id' => $request->challenge_id,
-            'chromebook_info' => $request->chromeInfo,
+            'chromebook_info' => $request->chromebookInfo,
             'gallery_note' => $request->galleryNote,
             'gallery_wistia_video_id' => $request->wistiaId,
+            'gallery_thumbnail_url' => $gallery_thumbnail_url,
             'info_article_url' => $request->infoUrl,
             'name' => $request->name,
             'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
             'slug' => Str::of($request->name)->slug('-'),
-            'summary' => $request->summary,
         ]);
 
         return redirect(route('admin.challengeversions.index'));
@@ -145,8 +155,16 @@ class ChallengeVersionController extends Controller
             'challenge_id' => 'required',
             'category_id' => 'required',
             'infoUrl' => 'nullable|url',
-            'wistiaId' => 'nullable|string',
+            'wistiaId' => ['nullable', new WistiaCode],
         ]);
+
+        $gallery_thumbnail_url = null;
+        if ($request->wistiaId) {
+            $wistia = Http::acceptJson()
+                ->withToken(config('wistia.token'))
+                ->get('https://api.wistia.com/v1/medias/' . $request->wistiaId);
+            $gallery_thumbnail_url = $wistia->json('thumbnail.url');
+        }
 
         $challengeversion->update([
             'blurb' => $request->blurb,
@@ -155,14 +173,16 @@ class ChallengeVersionController extends Controller
             'chromebook_info' => $request->chromeInfo,
             'gallery_note' => $request->galleryNote,
             'gallery_wistia_video_id' => $request->wistiaId,
+            'gallery_thumbnail_url' => $gallery_thumbnail_url,
             'info_article_url' => $request->infoUrl,
             'name' => $request->name,
             'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
             'slug' => Str::of($request->name)->slug('-'),
-            'summary' => $request->summary,
         ]);
 
-        $challengeversion->setLevelsOrder($request->level);
+        if ($request->level) {
+            $challengeversion->setLevelsOrder($request->level);
+        }
         return redirect(route('admin.challengeversions.index'));
     }
 

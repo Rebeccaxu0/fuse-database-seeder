@@ -39,15 +39,16 @@ class StudiosPage extends Component
     public function render()
     {
         if ($this->schoolId) {
-            $studios = Studio::whereHas('school', function (Builder $query) {
-                $query->where('id', $this->schoolId);
-            });
+            $studios = Studio::with('package')
+                ->whereHas('school', function (Builder $query) {
+                    $query->where('id', $this->schoolId);
+                })
+                ->orderBy('name')
+                ->get();
         }
         else {
-            $studios = Studio::orderBy('name');
+            $studios = Studio::orderBy('name')->paginate(15);
         }
-        $studios = $studios
-                       ->paginate(15);
         return view('livewire.admin.studios-page', ['studios' => $studios]);
     }
 }

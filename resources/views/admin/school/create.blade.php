@@ -19,7 +19,9 @@
             <select name="district">
                 <option value="0">{{ __('--') }}</option>
                 @foreach ($districts as $district)
-                <option value="{{ $district->id }}" @if ($district->id == old('district', $districtQueryValue)) selected @endif>{{ $district->name }} ({{ $district->package->name}})</option>
+                <option value="{{ $district->id }}"
+                  @if ($district->id == old('district', $districtQueryValue)) selected @endif>
+                  {{ $district->name }} ({{ $district->package ? $district->package->name : __('no package') }})</option>
                 @endforeach
             </select>
         </label>

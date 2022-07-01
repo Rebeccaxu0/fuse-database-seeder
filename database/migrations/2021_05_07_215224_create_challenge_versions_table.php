@@ -27,6 +27,9 @@ return new class extends Migration
             // $table->string('gallery_image');
             $table->string('gallery_wistia_video_id')
                   ->nullable();
+            $table->string('gallery_thumbnail_url')
+                  ->nullable()
+                  ->comment('Wistia video Thumbnail');
             $table->string('slug')
                   ->unique()
                   ->nullable(false);

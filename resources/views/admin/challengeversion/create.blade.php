@@ -10,30 +10,14 @@
         <x-form.input label="{{ __('Name') }}" name="name" required="true" :value="old('name')" />
         <x-form.input label="{{ __('Challenge Gallery version suffix') }}" name="galleryNote" :value="old('galleryNote')" />
         <x-form.dropdown label="Category" required="true" name="category_id" :value="old('challenge_category_id')" :list="$categories" />
-        <p> //preview image </p>
-        <p> //gallery media </p>
         <livewire:admin.wistia-picker name="wistiaId" label="{{ __('Challenge Gallery Preview Video - Wistia ID') }}" :wistiaId="old('wistiaId')" />
-        <x-form.textarea label="{{ __('Version Description (Short)') }}"
-            name="versionDesc"
-            sublabel="{{ __('A short description to help differentiate between different versions of the same challenge.') }}"
-            :value="old('versionDesc')" />
-        <x-form.quill-textarea name="blurb"
+        <x-form.textarea name="blurb"
             label="{{ __('Gallery Blurb') }}"
             sublabel="{!! __('ex. \'Design your own 3D balance toy.\'') !!}"
             :value="old('blurb')" />
-        <x-form.quill-textarea name="summary"
-            label="{{ __('Summary') }}"
-            :value="old('summary')" />
-        <x-form.quill-textarea name="stuffYouNeed"
-            label="Stuff You Need"
-            sublabel="ex. 'Chromebook, LED lights.'"
-            :value="old('stuffYouNeed')" />
-        <x-form.quill-textarea name="facNotes"
-            label="Facilitator Notes"
-            :value="old('facNotes')" />
-        <x-form.quill-textarea name="chromeInfo"
+        <x-form.textarea name="chromebookInfo"
             label="Chromebook Info"
-            :value="old('chromeInfo')" />
+            :value="old('chromebookInfo')" />
         <x-form.dropdown label="Prerequisite Challenge"
             :value="old('prereqChallengeVersion')"
             name="prereqChallengeVersion"

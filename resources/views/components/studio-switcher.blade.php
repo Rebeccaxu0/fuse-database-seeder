@@ -1,10 +1,12 @@
-@push('scripts')
-    <script>
-        document.getElementById('studio-list-toggle').addEventListener('change', function() {
-            document.getElementById('studio-list-menu').classList.toggle('hidden');
-        });
-    </script>
-@endpush
+@if ($otherStudios->count())
+    @push('scripts')
+        <script>
+            document.getElementById('studio-list-toggle').addEventListener('change', function() {
+                document.getElementById('studio-list-menu').classList.toggle('hidden');
+            });
+        </script>
+    @endpush
+@endif
 
 <div class="py-4 px-12 relative">
     <div class="float-right uppercase flex items-center">
@@ -20,6 +22,7 @@
     </label>
     <input type="checkbox" id="studio-list-toggle" name="studio-list-toggle" class="hidden">
     <livewire:join-studio-form />
+    @if ($otherStudios->count())
     <ul id="studio-list-menu"
       class="absolute top-0 right-0 p-2 mt-12 mr-4 z-10
       w-64 max-h-48
@@ -40,6 +43,7 @@
     </li>
     @endforeach
     </ul>
+    @endif
     @else
     <livewire:join-studio-form />
     @endif

@@ -93,8 +93,9 @@
                                     </summary>
                                     <ul>
                                         @foreach ($school->studios as $studio)
-                                            <li><span class="text-xs">{{ $studio->name }}</span>
-                                            </li>
+                                        <li>
+                                            <a href="{{ route('admin.studios.index', ['school' => $school->id]) }}" class="text-xs">{{ $studio->name }}</a>
+                                        </li>
                                         @endforeach
                                     </ul>
                                 </details>

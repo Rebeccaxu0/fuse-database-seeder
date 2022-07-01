@@ -39,7 +39,15 @@ class ArtifactComponent extends Component
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
         $this->comments = (bool) ($studio) ? $studio->allow_comments : false;
         $this->commentCount = $artifact->comments->count();
-        $this->teamnames = Arr::join($artifact->users->pluck('full_name')->all(), ', ', ' and ');
+        foreach ($artifact->users as $teammate) {
+            if ($teammate->full_name) {
+                $teammates[] = $teammate->full_name;
+            }
+            else {
+                $teammates[] = $teammate->name;
+            }
+            $this->teamnames = Arr::join($teammates, ', ', ' and ');
+        }
         $this->related = Auth::user()->artifacts->except([$artifact->id])->where('level_id', $artifact->level->id);
         if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
             $this->artifact->level->type = 'level';

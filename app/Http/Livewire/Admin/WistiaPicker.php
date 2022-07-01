@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin;
 
+use App\Rules\WistiaCode;
 use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
@@ -22,6 +23,7 @@ class WistiaPicker extends Component
     public function updatedWistiaId($id)
     {
         if ($id) {
+            $this->validateOnly('wistiaId');
             $response = Http::acceptJson()
                 ->withToken(config('wistia.token'))
                 ->get('https://api.wistia.com/v1/medias/' . $id);
@@ -40,5 +42,12 @@ class WistiaPicker extends Component
     public function render()
     {
         return view('livewire.admin.wistia-picker');
+    }
+
+    protected function rules()
+    {
+        return [
+            'wistiaId' => ['nullable', new WistiaCode],
+        ];
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -86,20 +88,33 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
-            'name' => 'string',
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('users', 'name')->ignore($user->id),
+            ],
             'fullName' => 'string',
-            'email' => 'nullable|email',
+            'email' => [
+                'nullable',
+                'email',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
             'birthday' => 'nullable|date',
+            'password' =>  'nullable|string|min:8|confirmed',
         ]);
 
-        $user->update([
-            'name' => $validated['name'],
-            'full_name' => $validated['fullName'],
-            'email' => $validated['email'],
-            'birthday' => $validated['birthday'],
-        ]);
+        if ($request->password) {
+            $user->forceFill([
+                'password' => Hash::make($request->password),
+            ]);
+        }
+        $user->name = $validated['name'];
+        $user->full_name = $validated['fullName'];
+        $user->email = $validated['email'];
+        $user->birthday = $validated['birthday'];
+        $user->save();
 
-        return redirect(route('admin.users.show', ['user' => $user]));
+        return redirect(route('admin.users.show', ['user' => $user]))->with('status', 'User updated!');
     }
 
     /**

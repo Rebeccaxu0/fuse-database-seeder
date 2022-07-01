@@ -243,14 +243,12 @@ class School extends Organization
      * @param int[] $facilitatorId
      *  List of facilitator ids.
      */
-    public function addFacilitators(array $facilitatorId)
+    public function addFacilitators(array $facilitatorIds)
     {
-        foreach ($facilitatorId as $id) {
+        $this->users()->sync($facilitatorIds);
+        foreach ($facilitatorIds as $id) {
+            Cache::forget("u{$id}_studios");
             $facilitator = User::find($id);
-            if (! (in_array($this->id, $facilitator->schools->pluck('id')->toArray()))) {
-                $facilitator->schools()->attach($this);
-                Cache::forget("u{$id}_studios");
-            }
             if (! $facilitator->isFacilitator()) {
                 $facilitator->roles()->attach(Role::FACILITATOR_ID);
                 Cache::forget("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID);

@@ -229,13 +229,10 @@ class LevelSaveOrCompleteForm extends Component
                 Storage::disk('artifacts')->copy($src, $dest);
                 Storage::disk('artifacts')->delete($src);
                 // TODO: convert to a media instance.
-                // dd('boop');
             }
             else {
-                // dd('beep');
             }
         }
-        // dd('gronk');
         $artifact->save();
         $artifact->users()->saveMany($team);
 

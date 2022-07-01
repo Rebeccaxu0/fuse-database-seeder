@@ -24,7 +24,7 @@ class ProgressBar extends Component
     public function __construct(ChallengeVersion|Idea $levelable, User $user, bool $interactive = true)
     {
         $this->interactive = $interactive;
-        $this->levelable = $levelable->load('levels');
+        $this->levelable = $levelable;
         $this->levels = $this->levelable->levels->sortBy('level_number');
         foreach ($this->levels as $level) {
           if ($user->hasCompletedLevel($level)) {

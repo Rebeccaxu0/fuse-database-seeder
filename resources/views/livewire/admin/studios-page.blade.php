@@ -3,32 +3,58 @@
 
     <x-slot name="header">{{ __('Studios') }}</x-slot>
 
+    @livewire ('school-district-search-bar')
     @if ($school)
     <div>
         <a href="{{ route('admin.schools.createstudios', $school) }}">
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
     </div>
-    <h3 class="mt-2 mb-2">{{ __('District: :district (:package)', [
-        'district' => $school->district ? $school->district->name : __('No District'),
-        'package' => $school->district ? ($school->district->package ? $school->district->package->name : __('No Package Set')) : __('No District')]) }}</h3>
-    <h3 class="mt-2 mb-2">{{ __('School: :school (:package)', [
-        'school' => $school->name,
-        'package' => $school->package ? $school->package->name : __('Inherited from district'),
-        ]) }}
-        <span>
-            <a href="{{ route('admin.schools.edit', $school->id) }}"><button type="reset"><x-icon icon="edit" /></button></a>
+    <fieldset class='border p-2'>
+    <legend class="font-semibold">{{ __('School & District') }}</legend>
+    <div class="">
+        <span class="float-right">
+            <a href="{{ route('admin.schools.edit', $school->id) }}"><button type="reset">{{ __('Edit School') }}</button></a>
+            <br>
             <form method="post"
                   action="{{ route('admin.schools.destroy', $school->id) }}"
                   class="inline-block">
                 @method('delete')
                 @csrf
-                <button type="destroy"><x-icon icon="trash" /></button>
+                <button type="destroy">{{ __('Delete School') }}</button>
             </form>
         </span>
-    </h3>
+        {{ $school->name }}
+    </div>
+    <div>
+        @if ($school->district)
+        {{ $school->district->name }}
+        @else
+        {{ __('No parent district') }}
+        @endif
+    </div>
+    <div>{{ __('Package: ') }}
+        @if ($school->package)
+        {{ __('":spackage" overrides district package ":dpackage"', [
+        'spackage' => $school->package->name,
+        'dpackage' => ($school->district && $school->district->package)
+          ? $school->district->package->name
+          : __('<none>')]) }}
+        @elseif ($school->district && $school->district->package)
+        {{ __('":package" inherited from district', ['package' => $school->district->package->name]) }}
+        @else
+        {{ __('No Package Set') }}
+        @endif
+    </fieldset>
+    <fieldset class='border p-2'>
+    <legend class="font-semibold">{{ __('Facilitators') }}</legend>
+    <div class="text-sm">
+        @foreach ($school->facilitators as $user)
+        <a href="{{ route('admin.users.show', $user) }}">{{ $user->full_name }} ({{ $user->name }})</a>,
+        @endforeach
+    </div>
+    </fieldset>
     @endif
-    @livewire ('school-district-search-bar')
     <div class="mt-8">
         <table class="min-w-full leading-normal">
             <thead>
@@ -116,19 +142,8 @@
                 @endforeach
             </tbody>
         </table>
-        @if ($school)
-        <h3 class="mt-2 mb-2">{{ __(':school Facilitators', ['school' => $school->name]) }}</h3>
-        <div class="mb-2">
-            <p class="text-xs">{{ __('Mark for removal') }}</p>
-            @foreach ($school->facilitators as $user)
-                <x-form.checkbox_array name="facilitatorsToRemove" :value="$user->id" :label="$user->name" />
-            @endforeach
-        </div>
-        <p class="text-xs">{{ __('Search to add') }}</p>
-        <div>
-            @livewire('add-facilitator')
-        </div>
-        @endif
+        @if (! $schoolId)
         {{ $studios->links() }}
+        @endif
     </div>
 </div>

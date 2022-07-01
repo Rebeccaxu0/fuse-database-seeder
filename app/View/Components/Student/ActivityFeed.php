@@ -34,11 +34,21 @@ class ActivityFeed extends Component
         $limit = 10;
         $students = $studio->students->pluck('id');
         $starts = Start::whereIn('user_id', $students)
+            ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
-        $artifacts = Artifact::whereHas('users', function (Builder $query) use ($students) {
+        $eager = [
+            'users',
+            'comments',
+            'level',
+            'level.levelable',
+            // 'level.levelable.challenge',
+        ];
+        $artifacts = Artifact::with($eager)
+            ->whereHas('users', function (Builder $query) use ($students) {
                 $query->whereIn('user_id', $students);
             })
+            ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
         $this->studentActivity = $artifacts

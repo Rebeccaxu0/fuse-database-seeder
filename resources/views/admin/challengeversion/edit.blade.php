@@ -90,6 +90,7 @@
             <ol class="list-none" name="order" id="sortlevels">
                 @foreach ($challengeversion->levels as $i => $level)
                 <li class="text-left list-none border-2 bg-slate-200 rounded-lg m-6 p-4"> <input name="level[{{ $level->id }}]" value="{{ $i+1 }}" type="hidden" />
+                    <a href="{{ route('admin.levels.edit', ['level' => $level]) }}" class="float-right"><x-icon icon="edit" /></a>
                     @if ($level->blurb)
                     {!! $level->blurb !!}
                     @else
@@ -99,11 +100,11 @@
                 @endforeach
             </ol>
         </div>
-        <x-form.quill-textarea name="blurb"
+        <x-form.textarea name="blurb"
             label="{{ __('Gallery Blurb') }}"
             sublabel="{!! __('ex. \'Design your own 3D balance toy.\'') !!}"
             :value="old('blurb', $challengeversion->blurb)" />
-        <x-form.quill-textarea name="chromeInfo"
+        <x-form.textarea name="chromeInfo"
             label="Chromebook Info"
             :value="old('chromeInfo', $challengeversion->chromebook_info)" />
         <x-form.dropdown label="Prerequisite Challenge"

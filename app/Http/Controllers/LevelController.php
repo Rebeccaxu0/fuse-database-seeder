@@ -46,28 +46,30 @@ class LevelController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'levelable_id' => 'required|exists:App\Models\ChallengeVersion,id',
-            'challengeDesc' => 'nullable|string',
             'blurb' => 'nullable|string',
-            'stuffYouNeed' => 'nullable|string',
+            'challengeDesc' => 'nullable|string',
+            'facilitatorNotes' => 'nullable|string',
+            'getHelp' => 'nullable|string',
             'getStarted' => 'nullable|string',
             'howToComplete' => 'nullable|string',
-            'getHelp' => 'nullable|string',
+            'levelable_id' => 'required|exists:App\Models\ChallengeVersion,id',
             'powerUp' => 'nullable|string',
+            'stuffYouNeed' => 'nullable|string',
         ]);
 
         $challengeVersion = ChallengeVersion::find($validated['levelable_id']);
         $level = Level::create([
             'levelable_id' => $validated['levelable_id'],
             'levelable_type' => ChallengeVersion::class,
-            'challenge_desc' => $validated['challengeDesc'],
             'blurb' => $validated['blurb'],
-            'stuff_you_need_desc' => $validated['stuffYouNeed'],
+            'challenge_desc' => $validated['challengeDesc'],
+            'facilitator_notes_desc' => $validated['facilitatorNotes'],
+            'get_help_desc' => $validated['getHelp'],
             'get_started_desc' => $validated['getStarted'],
             'how_to_complete_desc' => $validated['howToComplete'],
-            'get_help_desc' => $validated['getHelp'],
-            'power_up_desc' => $validated['powerUp'],
             'level_number' => $challengeVersion->levels->count() + 1,
+            'power_up_desc' => $validated['powerUp'],
+            'stuff_you_need_desc' => $validated['stuffYouNeed'],
         ]);
 
         return redirect(route('admin.challengeversions.edit', $request->levelable_id));
@@ -219,16 +221,27 @@ class LevelController extends Controller
      */
     public function update(Request $request, Level $level)
     {
+        $validated = $request->validate([
+            'blurb' => 'nullable|string',
+            'challengeDesc' => 'nullable|string',
+            'facilitatorNotes' => 'nullable|string',
+            'getHelp' => 'nullable|string',
+            'getStarted' => 'nullable|string',
+            'howToComplete' => 'nullable|string',
+            'powerUp' => 'nullable|string',
+            'stuffYouNeed' => 'nullable|string',
+        ]);
+
         $level->update([
-            'levelable_id' => $request->levelable_id,
-            'levelable_type' => ChallengeVersion::class,
             'blurb' => $request->blurb,
             'challenge_desc' => $request->challengeDesc,
-            'stuff_you_need_desc' => $request->stuffYouNeed,
+            'facilitator_notes_desc' => $request->facilitatorNotes,
+            'get_help_desc' => $request->getHelp,
             'get_started_desc' => $request->getStarted,
             'how_to_complete_desc' => $request->howToComplete,
-            'get_help_desc' => $request->getHelp,
+            'levelable_id' => $request->levelable_id,
             'power_up_desc' => $request->powerUp,
+            'stuff_you_need_desc' => $request->stuffYouNeed,
         ]);
         if ($request->session()->get('prev') == 'Copy of') {
             $request->session()->forget('prev');

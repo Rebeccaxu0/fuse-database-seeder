@@ -2,7 +2,7 @@
     <x-subnav-ul id="admin-menu">
         <li>
             <a class="px-2 {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
-                href="{{ route('admin.users.index') }}">{{ __('Users') }}</a>
+                href="{{ route('admin.challengeversions.index') }}">{{ __('Challenges') }}</a>
         </li>
         <li>
             <a class="px-2 {{ request()->routeIs('admin.studios.index') ? 'active' : '' }}"

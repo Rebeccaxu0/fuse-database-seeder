@@ -1,27 +1,27 @@
 <div class="bg-white shadow-tile rounded-xl border border-gray-300">
-    <button wire:click="$set('showModalFlag', true)"
-            class="w-full relative rounded-lg p-4 text-left">
-        <div class="relative aspect-video w-full rounded-lg flex items-center justify-items-center"
-             {{-- NO WAR --}}
-             style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
-            <div class="gallery-play-border">
-                <div class="gallery-play-button">&nbsp;</div>
+    <div class="w-full relative rounded-lg p-4 text-left">
+        <button wire:click="$set('showModalFlag', true)">
+            <div class="relative aspect-video w-full rounded-lg flex items-center justify-items-center"
+                 style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
+                <img class="rounded-lg" src="{{ $challengeVersion->gallery_thumbnail_url }}" />
+                <div class="gallery-play-border absolute inset-0 mt-6">
+                    <div class="gallery-play-button">&nbsp;</div>
+                </div>
             </div>
-            @if ($challengeVersion->firstMedia('gallery_preview'))
-            <img class="absolute inset-0 rounded-lg" src="{{ $challengeVersion->firstMedia('gallery_preview')->getUrl() }}" />
-            @endif
-        </div>
+        </button>
         <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" />
-        <h4 class="font-semibold text-fuse-teal-dk text-xl">
-            {{ $challengeVersion->challenge->name }}
-            <span class="uppercase text-sm font-light text-fuse-nav-blue">
-                {{ $challengeVersion->gallery_note }}
-            </span>
-        </h4>
-        <div class="min-h-[4rem]">
-            {{ $challengeVersion->blurb }}
-        </div>
-    </button>
+        <button wire:click="$set('showModalFlag', true)">
+            <h4 class="font-semibold text-fuse-teal-dk text-xl">
+                {{ $challengeVersion->challenge->name }}
+                <span class="uppercase text-sm font-light text-fuse-nav-blue">
+                    {{ $challengeVersion->gallery_note }}
+                </span>
+            </h4>
+            <div class="min-h-[4rem]">
+                {{ $challengeVersion->blurb }}
+            </div>
+        </button>
+    </div>
     <x-jet-modal wire:model="showModalFlag">
         <div class="py-4 text-center text-fuse-teal-dk text-3xl whitespace-nowrap">
             <span class="tracking-tight mr-1">{{ __(':challenge Level :number', ['challenge' => $challengeVersion->challenge->name, 'number' => $level->level_number]) }}</span>
