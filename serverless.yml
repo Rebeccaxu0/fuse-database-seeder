@@ -16,14 +16,9 @@ params:
     google_client_id: ${ssm:/laravel/google_client_id}
     google_client_secret: ${ssm:/laravel/google_client_secret}
     private_route_table_1a_id: ${ssm:/laravel/private_route_table_1a_id}
-    private_route_table_1b_id: ${ssm:/laravel/private_route_table_1b_id}
     private_subnet_1a_id: ${ssm:/laravel/private_subnet_1a_id}
-    private_subnet_1b_id: ${ssm:/laravel/private_subnet_1b_id}
-    private_subnet_db1_id: ${ssm:/laravel/private_subnet_db1_id}
-    private_subnet_db2_id: ${ssm:/laravel/private_subnet_db2_id}
     public_route_table_id: ${ssm:/laravel/public_route_table_id}
     public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
-    public_subnet_1b_id: ${ssm:/laravel/public_subnet_1b_id}
     vpc_id: ${ssm:/laravel/vpc_id}
   dev:
     app_env: dev
@@ -93,9 +88,9 @@ functions:
   web:
     handler: public/index.php
     environment:
-      APP_RUNTIME: octane
-      BREF_LOOP_MAX: 250
-      OCTANE_PERSIST_DATABASE_SESSIONS: 1
+      # APP_RUNTIME: octane
+      # BREF_LOOP_MAX: 250
+      # OCTANE_PERSIST_DATABASE_SESSIONS: 1
     timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
     layers:
       - ${bref:layer.php-81-fpm}
@@ -108,10 +103,8 @@ functions:
         - !GetAtt ServerlessSecurityGroup.GroupId
         - ${ssm:/laravel/mysql_security_group_id}
       subnetIds:
+        - ${param:public_subnet_1a_id}
         - ${param:private_subnet_1a_id}
-        - ${param:private_subnet_1b_id}
-        - ${param:private_subnet_db1_id}
-        - ${param:private_subnet_db2_id}
 
   # This function lets us run artisan commands in Lambda
   artisan:
@@ -127,10 +120,8 @@ functions:
         - !GetAtt ServerlessSecurityGroup.GroupId
         - ${ssm:/laravel/mysql_security_group_id}
       subnetIds:
+        - ${param:public_subnet_1a_id}
         - ${param:private_subnet_1a_id}
-        - ${param:private_subnet_1b_id}
-        - ${param:private_subnet_db1_id}
-        - ${param:private_subnet_db2_id}
 
 plugins:
   - ./vendor/bref/bref
@@ -144,12 +135,6 @@ resources:
       Properties:
         SubnetId: ${param:private_subnet_1a_id}
         RouteTableId: ${param:private_route_table_1a_id}
-
-    SubnetRouteTableAssociationLambdaPrivateB:
-      Type: AWS::EC2::SubnetRouteTableAssociation
-      Properties:
-        SubnetId: ${param:private_subnet_1b_id}
-        RouteTableId: ${param:private_route_table_1b_id}
 
     SubnetRouteTableAssociationLambdaPublicA:
       Type: AWS::EC2::SubnetRouteTableAssociation
@@ -181,7 +166,7 @@ resources:
         Description: "Cache Subnet Group"
         SubnetIds:
           - ${param:private_subnet_1a_id}
-          - ${param:private_subnet_1b_id}
+          # - ${param:private_subnet_1b_id}
 
     ElasticCacheCluster:
       DependsOn: ServerlessRedisSecurityGroup
