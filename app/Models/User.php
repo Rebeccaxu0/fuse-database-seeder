@@ -628,7 +628,7 @@ class User extends Authenticatable
     {
         $studio ??= $this->activeStudio;
         $studioLevels
-            = $studio->activechallenges
+            = $studio->activeChallenges()
                    ->map(fn($challengeversion, $key) => $challengeversion->levels)
                    ->flatten()
                    ->pluck('id');

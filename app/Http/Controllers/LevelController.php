@@ -123,7 +123,7 @@ class LevelController extends Controller
         else {
             // Default is to restrict the level.
             $available = Auth::user()->isAdmin()
-                || Auth::user()->activeStudio->activeChallenges->contains($challengeVersion);
+                || Auth::user()->activeStudio->activeChallenges()->contains($challengeVersion);
             $startable = $level->isStartable(Auth::user());
             $prerequisite_text = $prerequisite_route = '';
 
@@ -135,7 +135,7 @@ class LevelController extends Controller
                     $prerequisiteChallengeVersion
                         = Auth::user()
                             ->activeStudio
-                            ->activeChallenges
+                            ->activeChallenges()
                             ->intersect(
                                 $challengeVersion
                                     ->challenge

@@ -171,7 +171,7 @@ class Level extends Model
                 $activeLevels
                     = $user
                         ->activeStudio
-                        ->activeChallenges
+                        ->activeChallenges()
                         ->map(fn($challengeVersion, $key) => $challengeVersion->levels)
                         ->flatten()
                         ->pluck('id');

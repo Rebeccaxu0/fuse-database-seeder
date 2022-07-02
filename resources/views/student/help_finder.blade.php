@@ -41,11 +41,11 @@
         </ul>
 
         <div class="p-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            @forelse ($challenges as $challengeVersion)
+            @forelse ($studio->activeChallenges() as $challengeVersion)
             <x-help-finder-tile :challengeVersion="$challengeVersion" :studio="$studio" />
-                @empty
-                <p class="col-span-full">{{ __('No Challenges. Please ask your facilitator to allow challenges.') }}</p>
-                @endforelse
+        @empty
+            <p class="col-span-full">{{ __('No Challenges. Please ask your facilitator to allow challenges.') }}</p>
+        @endforelse
         </div>
     </div>
 </x-app-layout>

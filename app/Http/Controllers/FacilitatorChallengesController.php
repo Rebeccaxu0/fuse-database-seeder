@@ -39,7 +39,7 @@ class FacilitatorChallengesController extends Controller
             $eager = ['challengeVersions', 'challengeVersions.challengeCategory'];
 
             $viewData['activeChallenges'] =
-                $studio->activeChallenges->pluck('id')->all();
+                $studio->activeChallenges()->pluck('id')->all();
             $viewData['primaryChallengeCategories'] =
                 ChallengeCategory::where('disapproved', 0)->get();
             $viewData['secondaryChallengeCategories'] =

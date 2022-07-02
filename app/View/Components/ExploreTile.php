@@ -17,7 +17,7 @@ class ExploreTile extends Component
      */
     public function __construct(User $user)
     {
-        $activeChallengeVersions = $user->activeStudio->challengeVersions;
+        $activeChallengeVersions = $user->activeStudio->activeChallenges();
         $this->total = $activeChallengeVersions->count();
         $this->started = $user->startedChallengeVersions()
                               ->intersect($activeChallengeVersions)

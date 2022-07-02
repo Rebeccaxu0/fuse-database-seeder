@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\Toggle;
 use App\Models\ChallengeVersion;
 use App\Models\Studio;
+use Illuminate\Support\Facades\Cache;
 
 class StudioChallengeToggle extends Toggle
 {
@@ -21,6 +22,7 @@ class StudioChallengeToggle extends Toggle
 
         $action = $this->is_active ? 'attach' : 'detach';
         $this->studio->challengeVersions()->$action($this->challengeVersion->id);
+        Cache::forget("studio_{$this->studio->id}_active_challenges");
     }
 }
 

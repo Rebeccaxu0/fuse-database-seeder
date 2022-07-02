@@ -14,7 +14,11 @@
         @foreach ($levels as $level)
         <div class="bg-gray-200 rounded-md p-2 mb-2">
             <div class="float-left pl-2">
+                @if ($level->levelable)
                 <h4 class="mt-2 mb-2"> {{ $level->levelable->name . ' ' . $level->level_number }} </h4>
+                @else
+                <h1>ORPHAN</h1>
+                @endif
                 <span class="flex pl-2">
                     <a href="{{ route('admin.levels.edit', $level->id) }}">
                         <x-icon icon="edit" width=25 height=25 class="ml-2 text-black" />

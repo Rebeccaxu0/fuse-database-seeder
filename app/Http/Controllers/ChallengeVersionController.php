@@ -9,6 +9,7 @@ use App\Rules\WistiaCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ChallengeVersionController extends Controller
@@ -20,19 +21,7 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        $activeStudio = Auth::user()->activeStudio;
-        // Filter active challengeversions by studio's package.
-        // If the package has been edited, or if the studio's package has been
-        // changed, we need to adjust results to comport with that limit.
-        // TODO: change this into a subquery instead of two queries.
-        $packageChallenges = $activeStudio->deFactoPackage
-                                          ->challenges
-                                          ->pluck('id');
-        $challengeVersions = $activeStudio->challengeVersions
-                                          ->load(['challenge', 'levels'])
-                                          ->whereIn('challenge_id', $packageChallenges)
-                                          ->sortBy('name');
-        return view('student.challenges', ['challengeVersions' => $challengeVersions]);
+        return view('student.challenges', ['studio' => Auth::user()->activeStudio]);
     }
 
     /**
@@ -42,10 +31,7 @@ class ChallengeVersionController extends Controller
      */
     public function student_help_finder()
     {
-        // TODO: Add logic to account for Alumni/Freemium accounts.
-        $activeStudio = Auth::user()->activeStudio;
-        $challengeVersions = $activeStudio ? $activeStudio->challengeVersions->sortBy('name') : [];
-        return view('student.help_finder', ['challenges' => $challengeVersions, 'studio' => $activeStudio]);
+        return view('student.help_finder', ['studio' => Auth::user()->activeStudio]);
     }
 
     /**

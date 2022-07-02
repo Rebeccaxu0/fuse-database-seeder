@@ -167,7 +167,21 @@ class Studio extends Organization
      */
     public function activeChallenges()
     {
-        return $this->challengeVersions();
+        // return Cache::tags('packages')
+        //     ->remember("studio_{$this->id}_active_challenges", 300, function () {
+                // Only show challengeversions that are allowed by assigned package.
+                $challengeVersions = [];
+                if ($this->deFactoPackage) {
+                    $packageChallenges = $this->deFactoPackage
+                                              ->challenges
+                                              ->pluck('id');
+                    $challengeVersions = $this->challengeVersions
+                                              ->load(['challenge', 'levels'])
+                                              ->whereIn('challenge_id', $packageChallenges)
+                                              ->sortBy('name');
+                }
+                return $challengeVersions;
+            // });
     }
 
     /**

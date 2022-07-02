@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Challenge;
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class PackageController extends Controller
 {
@@ -105,6 +106,7 @@ class PackageController extends Controller
             'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
         ]);
         $package->challenges()->sync($request->challenges);
+        Cache::tag('packages')->flush();
 
         return redirect(route('admin.packages.index'));
     }
@@ -137,6 +139,7 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->delete();
+        Cache::tag('packages')->flush();
         return redirect(route('admin.packages.index'));
     }
 }
