@@ -29,10 +29,10 @@ let options = {
   'onUploadDone': updateForm,
   'startUploadingWhenMaxFilesReached': true,
   'storeTo': {
-    'container': 'fusestudio-student-uploads',
+    // 'container': 'fusestudio-student-uploads',
     'location': 's3',
     'path': settings.fuse_level.uid + '/',
-    'region': 'us-east-1'
+    'region': 'us-east-2'
   },
   'uploadInBackground': false
 };
