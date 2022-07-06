@@ -135,6 +135,10 @@ WHERE (taxonomy_vocabulary.machine_name = 'challenge_categories')
 )
 ORDER BY name;
 
+UPDATE IGNORE `fuse_laravel-fuse`.challenge_categories
+SET disapproved = 1
+WHERE d7_id IN [441, 446];
+
 -- Insert Grade Level Taxonomy Terms
 INSERT INTO `fuse_laravel`.grade_levels (name, description, d7_id)
 SELECT name, description, tid as d7_id from `d7-fuse`.taxonomy_term_data ttd WHERE ttd.vid = (

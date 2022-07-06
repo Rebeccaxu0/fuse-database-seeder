@@ -15,6 +15,8 @@ class ChallengeController extends Controller
     public function index()
     {
         $challenges = Challenge::all()->sortBy('name');
+        $legacy = $challenges->shift();
+        $challenges->push($legacy);
         return view('admin.challenge.index', ['challenges' => $challenges]);
     }
 

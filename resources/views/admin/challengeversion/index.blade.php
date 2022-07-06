@@ -6,8 +6,17 @@
 
     <x-admin.challenge-subnav />
 
+    @foreach ($categories as $category)
+    @if ($category->disapproved)
+    <details>
+        <summary>
+            {{ $category->name }}
+        </summary>
+    @else
+    <h2>{{ $category->name }}</h2>
+    @endif
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-        @foreach ($challengeVersions as $challengeVersion)
+        @foreach ($category->challengeVersions->sortBy('name') as $challengeVersion)
         <div class="bg-gray-200 rounded-md p-2 mb-2">
             <div class="pl-2">
                 <div class="flex">
@@ -53,4 +62,8 @@
         </div>
         @endforeach
     </div>
+    @if ($category->disapproved)
+    </details>
+    @endif
+    @endforeach
 </x-app-layout>

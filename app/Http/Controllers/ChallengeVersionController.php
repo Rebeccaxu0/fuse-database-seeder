@@ -41,8 +41,14 @@ class ChallengeVersionController extends Controller
      */
     public function index()
     {
-        $challengeVersions = ChallengeVersion::all()->sortBy('name');
-        return view('admin.challengeversion.index', ['challengeVersions' => $challengeVersions]);
+        $challengeCategories = ChallengeCategory::with('challengeVersions')
+            ->orderBy('name')
+            ->get();
+        [$disapproved, $approved] = $challengeCategories->partition(function($category) {
+            return $category->disapproved;
+        });
+        $categories = $approved->union($disapproved);
+        return view('admin.challengeversion.index', ['categories' => $categories]);
     }
 
     /**
