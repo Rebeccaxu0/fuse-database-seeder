@@ -4,40 +4,40 @@
             @if (request()->routeIs('admin.districts.index')) -mb-[1px] bg-neutral-100 font-bold @endif
         ">
         @if (request()->routeIs('admin.districts.index'))
-        {{ __('Districts') }}
+            Districts
         @else
         <a class="m-0 p-0" href="{{ route('admin.districts.index') }}">
-            {{ __('Districts') }}
+            Districts
         </a>
         @endif
         </li>
         <li class="m-0 p-4 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('admin.schools.index')) bg-neutral-100 font-bold @endif ">
             @if (request()->routeIs('admin.schools.index'))
-            {{ __('Schools') }}
+                Schools
             @else
             <a class="m-0 p-0" href="{{ route('admin.schools.index') }}">
-                {{ __('Schools') }}
+                Schools
             </a>
         </li>
         @endif
         <li class="m-0 p-4 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('admin.studios.index')) bg-neutral-100 font-bold @endif ">
             @if (request()->routeIs('admin.studios.index'))
-            {{ __('Studios') }}
+                Studios
             @else
             <a class="m-0 p-0" href="{{ route('admin.studios.index') }}">
-                {{ __('Studios') }}
+                Studios
             </a>
             @endif
         </li>
         <li class="m-0 p-4 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('admin.users.index')) bg-neutral-100 font-bold @endif ">
             @if (request()->routeIs('admin.users.index'))
-            {{ __('Users') }}
+                Users
             @else
             <a class="m-0 p-0" href="{{ route('admin.users.index') }}">
-                {{ __('Users') }}
+                Users
             </a>
             @endif
         </li>

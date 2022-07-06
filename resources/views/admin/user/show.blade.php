@@ -1,52 +1,52 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('User :name', ['name' => $user->full_name]) }}</x-slot>
+    <x-slot name="title">User {{ $user->full_name }}</x-slot>
 
-    <x-slot name="header">{{ __('User :name', ['name' => $user->full_name]) }}</x-slot>
+    <x-slot name="header">User {{ $user->full_name }}</x-slot>
 
     <div>
-        <span class="font-bold">{{ __('User Name:') }}</span> {{ $user->name }}
+        <span class="font-bold">User Name:</span> {{ $user->name }}
     </div>
     <div>
-        <span class="font-bold">{{ __('Full Name:') }}</span> {{ $user->full_name }}
+        <span class="font-bold">Full Name:</span> {{ $user->full_name }}
     </div>
     <div>
-        <span class="font-bold">{{ __('Email:') }}</span> {{ $user->email }}
+        <span class="font-bold">Email:</span> {{ $user->email }}
     </div>
     <div>
-        <span class="font-bold">{{ __('Birthday:') }}</span> {{ $user->birthday }}
+        <span class="font-bold">Birthday:</span> {{ $user->birthday }}
     </div>
     @if (! $studioMember)
         <div>
             @if ($active)
-            {{ __('Alum Member') }}
+            Alum Member
             @else
-            {{ __('No Activity (Abandoned SSO?)') }}
+            No Activity (Abandoned SSO?)
             @endif
         </div>
     @else
         <div>
-            <span class="font-bold">{{ __('Roles:') }}</span>
+            <span class="font-bold">Roles:</span>
                 @forelse ($user->roles as $role)
                 {{ $role->name }}@if (! $loop->last), @endif
                 @empty
-                {{ __('student') }}
+                student
                 @endforelse
         </div>
         <div>
-            <span class="font-bold">{{ __('Districts:') }}</span>
+            <span class="font-bold">Districts:</span>
             @foreach ($user->deFactoDistricts() as $district)
                 {{ $district->name }}@if (! $loop->last), @endif
             @endforeach
         </div>
         <div>
-            <span class="font-bold">{{ __('Schools:') }}</span>
+            <span class="font-bold">Schools:</span>
             @foreach ($user->deFactoSchools() as $school)
                 {{ $school->name }}@if (! $loop->last), @endif
             @endforeach
         </div>
         <div>
-            <span class="font-bold">{{ __('Studios:') }}</span>
+            <span class="font-bold">Studios:</span>
             @foreach ($user->deFactoStudios() as $studio)
                 {{ $studio->name }}@if (! $loop->last), @endif
             @endforeach
@@ -55,31 +55,31 @@
 
     <a href="{{ route('admin.users.edit', ['user' => $user]) }}">
         <button class="btn">
-            {{ __('Edit') }}
+            Edit
         </button>
     </a>
     <form action="{{ route('admin.users.makeAdmin', ['user' => $user]) }}" method="POST">
         @csrf
         <button class="btn">
-            {{ __('Make User an Admin') }}
+            Make User an Admin
         </button>
-        {{ __('NB - This will add the role \'admin\' and remove all other roles.') }}
+        NB - This will add the role \'admin\' and remove all other roles.
     </form>
     <form action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST">
         @method('DELETE')
         @csrf
         <button class="btn bg-red-500">
-            {{ __('delete') }}
+            delete
         </button>
     </form>
     <a href="{{ route('impersonate', $user->id) }}">
         <button class="btn">
-            {{ __('Masquerade as :user', ['user' => $user->full_name]) }}
+            Masquerade as {{ $user->full_name }}
         </button>
     </a>
     <a href="{{ route('student.their_stuff', ['user' => $user]) }}">
         <button class="btn">
-        {{ __('Artifacts') }}
+        Artifacts
         </button>
     </a>
 

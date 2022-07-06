@@ -85,7 +85,7 @@
         </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit" id="btn-submit"
-                class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __(' Update School') }}</button>
+                class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Update School') }}</button>
         </div>
     </form>
     <!-- <form id="delete-frm" class="" action="{{ route('admin.schools.destroy', $school) }}" method="POST">

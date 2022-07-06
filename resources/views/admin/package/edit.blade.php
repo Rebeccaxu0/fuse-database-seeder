@@ -1,29 +1,29 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Edit Package :name', ['name' => $package->name]) }}</x-slot>
+    <x-slot name="title">Edit Package {{ $package->name }}</x-slot>
 
-    <x-slot name="header">{{ __('Edit Package ":name"', ['name' => $package->name]) }}</x-slot>
+    <x-slot name="header">Edit Package {{ $package->name }}</x-slot>
 
     <form id="delete-frm" action="{{ route('admin.packages.destroy', $package) }}" method="POST">
         @method('DELETE')
         @csrf
-        <button class="float-right bg-red-500">{{ __('Delete Package') }}</button>
+        <button class="float-right bg-red-500">Delete Package</button>
     </form>
     <form class="mt-6" action="{{ route('admin.packages.update', $package) }}" method="POST">
         @method('PATCH')
         @csrf
-        <x-form.input label="{{ __('Name') }}"
+        <x-form.input label="Name"
                       name="name"
                       required="true"
                       :value="old('name', $package->name)" />
         <x-form.textarea name="description"
-                         label="{{ __('Description') }}"
+                         label="Description"
                          :value="old('description', $package->description)" />
-        <x-form.checkbox label="{{ __('Access to Student Activity Tab') }}"
+        <x-form.checkbox label="Access to Student Activity Tab"
                          name="student_activity_tab_access"
                          :checked="old('student_activity_tab_access', $package->student_activity_tab_access)" />
         <div class="mb-2">
-            <span class="text-gray-700 mb-2 form-required">{{ __('Allowed Challenges') }}</span>
+            <span class="text-gray-700 mb-2 form-required">Allowed Challenges</span>
         </div>
         <div class="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4">
             @foreach ($challenges as $challenge)
@@ -37,7 +37,7 @@
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit"
                 class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white"
-                id="btn-submit">{{ __('Save Package') }} </button>
+                id="btn-submit">Save Package </button>
         </div>
 
     </form>

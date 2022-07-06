@@ -1,7 +1,7 @@
 <x-app-layout>
-    <x-slot name="title">{{ __('Packages') }}</x-slot>
+    <x-slot name="title">Packages</x-slot>
 
-    <x-slot name="header">{{ __('Packages') }}</x-slot>
+    <x-slot name="header">Packages</x-slot>
 
     <a href="{{ route('admin.packages.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add package</button>
@@ -43,11 +43,7 @@
             </details>
 
             <div class="text-xs">
-                {{ __('Used by :district_count districts, :school_count schools, and :studio_count studios', [
-                'district_count' => count($package->districts),
-                'school_count' => count($package->schools),
-                'studio_count' => count($package->studios),
-                ]) }}
+                Used by {{ count($package->districts) }} districts, {{ count($package->schools) }} schools, and {{ count($package->studios) }} studios
             </div>
         </div>
         @endforeach

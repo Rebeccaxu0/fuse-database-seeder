@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Challenges') }}</x-slot>
+    <x-slot name="title">Challenges</x-slot>
 
-    <x-slot name="header">{{ __('Challenges') }}</x-slot>
+    <x-slot name="header">Challenges</x-slot>
 
     <x-admin.challenge-subnav />
 
@@ -25,18 +25,18 @@
                 </div>
                 <p class="text-gray-900 ml-5 whitespace-no-wrap">
                 <details>
-                    <summary>{{ __(':count level(s)', ['count' => count($challengeVersion->levels)]) }}</summary>
+                    <summary>{{ count($challengeVersion->levels) }} level(s)</summary>
                     <ol class="list-decimal">
                         @foreach ($challengeVersion->levels as $level)
                         <li class="list-decimal my-0">
                             <span class="flex">
-                                <a title="{{ __('edit') }}" href="{{ route('admin.levels.edit', $level->id) }}">
+                                <a title="edit" href="{{ route('admin.levels.edit', $level->id) }}">
                                     {{ strip_tags(str()->words($level->blurb, 5)) }}
                                     <x-icon icon="edit" width=18 height=18 class="inline ml-2 text-black" />
                                 </a>
                             <form method="post" action="{{ route('admin.levels.copy', $level) }}" class="inline-block">
                                 @csrf
-                                <button title="{{ __('copy') }}">
+                                <button title="copy">
                                     <x-icon icon="copy" width=18 height=18 class="ml-2 text-black" />
                                 </button>
                             </form>

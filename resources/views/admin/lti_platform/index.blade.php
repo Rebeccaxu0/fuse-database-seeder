@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('LTI PLatforms') }}</x-slot>
+    <x-slot name="title">LTI PLatforms</x-slot>
 
-    <x-slot name="header">{{ __('LTI PLatforms') }}</x-slot>
+    <x-slot name="header">LTI PLatforms</x-slot>
 
     <a href="{{ route('admin.ltiplatforms.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add platform</button>

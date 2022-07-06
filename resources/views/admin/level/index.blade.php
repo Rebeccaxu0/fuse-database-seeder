@@ -1,8 +1,8 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Levels') }}</x-slot>
+    <x-slot name="title">Levels</x-slot>
 
-    <x-slot name="header">{{ __('Levels') }}</x-slot>
+    <x-slot name="header">Levels</x-slot>
 
     <x-admin.challenge-subnav />
 

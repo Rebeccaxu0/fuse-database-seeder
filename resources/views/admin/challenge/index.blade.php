@@ -1,13 +1,13 @@
 <x-app-layout>
 
-    <x-slot name="title">{{ __('Meta Challenges') }}</x-slot>
+    <x-slot name="title">Meta Challenges</x-slot>
 
-    <x-slot name="header">{{ __('Meta Challenges') }}</x-slot>
+    <x-slot name="header">Meta Challenges</x-slot>
 
     <x-admin.challenge-subnav />
 
     <a href="{{ route('admin.challenges.create') }}">
-        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">{{ __('Add Meta Challenge') }}</button>
+        <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Meta Challenge</button>
     </a>
 
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
@@ -26,7 +26,7 @@
                     </form>
                 </div>
                 <details>
-                    <summary>{{ __(':count version(s)', ['count' => count($challenge->challengeVersions)]) }}</summary>
+                    <summary>{{ count($challenge->challengeVersions) }} version(s)</summary>
                     <ul>
                         @foreach ($challenge->challengeVersions as $version)
                         <li>
