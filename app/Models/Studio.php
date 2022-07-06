@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class Studio extends Organization
@@ -170,7 +171,7 @@ class Studio extends Organization
         // return Cache::tags('packages')
         //     ->remember("studio_{$this->id}_active_challenges", 300, function () {
                 // Only show challengeversions that are allowed by assigned package.
-                $challengeVersions = [];
+                $challengeVersions = new Collection;
                 if ($this->deFactoPackage) {
                     $packageChallenges = $this->deFactoPackage
                                               ->challenges

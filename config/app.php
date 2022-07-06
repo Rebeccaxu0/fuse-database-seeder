@@ -181,6 +181,7 @@ return [
          */
 
         Lab404\Impersonate\ImpersonateServiceProvider::class,
+        Plank\Mediable\MediableServiceProvider::class,
         Selfsimilar\D7Password\D7PasswordProvider::class,
         SocialiteProviders\Manager\ServiceProvider::class,
         // SocialiteProviders\Generators\GeneratorsServiceProvider::class,
@@ -236,6 +237,7 @@ return [
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
+        'MediaUploader' => Plank\Mediable\MediaUploaderFacade::class,
         'Notification' => Illuminate\Support\Facades\Notification::class,
         'Password' => Illuminate\Support\Facades\Password::class,
         'Queue' => Illuminate\Support\Facades\Queue::class,

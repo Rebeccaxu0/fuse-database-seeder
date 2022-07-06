@@ -31,7 +31,13 @@ class ArtifactController extends Controller
      */
     public function artifact_gallery(User $user = null)
     {
-        $artifacts = $user->artifacts()->orderBy('created_at', 'desc')->paginate(12);
+        // TODO: May need to refactor. This generates a pretty slow query.
+        // TODO: if we want to eager load 'level.levelable.challenge', we need
+        // to refactor Ideas to have a dummy parent challenge.
+        $artifacts = $user->artifacts()
+                          ->with('level', 'level.levelable', 'comments', 'users', 'media')
+                          ->orderBy('id', 'desc')
+                          ->paginate(12);
         return view('student.my_stuff', ['artifacts' => $artifacts, 'studio' => $user->activeStudio]);
     }
 

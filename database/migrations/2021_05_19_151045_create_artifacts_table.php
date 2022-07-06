@@ -24,6 +24,7 @@ return new class extends Migration
             $table->longText('notes')->nullable();
             $table->boolean('request_feedback')->default(0);
             $table->boolean('request_feedback_complete')->default(0);
+            $table->string('filestack_handle')->nullable();
             $table->string('url', 2048)->nullable();
             $table->string('url_title', 255)->nullable();
         });

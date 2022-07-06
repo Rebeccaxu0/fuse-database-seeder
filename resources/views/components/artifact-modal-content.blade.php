@@ -4,7 +4,7 @@
 
 <div class="px-4 pb-4 relative">
     <div class="aspect-video w-full bg-blue-200 rounded-lg">
-      Big time
+    <img class="w-full h-full" src="{{ $previewUrl }}" />
     </div>
 
     <div class="py-2 flex items-center">
@@ -42,7 +42,7 @@
             @endif
         </div>
     </div>
-    @if ($related->count())
+    {{-- @if ($related->count())
     <div class="uppercase font-semibold">
         {!! __('Saves &amp; completes from this level') !!}
     </div>
@@ -53,7 +53,7 @@
         </li>
         @endforeach
     </ul>
-    @endif
+    @endif --}}
 </div>
 
 @if ($comments)

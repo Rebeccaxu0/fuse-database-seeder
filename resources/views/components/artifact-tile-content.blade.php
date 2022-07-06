@@ -1,6 +1,6 @@
 <div class="aspect-video w-full"
-     {{-- NO WAR --}}
      style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
+    <img src="{{ $previewUrl }}" />
 </div>
 
 <div>

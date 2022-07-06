@@ -29,7 +29,7 @@ return [
     /*
      * Filesystem disk to use if none is specified
      */
-    'default_disk' => 'public',
+    'default_disk' => 'artifacts',
 
     /*
      * Filesystems that can be used for media storage
@@ -37,13 +37,14 @@ return [
      * Uploader will throw an exception if a disk not in this list is selected
      */
     'allowed_disks' => [
-        'public',
+        // 'public',
+        'artifacts',
     ],
 
     /*
      * The maximum file size in bytes for a single uploaded file
      */
-    'max_size' => 1024 * 1024 * 10,
+    'max_size' => 1024 * 1024 * 10000,
 
     /*
      * What to do if a duplicate file is uploaded.
@@ -65,7 +66,7 @@ return [
      * Reject files whose mime type or extension is not recognized
      * if true, files will be given a type of `'other'`
      */
-    'allow_unrecognized_types' => false,
+    'allow_unrecognized_types' => true,
 
     /*
      * Only allow files with specific MIME type(s) to be uploaded

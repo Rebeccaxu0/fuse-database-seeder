@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Artifact;
 use App\Models\Level;
+use App\Models\Media;
 use App\Models\User;
 use App\Rules\UploadCode;
+use Filestack\Filelink;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 // use Illuminate\Validation\Rule;
 use Livewire\Component;
+use MediaUploader;
 
 class LevelSaveOrCompleteForm extends Component
 {
@@ -26,6 +29,7 @@ class LevelSaveOrCompleteForm extends Component
     public string $previewUrl = '';
     public string $previewName = '';
     public int $lid;
+    public int $mediaId;
     public string $type = 'save';
     public string $filestackHandle = '';
     public string $artifactName = '';
@@ -34,8 +38,10 @@ class LevelSaveOrCompleteForm extends Component
     public array $teammates = [];
     public array $teamNames = [];
 
-    // As the parent, this component is the only one that needs to know about
-    // its children. Siblings shouldn't know about each other to stay modular.
+    /**
+     * As the parent, this component is the only one that needs to know about
+     *  its children. Siblings shouldn't know about each other to stay modular.
+     */
     protected $listeners = [
         'filestackUploadComplete',
         'filestackUploadDeleted',
@@ -158,8 +164,44 @@ class LevelSaveOrCompleteForm extends Component
         $filename = $mime = '';
 
         if ($type == 'filestack') {
-            $filelink = new Filelink($details['handle'], $fskey);
-            $mime = explode('/', $filelink->getMetaData()['mimetype']);
+            // TODO: add enough information to delete file later if abandonded.
+            // "fs_response" => array:12 [
+            //     "filename" => "180px-Jolly_Dumple.PNG"
+            //     "handle" => "eUIHSp6zS1aL5OANqR9Y"
+            //     "mimetype" => "image/png"
+            //     "originalPath" => "180px-Jolly_Dumple.PNG"
+            //     "size" => 27648
+            //     "source" => "local_file_system"
+            //     "url" => "https://cdn.filestackcontent.com/eUIHSp6zS1aL5OANqR9Y"
+            //     "uploadId" => "xKsO8EaiGc2W6Ogc"
+            //     "originalFile" => array:3 [▶]
+            //     "status" => "Stored"
+            //     "key" => "1/eoa4EiKxR2yigaANROTW_180px-Jolly_Dumple.PNG"
+            //     "container" => "fuse-dev-artifacts"
+            $this->filestackHandle = $details['fs_response']['handle'];
+            $filelink = new Filelink($this->filestackHandle, $fskey);
+            //
+            // $path = $filelink->getMetaData()['path'];
+            // $temp = explode('/', $path);
+            // $filename = array_pop($temp);
+            // $directory = implode('/', $temp);
+            // $temp = explode('.', $filename);
+            // $extension = end($temp);
+            // $media = MediaUploader::import('artifacts', $directory, $filename, $extension);
+            // $media = MediaUploader::importPath('artifacts', '1/kxur0IWsRui6mUgnM85K_180px-Jolly_Dumple.png');
+            $media = MediaUploader::importPath('artifacts', $filelink->getMetaData()['path']);
+            $this->mediaId = $media->id;
+            // Storage::disk('artifacts')->delete($filelink->getMetaData()['key']);
+            //      "container" => "fuse-dev-artifacts"
+            //      "filename" => "180px-Jolly_Dumple.PNG"
+            //      "key" => "1/NpAfS5bXR1WfLSF796dT_180px-Jolly_Dumple.PNG"
+            //      "location" => "S3"
+            //      "mimetype" => "image/png"
+            //      "path" => "1/NpAfS5bXR1WfLSF796dT_180px-Jolly_Dumple.PNG"
+            //      "size" => 27648
+            //      "uploaded" => 1657036702369.6
+            //      "writeable" => true
+            $mime = $filelink->getMetaData()['mimetype'];
             $filename = $filelink->getMetaData()['filename'];
             $this->previewName = $filename;
         }
@@ -202,13 +244,13 @@ class LevelSaveOrCompleteForm extends Component
         $validated = $this->validate();
         $user = Auth::user();
         $team = [$user];
-        $filestackHandle = $validated['filestackHandle'];
         $artifact = new Artifact;
         $artifact->level_id = $validated['lid'];
         $artifact->type = $validated['type'];
         $artifact->name = $validated['artifactName'];
         $artifact->notes = $validated['notes'];
         $artifact->url = $validated['url'];
+        $artifact->filestack_handle = $validated['filestackHandle'];
 
         if (array_key_exists('teammates', $validated)) {
             $students = $user->activeStudio->students;
@@ -235,6 +277,16 @@ class LevelSaveOrCompleteForm extends Component
         }
         $artifact->save();
         $artifact->users()->saveMany($team);
+        if (! $artifact->url) {
+            if ($artifact->filestack_handle) {
+                $fskey = config('filestack.api_key');
+                $filelink = new Filelink($artifact->filestack_handle, $fskey);
+                $path = $filelink->getMetaData()['path'];
+            }
+            // $media = MediaUploader::importPath('artifacts', $path);
+            $media = Media::find($this->mediaId);
+            $artifact->attachMedia($media, 'file');
+        }
 
         switch ($validated['type']) {
         case 'save':
@@ -342,8 +394,8 @@ class LevelSaveOrCompleteForm extends Component
             'lid' => 'int|exists:App\Models\Level,id',
             'type' => ['required', 'regex:/^(save)|(complete)$/'],
             'filestackHandle' => 'required_without_all:url,uploadCode',
-            'uploadCode' => ['required_without_all:file,url', 'max:10', new UploadCode],
-            'url' => 'required_without_all:file,uploadCode|nullable|url|max:2048',
+            'uploadCode' => ['required_without_all:filestackHandle,url', 'max:10', new UploadCode],
+            'url' => 'required_without_all:filestackHandle,uploadCode|nullable|url|max:2048',
             'artifactName' => 'max:255',
             'notes' => 'max:4098',
             'teammates.*' => 'int|nullable',

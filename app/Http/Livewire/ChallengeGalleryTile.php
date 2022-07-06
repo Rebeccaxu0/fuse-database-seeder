@@ -29,7 +29,7 @@ class ChallengeGalleryTile extends Component
         if (! $this->level) {
             $this->level = $challengeVersion->levels->first();
         }
-        if ($user->hasStartedLevel($this->level)) {
+        if ($this->level && $user->hasStartedLevel($this->level)) {
             $this->continue = true;
         }
     }

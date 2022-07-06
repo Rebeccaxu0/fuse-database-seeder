@@ -39,7 +39,7 @@
         <div class="alert">{{ $message }}</div>
     @enderror
         </div>
-        {{-- <livewire:filestack-picker /> --}}
+        <livewire:filestack-picker />
         @error('file')
             <div class="alert">{{ $message }}</div>
         @enderror

@@ -8,21 +8,22 @@ use Livewire\Component;
 class FilestackPicker extends Component
 {
     public bool $hidden;
+    public ?string $fs_container;
+    public ?string $fs_filename;
+    public ?string $fs_handle;
+    public ?string $fs_key;
+    public ?string $fs_mimetype;
+    public ?string $fs_originalFile_name;
+    public ?string $fs_originalFile_size;
+    public ?string $fs_originalFile_type;
+    public ?string $fs_original_path;
+    public ?string $fs_size;
+    public ?string $fs_source;
+    public ?string $fs_status;
+    public ?string $fs_upload_id;
+    public ?string $fs_url;
     public $preview;
     public $pickerOptions;
-
-    public array $hiddenInputs = [
-        'fs-filename',
-        'fs-handle',
-        'fs-key',
-        'fs-mimetype',
-        'fs-original_path',
-        'fs-size',
-        'fs-source',
-        'fs-status',
-        'fs-upload_id',
-        'fs-url',
-    ];
 
     protected $listeners = [
         'filestackUploadComplete',
@@ -36,8 +37,7 @@ class FilestackPicker extends Component
     public function filestackUploadComplete($results)
     {
         if (empty($results['filesFailed'])) {
-            $this->emit('makePreviewImage', 'filestack', $results['filesUploaded'][0]['handle']);
-            // TODO: update all the hidden inputs.
+            $this->emit('makePreviewImage', 'filestack', ['fs_response' => $results['filesUploaded'][0]]);
         }
     }
 
@@ -72,10 +72,10 @@ class FilestackPicker extends Component
             'maxFiles' => 1,
             'startUploadingWhenMaxFilesReached' => true,
             'storeTo' => [
-                'container' => 'fusestudio-student-uploads',
+                // 'container' => 'fusestudio-student-uploads',
                 'location' => 's3',
                 'path' => auth()->user()->id . '/',
-                'region' => 'us-east-1',
+                'region' => 'us-east-2',
             ],
             'uploadInBackground' => false,
         ];

@@ -24,7 +24,11 @@
     </div>
     <x-jet-modal wire:model="showModalFlag">
         <div class="py-4 text-center text-fuse-teal-dk text-3xl whitespace-nowrap">
+            @if ($level)
             <span class="tracking-tight mr-1">{{ __(':challenge Level :number', ['challenge' => $challengeVersion->challenge->name, 'number' => $level->level_number]) }}</span>
+            @else
+            <span class="tracking-tight mr-1">{{ __(':challenge', ['challenge' => $challengeVersion->challenge->name]) }}</span>
+            @endif
             <button class="absolute right-0 top-0 mt-1 mr-1" wire:click="$toggle('showModalFlag')">
                 <x-icon icon="x-circle" strokeWidth="1" width="30" height="30" />
             </button>
