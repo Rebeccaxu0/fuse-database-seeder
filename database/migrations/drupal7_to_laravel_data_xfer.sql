@@ -2,6 +2,7 @@
 -- currently in file_managed table the uri column includes a protocol header?
 -- e.g. s3:// or storage-api-public://
 -- we will need to figure out what to do with those.
+ALTER TABLE fuse_laravel.media MODIFY COLUMN filename varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
 -- TODO: research Laravel s3 adapter and Filestack
 -- Run search and replace on source database `d7-fuse` if necessary.
 -- Run search and replace on target database `fuse_laravel` if necessary.
@@ -43,8 +44,13 @@ ALTER TABLE `fuse_laravel`.role_user ADD d7_rid BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX role_user_d7_rid_IDX USING BTREE ON `fuse_laravel`.role_user (d7_rid);
 ALTER TABLE `fuse_laravel`.role_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX role_user_d7_uid_IDX USING BTREE ON `fuse_laravel`.role_user (d7_uid);
+ALTER TABLE `fuse_laravel`.comments MODIFY COLUMN artifact_id bigint(20) unsigned NULL;
 ALTER TABLE `fuse_laravel`.artifacts ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX artifacts_d7_id_IDX USING BTREE ON `fuse_laravel`.artifacts (d7_id);
+ALTER TABLE `fuse_laravel`.artifacts ADD d7_comment_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX artifacts_d7_comment_id_IDX USING BTREE ON `fuse_laravel`.artifacts (d7_comment_id);
+ALTER TABLE `fuse_laravel`.artifacts ADD d7_filestack_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX artifacts_d7_filestack_id_IDX USING BTREE ON `fuse_laravel`.artifacts (d7_filestack_id);
 ALTER TABLE `fuse_laravel`.districts ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX districts_d7_id_IDX USING BTREE ON `fuse_laravel`.districts (d7_id);
 ALTER TABLE `fuse_laravel`.district_user ADD d7_district_id BIGINT UNSIGNED DEFAULT 1;
@@ -70,10 +76,11 @@ ALTER TABLE `fuse_laravel`.studio_user ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX studio_user_d7_uid_IDX USING BTREE ON `fuse_laravel`.studio_user (d7_uid);
 ALTER TABLE `fuse_laravel`.ideas ADD d7_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX ideas_d7_id_IDX USING BTREE ON `fuse_laravel`.ideas (d7_id);
+ALTER TABLE `fuse_laravel`.comments ADD d7_id BIGINT UNSIGNED DEFAULT 1;
+CREATE INDEX comments_d7_id_IDX USING BTREE ON `fuse_laravel`.comments (d7_id);
 ALTER TABLE `fuse_laravel`.comments ADD d7_artifact_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX comments_d7_artifact_id_IDX USING BTREE ON `fuse_laravel`.comments (d7_artifact_id);
-ALTER TABLE `fuse_laravel`.comments ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
-CREATE INDEX comments_d7_uid_IDX USING BTREE ON `fuse_laravel`.comments (d7_uid);
+ALTER TABLE `fuse_laravel`.comments ADD d7_bundle VARCHAR(100) NULL;
 ALTER TABLE `fuse_laravel`.comment_seen ADD d7_comment_id BIGINT UNSIGNED DEFAULT 1;
 CREATE INDEX comment_seen_d7_comment_id_IDX USING BTREE ON `fuse_laravel`.comment_seen (d7_comment_id);
 ALTER TABLE `fuse_laravel`.comment_seen ADD d7_uid BIGINT UNSIGNED DEFAULT 1;
@@ -135,9 +142,9 @@ WHERE (taxonomy_vocabulary.machine_name = 'challenge_categories')
 )
 ORDER BY name;
 
-UPDATE IGNORE `fuse_laravel-fuse`.challenge_categories
+UPDATE IGNORE `fuse_laravel`.challenge_categories
 SET disapproved = 1
-WHERE d7_id IN [441, 446];
+WHERE d7_id IN (441, 446);
 
 -- Insert Grade Level Taxonomy Terms
 INSERT INTO `fuse_laravel`.grade_levels (name, description, d7_id)
@@ -176,8 +183,16 @@ SELECT
 FROM `d7-fuse`.l3_platform;
 
 -- Insert Packages
-INSERT INTO `fuse_laravel`.packages (created_at, updated_at, name, description, student_activity_tab_access, d7_id)
-SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), n.title, fdb.body_value, fdfsat.field_student_activity_tab_value, n.nid as d7_id
+INSERT INTO `fuse_laravel`.packages (
+    created_at, updated_at, deleted_at,
+    name, description, student_activity_tab_access,
+    d7_id
+)
+SELECT
+  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
+  n.title, fdb.body_value, fdfsat.field_student_activity_tab_value,
+  n.nid as d7_id
 FROM `d7-fuse`.node AS n
 LEFT JOIN `d7-fuse`.field_data_body AS fdb ON
   (fdb.entity_type = 'node'
@@ -207,7 +222,7 @@ INSERT INTO `fuse_laravel`.challenge_versions (
   gallery_wistia_video_id,
   info_article_url,
   d7_id, d7_challenge_id, d7_challenge_category_id, d7_prereq_challenge_id,
-  created_at, updated_at
+  created_at, updated_at, deleted_at
 )
 SELECT
   JSON_OBJECT("en", n.title),
@@ -217,7 +232,8 @@ SELECT
   fdfw.field_wistia_video_id,
   fdfiu.field_info_url_url,
   n.nid, challenge_ttd.tid, challenge_category_ttd.tid, fdfpc.field_prerequisite_challenges_nid,
-  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed)
+  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END)
 FROM `d7-fuse`.node AS n
 LEFT JOIN `d7-fuse`.field_data_field_version_of AS fdfvo ON
   (fdfvo.entity_type = 'node'
@@ -249,10 +265,10 @@ ORDER BY n.title ASC;
 
 -- Add translation fields one by one
 
--- UPDATE `d7-fuse`.field_data_body
--- SET language = 'en'
--- WHERE language = 'und';
---
+UPDATE IGNORE `d7-fuse`.field_data_body
+SET language = 'en'
+WHERE language = 'und';
+
 -- -- Summary
 -- UPDATE `fuse_laravel`.challenge_versions cv
 -- JOIN (
@@ -315,9 +331,16 @@ SET cv.challenge_id = COALESCE(c.id, 1), cv.challenge_category_id = COALESCE(cc.
 -- , cv.prerequisite_challenge_version_id = prereq.id;
 
 -- Insert Levels
-INSERT INTO `fuse_laravel`.levels
-(created_at, updated_at, levelable_id, levelable_type, d7_id, d7_challenge_version_id, d7_prereq_level_id)
-SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), 1, 'level', n.nid as d7_id, fdfc.field_challenge_nid, fdfp.field_prerequisites_nid
+INSERT INTO `fuse_laravel`.levels (
+    created_at, updated_at, deleted_at,
+    levelable_id, levelable_type,
+    d7_id, d7_challenge_version_id, d7_prereq_level_id
+)
+SELECT
+  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
+  1, 'level',
+  n.nid as d7_id, fdfc.field_challenge_nid, fdfp.field_prerequisites_nid
 FROM `d7-fuse`.node AS n
 RIGHT OUTER JOIN `d7-fuse`.field_data_field_challenge AS fdfc ON
   (fdfc.entity_type = 'node'
@@ -489,11 +512,15 @@ WHERE levels.prerequisite_level IN (SELECT l.id FROM `fuse_laravel`.levels l WHE
 
 -- Districts
 INSERT INTO `fuse_laravel`.districts (
-  created_at, updated_at, name, license_status,
+  created_at, updated_at, deleted_at,
+  name, license_status,
   package_id,
   salesforce_acct_id, d7_id
 )
-SELECT FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed), n.title, n.status,
+SELECT
+  FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
+  n.title, n.status,
   packages.id,
   IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
 FROM `d7-fuse`.node AS n
@@ -520,10 +547,13 @@ WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 161;
 -- GROUP BY fdfsai.field_salesforce_acct_id_value
 -- HAVING COUNT(field_salesforce_acct_id_value) > 1;
 INSERT INTO `fuse_laravel`.schools (
-  created_at, updated_at, name, status, district_id, package_id, partner_id,
+  created_at, updated_at, deleted_at,
+  name, status, district_id, package_id, partner_id,
   salesforce_acct_id, d7_id
 )
-SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
+SELECT
+  FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
   n.title, n.status, districts.id as district, packages.id, partners.id,
   IF(fdfsai.field_salesforce_acct_id_value = '', NULL, fdfsai.field_salesforce_acct_id_value) as sfid, n.nid
 FROM `d7-fuse`.node AS n
@@ -564,9 +594,15 @@ WHERE fdfglt.entity_type = 'node' AND fdfglt.bundle = 'organization';
 
 -- Studios
 -- TODO: Ensure all studios have a join code. Exclude Alumni.
-INSERT INTO `fuse_laravel`.studios (created_at, updated_at, name, status, school_id, package_id, join_code, dashboard_message, d7_id)
-SELECT FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
-  n.title, n.status, schools.id, packages.id as package_id, fdfsc.field_studio_code_studio_code as join_code, fsm.message as dashboard_message, n.nid
+INSERT INTO `fuse_laravel`.studios (
+    created_at, updated_at, deleted_at,
+    name, status, school_id, package_id,
+    join_code, dashboard_message, d7_id)
+SELECT
+  FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as changed,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
+  n.title, n.status, schools.id, packages.id as package_id,
+  fdfsc.field_studio_code_studio_code as join_code, fsm.message as dashboard_message, n.nid
 FROM `d7-fuse`.node AS n
 LEFT JOIN `d7-fuse`.field_data_field_package AS fdfp ON
   (fdfp.entity_type = 'node'
@@ -591,49 +627,44 @@ LEFT JOIN `d7-fuse`.fuse_studio_message AS fsm ON
   (fsm.studio_nid = n.nid)
 WHERE n.type = 'space' AND n.nid <> 934966;
 
-// Studio active challenge (version)
-INSERT INTO `fuse_laravel`.challenge_version_studio (challenge_version_id, studio_id)
-SELECT cv.id as challenge_id, studios.id as studio_id
+-- Studio active challenge (version)
+INSERT IGNORE INTO `fuse_laravel`.challenge_version_studio (challenge_version_id, studio_id)
+SELECT
+cv.id as challenge_id, studios.id as studio_id
 FROM `d7-fuse`.field_data_field_challenge as fdfc
 LEFT JOIN `fuse_laravel`.studios as studios ON
   (studios.d7_id = fdfc.entity_id)
 LEFT JOIN `fuse_laravel`.challenge_versions as cv ON
   (cv.d7_id = fdfc.field_challenge_nid)
-WHERE fdfc.entity_type = 'node';
+WHERE
+  fdfc.entity_type = 'node'
+  AND fdfc.bundle = 'space';
 
 -- LTI Platform associations
--- UPDATE `fuse_laravel`.studios studios SET studios.l_t_i_platform_id = 
--- 1 WHERE ISNULL(levels.prerequisite_level);
--- INSERT INTO `fuse_laravel`.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
--- SELECT lti_platforms.id, studios.id, 'studio'
--- FROM `d7-fuse`.field_data_field_l3_platforms fdflp
--- LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
---   lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
--- LEFT JOIN `fuse_laravel`.studios as studios ON
---   studios.d7_id = fdflp.entity_id
--- WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'space';
---
--- INSERT INTO `fuse_laravel`.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
--- SELECT lti_platforms.id, schools.id, 'school'
--- FROM `d7-fuse`.field_data_field_l3_platforms fdflp
--- LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
---   lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
--- LEFT JOIN `fuse_laravel`.schools as schools ON
---   schools.d7_id = fdflp.entity_id
--- RIGHT JOIN `d7-fuse`.field_data_field_organization_type fdfot ON
---   fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 166
--- WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'organization';
---
--- INSERT INTO `fuse_laravel`.l_t_i_platformable (l_t_i_platform_id, l_t_i_platformable_id, l_t_i_platformable_type)
--- SELECT lti_platforms.id, districts.id, 'district'
--- FROM `d7-fuse`.field_data_field_l3_platforms fdflp
--- LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
---   lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
--- LEFT JOIN `fuse_laravel`.districts as districts ON
---   districts.d7_id = fdflp.entity_id
--- RIGHT JOIN `d7-fuse`.field_data_field_organization_type fdfot ON
---   fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 161
--- WHERE fdflp.entity_type = 'node' AND fdflp.bundle = 'organization';
+UPDATE `fuse_laravel`.studios s
+LEFT JOIN `d7-fuse`.field_data_field_l3_platforms fdflp ON
+  fdflp.entity_id = s.d7_id AND fdflp.entity_type = 'node' AND fdflp.bundle = 'space'
+LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
+    lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+SET s.l_t_i_platform_id = lti_platforms.id;
+
+UPDATE `fuse_laravel`.schools s
+LEFT JOIN `d7-fuse`.field_data_field_l3_platforms fdflp ON
+  fdflp.entity_id = s.d7_id AND fdflp.entity_type = 'node' AND fdflp.bundle = 'organization'
+RIGHT JOIN `d7-fuse`.field_data_field_organization_type fdfot ON
+  fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 166
+LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
+    lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+SET s.l_t_i_platform_id = lti_platforms.id;
+
+UPDATE `fuse_laravel`.districts d
+LEFT JOIN `d7-fuse`.field_data_field_l3_platforms fdflp ON
+  fdflp.entity_id = d.d7_id AND fdflp.entity_type = 'node' AND fdflp.bundle = 'organization'
+RIGHT JOIN `d7-fuse`.field_data_field_organization_type fdfot ON
+  fdfot.entity_id = fdflp.entity_id AND fdfot.field_organization_type_tid = 161
+LEFT JOIN `fuse_laravel`.l_t_i_platforms as lti_platforms ON
+    lti_platforms.d7_id = fdflp.field_l3_platforms_target_id
+SET d.l_t_i_platform_id = lti_platforms.id;
 
 -- Users
 
@@ -885,8 +916,6 @@ LEFT JOIN `d7-fuse`.og_membership om ON
 LEFT JOIN `fuse_laravel`.districts ON districts.d7_id = om.gid
 WHERE NOT ISNULL(districts.id);
 
--- TODO: Artifacts
-
 -- Starts
 
 -- TODO: Make sure Idea starts are counted
@@ -899,51 +928,96 @@ LEFT JOIN `fuse_laravel`.levels ON levels.d7_id = fal.lid
 LEFT JOIN `fuse_laravel`.users ON users.d7_id = fal.uid
 WHERE fal.activity_type = 'start_level';
 
+-- Artifacts
+-- There's an issue - there are three node types that generally represent
+-- artifacts in Drupal: 'Student Progress Save', 'Level Completion Proof',
+-- and 'Student Video' which is attached/referenced by 'Level Completion Proof'.
+-- Comments are left directly on the Save, but are left on the Student Video for
+-- Completes.
+
 -- Level Saves
--- Exclude Saves from deleted users.
 INSERT INTO `fuse_laravel`.artifacts (
+  created_at, updated_at,
+  deleted_at,
   type, level_id,
-  name, d7_id
+  name, notes,
+  url, url_title, filestack_handle,
+  d7_id, d7_comment_id, d7_filestack_id
 )
 SELECT
+   FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as updated,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END) as deleted_at,
   'save', levels.id,
-  n.title, n.nid
+   n.title, body.body_value,
+   url.field_url_url, url.field_url_title, fs_up.handle,
+   n.nid, n.nid, fs_up.eid
 FROM `d7-fuse`.node n
-RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
-RIGHT JOIN `d7-fuse`.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
-LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `d7-fuse`.field_data_body body
+  ON body.entity_id = n.nid AND body.entity_type = 'node' and body.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.field_data_field_url url
+  ON url.entity_id = n.nid AND url.entity_type = 'node' and url.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.field_data_field_filestack fs
+  ON fs.entity_id = n.nid AND fs.entity_type = 'node' and fs.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.filestack_upload fs_up
+  ON fs_up.eid = fs.field_filestack_target_id
+LEFT JOIN `d7-fuse`.field_data_field_child_levels fdfcl
+  ON fdfcl.entity_type = 'node' AND fdfcl.bundle = 'student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN `d7-fuse`.node dl
+  ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
+LEFT JOIN `fuse_laravel`.levels levels
+  ON levels.d7_id = fdfcl.field_child_levels_nid
 WHERE n.`type` = 'student_progress_save' AND n.uid != 0
 ORDER BY fdfcl.field_child_levels_nid;
 
 -- Level Completes
--- Exclude Completes from deleted users.
 INSERT INTO `fuse_laravel`.artifacts (
+  created_at, updated_at,
+  deleted_at,
   type, level_id,
-  name, d7_id
+  name, notes,
+  d7_id
 )
 SELECT
+  FROM_UNIXTIME(n.created) as created,  FROM_UNIXTIME(n.changed) as updated,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
   'complete', levels.id,
-  n.title, n.nid
+   n.title, body.body_value,
+   n.nid
 FROM `d7-fuse`.node n
-RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
-RIGHT JOIN `d7-fuse`.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
-LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `d7-fuse`.field_data_body body
+  ON body.entity_id = n.nid AND body.entity_type = 'node' and body.bundle = 'level_completion_proof'
+RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl
+  ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
+RIGHT JOIN `d7-fuse`.node dl
+  ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
+LEFT JOIN `fuse_laravel`.levels levels
+  ON levels.d7_id = fdfcl.field_child_levels_nid
 WHERE n.`type` = 'level_completion_proof' AND n.uid != 0
-ORDER BY fdfcl.field_child_levels_nid;
+ORDER BY n.nid desc;
 
 -- Ideas
 INSERT INTO `fuse_laravel`.ideas (
-  created_at, updated_at,
+  created_at, updated_at, deleted_at,
   name, body, copied_from_level, d7_id
 )
 SELECT
   FROM_UNIXTIME(n.created), FROM_UNIXTIME(n.changed),
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
   n.title, fdb.body_value, l.id, n.nid
 FROM `d7-fuse`.node n
 LEFT JOIN `d7-fuse`.field_data_body fdb ON fdb.entity_id = n.nid AND fdb.entity_type = 'node' AND fdb.bundle = 'idea_level'
 LEFT JOIN `d7-fuse`.field_data_field_level_copied fdflc ON fdflc.entity_id = n.nid AND fdflc.entity_type = 'node' AND fdflc.bundle = 'idea_level'
 LEFT JOIN `fuse_laravel`.levels l ON l.d7_id = fdflc.field_level_copied_target_id
 WHERE n.`type` = 'idea_level' AND n.uid != 0;
+
+-- Make a dummy Level 1 for each Idea so we can attach artifacts.
+INSERT INTO `fuse_laravel`.levels (
+  created_at, updated_at, deleted_at,
+  levelable_type, levelable_id,
+  level_number
+)
+SELECT created_at, updated_at, deleted_at, 'idea', id, 1
+FROM `fuse_laravel`.ideas;
 
 -- Idea inspirations
 INSERT INTO `fuse_laravel`.idea_inspirations (idea_id, challenge_version_id)
@@ -973,34 +1047,83 @@ WHERE !ISNULL(i.d7_id);
 
 -- Idea Saves
 INSERT INTO `fuse_laravel`.artifacts (
+  created_at, updated_at,
+  deleted_at,
   type, level_id,
-  name, d7_id
+  name, notes,
+  url, url_title, filestack_handle,
+  d7_id, d7_comment_id, d7_filestack_id
 )
 SELECT
+   FROM_UNIXTIME(n.created) as created, FROM_UNIXTIME(n.changed) as updated,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END) as deleted_at,
   'save', levels.id,
-  n.title, n.nid
+   n.title, body.body_value,
+   url.field_url_url, url.field_url_title, fs_up.handle,
+   n.nid, n.nid, fs_up.eid
 FROM `d7-fuse`.node n
-RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='student_progress_save' AND fdfcl.entity_id = n.nid
-RIGHT JOIN `d7-fuse`.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'idea'
-LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `d7-fuse`.field_data_body body
+  ON body.entity_id = n.nid AND body.entity_type = 'node' and body.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.field_data_field_url url
+  ON url.entity_id = n.nid AND url.entity_type = 'node' and url.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.field_data_field_filestack fs
+  ON fs.entity_id = n.nid AND fs.entity_type = 'node' and fs.bundle = 'student_progress_save'
+LEFT JOIN `d7-fuse`.filestack_upload fs_up
+  ON fs_up.eid = fs.field_filestack_target_id
+LEFT JOIN `d7-fuse`.field_data_field_child_levels fdfcl
+  ON fdfcl.entity_type = 'node' AND fdfcl.bundle = 'student_progress_save' AND fdfcl.entity_id = n.nid
+RIGHT JOIN `d7-fuse`.node dl
+  ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'idea_level'
+LEFT JOIN `fuse_laravel`.ideas i
+  ON i.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `fuse_laravel`.levels levels
+  ON levels.levelable_id = i.id  AND levels.levelable_type = 'idea'
 WHERE n.`type` = 'student_progress_save' AND n.uid != 0
 ORDER BY fdfcl.field_child_levels_nid;
 
 -- Idea Completes
--- Exclude Completes from deleted users.
 INSERT INTO `fuse_laravel`.artifacts (
+  created_at, updated_at,
+  deleted_at,
   type, level_id,
-  name, d7_id
+  name, notes,
+  d7_id
 )
 SELECT
-  'complete', levels.id,
-  n.title, n.nid
+  FROM_UNIXTIME(n.created) as created,  FROM_UNIXTIME(n.changed) as updated,
+  (CASE n.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END) as deleted,
+  'complete', levels.id as level_id,
+   n.title, body.body_value,
+   n.nid
 FROM `d7-fuse`.node n
-RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
-RIGHT JOIN `d7-fuse`.node dl ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
-LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `d7-fuse`.field_data_body body
+  ON body.entity_id = n.nid AND body.entity_type = 'node' and body.bundle = 'level_completion_proof'
+RIGHT JOIN `d7-fuse`.field_data_field_child_levels fdfcl
+  ON fdfcl.entity_type = 'node' AND fdfcl.bundle ='level_completion_proof' AND fdfcl.entity_id = n.nid
+RIGHT JOIN `d7-fuse`.node dl
+  ON dl.nid = fdfcl.field_child_levels_nid AND dl.type = 'idea_level'
+RIGHT JOIN `fuse_laravel`.ideas i
+  ON i.d7_id = fdfcl.field_child_levels_nid
+LEFT JOIN `fuse_laravel`.levels levels
+  ON levels.levelable_id = i.id  AND levels.levelable_type = 'idea'
 WHERE n.`type` = 'level_completion_proof' AND n.uid != 0
-ORDER BY fdfcl.field_child_levels_nid;
+ORDER BY n.nid desc;
+
+UPDATE `fuse_laravel`.artifacts a
+RIGHT JOIN `d7-fuse`.field_data_field_proof proof
+  ON proof.entity_id = a.d7_id AND proof.entity_type = 'node' and proof.bundle = 'level_completion_proof'
+LEFT JOIN `d7-fuse`.field_data_field_url url
+  ON url.entity_id = proof.field_proof_nid AND url.entity_type = 'node' and url.bundle = 'student_video'
+SET a.url = url.field_url_url, a.url_title = url.field_url_title;
+
+UPDATE `fuse_laravel`.artifacts a
+RIGHT JOIN `d7-fuse`.field_data_field_proof proof
+  ON proof.entity_id = a.d7_id AND proof.entity_type = 'node' and proof.bundle = 'level_completion_proof'
+LEFT JOIN `d7-fuse`.field_data_field_filestack fs
+  ON fs.entity_id = proof.field_proof_nid AND fs.entity_type = 'node' and fs.bundle = 'student_video'
+LEFT JOIN `d7-fuse`.filestack_upload fs_up
+  ON fs_up.eid = fs.field_filestack_target_id
+SET a.filestack_handle = fs_up.handle, a.d7_filestack_id = fs_up.eid;
 
 -- Attach teams to artifacts.
 -- First Drupal node owners.
@@ -1018,7 +1141,54 @@ RIGHT JOIN `d7-fuse`.field_data_field_teammates fdft ON fdft.entity_type = 'node
 RIGHT JOIN `fuse_laravel`.users u ON u.d7_id = fdft.field_teammates_target_id
 WHERE !ISNULL(a.d7_id);
 
--- Files
+-- Comments
+-- Insert all the comments but don't link them to the artifacts yet.
+INSERT INTO `fuse_laravel`.comments (
+    created_at, updated_at, deleted_at,
+    body,
+    user_id,
+    d7_id,
+    d7_artifact_id,
+    d7_bundle
+)
+SELECT
+  FROM_UNIXTIME(c.created), FROM_UNIXTIME(c.changed),
+  (CASE c.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END),
+  fdcb.comment_body_value,
+  u.id,
+  c.cid, c.nid, fdcb.bundle
+FROM `d7-fuse`.comment c
+RIGHT JOIN `d7-fuse`.node n ON n.nid = c.nid AND n.type != 'forum'
+LEFT JOIN `d7-fuse`.field_data_comment_body fdcb
+  ON fdcb.entity_id = c.cid AND fdcb.`entity_type` = 'comment' AND fdcb.bundle != 'comment_node_forum'
+LEFT JOIN `fuse_laravel`.users u ON u.d7_id = c.uid
+WHERE c.uid != 0
+ORDER BY c.cid;
+
+-- Link Comments to Save artifacts
+UPDATE `fuse_laravel`.comments c
+RIGHT JOIN `fuse_laravel`.artifacts a
+ON a.d7_id  = c.d7_artifact_id AND c.d7_bundle = 'comment_node_student_progress_save'
+SET c.artifact_id = a.id;
+
+-- Link Comments to Complete artifacts
+UPDATE `fuse_laravel`.comments c
+RIGHT JOIN `fuse_laravel`.artifacts a
+ON a.d7_id  = c.d7_artifact_id AND c.d7_bundle = 'comment_node_student_progress_save'
+SET c.artifact_id = a.id;
+
+UPDATE `fuse_laravel`.comments c
+left JOIN `d7-fuse`.field_data_field_proof proof
+  ON proof.field_proof_nid = c.d7_artifact_id
+RIGHT JOIN `fuse_laravel`.artifacts a
+  ON a.d7_id = proof.entity_id
+SET c.artifact_id = a.id
+WHERE NOT ISNULL(proof.entity_id);
+
+-- TODO: Idea Trailer Seen
+
+
+-- Public Staff-uploaded Files
 INSERT INTO `fuse_laravel`.media (
     d7_fid, user_id,
     disk,
@@ -1027,108 +1197,178 @@ INSERT INTO `fuse_laravel`.media (
     extension,
     mime_type, aggregate_type,
     size,
-    created_at, updated_at
+    created_at, updated_at, deleted_at
 )
 SELECT
-fm.fid, users.id,
-'public',
--- Directory is URI from ofset (22) to strlen minus offset minus file.
-SUBSTR(fm.uri, 22, LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))),
--- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
-SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 22 - (LENGTH(fm.uri) - 21 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '.', 1))),
-reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
-fm.filemime, fm.type,
-fm.filesize,
-FROM_UNIXTIME(fm.`timestamp`), FROM_UNIXTIME(fm.`timestamp`),
+  fm.fid, users.id as uid,
+  'public',
+  -- Directory is URI from ofset (22) to strlen minus offset minus file.
+  SUBSTR(fm.uri, 22, LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))),
+  -- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
+  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 22 - (LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)))) as filename,
+  reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
+  fm.filemime, fm.type,
+  fm.filesize,
+  FROM_UNIXTIME(fm.`timestamp`), FROM_UNIXTIME(fm.`timestamp`),
+  (CASE fm.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END)
 FROM `d7-fuse`.file_managed fm
-LEFT JOIN fuse_laravel_test.users ON users.d7_uid = fm.uid
+LEFT JOIN `fuse_laravel`.users ON users.d7_id = fm.uid
 WHERE fm.uri LIKE 'storage-api-public://%' AND fm.status = 1;
 
--- TODO: Comments
+-- Student uploads
+INSERT INTO `fuse_laravel`.media (
+    d7_fid, user_id,
+    disk,
+    directory,
+    filename,
+    extension,
+    mime_type, aggregate_type,
+    size,
+    created_at, updated_at, deleted_at
+)
+SELECT
+  fm.fid, users.id as uid,
+  'artifacts',
+  -- Directory is URI from ofset (22) to strlen minus offset minus file.
+  SUBSTR(fm.uri, 32, LENGTH(fm.uri) - 32 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) as dir,
+  -- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
+  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 32 - (LENGTH(fm.uri) - 32 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)))) as filename,
+  reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
+  fm.filemime, fm.type,
+  fm.filesize,
+  FROM_UNIXTIME(fm.`timestamp`), FROM_UNIXTIME(fm.`timestamp`),
+  (CASE fm.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END)
+FROM `d7-fuse`.file_managed fm
+LEFT JOIN `fuse_laravel`.users ON users.d7_id = fm.uid
+WHERE fm.uri LIKE 'storage-field-student-upload://%' AND fm.status = 1;
 
--- TODO: Comment Seen
+-- Link files to Save artifacts
+INSERT INTO fuse_laravel.mediables (
+	media_id,
+	mediable_type, mediable_id,
+	tag, `order`
+)
+SELECT
+  m.id as media_id,
+  'artifact' as m_type, a.id as m_id,
+  'file' as tag, 1 as 'order'
+FROM fuse_laravel.media m
+RIGHT JOIN `d7-fuse`.field_data_field_student_upload fdfsu
+  ON fdfsu.field_student_upload_fid = m.d7_fid
+JOIN fuse_laravel.artifacts a
+  ON a.d7_id = fdfsu.entity_id
+WHERE NOT ISNULL(m.id);
+
+-- Link Complete artifacts
+INSERT INTO fuse_laravel.mediables (
+	media_id,
+	mediable_type, mediable_id,
+	tag, `order`
+)
+SELECT
+  m.id as media_id,
+  'artifact' as m_type, a.id as m_id,
+  'file' as tag, 1 as 'order'
+FROM fuse_laravel.media m
+RIGHT JOIN `d7-fuse`.field_data_field_student_upload fdfsu
+  ON fdfsu.field_student_upload_fid = m.d7_fid
+left JOIN `d7-fuse`.field_data_field_proof proof
+  ON proof.field_proof_nid = fdfsu.entity_id
+RIGHT JOIN fuse_laravel.artifacts a
+  ON a.d7_id = proof.entity_id
+WHERE NOT ISNULL(m.id);
 
 -- TODO: Activity Log
 -- N.B. - This is likely to move out of the database sooner than later.
 -- This takes almost 9 minutes to run. Can we hasten it? 5.4M records.
--- INSERT INTO `fuse_laravel`.activity_log (
---   id,
---   created_at,
---   d7_uid, d7_lid,
---   -- user_id, level_id,
---   birthday, gender, ethnicity,
---   activity_type, d7_afilliated_studios,
---   d7_studio_nid,
---   -- studio_id,
---   studio_name,
---   challenge_title, challenge_version, level_number,
---   d7_artifact_nid,
---   -- artifact_id,
---   artifact_name, artifact_url,
---   is_team_artifact,
---   trigger_activity_id,
---   d7_school_nid,
---   -- school_id,
---   school_name,
---   d7_district_nid,
---   -- district_id,
---   district_name,
---   is_idea_level,
---   is_facilitator
--- )
--- SELECT fal.aid,
---   FROM_UNIXTIME(fal.timestamp), -- users.id as user_id, levels.id as level,
---   fal.uid, fal.lid,
---   fal.birthday as birthday, fal.gender as gender, fal.ethnicity as ethnicity,
---   fal.activity_type, fal.affiliated_studios,
---   fal.studio_nid,
---   -- studios.id as studio,
---   fal.studio_name as studio_name,
---   fal.challenge_title as challenge, fal.challenge_version as c_version, fal.level_number as l_no,
---   fal.artifact_nid,
---   -- artifacts.id as artifact_id,
---   fal.artifact_name as artifact_name, fal.artifact_url as artifact_url,
---   COALESCE(fal.is_team_artifact, 0) as 'team?',
---   fal.trigger_aid,
---   fal.school_nid,
---   -- schools.id as school_id,
---   fal.school_name as school_name,
---   fal.district_nid,
---   -- districts.id as district_id,
---   fal.district_name as district_name,
---   fal.is_idea_level,
---   fal.is_facilitator
--- FROM `d7-fuse`.fuse_activity_log fal;
--- -- RIGHT OUTER JOIN `fuse_laravel`.users users ON users.d7_id = fal.uid
--- -- LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fal.lid
--- -- LEFT JOIN `fuse_laravel`.studios studios ON studios.d7_id = fal.studio_nid
--- -- LEFT JOIN `fuse_laravel`.artifacts artifacts ON artifacts.d7_id = fal.artifact_nid
--- -- LEFT JOIN `fuse_laravel`.schools schools ON schools.d7_id = fal.school_nid
--- -- LEFT JOIN `fuse_laravel`.districts districts ON districts.d7_id = fal.school_nid
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.users u ON log.d7_uid = u.d7_id
--- SET log.user_id = u.id;
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.levels l ON log.d7_lid = l.d7_id
--- SET log.level_id = l.id;
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.studios s ON log.d7_studio_nid = s.d7_id
--- SET log.studio_id = s.id;
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.artifacts a ON log.d7_artifact_nid = a.d7_id
--- SET log.artifact_id = a.id;
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.schools s ON log.d7_school_nid = s.d7_id
--- SET log.school_id = s.id;
---
--- UPDATE `fuse_laravel`.activity_log log
--- LEFT JOIN `fuse_laravel`.districts d ON log.d7_district_nid = d.d7_id
--- SET log.district_id = d.id;
+INSERT INTO `fuse_laravel`.activity_log (
+  id,
+  created_at,
+  d7_uid, d7_lid,
+  -- user_id, level_id,
+  birthday, gender, ethnicity,
+  activity_type, d7_afilliated_studios,
+  d7_studio_nid,
+  -- studio_id,
+  studio_name,
+  challenge_title, challenge_version, level_number,
+  d7_artifact_nid,
+  -- artifact_id,
+  artifact_name, artifact_url,
+  is_team_artifact,
+  trigger_activity_id,
+  d7_school_nid,
+  -- school_id,
+  school_name,
+  d7_district_nid,
+  -- district_id,
+  district_name,
+  is_idea_level,
+  is_facilitator
+)
+SELECT fal.aid,
+  FROM_UNIXTIME(fal.timestamp), -- users.id as user_id, levels.id as level,
+  fal.uid, fal.lid,
+  fal.birthday as birthday, fal.gender as gender, fal.ethnicity as ethnicity,
+  fal.activity_type, fal.affiliated_studios,
+  fal.studio_nid,
+  -- studios.id as studio,
+  fal.studio_name as studio_name,
+  fal.challenge_title as challenge, fal.challenge_version as c_version, fal.level_number as l_no,
+  fal.artifact_nid,
+  -- artifacts.id as artifact_id,
+  fal.artifact_name as artifact_name, fal.artifact_url as artifact_url,
+  COALESCE(fal.is_team_artifact, 0) as 'team?',
+  fal.trigger_aid,
+  fal.school_nid,
+  -- schools.id as school_id,
+  fal.school_name as school_name,
+  fal.district_nid,
+  -- districts.id as district_id,
+  fal.district_name as district_name,
+  fal.is_idea_level,
+  fal.is_facilitator
+FROM `d7-fuse`.fuse_activity_log fal
+WHERE fal.aid > 28000000;
+-- RIGHT OUTER JOIN `fuse_laravel`.users users ON users.d7_id = fal.uid
+-- LEFT JOIN `fuse_laravel`.levels levels ON levels.d7_id = fal.lid
+-- LEFT JOIN `fuse_laravel`.studios studios ON studios.d7_id = fal.studio_nid
+-- LEFT JOIN `fuse_laravel`.artifacts artifacts ON artifacts.d7_id = fal.artifact_nid
+-- LEFT JOIN `fuse_laravel`.schools schools ON schools.d7_id = fal.school_nid
+-- LEFT JOIN `fuse_laravel`.districts districts ON districts.d7_id = fal.school_nid
+
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.users u ON log.d7_uid = u.d7_id
+SET log.user_id = u.id;
+
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.levels l ON log.d7_lid = l.d7_id
+SET log.level_id = l.id;
+
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.studios s ON log.d7_studio_nid = s.d7_id
+SET log.studio_id = s.id;
+
+-- Save Artifacts
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.artifacts a ON log.d7_artifact_nid = a.d7_id
+SET log.artifact_id = a.id;
+
+-- Complete Artifacts
+UPDATE `fuse_laravel`.activity_log log
+left JOIN `d7-fuse`.field_data_field_proof proof
+  ON proof.field_proof_nid = log.d7_artifact_nid
+RIGHT JOIN fuse_laravel.artifacts a
+  ON a.d7_id = proof.entity_id
+SET log.artifact_id = a.id;
+
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.schools s ON log.d7_school_nid = s.d7_id
+SET log.school_id = s.id;
+
+UPDATE `fuse_laravel`.activity_log log
+LEFT JOIN `fuse_laravel`.districts d ON log.d7_district_nid = d.d7_id
+SET log.district_id = d.id;
 
 --Drop temp D7 migration columns.
 -- ALTER TABLE `fuse_laravel`.users DROP d7_id;
@@ -1167,6 +1407,7 @@ WHERE fm.uri LIKE 'storage-api-public://%' AND fm.status = 1;
 -- ALTER TABLE `fuse_laravel`.idea_inspirations DROP d7_challenge_version_id;
 -- ALTER TABLE `fuse_laravel`.comments DROP d7_artifact_id;
 -- ALTER TABLE `fuse_laravel`.comments DROP d7_uid;
+-- ALTER TABLE `fuse_laravel`.comments MODIFY COLUMN artifact_id bigint(20) unsigned NOT NULL;
 -- ALTER TABLE `fuse_laravel`.comment_seen DROP d7_comment_id;
 -- ALTER TABLE `fuse_laravel`.comment_seen DROP d7_uid;
 -- ALTER TABLE `fuse_laravel`.partners DROP d7_id;
