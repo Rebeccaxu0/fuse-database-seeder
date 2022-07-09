@@ -509,9 +509,11 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasCompletedChallengeVersion(ChallengeVersion $challengeVersion): bool
+    public function hasCompletedChallengeVersion(?ChallengeVersion $challengeVersion): bool
     {
-        return $this->hasCompletedLevel($challengeVersion->levels->sortBy('level_number')->last());
+        return $challengeVersion
+            ? $this->hasCompletedLevel($challengeVersion->levels->sortBy('level_number')->last())
+            : false;
     }
 
     /**
