@@ -40,6 +40,11 @@ Route::get('/', function () {
     return redirect()->intended('dashboard');
 });
 
+// If someone hits 'refresh' on /logout that's a GET request
+Route::get('logout', function () {
+    return redirect('/');
+});
+
 /*
 |------------------------------------------------------------------------
 | Registration routes
