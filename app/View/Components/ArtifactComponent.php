@@ -7,10 +7,12 @@ use App\Models\ChallengeVersion;
 use App\Models\Idea;
 use App\Models\Studio;
 use Carbon\Carbon;
+use Filestack\Filelink;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
+use MediaUploader;
 
 class ArtifactComponent extends Component
 {
@@ -42,6 +44,16 @@ class ArtifactComponent extends Component
         $this->commentCount = $artifact->comments->count();
         if ($media = $artifact->firstMedia('file')) {
             $this->previewUrl = $media->getUrl();
+        }
+        else if ($artifact->filestack_handle) {
+            $fskey = config('filestack.api_key');
+            $filelink = new Filelink($artifact->filestack_handle, $fskey);
+            // TODO: replace following line
+            $this->previewUrl = 'https://cdn.filestackcontent.com/' . $artifact->filestack_handle;
+            // $path = $filelink->getMetaData()['path'];
+            // $media = MediaUploader::importPath('artifacts', $path);
+            // $artifact->attachMedia($media, 'file');
+            // $this->previewUrl = $media->getUrl();
         }
         else {
             // Get challenge/idea image.
