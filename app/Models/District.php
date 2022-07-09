@@ -160,10 +160,11 @@ class District extends Organization
             if (in_array($sf->id, $super_facilitator_ids)) {
                 $sf->districts()->detach($this);
                 Cache::forget("u{$sf->id}_studios");
-
-                // TODO: emit event to say a user associations have changed.
-                // event listener: “Oh you’re a super facilitator, but you’re not a member of district anymore?
-                // Then I guess you’re not a super facilitator anymore”
+                $sf->fresh();
+                if ($sf->districts->count() == 0) {
+                    $sf->roles()->detach(Role::SUPER_FACILITATOR_ID);
+                    Cache::forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, false);
+                }
             }
         }
     }
