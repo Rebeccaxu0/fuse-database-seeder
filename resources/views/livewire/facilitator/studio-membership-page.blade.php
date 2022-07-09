@@ -19,7 +19,7 @@
   <livewire:facilitator.remove-all-students-from-studio :studio="$studio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()]) }}</h2>
-  <div class="grid md:grid-cols-2 gap-4">
+  <div class="grid lg:grid-cols-2 gap-4">
     @forelse ($facilitators as $facilitator)
     <div class="border rounded-xl px-4 py-2 relative">
       <span class="font-bold">{{ $facilitator->full_name }}</span> <span>{{ $facilitator->name }}</span> <span>&lt;{{ $facilitator->email }}&gt;</span>

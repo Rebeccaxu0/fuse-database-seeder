@@ -22,7 +22,7 @@
         <x-form.textarea
             name="stuffYouNeed"
             label="Stuff You Need"
-            sublabel="ex. \'Chromebook, LED lights.\'"
+            sublabel="ex. 'Chromebook, LED lights.'"
             :value="old('stuffYouNeed')" />
         <x-form.textarea
             name="getStarted"
