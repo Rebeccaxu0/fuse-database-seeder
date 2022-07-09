@@ -21,7 +21,8 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        return view('student.challenges', ['studio' => Auth::user()->activeStudio]);
+        $challengeVersions = Auth::user()->activeStudio->activeChallenges();
+        return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
     /**
