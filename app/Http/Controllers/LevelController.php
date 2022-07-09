@@ -18,7 +18,10 @@ class LevelController extends Controller
      */
     public function index()
     {
-        $levels = Level::all()->sortBy('name');
+        $levels = Level::where('levelable_type', '<>', 'idea')
+            ->has('levelable')
+            ->get()
+            ->sortBy('name');
         return view('admin.level.index', ['levels' => $levels]);
     }
 

@@ -41,6 +41,11 @@ class EnsureActiveStudioIsAccurate
                 || ! $user->deFactoStudios()->contains($user->active_studio)) {
                 $user->active_studio = $user->deFactoStudios()->first()->id;
                 $user->save();
+                // User in request is stale and can cause errors.
+                // TODO: Ideally we update the user in the session/request and
+                // continue on our way but not sure how to do that.
+                // This resubmit could jack up POSTs.
+                return redirect($request->path());
             }
         }
 

@@ -20,6 +20,10 @@ class StudentRemoveFromStudioConfirm extends Component
 
     public function submit() {
         $this->studio->students()->detach($this->student);
+        if ($this->student->activeStudio->is($this->studio)) {
+            $this->student->activeStudio()->dissociate();
+            $this->student->save();
+        }
         Cache::forget("u{$this->student->id}_studios");
 
         $this->emitUp('updateStudents');

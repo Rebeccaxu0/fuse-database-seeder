@@ -35,8 +35,9 @@ class ArtifactController extends Controller
         // TODO: if we want to eager load 'level.levelable.challenge', we need
         // to refactor Ideas to have a dummy parent challenge.
         $artifacts = $user->artifacts()
+                          ->has('level.levelable')
                           ->with('level', 'level.levelable', 'comments', 'users', 'media')
-                          ->orderBy('id', 'desc')
+                          ->orderBy('created_at', 'desc')
                           ->paginate(12);
         return view('student.my_stuff', ['artifacts' => $artifacts, 'studio' => $user->activeStudio]);
     }
