@@ -17,6 +17,7 @@ params:
     google_client_secret: ${ssm:/laravel/google_client_secret}
     private_route_table_1a_id: ${ssm:/laravel/private_route_table_1a_id}
     private_subnet_1a_id: ${ssm:/laravel/private_subnet_1a_id}
+    private_subnet_1b_id: ${ssm:/laravel/private_subnet_1b_id}
     public_route_table_id: ${ssm:/laravel/public_route_table_id}
     public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
     vpc_id: ${ssm:/laravel/vpc_id}
@@ -103,8 +104,8 @@ functions:
         - !GetAtt ServerlessSecurityGroup.GroupId
         - ${ssm:/laravel/mysql_security_group_id}
       subnetIds:
-        - ${param:public_subnet_1a_id}
         - ${param:private_subnet_1a_id}
+        - ${param:private_subnet_1b_id}
 
   # This function lets us run artisan commands in Lambda
   artisan:
@@ -120,8 +121,8 @@ functions:
         - !GetAtt ServerlessSecurityGroup.GroupId
         - ${ssm:/laravel/mysql_security_group_id}
       subnetIds:
-        - ${param:public_subnet_1a_id}
         - ${param:private_subnet_1a_id}
+        - ${param:private_subnet_1b_id}
 
 plugins:
   - ./vendor/bref/bref
