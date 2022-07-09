@@ -143,7 +143,7 @@ class District extends Organization
             }
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                Cache::forget("u{$sfuser->id}_has_role_" . Role::SUPER_FACILITATOR_ID);
+                Cache::forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, true);
             }
         }
     }

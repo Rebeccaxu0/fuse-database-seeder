@@ -251,9 +251,9 @@ class School extends Organization
                 $facilitator = User::find($id);
                 $facilitator->schools()->attach($this);
                 Cache::forget("u{$id}_studios");
-                Cache::tags("u{$id}_roles")->flush();
                 if (! $facilitator->isFacilitator()) {
                     $facilitator->roles()->attach(Role::FACILITATOR_ID);
+                    Cache::forever("u{$id}_has_role_" . Role::FACILITATOR_ID, true);
                 }
             }
         }
@@ -271,10 +271,9 @@ class School extends Organization
             if (in_array($facilitator->id, $facilitatorIds)) {
                 $facilitator->schools()->detach($this);
                 Cache::forget("u{$facilitator->id}_studios");
-                // TODO: emit event to say a user associations have changed.
                 if ($facilitator->schools->count() == 0) {
                     $facilitator->roles()->detach(Role::FACILITATOR_ID);
-                    Cache::forget("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID);
+                    Cache::forever("u{$id}_has_role_" . Role::FACILITATOR_ID, false);
                 }
             }
         }
