@@ -79,7 +79,7 @@ class Studio extends Organization
      */
     public function activeFacilitators()
     {
-        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
+        return $this->school->activeUsers()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
@@ -89,7 +89,7 @@ class Studio extends Organization
      */
     public function facilitators()
     {
-        return $this->users()->whereHas('roles', function (Builder $query) {
+        return $this->school->users()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::FACILITATOR_ID);
         });
     }
@@ -99,7 +99,7 @@ class Studio extends Organization
      */
     public function activeSuperFacilitators()
     {
-        return $this->activeUsers()->whereHas('roles', function (Builder $query) {
+        return $this->school->district->activeUsers()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
         });
     }
@@ -109,7 +109,7 @@ class Studio extends Organization
      */
     public function superFacilitators()
     {
-        return $this->users()->whereHas('roles', function (Builder $query) {
+        return $this->school->district->users()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
         });
     }
@@ -168,8 +168,8 @@ class Studio extends Organization
      */
     public function activeChallenges()
     {
-        // return Cache::tags('packages')
-        //     ->remember("studio_{$this->id}_active_challenges", 300, function () {
+        return Cache::tags('packages')
+            ->remember("studio_{$this->id}_active_challenges", 300, function () {
                 // Only show challengeversions that are allowed by assigned package.
                 $challengeVersions = new Collection;
                 if ($this->deFactoPackage) {
@@ -182,7 +182,7 @@ class Studio extends Organization
                                               ->sortBy('name');
                 }
                 return $challengeVersions;
-            // });
+            });
     }
 
     /**
