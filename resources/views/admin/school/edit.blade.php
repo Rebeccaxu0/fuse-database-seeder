@@ -10,7 +10,7 @@
         <x-form.input label="Name" name="name" required="true" :value="old('name', $school->name)" />
         <div class="grid md:grid-cols-2 gap-x-4">
             <div>
-                <x-form.defaultdropdown label="Package" name="package" value="old('package', $school->package_id)"
+                <x-form.defaultdropdown label="Package" name="package" :value="old('package', $school->package_id)"
                     :inherited="$school->district ? $school->district->package : null" :list="$packages" />
             </div>
             <div>

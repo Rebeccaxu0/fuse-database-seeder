@@ -113,7 +113,7 @@
                         </td>
                         <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
-                            {{ $studio->package->name ??  __('Inherited') ?? __('No package set') }}
+                            {{ $studio->packageText }}
                             </p>
                         </td>
                         <td class="border-gray-200 text-sm">

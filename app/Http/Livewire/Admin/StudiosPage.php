@@ -39,7 +39,14 @@ class StudiosPage extends Component
     public function render()
     {
         if ($this->schoolId) {
-            $studios = Studio::with('package')
+            $studios = Studio::with(
+                [
+                    'package',
+                    'school',
+                    'school.package',
+                    'school.district',
+                    'school.district.package',
+                ])
                 ->whereHas('school', function (Builder $query) {
                     $query->where('id', $this->schoolId);
                 })
@@ -48,6 +55,23 @@ class StudiosPage extends Component
         }
         else {
             $studios = Studio::orderBy('name')->paginate(15);
+        }
+        foreach ($studios as $studio) {
+            if (! $studio->package) {
+                if ($studio->school->package) {
+                    $studio->packageText = "{$studio->school->package->name} (Inherited)";
+                }
+                else if ($studio->school->district->package) {
+                    $studio->packageText = "{$studio->school->district->package->name} (Inherited)";
+                }
+                else {
+                    'NO PACKAGE!';
+                }
+            }
+            else
+            {
+                $studio->packageText = $studio->package->name;
+            }
         }
         return view('livewire.admin.studios-page', ['studios' => $studios]);
     }

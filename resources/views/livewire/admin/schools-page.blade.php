@@ -81,7 +81,7 @@
                         @endif
                         <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
-                                {{ $school->package->name ?? __('No package set') }}
+                                {{ $school->packageText }}
                             </p>
                         </td>
                         <td class="border-gray-200 text-sm">
