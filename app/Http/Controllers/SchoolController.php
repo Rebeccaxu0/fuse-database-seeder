@@ -105,7 +105,7 @@ class SchoolController extends Controller
             $school->gradelevels()->attach($validated['gradelevels']);
         }
 
-        return redirect(route('admin.schools.index', ['district' => $school->district->id]));
+        return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
     /**
      * Display the specified resource.
@@ -170,11 +170,7 @@ class SchoolController extends Controller
             School::destroy($school);
         }
 
-        $params = [];
-        if ($school->district) {
-            $params = ['district' => $school->district->id];
-        }
-        return redirect(route('admin.schools.index', $params));
+        return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
     /**
      * Remove the specified resource from storage.

@@ -100,7 +100,7 @@ class StudioController extends Controller
         $studio->package()->associate($request->package);
         $studio->save();
 
-        return redirect(route('admin.studios.index'));
+        return redirect(route('admin.studios.index', ['school' => $studio->school->id]));
     }
 
     /**
