@@ -44,6 +44,8 @@ class AlumRegistration extends Component
         $user = Auth::user();
         $user->studios()->attach($this->studio->id);
         $user->activeStudio()->associate($this->studio);
+        Log::channel('fuse_activity_log')
+            ->info('studio_add', ['user' => $user, 'studio' => $this->studio]);
         Cache::forget("u{$user->id}_studios");
         return redirect(RouteServiceProvider::HOME);
     }

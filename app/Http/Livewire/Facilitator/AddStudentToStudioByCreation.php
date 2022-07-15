@@ -45,6 +45,8 @@ class AddStudentToStudioByCreation extends Component
         $this->student->active_studio = $this->studio->id;
         $this->student->save();
         $this->student->studios()->attach($this->studio->id);
+        Log::channel('fuse_activity_log')
+            ->info('studio_add', ['user' => $this->student, 'studio' => $this->studio]);
 
         $this->initializeStudent();
         $this->reset(['password', 'password_confirmation', 'permission']);

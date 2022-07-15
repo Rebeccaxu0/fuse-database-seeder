@@ -52,6 +52,8 @@ class CreateNewUser implements CreatesNewUsers
         }
         $newuser = User::create($userValues);
         $newuser->studios()->attach($studio->id);
+        Log::channel('fuse_activity_log')
+            ->info('studio_add', ['user' => $newuser, 'studio' => $studio]);
         return $newuser;
     }
 }

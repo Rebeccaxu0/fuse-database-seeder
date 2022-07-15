@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Support\Facades\Log;
 
 class Level extends Model
 {
@@ -214,16 +215,18 @@ class Level extends Model
         return $user->hasCompletedLevel($this);
     }
 
-    public function start(User $user): bool
+    public function start(User $user): Start|bool
     {
       if ($this->isStartable($user)) {
-        Start::firstOrCreate([
+        $start = Start::firstOrCreate([
             'level_id' => $this->id,
             'user_id' => $user->id,
         ]);
+        Log::channel('fuse_activity_log')
+            ->info('start_level', ['user' => $user, 'level' => $this]);
         Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 3600);
         Cache::forever("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this);
-        return true;
+        return $start;
       }
       return false;
     }

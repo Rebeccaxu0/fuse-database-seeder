@@ -40,6 +40,8 @@ class JoinStudioForm extends Component
             $user = Auth::user();
             $user->studios()->attach($studio->id);
             $user->activeStudio()->associate($studio);
+            Log::channel('fuse_activity_log')
+                ->info('studio_add', ['user' => $user, 'studio' => $studio]);
             Cache::forget("u{$user->id}_studios");
 
             return redirect(request()->header('Referer'));

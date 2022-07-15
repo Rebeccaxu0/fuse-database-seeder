@@ -10,6 +10,7 @@ use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class StudioController extends Controller
 {
@@ -126,8 +127,14 @@ class StudioController extends Controller
     {
         $this->authorize('switch', $studio);
 
-        Auth::user()->active_studio = $studio->id;
-        Auth::user()->save();
+        $user = Auth::user();
+        $user->activeStudio()->associate($studio);
+        $user->save();
+        Log::channel('fuse_activity_log')
+            ->info('current_studio_change', [
+                'user' => $user,
+                'studio' => $studio,
+            ]);
 
         return redirect(request()->header('Referer'));
     }

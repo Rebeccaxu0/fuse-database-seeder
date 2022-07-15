@@ -41,6 +41,12 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'fuse_activity_log' => [
+            'driver' => 'custom',
+            'handler' => App\Logging\FUSEActivityLogHandler::class,
+            'via' => App\Logging\FUSEActivityLogger::class,
+            'level' => 'info',
+        ],
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

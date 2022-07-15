@@ -11,6 +11,7 @@ use Filestack\Filelink;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 // use Illuminate\Validation\Rule;
@@ -277,6 +278,28 @@ class LevelSaveOrCompleteForm extends Component
         }
         $artifact->save();
         $artifact->users()->saveMany($team);
+        $level = Level::find($validated['lid']);
+        $is_team_artifact = (bool) (count($team) > 1);
+        foreach ($team as $teammate) {
+            if (! $teammate->hasStartedLevel($level)) {
+                $start = $level->start($teammate);
+                $start->created_at = $start->created_at->subSecond();
+                $start->save;
+            }
+            if ($validated['type'] == 'save') {
+                $action = 'save_level';
+            }
+            else {
+                $action = 'completed_level';
+            }
+            Log::channel('fuse_activity_log')
+                ->info($action, [
+                    'user' => $teammate,
+                    'level' => Level::find($validated['lid']),
+                    'artifact' => $artifact,
+                    'is_team_artifact' => $is_team_artifact,
+                ]);
+        }
         if (! $artifact->url) {
             if ($artifact->filestack_handle) {
                 $fskey = config('filestack.api_key');

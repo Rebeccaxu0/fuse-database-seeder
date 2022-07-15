@@ -287,7 +287,6 @@ class User extends Authenticatable
     public function activeStudio()
     {
         return $this->belongsTo(Studio::class, 'active_studio');
-        // return Studio::find($this->active_studio);
     }
 
     /**

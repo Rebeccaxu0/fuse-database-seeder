@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Auth\SocialiteProviders\Clever\CleverExtendSocialite;
 use App\Listeners\RestoreImpersonatorPassword;
 use App\Listeners\SaveImpersonatorPassword;
+use App\Listeners\UserEventSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -34,6 +35,14 @@ class EventServiceProvider extends ServiceProvider
         ],
     ];
 
+    /**
+     * The event subscriber mappings for the application.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        UserEventSubscriber::class,
+    ];
     /**
      * Register any events for your application.
      *
