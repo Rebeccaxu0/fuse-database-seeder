@@ -221,7 +221,7 @@ class Level extends Model
             'level_id' => $this->id,
             'user_id' => $user->id,
         ]);
-        Cache::put("u{$user->id}_has_started_level_{$this->id}", true);
+        Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 3600);
         Cache::forever("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this);
         return true;
       }

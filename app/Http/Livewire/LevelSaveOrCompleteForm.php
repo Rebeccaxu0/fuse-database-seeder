@@ -298,7 +298,7 @@ class LevelSaveOrCompleteForm extends Component
             $statusMsg = __('Level completed!');
             $level = Level::find($validated['lid']);
             foreach ($team as $teammate) {
-                Cache::forget("u{$teammate->id}_has_completed_level_{$level->id}");
+                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true, 3600);
             }
             if ($level->next()) {
                 $params = [

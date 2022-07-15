@@ -464,7 +464,7 @@ class User extends Authenticatable
     {
         $class = class_basename($levelable::class);
         $cacheKey = "u{$this->id}_last_activity_on_{$class}_{$levelable->id}";
-        return Cache::remember($cacheKey, 30, function () use ($levelable) {
+        return Cache::remember($cacheKey, 3600, function () use ($levelable) {
             $mostRecent = $base = Carbon::createFromDate(2000, 1, 1);
             foreach ($levelable->levels as $level) {
                 if ($artifact = $level->mostRecentArtifact($this)) {

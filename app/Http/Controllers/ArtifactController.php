@@ -99,9 +99,9 @@ class ArtifactController extends Controller
         foreach ($team as $teammate) {
             Cache::forever("u{$teammate->id}_current_level_on_levelable_{$level->levelable->id}", $level);
             if ($validated['type'] == 'complete') {
-                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true);
+                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true, 3600);
                 if ($next = $level->next()) {
-                    Cache::put("u{$teammate->id}_can_start_level_{$next->id}", true);
+                    Cache::put("u{$teammate->id}_can_start_level_{$next->id}", true, 3600);
                 }
             }
         }
