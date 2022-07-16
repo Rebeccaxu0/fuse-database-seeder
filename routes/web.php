@@ -54,8 +54,8 @@ Route::get('logout', function () {
 Route::get('registrationlobby', function () {
     return view('auth.registrationlobby');
 })
-    ->name('registrationlobby')
-    ->middleware('guest');
+    ->middleware('guest')
+    ->name('registrationlobby');
 
 // Alumni user lobby.
 Route::get('registeredlobby', function () {
