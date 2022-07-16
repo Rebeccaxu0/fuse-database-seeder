@@ -4,7 +4,7 @@
         + heartbeat endpoint on separate server
         + put fetch on background thread (web/service worker) --}}
     <script>
-        setInterval(() => fetch('/heartbeat'), 300000);
+        // setInterval(() => fetch('/heartbeat'), 300000);
     </script>
 @endpush
 
