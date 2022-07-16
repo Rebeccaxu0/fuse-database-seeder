@@ -19,24 +19,6 @@
     window.addEventListener('scroll', scrollProgressBar);
     window.addEventListener('resize', scrollProgressBar);
 
-    function setArtifactFormType(type) {
-            if (type == 'save') {
-                    document.getElementById('save_type').checked = true;
-                    document.getElementById('complete_type').checked = false;
-                }
-            else if (type == 'complete') {
-                    document.getElementById('save_type').checked = false;
-                    document.getElementById('complete_type').checked = true;
-                }
-        }
-    const saveBtnTop = document.getElementById('save-btn-top');
-    const completeBtnTop = document.getElementById('complete-btn-top');
-    const saveBtnBottom = document.getElementById('save-btn-bottom');
-    const completeBtnBottom = document.getElementById('complete-btn-bottom');
-    saveBtnTop.addEventListener('click', function() { setArtifactFormType('save')}, false);
-    saveBtnBottom.addEventListener('click', function() { setArtifactFormType('save')}, false);
-    completeBtnTop.addEventListener('click', function() { setArtifactFormType('complete')}, false);
-    completeBtnBottom.addEventListener('click', function() { setArtifactFormType('complete')}, false);
 </script>
 @endpush
 
@@ -100,12 +82,12 @@
                 <a href="#save-complete"
                    id="save-btn-top"
                    class="btn"
-                   @click="saveCompleteFormOpen = true"
+                   @click="saveCompleteFormOpen = true; Livewire.emit('setType', 'save')"
                    >{{ __('Save') }}</a>
                 <a href="#save-complete"
                    id="complete-btn-top"
                    class="btn"
-                   @click="saveCompleteFormOpen = true"
+                   @click="saveCompleteFormOpen = true; Livewire.emit('setType', 'complete')"
                    >{{ __('Complete') }}</a>
                 </div>
                     <div x-show="saveCompleteFormOpen"
@@ -186,12 +168,12 @@
                 <a href="#save-complete"
                    id="save-btn-bottom"
                    class="btn"
-                   @click="saveCompleteFormOpen = true"
+                   @click="saveCompleteFormOpen = true; Livewire.emit('setType', 'save')"
                    >{{ __('Save') }}</a>
                 <a href="#save-complete"
                    id="complete-btn-bottom"
                    class="btn"
-                   @click="saveCompleteFormOpen = true"
+                   @click="saveCompleteFormOpen = true; Livewire.emit('setType', 'complete')"
                    >{{ __('Complete') }}</a>
             </div>
         </div>

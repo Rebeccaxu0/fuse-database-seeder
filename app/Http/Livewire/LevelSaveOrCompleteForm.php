@@ -47,7 +47,13 @@ class LevelSaveOrCompleteForm extends Component
         'filestackUploadDeleted',
         'makePreviewImage',
         'removePreview',
+        'setType',
     ];
+
+    public function setType($val)
+    {
+        $this->type = $val;
+    }
 
     public function filestackUploadComplete()
     {
