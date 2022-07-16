@@ -5,13 +5,13 @@
         {{ __('Javascript required') }}
     </div>
     <a class="float-right cursor-pointer"
-       @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+       @click="saveCompleteFormOpen = false"
        ><x-icon icon="x-circle" /></a>
     <input type="hidden" id="lid" name="lid" value="{{ $lid }}" />
     @error('lid')
     <div class="alert">{{ $message }}</div>
     @enderror
-    <div class="w-full my-2">
+    <div class="w-full mt-6 mb-2">
         <div x-show="previewOpen"
              x-transition:enter="transition ease-out duration-500"
              x-transition:enter-start="opacity-0 scale-50"

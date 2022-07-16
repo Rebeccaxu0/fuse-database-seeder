@@ -29,10 +29,14 @@
                     document.getElementById('complete_type').checked = true;
                 }
         }
-    const saveBtn = document.getElementById('save-btn');
-    const completeBtn = document.getElementById('complete-btn');
-    saveBtn.addEventListener('click', function() { setArtifactFormType('save')}, false);
-    completeBtn.addEventListener('click', function() { setArtifactFormType('complete')}, false);
+    const saveBtnTop = document.getElementById('save-btn-top');
+    const completeBtnTop = document.getElementById('complete-btn-top');
+    const saveBtnBottom = document.getElementById('save-btn-bottom');
+    const completeBtnBottom = document.getElementById('complete-btn-bottom');
+    saveBtnTop.addEventListener('click', function() { setArtifactFormType('save')}, false);
+    saveBtnBottom.addEventListener('click', function() { setArtifactFormType('save')}, false);
+    completeBtnTop.addEventListener('click', function() { setArtifactFormType('complete')}, false);
+    completeBtnBottom.addEventListener('click', function() { setArtifactFormType('complete')}, false);
 </script>
 @endpush
 
@@ -92,10 +96,18 @@
                 <h2 class="text-black text-lg font-bold">{{ __('How to Complete This Level') }}</h2>
                 {!! $fields['how_to_complete_desc'] !!}
                 <a name="save-complete"></a>
-                    <a href="#save-complete"
-                       class="btn"
-                       @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
-                       >{{ __('Save or Complete') }}</a>
+                <div>
+                <a href="#save-complete"
+                   id="save-btn-top"
+                   class="btn"
+                   @click="saveCompleteFormOpen = true"
+                   >{{ __('Save') }}</a>
+                <a href="#save-complete"
+                   id="complete-btn-top"
+                   class="btn"
+                   @click="saveCompleteFormOpen = true"
+                   >{{ __('Complete') }}</a>
+                </div>
                     <div x-show="saveCompleteFormOpen"
                          x-transition:enter="transition ease-out duration-500"
                          x-transition:enter-start="opacity-0 scale-50"
@@ -172,14 +184,14 @@
             </div>
             <div class="flex-1 flex">
                 <a href="#save-complete"
-                   id="save-btn"
+                   id="save-btn-bottom"
                    class="btn"
-                   @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+                   @click="saveCompleteFormOpen = true"
                    >{{ __('Save') }}</a>
                 <a href="#save-complete"
-                   id="complete-btn"
+                   id="complete-btn-bottom"
                    class="btn"
-                   @click="saveCompleteFormOpen = ! saveCompleteFormOpen"
+                   @click="saveCompleteFormOpen = true"
                    >{{ __('Complete') }}</a>
             </div>
         </div>

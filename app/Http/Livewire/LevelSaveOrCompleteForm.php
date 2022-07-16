@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-// use Illuminate\Validation\Rule;
 use Livewire\Component;
 use MediaUploader;
 
@@ -142,9 +141,9 @@ class LevelSaveOrCompleteForm extends Component
      */
     public function makePreviewImage(string $type, array $details)
     {
-        // If there's a valid preview, hide upload inputs.
+        // If there's a valid file preview, hide file upload inputs.
         $this->uploadCodeDisappear = true;
-        $this->urlDisappear = true;
+        $this->urlDisappear = ! array_key_exists('url', $details);
         $this->emit('filestackDisappear');
 
         $fskey = config('filestack.api_key');
@@ -281,6 +280,8 @@ class LevelSaveOrCompleteForm extends Component
         $level = Level::find($validated['lid']);
         $is_team_artifact = (bool) (count($team) > 1);
         foreach ($team as $teammate) {
+            $teammate->currentLevel()->associate($level);
+            $teammate->save();
             if (! $teammate->hasStartedLevel($level)) {
                 $start = $level->start($teammate);
                 $start->created_at = $start->created_at->subSecond();

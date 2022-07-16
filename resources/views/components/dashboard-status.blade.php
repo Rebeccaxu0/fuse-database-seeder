@@ -3,6 +3,7 @@
     {{ __('Try a new challenge') }}
   @else
   <div class="text-xs">{{ __('You last worked on:') }}</div>
+  <h3 class="text-white">{{ $mostRecent }}</h3>
   @endif
   <a href="{{ $buttonLink }}" class="btn">
     {{ $buttonText }}

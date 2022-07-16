@@ -10,6 +10,7 @@ use Illuminate\View\Component;
 class DashboardStatus extends Component
 {
     public bool $explore = false;
+    public string $mostRecent;
     public string $buttonLink;
     public string $buttonText;
 
@@ -51,7 +52,7 @@ class DashboardStatus extends Component
         if ($user->currentLevel) {
             $level = $user->currentLevel;
             // If the Current Level is completed...
-            if ($level->iscompleted($user)) {
+            if ($level->isCompleted($user)) {
                 // If there is a startable next level, allow the user to start/continue it.
                 if ($level->next() && $level->next()->isStartable($user)) {
                     $this->start($level->next(), $user);
@@ -94,18 +95,27 @@ class DashboardStatus extends Component
     private function continue(Level $level)
     {
         if ($level->levelable::class === Idea::class) {
+            $this->mostRecent = $level->levelable->name;
             $this->buttonText = __('Continue working on your Idea');
             $this->buttonLink = route('student.idea', [$level->levelable]);
         }
         else {
-            $this->buttonText = __('Continue current level');
+            $this->mostRecent = __(':challenge Level :number', [
+                'challenge' => $level->levelable->challenge->name,
+                'number' => $level->level_number,
+            ]);
+            $this->buttonText = __('Continue');
             $this->buttonLink = route('student.level', [$level->levelable, $level]);
         }
     }
 
     private function start(Level $level, User $user)
     {
-        $this->buttonText = __('Start the next level');
+        $this->mostRecent = __(':challenge Level :number', [
+            'challenge' => $level->levelable->challenge->name,
+            'number' => $level->level_number,
+        ]);
+        $this->buttonText = __('Start next level');
         if ($user->hasStartedLevel($level)) {
             // If previously started, just link to the level.
             $this->buttonLink = route('student.level', [$level->levelable, $level]);
