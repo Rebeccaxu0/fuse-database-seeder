@@ -9,7 +9,7 @@
                 </div>
             </div>
         </button>
-        {{-- <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" /> --}}
+        <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" />
         <button wire:click="$set('showModalFlag', true)">
             <h4 class="font-semibold text-fuse-teal-dk text-xl">
                 {{ $challengeVersion->challenge->name }}
