@@ -310,7 +310,7 @@ class User extends Authenticatable
      */
     public function isRoot(): bool
     {
-        return (bool) $this->roles()->where('role_id', ROLE::ROOT_ID)->count();
+        return (bool) $this->roles()->where('role_id', Role::ROOT_ID)->count();
     }
 
     /**
@@ -329,7 +329,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->hasRole(ROLE::ADMIN_ID);
+        return $this->hasRole(Role::ADMIN_ID);
     }
 
     /**
@@ -337,7 +337,7 @@ class User extends Authenticatable
      */
     public function isReportViewer(): bool
     {
-        return $this->hasRole(ROLE::REPORT_VIEWER_ID);
+        return $this->hasRole(Role::REPORT_VIEWER_ID);
     }
 
     /**
@@ -345,7 +345,7 @@ class User extends Authenticatable
      */
     public function isChallengeAuthor(): bool
     {
-        return $this->hasRole(ROLE::CHALLENGE_AUTHOR_ID);
+        return $this->hasRole(Role::CHALLENGE_AUTHOR_ID);
     }
 
     /**
@@ -353,7 +353,7 @@ class User extends Authenticatable
      */
     public function isSuperFacilitator(): bool
     {
-        return $this->hasRole(ROLE::SUPER_FACILITATOR_ID);
+        return $this->hasRole(Role::SUPER_FACILITATOR_ID);
     }
 
     /**
@@ -361,7 +361,7 @@ class User extends Authenticatable
      */
     public function isPreSuperFacilitator(): bool
     {
-        return $this->hasRole(ROLE::PRE_SUPER_FACILITATOR_ID);
+        return $this->hasRole(Role::PRE_SUPER_FACILITATOR_ID);
     }
 
     /**
@@ -369,7 +369,7 @@ class User extends Authenticatable
      */
     public function isFacilitator(): bool
     {
-        return $this->hasRole(ROLE::FACILITATOR_ID);
+        return $this->hasRole(Role::FACILITATOR_ID);
     }
 
     /**
@@ -377,7 +377,7 @@ class User extends Authenticatable
      */
     public function isPreFacilitator(): bool
     {
-        return $this->hasRole(ROLE::PRE_FACILITATOR_ID);
+        return $this->hasRole(Role::PRE_FACILITATOR_ID);
     }
 
     /**
@@ -397,7 +397,7 @@ class User extends Authenticatable
      */
     public function isAnonymousStudent()
     {
-        return $this->hasRole(ROLE::ANONYMOUS_STUDENT_ID);
+        return $this->hasRole(Role::ANONYMOUS_STUDENT_ID);
     }
 
     /**
