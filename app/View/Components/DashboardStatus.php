@@ -10,7 +10,7 @@ use Illuminate\View\Component;
 class DashboardStatus extends Component
 {
     public bool $explore = false;
-    public string $mostRecent;
+    public string $mostRecent = '';
     public string $buttonLink;
     public string $buttonText;
 
