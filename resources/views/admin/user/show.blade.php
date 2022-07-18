@@ -18,10 +18,11 @@
     </div>
     @if (! $studioMember)
         <div>
+            <span class="font-bold">Studios:</span>
             @if ($active)
             Alum Member
             @else
-            No Activity (Abandoned SSO?)
+            No studio affiliation and no activity (Abandoned SSO?)
             @endif
         </div>
     @else
@@ -63,7 +64,7 @@
         <button class="btn">
             Make User an Admin
         </button>
-        NB - This will add the role \'admin\' and remove all other roles.
+        NB - This will add the role 'admin' and remove all other roles.
     </form>
     <form action="{{ route('admin.users.destroy', ['user' => $user]) }}" method="POST">
         @method('DELETE')
