@@ -138,7 +138,31 @@ class User extends Authenticatable
      */
     protected function defaultProfilePhotoUrl()
     {
-        return asset('/img/default_avatar.jpg');
+        switch ($this->id % 6) {
+        case 0:
+            $icon = 'drop-brown.svg';
+            break;
+
+        case 1:
+            $icon = 'drop-emerald.svg';
+            break;
+
+        case 2:
+            $icon = 'drop-orange.svg';
+            break;
+
+        case 3:
+            $icon = 'drop-teal.svg';
+            break;
+
+        case 4:
+            $icon = 'drop-violet.svg';
+            break;
+
+        default:
+            $icon = 'drop-green.svg';
+        }
+        return asset("/img/{$icon}");
     }
 
     /**

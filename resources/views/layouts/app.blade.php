@@ -26,11 +26,11 @@
             <h1 class="flex items-center text-fuse-teal-dk text-4xl font-black font-display max-w-7xl m-0 py-0 px-4 sm:px-6 lg:px-8">
                 <span class="relative mr-2">
                 <x-avatar :user="auth()->user()" class="h-16 w-16" />
-                @if (! auth()->user()->profile_photo_path)
+                    {{-- @if (! auth()->user()->profile_photo_path)
                     <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                         <livewire:customize-avatar-modal :user="auth()->user()" />
                     </div>
-                @endif
+                    @endif --}}
                 </span>
                 {{ $header }}
             </h1>
