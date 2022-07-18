@@ -6,6 +6,7 @@ use App\Models\Studio;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class AlumRegistration extends Component
@@ -42,7 +43,7 @@ class AlumRegistration extends Component
     public function join()
     {
         $user = Auth::user();
-        $user->studios()->attach($this->studio->id);
+        $user->studios()->syncWithoutDetaching($this->studio->id);
         $user->activeStudio()->associate($this->studio);
         Log::channel('fuse_activity_log')
             ->info('studio_add', ['user' => $user, 'studio' => $this->studio]);

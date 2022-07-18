@@ -17,7 +17,7 @@
                     <div>
                         <form wire:submit.prevent="codecheck" onkeydown="return event.key != 'Enter';">
                             <h3>{{ __('Please enter your Studio Code') }}</h3>
-                            <input type="text" class="border-2 border-gray-200 shadow-md rounded block h-10 w-1/3 text-slate-500 w-64 p-2 m-4" name="studio_code" id="studio_code" placeholder="{{ __('TINY WIRE 178') }}" wire:model="studioCode" wire:keyup.debounce.600ms="codecheck" />
+                            <input type="text" class="border-2 border-gray-200 shadow-md rounded block h-10 text-slate-500 w-64 p-2 m-4" name="studio_code" id="studio_code" placeholder="{{ __('TINY WIRE 178') }}" wire:model="studioCode" wire:keyup.debounce.600ms="codecheck" />
                             @error('studioCode')
                             <span class="text-red-500">
                                 {{ $message }}
