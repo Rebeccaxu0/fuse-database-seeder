@@ -17,7 +17,9 @@ class AnnouncementController extends Controller
     public function index()
     {
         $announcements = Announcement::all();
-        return view('admin.announcement.index', ['announcements' => $announcements]);
+        return view('admin.announcement.index', [
+            'announcements' => $announcements,
+        ]);
     }
 
     /**

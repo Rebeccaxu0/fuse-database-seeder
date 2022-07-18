@@ -1,7 +1,7 @@
 <x-app-layout>
-    <x-slot name="title">Announcements</x-slot>
+    <x-slot name="title">{{ __('Announcements') }}</x-slot>
 
-    <x-slot name="header">Announcements</x-slot>
+    <x-slot name="header">{{ __('Announcements') }}</x-slot>
 
     <a href="{{ route('admin.announcements.create') }}">
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Make new Announcement</button>
@@ -10,9 +10,9 @@
     <table>
         <thead>
             <tr>
-                <th>Type</th>
-                <th>Details</th>
-                <th>Actions</th>
+                <th>{{ __('Type') }}</th>
+                <th>{{ __('Details') }}</th>
+                <th>{{ __('Actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,16 +21,16 @@
                 <td class="text-white announcement-tag {{ $announcement->type }}">{{ $announcement->type }}</td>
                 <td>
                     <div>
-                        <span class="font-bold">Start:</span> {{ $announcement->start_at }}
+                        <span class="font-bold">{{ __('Start:') }}</span> {{ $announcement->start_at->format('g:i A l, F dS, Y') }}
                     </div>
                     <div>
-                        <span class="font-bold">End:</span> {{ $announcement->end_at }}
+                        <span class="font-bold">{{ __('End:') }}</span> {{ $announcement->end_at->format('g:i A l, F dS, Y') }}
                     </div>
                     <div>
-                        <span class="font-bold">Link:</span> @if ($announcement->url) {{ $announcement->url }} @else <none> @endif
+                        <span class="font-bold">{{ __('Link:') }}</span> {{ $announcement->url ? $announcement->url : __('<none>') }}
                     </div>
                     <div>
-                        <span class="font-bold">Message:</span> {{ $announcement->body }}
+                        <span class="font-bold">{{ __('Message:') }}</span> {{ $announcement->body }}
                 <td>
                     <a href="{{ route('admin.announcements.edit', $announcement->id) }}">
                         <button><x-icon icon="edit" width=25 height=25 class="ml-2 text-black" /></button>
