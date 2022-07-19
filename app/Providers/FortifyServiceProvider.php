@@ -9,9 +9,12 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Fortify;
 use Selfsimilar\D7Password\Facades\D7Password as D7Hash;
 
@@ -24,8 +27,18 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // This is just here to facilitate debugging why login intermittently
+        // doesn't redirect properly and leaves a body stranded on the login
+        // page with a stale form that throws a 419 on resubmit.
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            public function toResponse($request)
+            {
+                Log::debug('Login Redirect for user ' . Auth::user()->name);
+                return redirect('/dashboard');
+            }
+        });
     }
+
     /**
      * Bootstrap any application services.
      *
