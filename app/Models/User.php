@@ -516,7 +516,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function startedChallengeVersion(ChallengeVersion $challengeVersion): bool
+    public function hasStartedChallengeVersion(ChallengeVersion $challengeVersion): bool
     {
         foreach ($challengeVersion->levels as $level) {
             if ($this->hasStartedLevel($level)) {

@@ -19,9 +19,9 @@ class ExploreTile extends Component
     {
         $activeChallengeVersions = $user->activeStudio->activeChallenges();
         $this->total = $activeChallengeVersions->count();
-        $this->started = $user->startedChallengeVersions()
-                              ->intersect($activeChallengeVersions)
-                              ->count();
+        $this->started = $activeChallengeVersions
+            ->filter(fn($cv, $key) => $user->hasStartedChallengeVersion($cv))
+            ->count();
     }
 
     /**
