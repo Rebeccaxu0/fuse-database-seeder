@@ -293,6 +293,7 @@ class User extends Authenticatable
                         ->get()
                         ->unique()
                         ->map(fn($level, $key) => $level->levelable)
+                        ->filter(fn($val) => ! is_null($val->id))
                         ->unique();
         });
     }
