@@ -45,6 +45,7 @@ class UserEditModal extends Component
             ],
             'user.full_name' => 'required|string',
             'user.email' => [
+                'nullable',
                 'email',
                 Rule::unique('users', 'email')->ignore($this->user->id),
             ],

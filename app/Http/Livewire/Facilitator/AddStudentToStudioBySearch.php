@@ -6,6 +6,7 @@ use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class AddStudentToStudioBySearch extends Component
@@ -17,6 +18,12 @@ class AddStudentToStudioBySearch extends Component
     public function add(User $student)
     {
         $this->studio->students()->attach($student);
+        if (! $student->activeStudio) {
+            $student->activeStudio()->associate($this->studio);
+            $student->save();
+        }
+        Log::channel('fuse_activity_log')
+            ->info('studio_add', ['user' => $student, 'studio' => $this->studio]);
         Cache::forget("u{$student->id}_studios");
         $this->search = '';
         $this->emitUp('updateStudents');

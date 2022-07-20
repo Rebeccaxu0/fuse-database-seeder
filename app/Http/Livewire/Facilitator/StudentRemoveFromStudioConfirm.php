@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Facilitator;
 use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class StudentRemoveFromStudioConfirm extends Component
@@ -20,7 +21,7 @@ class StudentRemoveFromStudioConfirm extends Component
 
     public function submit() {
         $this->student->studios()->detach($this->studio->id);
-        if ($this->student->activeStudio->is($this->studio)) {
+        if ($this->student->activeStudio && $this->student->activeStudio->is($this->studio)) {
             $this->student->activeStudio()->dissociate();
             $this->student->save();
         }

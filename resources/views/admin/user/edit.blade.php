@@ -9,7 +9,7 @@
         @csrf
         <x-form.input label="Username" name="name" required="true" :value="old('name', $user->name)" />
         <x-form.input label="Full Name" name="fullName" required="true" :value="old('fullName', $user->full_name)" />
-        <x-form.input label="Email" name="email" required="false" :value="old('email', $user->email)" />
+        <x-form.input label="Email" name="email" :value="old('email', $user->email)" />
         <div>
             <label for="password">Password</label>
             <input type="password" name="password" id="password" />
