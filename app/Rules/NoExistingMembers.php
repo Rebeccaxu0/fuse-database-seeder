@@ -18,7 +18,7 @@ class NoExistingMembers implements InvokableRule
     public function __invoke($attribute, $value, $fail)
     {
         $studio = Studio::where('join_code', $value)->first();
-        if ($studio && auth()->user()->deFactoStudios()->contains($studio)) {
+        if ($studio && auth()->user() && auth()->user()->deFactoStudios()->contains($studio)) {
             $fail(__('You are already a member of :studio', ['studio' => $studio->name]));
         }
     }
