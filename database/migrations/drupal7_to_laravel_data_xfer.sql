@@ -844,6 +844,8 @@ WHERE u.uid <> 0
 AND u.uid != 96176
 ORDER BY u.uid;
 
+-- TODO: Import SSO connections
+
 -- Assign roles to non-students.
 -- Role map --
 -- name              | Drupal ID | Laravel ID

@@ -26,8 +26,10 @@ class UploadCode implements Rule
      */
     public function passes($attribute, $value)
     {
-        // TODO: call out to FUSE mobile Uploader API to validate code.
-        return true;
+        $response = Http::acceptJson()
+            ->get('https://api.fusestudio.net/validate/' . urlencode($value));
+        return $response->ok()
+            && $response->json()['status'] == 'ready';
     }
 
     /**
