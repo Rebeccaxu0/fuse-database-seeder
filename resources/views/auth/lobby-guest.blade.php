@@ -2,5 +2,5 @@
     <x-slot name="title">{{ __('Lobby') }}</x-slot>
     <x-slot name="login">true</x-slot>
 
-    <livewire:registration />
+    <livewire:lobby />
 </x-guest-layout>

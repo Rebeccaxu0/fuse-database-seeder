@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class AlumLayout extends Component
+class LobbyAuthLayout extends Component
 {
     /**
      * Get the view / contents that represents the component.
@@ -13,6 +13,6 @@ class AlumLayout extends Component
      */
     public function render()
     {
-        return view('layouts.alum');
+        return view('layouts.lobby-auth');
     }
 }

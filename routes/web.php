@@ -50,19 +50,24 @@ Route::get('logout', function () {
 | Registration routes
 |------------------------------------------------------------------------
 */
-// Manual new user lobby.
-Route::get('registrationlobby', function () {
-    return view('auth.registrationlobby');
+// Lobby.
+Route::get('lobby', function () {
+    if (auth()->user()) {
+        if (auth()->user()->deFactoStudios()->count() == 0) {
+            return view('auth.lobby-auth');
+        }
+        else {
+            return redirect()->intended('dashboard');
+        }
+    }
+    else {
+        return view('auth.lobby-guest');
+    }
 })
-    ->middleware('guest')
-    ->name('registrationlobby');
-
-// Alumni user lobby.
-Route::get('registeredlobby', function () {
-    return view('auth.registeredlobby');
-})
-    ->middleware('alum')
-    ->name('registeredlobby');
+    // TODO: It would be nice (I _think_?) to conditionally add the middleware
+    // 'guest' or 'auth:sanctum', etc. based on user status.
+    // ->middleware('guest')
+    ->name('lobby');
 
 // Recreating Fortify registration routes.
 Route::get('register', [RegisteredUserController::class, 'create'])

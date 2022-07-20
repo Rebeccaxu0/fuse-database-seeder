@@ -29,9 +29,9 @@
     {{ $slot }}
 
     @stack('modals')
-
     @stack('scripts')
     @livewireScripts
+
     @if (! auth()->user()->isStudent())
     <script src="{{ asset('/js/zendesk.js') }}" defer></script>
     @endif
