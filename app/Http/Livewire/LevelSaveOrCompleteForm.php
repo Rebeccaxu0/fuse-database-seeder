@@ -92,7 +92,8 @@ class LevelSaveOrCompleteForm extends Component
             $this->url = '';
             $this->urlDisabled = true;
             // Validate here.
-            $response = Http::get('https://api.fusestudio.net/validate/' . $code);
+            $response = Http::acceptJson()
+                ->get('https://api.fusestudio.net/validate/' . urlencode($code));
             if ($response->ok()) {
                 $status = $response->json()['status'];
                 if ($status == 'ready') {

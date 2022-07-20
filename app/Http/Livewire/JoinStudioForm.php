@@ -8,15 +8,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class JoinStudioForm extends Component
+class JoinStudioForm extends LobbyComponent
 {
     public bool $showModalFlag = false;
     public string $joinText = '';
-    public string $studioCode = '';
-
-    protected $rules = [
-        'studioCode' => 'required',
-    ];
 
     public function mount()
     {
