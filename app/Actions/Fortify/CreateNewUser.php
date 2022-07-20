@@ -5,6 +5,7 @@ namespace App\Actions\Fortify;
 use App\Models\Studio;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -32,7 +33,8 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => $this->passwordRules(),
                 'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
             ])->validate();
-        } else {
+        }
+        else {
             Validator::make($input, [
                 'name' => ['required', 'string', 'max:255', 'unique:users'],
                 'fullName' => ['required', 'string', 'max:255'],
