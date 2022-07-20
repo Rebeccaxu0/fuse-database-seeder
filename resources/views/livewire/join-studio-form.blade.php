@@ -22,6 +22,27 @@
                   {{ $message }}
                 </span>
                 @enderror
+
+                @if ($validStudioCode)
+                <p class="mt-6">{{ __(':studio in :school', ['studio' => $studioName, 'school' => $school]) }}</p>
+                @if ($studio && $studio->require_email)
+                <div>
+                    <x-jet-label for="email" value="{{ __('Email') }}" />
+                    <input type="email"
+                            class="border-2 border-gray-200 shadow-md rounded block h-10 text-slate-500 w-64 p-2 m-4"
+                            required
+                            name="email"
+                            id="email"
+                            wire:model="email"
+                            />
+                    @error('email')
+                    <span class="text-red-500">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
+                @endif
+                @endif
             </x-slot>
 
             <x-slot name="footer">

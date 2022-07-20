@@ -3,52 +3,59 @@
 namespace App\Http\Livewire;
 
 use App\Models\Studio;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Support\Facades\Auth;
+use App\Rules\NoExistingMembers;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class LobbyComponent extends Component
 {
-    public string $studioCode = '';
     public string $email = '';
-    public bool $showEmail = false;
-    public bool $validCode = false;
-    public string $joinRedirectTarget = RouteServiceProvider::HOME;
-    public $studio = null;
+    public string $studioCode = '';
+    public bool $validStudioCode = false;
+    public string $joinRedirectTarget = 'dashboard';
     public string $studioName = '';
     public string $school = '';
     public string $title = '';
-    public $user;
+    public ?Studio $studio = null;
+    public ?User $user;
 
     public function mount()
     {
-        $this->user = Auth::user();
-        if ($this->user->starts->count()) {
-            $this->title = __('Welcome Back!');
+        $this->title = __('Welcome to FUSE!');
+        if (auth()->user()) {
+            $this->user = auth()->user();
+            if ($this->user->starts->count()) {
+                $this->title = __('Welcome Back!');
+            }
         }
-        else {
-            $this->title = __('Welcome to FUSE!');
+        $this->studioCode = old('studioCode', '');
+        if ($this->studioCode) {
+            $this->updatedStudioCode($this->studioCode);
         }
     }
 
     public function updatedStudioCode($value)
     {
+        $this->studio = null;
+        $this->validStudioCode = false;
         $this->validateOnly('studioCode');
 
+        $this->validStudioCode = true;
         $studioCode = Str::of($value)->trim()->replaceMatches('/[ ]\+/', ' ')->lower();
         $this->studio = Studio::where('join_code', $studioCode)->first();
         $this->studioName = $this->studio->name;
         $this->school = $this->studio->school->name;
-        // If studio requires email and alumni user has no email attached to their account.
-        if ($this->studio->require_email && (! Auth::user()->email)) {
-            $this->showEmail = true;
-        }
-        $this->validCode = true;
     }
 
+    // This is only for existing users - adding an additional studio or joining
+    // a first studio as a new SSO user or an Alum user. Guest registration is
+    // submitted to default registration route.
+    // See /App/Actions/Fortify/CreateNewUser
     public function submit()
     {
         $this->validate();
@@ -67,10 +74,17 @@ class LobbyComponent extends Component
 
     protected function rules()
     {
-        $rules = ['studioCode' => 'required|exists:App\Models\Studio,join_code'];
-        if ($this->studio && $this->studio->require_email) {
-            $rules['email'] = 'required|email';
-        }
+        $rules = [
+            'studioCode' => [
+                'bail',
+                'required',
+                'exists:App\Models\Studio,join_code',
+                new NoExistingMembers,
+            ],
+            'email' => [
+                Rule::when($this->studio && $this->studio->require_email, ['required', 'email']),
+            ],
+        ];
 
         return $rules;
     }
