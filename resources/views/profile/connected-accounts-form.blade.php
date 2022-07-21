@@ -17,7 +17,7 @@
         </h3>
 
         <div class="mt-3 max-w-xl text-sm text-gray-600">
-            {{ __('You are free to connect any social accounts to your profile and may remove any connected accounts at any time. If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.') }}
+            {!! __('You are free to connect any social accounts to your profile and may remove any connected accounts at any time. <strong>You will need to set a password in order to disconnect your Clever or Google account.</strong> If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.') !!}
         </div>
 
         <div class="mt-5 space-y-6">
