@@ -116,22 +116,22 @@
         </article>
 
         <aside id="sidebar">
-            <section>
-                <h2 class="uppercase text-black text-sm font-normal lg:mt-0 mb-2 ml-4">{{ __('Help') }}</h2>
+            @if ($fields['get_help_desc'])
+            <section class="mb-4">
+                <h2 class="uppercase text-black text-sm font-normal mt-0 mb-2">{{ __('Help') }}</h2>
                 <div class="bg-white border rounded-xl p-4">
                     {!! $fields['get_help_desc'] !!}
                 </div>
             </section>
+            @endif
 
-            <section>
-                <h2 class="uppercase text-black text-sm font-normal mb-2 ml-4">{{ __('Help Finder') }}</h2>
-                <a href="{{ route('student.help_finder') }}" class="bg-fuse-teal block rounded-xl h-40">
-                    <img src="">
-                </a>
+            <section class="mb-4">
+                <h2 class="uppercase text-black text-sm font-normal mt-0 mb-2">{{ __('Help Finder') }}</h2>
+                <x-help-finder-tile-pane :challengeVersion="$challengeVersion" :studio="$studio" />
             </section>
 
-            <section>
-                <h2 class="uppercase text-black text-sm font-medium mb-2 ml-4">{{ __("What's Next") }}</h2>
+            <section class="mb-4">
+                <h2 class="uppercase text-black text-sm font-medium mt-0 mb-2">{{ __("What's Next") }}</h2>
                 <a href="{{ $fields['whats_next_route'] }}" class="block py-4 rounded-xl bg-white text-black p-4">
                     <h3>{{ __("What's Next?") }}</h3>
                     {{ $fields['whats_next_text'] }}
@@ -139,7 +139,7 @@
             </section>
 
             <section>
-                <h2 class="uppercase text-black text-sm font-medium mb-2 ml-4">{{ __("Idea Project") }}</h2>
+                <h2 class="uppercase text-black text-sm font-medium mt-0 mb-2">{{ __("Idea Project") }}</h2>
                 <livewire:student.idea-edit :inspiration="$level->levelable" />
             </section>
 

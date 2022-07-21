@@ -121,7 +121,12 @@ class LevelController extends Controller
                 );
             }
             $view = 'student.level-started';
-            $params = ['level' => $level, 'fields' => $fields];
+            $params = [
+                'challengeVersion' => $challengeVersion,
+                'fields' => $fields,
+                'level' => $level,
+                'studio' => Auth::user()->activeStudio,
+            ];
         }
         else {
             // Default is to restrict the level.
