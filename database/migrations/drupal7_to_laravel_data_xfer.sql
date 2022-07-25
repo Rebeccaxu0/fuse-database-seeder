@@ -844,7 +844,21 @@ WHERE u.uid <> 0
 AND u.uid != 96176
 ORDER BY u.uid;
 
--- TODO: Import SSO connections
+-- NB - The following insert works, but unknown if it actually works for SSO as
+-- current system doesn't track the token in the DB.
+INSERT INTO `fuse_laravel`.connected_accounts (
+  user_id,
+  provider_id,
+  provider,
+  token
+)
+SELECT
+  u.id,
+  sso.google_id,
+  'google',
+  'dummy-val'
+FROM `d7-fuse`.fuse_sso sso
+LEFT JOIN `fuse_laravel`.users u ON u.d7_id = sso.uid
 
 -- Assign roles to non-students.
 -- Role map --
