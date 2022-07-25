@@ -47,6 +47,9 @@
                             <x-action-link href="{{ route('oauth.redirect', ['provider' => $provider]) }}">
                                 {{ __('Connect') }}
                             </x-action-link>
+                            @error('socialstream')
+                                <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                         @endif
                     </x-slot>
 
