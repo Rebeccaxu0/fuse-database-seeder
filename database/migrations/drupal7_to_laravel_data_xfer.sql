@@ -725,7 +725,7 @@ AND uid NOT IN (
 UPDATE `d7-fuse`.users SET mail = NULL WHERE uid = 207096;
 
 INSERT INTO `fuse_laravel`.users
-  (name, full_name, email, password,
+  (id, name, full_name, email, password,
   created_at, status, timezone, seen_idea_trailer,
   login,
   last_access,
@@ -740,7 +740,7 @@ INSERT INTO `fuse_laravel`.users
   csv_header, csv_values,
   active_studio, current_level)
 SELECT
-  u.name, fullname.field_full_name_value as fullname, u.mail, u.pass,
+  u.uid, u.name, fullname.field_full_name_value as fullname, u.mail, u.pass,
   FROM_UNIXTIME(u.created) as created, u.status,
   IF (NOT ISNULL(u.timezone) AND u.timezone != '', u.timezone, 'America/Chicago') as timezone,
   IF (
