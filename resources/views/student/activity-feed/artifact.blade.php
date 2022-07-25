@@ -15,7 +15,7 @@
           @endif
         </li>
     @endforeach
-    <ul>
+    </ul>
     <div class="absolute bottom-0 left-0 m-4">
         <x-icon icon="{{ $activity->type }}" alt="{{ __($activity->type) }}" displayOverride="true" class="block text-fuse-teal-dk-500" />
         @if ($activity->level->levelable::class === Idea::class)
