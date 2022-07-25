@@ -69,7 +69,7 @@ class FUSEActivityLogHandler extends AbstractProcessingHandler
                     $artifact_url = $artifact->url;
                 }
                 else {
-                    $artifact_url = $artifact->downloadLink();
+                    $artifact_url = $artifact->getRawFileUrl();
                 }
                 $is_team_artifact = $artifact->users->count() > 1;
             }
