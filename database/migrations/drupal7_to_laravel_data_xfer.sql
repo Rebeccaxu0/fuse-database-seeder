@@ -1220,8 +1220,10 @@ SELECT
   'public',
   -- Directory is URI from ofset (22) to strlen minus offset minus file.
   SUBSTR(fm.uri, 22, LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))),
-  -- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
-  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 22 - (LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)))) as filename,
+  -- File is URI from offset (22) plus directory (above) to file len w/o extension which is strlen minus offset minus file minus extension minus dot.
+  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)),
+    LENGTH(fm.uri) - 22 - (LENGTH(fm.uri) - 22 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) - LENGTH(reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1))) - 1
+    ) as filename,
   reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
   fm.filemime, fm.type,
   fm.filesize,
@@ -1232,7 +1234,7 @@ LEFT JOIN `fuse_laravel`.users ON users.d7_id = fm.uid
 WHERE fm.uri LIKE 'storage-api-public://%' AND fm.status = 1;
 
 -- Student uploads
-INSERT INTO `fuse_laravel`.media (
+INSERT IGNORE INTO `fuse_laravel`.media (
     d7_fid, user_id,
     disk,
     directory,
@@ -1247,8 +1249,10 @@ SELECT
   'artifacts',
   -- Directory is URI from ofset (22) to strlen minus offset minus file.
   SUBSTR(fm.uri, 32, LENGTH(fm.uri) - 32 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) as dir,
-  -- File is URI from offset (22) plus directory (above) to file len which is strlen minus offset minus file.
-  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)), LENGTH(fm.uri) - 32 - (LENGTH(fm.uri) - 32 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)))) as filename,
+  -- File is URI from offset (32) plus directory (above) to file len which is strlen minus offset minus file.
+  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)),
+    LENGTH(fm.uri) - 32 - (LENGTH(fm.uri) - 32 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) - LENGTH(reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1))) - 1
+    ) as filename,
   reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
   fm.filemime, fm.type,
   fm.filesize,
@@ -1258,11 +1262,40 @@ FROM `d7-fuse`.file_managed fm
 LEFT JOIN `fuse_laravel`.users ON users.d7_id = fm.uid
 WHERE fm.uri LIKE 'storage-field-student-upload://%' AND fm.status = 1;
 
+-- s3
+INSERT IGNORE INTO `fuse_laravel`.media (
+    d7_fid, user_id,
+    disk,
+    directory,
+    filename,
+    extension,
+    mime_type, aggregate_type,
+    size,
+    created_at, updated_at, deleted_at
+)
+SELECT
+  fm.fid, users.id as uid,
+  'artifacts',
+  -- Directory is URI from ofset (22) to strlen minus offset minus file.
+  SUBSTR(fm.uri, 6, LENGTH(fm.uri) - 6 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) as dir,
+  -- File is URI from offset (6) plus directory (above) to file len which is strlen minus offset minus file.
+  SUBSTR(fm.uri, 1 + LENGTH(fm.uri) - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1)),
+    LENGTH(fm.uri) - 6 - (LENGTH(fm.uri) - 6 - LENGTH(SUBSTRING_INDEX(reverse(fm.uri), '/', 1))) - LENGTH(reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1))) - 1
+    ) as filename,
+  reverse(SUBSTRING_INDEX(reverse(fm.filename), '.', 1)),
+  fm.filemime, fm.type,
+  fm.filesize,
+  FROM_UNIXTIME(fm.`timestamp`), FROM_UNIXTIME(fm.`timestamp`),
+  (CASE fm.status WHEN 1 THEN NULL ELSE CURRENT_TIMESTAMP() END)
+FROM `d7-fuse`.file_managed fm
+LEFT JOIN `fuse_laravel`.users ON users.d7_id = fm.uid
+WHERE fm.uri LIKE 's3://%' AND fm.status = 1;
+
 -- Link files to Save artifacts
 INSERT INTO fuse_laravel.mediables (
-	media_id,
-	mediable_type, mediable_id,
-	tag, `order`
+    media_id,
+    mediable_type, mediable_id,
+    tag, `order`
 )
 SELECT
   m.id as media_id,
@@ -1277,9 +1310,9 @@ WHERE NOT ISNULL(m.id);
 
 -- Link Complete artifacts
 INSERT INTO fuse_laravel.mediables (
-	media_id,
-	mediable_type, mediable_id,
-	tag, `order`
+    media_id,
+    mediable_type, mediable_id,
+    tag, `order`
 )
 SELECT
   m.id as media_id,
