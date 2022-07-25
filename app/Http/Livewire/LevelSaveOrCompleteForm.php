@@ -290,7 +290,7 @@ class LevelSaveOrCompleteForm extends Component
             $teammate->currentLevel()->associate($level);
             $teammate->save();
             if (! $teammate->hasStartedLevel($level)) {
-                $start = $level->start($teammate);
+                $start = $level->start($teammate, true);
                 $start->created_at = $start->created_at->subSecond();
                 $start->save;
             }

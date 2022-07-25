@@ -215,9 +215,16 @@ class Level extends Model
         return $user->hasCompletedLevel($this);
     }
 
-    public function start(User $user): Start|bool
+    /**
+     * Create a start for this level.
+     *
+     * @param User $user
+     * @param boolean $synthetic
+     * @return Start|boolean
+     */
+    public function start(User $user, bool $synthetic = false): Start|bool
     {
-      if ($this->isStartable($user)) {
+      if ($synthetic || $this->isStartable($user)) {
         $start = Start::firstOrCreate([
             'level_id' => $this->id,
             'user_id' => $user->id,
