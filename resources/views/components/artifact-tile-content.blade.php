@@ -1,9 +1,6 @@
-<div class="aspect-video w-full"
-     style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
-    <img src="{{ $previewUrl }}" />
-</div>
+<x-artifact-image :artifact="$artifact" class="w-full" />
 
-<div>
+<div class="text-left">
     <span class="text-slate-500 uppercase">{{ $timeAgo }} ({{ $artifact->created_at->format('Y-m-d') }})</span>
     @if ($comments)
     <div class="float-right">
@@ -12,7 +9,13 @@
     @endif
 </div>
 
-<div class="text-right uppercase font-bold text-slate-500">{{ $artifact->name }}</div>
+<div class="text-right uppercase font-bold text-slate-500" title="{{ $artifact->title }}">
+    @if ($artifact->name)
+    {{ str($artifact->name)->limit(25) }}
+    @elseif ($artifact->url)
+    {{ str($artifact->url)->limit(25) }}
+    @endif
+</div>
 <div class="text-right uppercase font-bold">{{ $title }}</div>
 <div class="absolute bottom-0 left-0 m-4 flex items-center">
     @if ($artifact->level->levelable::class == App\Models\Idea::class)

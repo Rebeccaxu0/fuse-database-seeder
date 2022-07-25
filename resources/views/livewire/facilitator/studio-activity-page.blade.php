@@ -64,7 +64,7 @@
                       @endif
                       @if ($challenge->id == $activeChallenge->id)
                           @forelse ($artifacts as $artifact)
-                            <livewire:artifact-modal-tile :artifact="$artifact" :wire:key="$artifact->id">
+                            <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
                           @empty
                               <div class="font-bold uppercase text-lg ml-4 py-2">
                                 {{ __('No artifacts in this time period') }}
@@ -89,7 +89,7 @@
                       @endif
                       @if ($idea->id == $activeChallenge->id)
                           @forelse ($artifacts as $artifact)
-                            <livewire:artifact-modal-tile :artifact="$artifact" :wire:key="$artifact->id">
+                            <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
                           @empty
                               <div class="font-bold uppercase text-lg ml-4 py-2">
                                 {{ __('No artifacts in this time period') }}
@@ -149,7 +149,7 @@
         <div class="hidden lg:block col-start-3 scroll-box">
             @if ($activeChallenge)
                 @forelse ($artifacts as $artifact)
-                    <livewire:artifact-modal-tile :artifact="$artifact" :wire:key="$artifact->id">
+                    <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
                 @empty
                 <div class="font-bold uppercase text-lg ml-4 py-2">
                   {{ __('No artifacts in this time period') }}

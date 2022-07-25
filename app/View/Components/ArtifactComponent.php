@@ -7,20 +7,18 @@ use App\Models\ChallengeVersion;
 use App\Models\Idea;
 use App\Models\Studio;
 use Carbon\Carbon;
-use Filestack\Filelink;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use MediaUploader;
+// use MediaUploader;
 
 class ArtifactComponent extends Component
 {
     public Artifact $artifact;
     public ?Studio $studio;
     public ?Idea $idea = null;
-    public string $previewUrl;
     // public Collection $related;
+    public ?string $downloadUrl = null;
     public string $inspiration = '';
     public string $levelRoute;
     public string $teamnames;
@@ -42,23 +40,7 @@ class ArtifactComponent extends Component
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
         $this->comments = (bool) ($studio) ? $studio->allow_comments : false;
         $this->commentCount = $artifact->comments->count();
-        if ($media = $artifact->firstMedia('file')) {
-            $this->previewUrl = $media->getUrl();
-        }
-        else if ($artifact->filestack_handle) {
-            $fskey = config('filestack.api_key');
-            $filelink = new Filelink($artifact->filestack_handle, $fskey);
-            // TODO: replace following line
-            $this->previewUrl = 'https://cdn.filestackcontent.com/' . $artifact->filestack_handle;
-            // $path = $filelink->getMetaData()['path'];
-            // $media = MediaUploader::importPath('artifacts', $path);
-            // $artifact->attachMedia($media, 'file');
-            // $this->previewUrl = $media->getUrl();
-        }
-        else {
-            // Get challenge/idea image.
-            $this->previewUrl = 'https://images.unsplash.com/photo-1656788287310-c59045c243e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80';
-        }
+        $this->downloadUrl = $artifact->getRawFileUrl();
         foreach ($artifact->users as $teammate) {
             if ($teammate->full_name) {
                 $teammates[] = $teammate->full_name;
