@@ -978,7 +978,7 @@ LEFT JOIN `d7-fuse`.filestack_upload fs_up
   ON fs_up.eid = fs.field_filestack_target_id
 LEFT JOIN `d7-fuse`.field_data_field_child_levels fdfcl
   ON fdfcl.entity_type = 'node' AND fdfcl.bundle = 'student_progress_save' AND fdfcl.entity_id = n.nid
-RIGHT JOIN `d7-fuse`.node dl
+LEFT JOIN `d7-fuse`.node dl
   ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN `fuse_laravel`.levels levels
   ON levels.d7_id = fdfcl.field_child_levels_nid
