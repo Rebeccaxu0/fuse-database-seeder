@@ -48,6 +48,7 @@ class ActivityFeed extends Component
             ->whereHas('users', function (Builder $query) use ($students) {
                 $query->whereIn('user_id', $students);
             })
+            ->where('type', '=', 'complete')
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
