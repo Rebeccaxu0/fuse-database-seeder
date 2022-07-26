@@ -31,6 +31,12 @@ class ArtifactController extends Controller
      */
     public function artifact_gallery(User $user = null)
     {
+        if (auth()->user() == $user) {
+            $title = __("My Stuff");
+        }
+        else {
+            $title = __(":username's Stuff", ['username' => $user->name]);
+        }
         // TODO: May need to refactor. This generates a pretty slow query.
         // TODO: if we want to eager load 'level.levelable.challenge', we need
         // to refactor Ideas to have a dummy parent challenge.
@@ -39,7 +45,12 @@ class ArtifactController extends Controller
                           ->with('level', 'level.levelable', 'comments', 'users', 'media')
                           ->orderBy('created_at', 'desc')
                           ->paginate(12);
-        return view('student.my_stuff', ['artifacts' => $artifacts, 'studio' => $user->activeStudio]);
+        return view('student.my_stuff', [
+            'artifacts' => $artifacts,
+            'mystuffUser' => $user,
+            'studio' => $user->activeStudio,
+            'title' => $title,
+        ]);
     }
 
     /**

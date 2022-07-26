@@ -2,10 +2,21 @@
 
 namespace App\View\Components;
 
+use App\Models\User;
 use Illuminate\View\Component;
 
 class AppLayout extends Component
-{
+{ 
+    public ?User $avatarUser = null;
+
+    public function __construct(?User $avatarUser = null)
+    {
+        if (! $avatarUser->id) {
+            $avatarUser = auth()->user();
+        }
+        $this->avatarUser = $avatarUser;
+    }
+
     /**
      * Get the view / contents that represents the component.
      *
