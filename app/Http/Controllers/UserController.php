@@ -99,7 +99,6 @@ class UserController extends Controller
                 'email',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-            'birthday' => 'nullable|date',
             'password' =>  'nullable|string|min:8|confirmed',
         ]);
 
@@ -111,7 +110,6 @@ class UserController extends Controller
         $user->name = $validated['name'];
         $user->full_name = $validated['fullName'];
         $user->email = $validated['email'];
-        $user->birthday = $validated['birthday'];
         $user->save();
 
         return redirect(route('admin.users.show', ['user' => $user]))->with('status', 'User updated!');

@@ -23,18 +23,6 @@
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" name="password_confirmation" id="password_confirmation" />
         </div>
-        <div>
-            <span class="font-bold">Birthday:</span>
-            <input type="date" name="birthday" value="{{ old('birthday', $user->birthday) }}" >
-            @error('birthday')
-            <span class="text-red-500">
-                {{ $message }}
-            </span>
-            @enderror
-            @foreach ($errors->all() as $error)
-            {{ $error }}
-            @endforeach
-        </div>
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit"
                     id="btn-submit"
