@@ -1,11 +1,6 @@
 <x-slot name="title">{{ $title }}</x-slot>
 
 <div class="bg-fuse-teal-500 lg:p-24">
-
-    @auth
-    <x-jet-banner />
-    @endauth
-
     <div class="md:container bg-transparent rounded-xl shadow-xl border p-12 md:p-24">
         <div class="md:container md:flex md:flex-row bg-white rounded-xl shadow-xl py-8 px-1 mx-auto">
 

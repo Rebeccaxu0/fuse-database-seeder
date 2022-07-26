@@ -1,5 +1,4 @@
 <x-app-layout>
-    <x-jet-banner/>
     <x-slot name="title">{{ __('MyStuff') }}</x-slot>
     <x-slot name="header">{{ __('MyStuff') }}</x-slot>
 
