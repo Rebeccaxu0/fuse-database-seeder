@@ -11,7 +11,12 @@ class JoinStudioForm extends LobbyComponent
     {
         parent::mount();
 
-        $this->joinRedirectTarget = request()->header('Referer');
+        if (request()->header('Referer')) {
+            $this->joinRedirectTarget = request()->header('Referer');
+        }
+        else {
+            $this->joinRedirectTarget = request()->fullUrl();
+        }
     }
 
     public function updatedShowModalFlag($value) {
