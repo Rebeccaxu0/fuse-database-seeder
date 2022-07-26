@@ -858,7 +858,7 @@ SELECT
   'google',
   'dummy-val'
 FROM `d7-fuse`.fuse_sso sso
-LEFT JOIN `fuse_laravel`.users u ON u.d7_id = sso.uid
+LEFT JOIN `fuse_laravel`.users u ON u.d7_id = sso.uid;
 
 -- Assign roles to non-students.
 -- Role map --
@@ -982,7 +982,7 @@ LEFT JOIN `d7-fuse`.node dl
   ON dl.nid = fdfcl.field_child_levels_nid AND dl.`type` = 'level'
 LEFT JOIN `fuse_laravel`.levels levels
   ON levels.d7_id = fdfcl.field_child_levels_nid
-WHERE n.`type` = 'student_progress_save' AND n.uid != 0
+WHERE n.`type` = 'student_progress_save' AND n.uid != 0 AND not ISNULL(levels.id)
 ORDER BY fdfcl.field_child_levels_nid;
 
 -- Level Completes
