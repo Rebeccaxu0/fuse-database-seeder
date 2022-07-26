@@ -1,3 +1,5 @@
+@props(['avatarUser' => auth()->user()])
+
 @push('scripts')
   {{-- Naive implementation to keep 'online' in sync by pinging
         server once every five minutes. Ways to improve:
@@ -8,9 +10,9 @@
     </script>
 @endpush
 
-<x-slot name="title">{{ $title ?? null }}</x-slot>
-
 <x-base-layout>
+    <x-slot name="title">{!! $title ?? null !!}</x-slot>
+
     <div id='env' class="flex flex-col container p-0 min-h-screen">
         <x-jet-banner />
         <livewire:announcement-banner :user="auth()->user()" />

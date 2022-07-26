@@ -11,9 +11,6 @@ class AppLayout extends Component
 
     public function __construct(?User $avatarUser = null)
     {
-        if (! $avatarUser->id) {
-            $avatarUser = auth()->user();
-        }
         $this->avatarUser = $avatarUser;
     }
 
@@ -24,6 +21,6 @@ class AppLayout extends Component
      */
     public function render()
     {
-        return view('layouts.app');
+        return view('layouts.app', ['avatarUser' => $this->avatarUser]);
     }
 }
