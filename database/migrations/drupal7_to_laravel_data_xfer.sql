@@ -372,9 +372,19 @@ JOIN (
 ON levels.d7_id = cd.entity_id
 SET levels.challenge_desc = cd.challenge_desc;
 
+-- Stuff You Need.
 UPDATE IGNORE `d7-fuse`.field_data_field_materials_needed
 SET language = 'en'
 WHERE language = 'und';
+
+UPDATE `fuse_laravel`.levels levels
+JOIN (
+  SELECT entity_id, JSON_OBJECTAGG(`language`, field_materials_needed_value) as materials_needed
+  FROM `d7-fuse`.field_data_field_materials_needed
+  WHERE entity_type = 'node' AND bundle = 'level'
+  GROUP BY entity_id) as mn
+ON levels.d7_id = mn.entity_id
+SET levels.stuff_you_need_desc = mn.materials_needed;
 
 -- Blurb
 -- Should use body summary or the node title. Prefer body summary.
