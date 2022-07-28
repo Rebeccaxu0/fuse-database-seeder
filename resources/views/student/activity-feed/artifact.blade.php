@@ -1,4 +1,4 @@
-<div class="p-4 mb-2 relative rounded-lg bg-white w-full shadow-tile flow-root">
+<div class="p-4 mb-2 relative rounded-lg bg-white w-full shadow-tile flow-root text-sm">
     <span class="absolute right-0 top-0 mt-1 mr-2 text-xs">
         {{ $timeAgo }} ({{ $activity->created_at->format('Y-m-d') }})
     </span>
@@ -18,7 +18,7 @@
     </ul>
     <div class="absolute bottom-0 left-0 m-4">
         <x-icon icon="{{ $activity->type }}" alt="{{ __($activity->type) }}" displayOverride="true" class="block text-fuse-teal-dk-500" />
-        @if ($activity->level->levelable::class === Idea::class)
+        @if ($activity->level->levelable::class == App\Models\Idea::class)
             <div>
               <x-icon icon="idea" viewBox="60.4 90.6" fill="currentColor" alt="{{ __('idea') }}" class="text-orange-500" />
                 {{ __('Idea') }}
@@ -27,8 +27,12 @@
               {{ $activity->level->levelable->name }}
             </div>
         @else
-            <div class="text-blue-400 text-xl font-medium uppercase -mb-2">
-              {{ __('Level :number', ['number' => $activity->level->level_number]) }}
+            <div class="text-fuse-teal text-xl font-medium  -mb-2">
+              {!! __(':Challenge <a href=":level_link">L:number</a>', [
+                'challenge' => $activity->level->levelable->challenge->name,
+                'level_link' => route('student.level', [$activity->level->levelable, $activity->level]),
+                 'number' => $activity->level->level_number
+                 ]) !!}
             </div>
             <div class="text-slate-400 text-2xl font-medium">
               {{-- $activity->level->levelable->challenge->name --}}
