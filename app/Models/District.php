@@ -143,7 +143,8 @@ class District extends Organization
             }
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
-                Cache::forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, true);
+                Cache::tags(["u{$id}_roles"])
+                    ->forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, true);
             }
         }
     }
@@ -163,7 +164,8 @@ class District extends Organization
                 $sf->fresh();
                 if ($sf->districts->count() == 0) {
                     $sf->roles()->detach(Role::SUPER_FACILITATOR_ID);
-                    Cache::forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, false);
+                    Cache::tags(["u{$sf->id}_roles"])
+                        ->forever("u{$sf->id}_has_role_" . Role::SUPER_FACILITATOR_ID, false);
                 }
             }
         }

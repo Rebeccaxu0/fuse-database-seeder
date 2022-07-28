@@ -253,7 +253,8 @@ class School extends Organization
                 Cache::forget("u{$id}_studios");
                 if (! $facilitator->isFacilitator()) {
                     $facilitator->roles()->attach(Role::FACILITATOR_ID);
-                    Cache::forever("u{$id}_has_role_" . Role::FACILITATOR_ID, true);
+                    Cache::tags(["u{$id}_roles"])
+                        ->forever("u{$id}_has_role_" . Role::FACILITATOR_ID, true);
                 }
             }
         }
@@ -273,7 +274,8 @@ class School extends Organization
                 Cache::forget("u{$facilitator->id}_studios");
                 if ($facilitator->schools->count() == 0) {
                     $facilitator->roles()->detach(Role::FACILITATOR_ID);
-                    Cache::forever("u{$id}_has_role_" . Role::FACILITATOR_ID, false);
+                    Cache::tags(["u{$facilitator->id}_roles"])
+                        ->forever("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID, false);
                 }
             }
         }

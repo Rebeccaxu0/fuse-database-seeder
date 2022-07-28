@@ -139,7 +139,7 @@ class UserController extends Controller
     {
         $adminRole = Role::find(Role::ADMIN_ID);
         $user->roles()->sync([$adminRole->id]);
-        Cache::put("u{$user->id}_has_role_{$adminRole->id}", true);
+        Cache::tags(["u{$user->id}_roles"])->put("u{$user->id}_has_role_{$adminRole->id}", true);
 
         return redirect(route('admin.users.show', ['user' => $user]));
     }

@@ -168,7 +168,7 @@ class Studio extends Organization
      */
     public function activeChallenges()
     {
-        return Cache::tags('packages')
+        return Cache::tags(['packages'])
             ->remember("studio_{$this->id}_active_challenges", 3600, function () {
                 // Only show challengeversions that are allowed by assigned package.
                 $challengeVersions = new Collection;

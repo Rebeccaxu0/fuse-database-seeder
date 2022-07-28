@@ -22,7 +22,6 @@ class StudioChallengeToggle extends Toggle
 
         $action = $this->is_active ? 'attach' : 'detach';
         $this->studio->challengeVersions()->$action($this->challengeVersion->id);
-        Cache::forget("studio_{$this->studio->id}_active_challenges");
+        Cache::tags(['packages'])->forget("studio_{$this->studio->id}_active_challenges");
     }
 }
-

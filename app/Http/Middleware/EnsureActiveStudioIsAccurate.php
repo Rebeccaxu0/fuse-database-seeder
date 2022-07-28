@@ -31,7 +31,7 @@ class EnsureActiveStudioIsAccurate
             // Ensure former Facilitators and Super Facilitators are demoted to student.
             if ($user->roles->count() > 0) {
                 $user->roles()->detach();
-                Cache::forget("u{$user->id}_has_role_*");
+                Cache::tags(["u{$user->id}_roles"])->flush();
             }
         }
         else {
