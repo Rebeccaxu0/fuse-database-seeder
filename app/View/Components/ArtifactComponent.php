@@ -61,7 +61,7 @@ class ArtifactComponent extends Component
             $this->artifact->level->type = 'level';
             $this->level = $this->artifact->level;
             $this->title = $this->level->levelable->challenge->name;
-            $this->title_modifier = __('Level :number', ['number' => $this->level->level_number]);
+            $this->title_modifier = __('L:number', ['number' => $this->level->level_number]);
             $this->levelRoute = route('student.level', [$this->level->levelable, $this->level]);
         }
         else {

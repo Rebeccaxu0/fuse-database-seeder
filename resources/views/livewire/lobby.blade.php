@@ -1,10 +1,11 @@
 <x-slot name="title">{{ $title }}</x-slot>
 
-<div class="bg-fuse-teal-500 lg:p-24">
-    <div class="md:container bg-transparent rounded-xl shadow-xl border p-12 md:p-24">
-        <div class="md:container md:flex md:flex-row bg-white rounded-xl shadow-xl py-8 px-1 mx-auto">
+<div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal lg:p-24">
+    <div class="md:container p-12 md:p-24">
+        <div style="box-shadow:-10px 5px 20px rgb(0 0 0 / 35%)"
+             class="md:container md:flex md:flex-row bg-gradient-to-t from-fuse-teal-100 to-white rounded-xl py-8 px-1 mx-auto">
 
-            <div class="invisible md:visible md:block mx-auto">
+            <div class="hidden lg:visible lg:block mx-auto">
                 <img class="object-contain h-96" src="{{ asset('/img/interest.svg') }}">
             </div>
 
@@ -191,19 +192,19 @@
             <div class="grow mx-auto text-center">
                 <img class="h-24 mx-auto mb-4" src="{{ asset('/img/youtube.svg') }}">
                 <span class="font-bold mx-auto">
-                    <a href="https://www.fusestudio.net/try">{{ __('Free Trial') }}</a>
+                    <a class="text-white" href="https://www.fusestudio.net/try">{{ __('Free Trial') }}</a>
                 </span>
             </div>
             <div class="grow mx-auto text-center">
                 <img class="h-24 mx-auto mb-4" src="{{ asset('/img/smile.svg') }}">
                 <span class="font-bold mx-auto">
-                    <a href="https://www.fusestudio.net/">{{ __('Why FUSE?') }}'</a>
+                    <a class="text-white" href="https://www.fusestudio.net/">{{ __('Why FUSE?') }}</a>
                 </span>
             </div>
             <div class="grow mx-auto text-center">
                 <img class="fill-white h-24 mx-auto mb-4" src="{{ asset('/img/users.svg') }}">
                 <span class="text-fuse-teal-700 font-bold mx-auto">
-                    <a href="https://www.fusestudio.net/get-started">{{ __('For Teachers') }}</a>
+                    <a class="text-white" href="https://www.fusestudio.net/get-started">{{ __('For Teachers') }}</a>
                 </span>
             </div>
 

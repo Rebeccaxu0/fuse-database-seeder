@@ -1,4 +1,6 @@
-<ul class="flex flex-wrap py-2 px-2 overflow-y-scroll aspect-video w-full rounded-lg flex items-center justify-items-center bg-gradient-to-t from-fuse-teal to-fuse-teal-dk-800 text-white">
+@props(['gallery' => true])
+
+<ul class="flex flex-wrap py-2 px-2 overflow-y-scroll @if($gallery) aspect-video @endif w-full rounded-lg items-center justify-items-center bg-gradient-to-t from-fuse-teal to-fuse-teal-dk-800 text-white">
     @foreach ($students as $student)
     <li class="list-none m-2">
         @if ($student->isOnline())

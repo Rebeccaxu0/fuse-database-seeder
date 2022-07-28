@@ -152,13 +152,13 @@
   /* Add padding depending on the size of the top-menu */
   @screen md {
     body.student #env {
-      padding-top: 4rem;
-    }
-    body.fac #env {
       padding-top: 6rem;
     }
-    body.admin #env {
+    body.fac #env {
       padding-top: 8rem;
+    }
+    body.admin #env {
+      padding-top: 10rem;
     }
   }
 
@@ -169,7 +169,7 @@
 
   nav > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
-    min-height: 2rem;
+    min-height: 3rem;
   }
   nav li {
     @apply flex-1 md:p-0 m-0 list-none md:h-full max-w-none border-fuse-teal-dk-500;
@@ -179,7 +179,7 @@
     @apply h-full py-2;
     @apply flex justify-center items-center;
     @apply no-underline w-full uppercase text-lg;
-    @apply font-medium text-gray-300 whitespace-nowrap transition;
+    @apply font-medium text-white whitespace-nowrap transition;
   }
   nav li:first-child {
     @apply border-t-0;
@@ -216,21 +216,21 @@
     @apply w-10 h-10;
   }
   nav #student-navbar.docked {
-    min-height: 2rem;
-    max-height: 2rem;
+    min-height: 3rem;
+    max-height: 3rem;
   }
   nav #student-navbar.docked:hover {
     min-height: 4rem;
     max-height: 4rem;
   }
   nav #student-navbar.docked #profile-env {
-    @apply transition-all duration-300 h-8;
+    @apply transition-all duration-300 h-8 mt-2;
   }
   nav #student-navbar.docked #profile-pic {
     @apply transition-all duration-300 h-7 w-7;
   }
   nav #student-navbar.docked:hover #profile-env {
-    @apply h-16;
+    @apply h-16 mt-0;
   }
   nav #student-navbar.docked:hover #profile-pic {
     @apply h-10 w-10;
@@ -265,22 +265,22 @@
   }
 
   nav #facilitator-navbar {
-    @apply bg-stone-100 border-stone-600;
+    @apply bg-white border-stone-600;
   }
   nav #facilitator-navbar ul {
     @apply md:ml-16;
   }
   nav #facilitator-navbar li {
-    @apply border-stone-500;
+    @apply border-neutral-500;
   }
   nav #facilitator-navbar li a {
-    @apply text-stone-500;
+    @apply text-neutral-600;
   }
   nav #facilitator-navbar li a.active {
-    @apply text-stone-900 bg-stone-300;
+    @apply text-neutral-900 bg-neutral-300;
   }
   nav #facilitator-navbar li a:hover {
-    @apply text-stone-900 bg-stone-300;
+    @apply text-neutral-900 bg-neutral-300;
   }
 
   @screen sm {
@@ -340,6 +340,32 @@
   .activity-icon.active {
     border-color: #5ff238;
   }
+  .dashboard .activity-icon.active {
+    @apply border-emerald-300;
+    border-width: 4.5px;
+  }
+  .dashboard .activity-icon.inactive {
+    @apply border-emerald-500;
+    border-width: 4.5px;
+  }
+  .activity-icon .eye {
+    @apply w-1.5 h-1.5 absolute rounded-full;
+  }
+  .activity-icon .left {
+    bottom: 11px;
+    left: 9px;
+  }
+  .activity-icon .right {
+    bottom: 9px;
+    left: 17px;
+  }
+  .activity-icon.active .eye {
+    @apply bg-emerald-300;
+  }
+  .activity-icon.inactive .eye {
+    @apply bg-emerald-500;
+  }
+
   .activity-icon span {
     display: inline-block;
     font-weight: bolder;
@@ -477,7 +503,7 @@ html.student {
   scroll-padding-top: 4rem;
 }
 html.student.docked {
-  scroll-padding-top: 2rem;
+  scroll-padding-top: 3rem;
 }
 html.admin {
   scroll-padding-top: 8rem;

@@ -61,7 +61,7 @@
             <a href="{{ $levelRoute }}">{{ $title }}</a> | {{ __('My Idea') }}
             <div>{{ __('Inspiration: :inspiration', ['inspiration' => $inspiration]) }}</div>
             @else
-            <a href="{{ $levelRoute }}">{{ $title_modifier }}</a> | {{ $title }}</a>
+            {{ $title }} <a href="{{ $levelRoute }}">{{ $title_modifier }}</a>
             @endif
         </div>
         @if ($artifact->notes)

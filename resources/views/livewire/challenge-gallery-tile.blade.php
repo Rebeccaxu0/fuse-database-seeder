@@ -11,13 +11,13 @@
         </button>
         <x-progress-bar :user="$user" :interactive="true" :levelable="$challengeVersion" class="h-3" />
         <button wire:click="$set('showModalFlag', true)">
-            <h4 class="font-semibold text-fuse-teal-dk text-xl">
+            <h4 class="font-semibold text-fuse-teal-dk text-xl m-0 text-left">
                 {{ $challengeVersion->challenge->name }}
                 <span class="uppercase text-sm font-light text-fuse-nav-blue">
                     {{ $challengeVersion->gallery_note }}
                 </span>
             </h4>
-            <div class="min-h-[4rem]">
+            <div class="min-h-[4rem] text-left">
                 {{ $challengeVersion->blurb }}
             </div>
         </button>
