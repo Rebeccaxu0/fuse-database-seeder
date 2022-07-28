@@ -42,7 +42,7 @@
     @endif
     <div class="bg-neutral-200 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3">
         <article id="main" class="lg:col-span-2">
-            <section class="bg-white border rounded-xl p-4">
+            <section class="bg-white border rounded-xl shadow p-4">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('The Challenge') }}</div>
                 <div class="lg:flex">
                     <div class="m-4 flex-1">
@@ -59,9 +59,6 @@
                 <div class="lg:flex gap-4">
                     <div class="flex-1 border p-4">
                         {!! $level->stuff_you_need_desc !!}
-                        <h4>TODO: if STUFF YOU NEED IMAGES</h4>
-                        <h4>TODO: if Materials needed</h4>
-                        <h4>TODO: if files needed</h4>
                     </div>
                     @if ($level->levelable->chromebook_info)
                     <div class="flex-1 border p-4">

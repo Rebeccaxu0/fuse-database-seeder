@@ -2,7 +2,7 @@
     @if ($create)
         @if ($levelPage)
         <button wire:click="$set('showModalFlag', true)"
-                class="flex flex-col items-center p-4 bg-neutral-100 border shadow rounded-xl text-fuse-teal-dk text-4xl text-center">
+                class="w-full flex flex-col items-center justify-center p-4 bg-neutral-100 border shadow rounded-xl text-fuse-teal-dk text-4xl">
             <x-icon icon="idea-new" width="150" height="150"
                 fill="currentColor"
                 alt="{{ __('New Idea') }}" />
@@ -10,7 +10,7 @@
         </button>
         @else
         <button wire:click="$set('showModalFlag', true)"
-                class="p-4 bg-white border shadow rounded-xl text-fuse-teal-dk text-4xl text-center">
+                class="w-full flex flex-col items-center justify-center p-4 bg-white border shadow rounded-xl text-fuse-teal-dk text-4xl">
             <x-icon icon="idea-new" width="150" height="150"
                 fill="currentColor"
                 alt="{{ __('New Idea') }}" />

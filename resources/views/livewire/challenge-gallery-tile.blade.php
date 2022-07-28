@@ -1,10 +1,9 @@
 <div class="bg-white shadow-tile rounded-xl border border-gray-300">
     <div class="w-full relative rounded-lg p-4 text-left">
-        <button wire:click="$set('showModalFlag', true)">
-            <div class="relative aspect-video w-full rounded-lg flex items-center justify-items-center"
-                 style="background: linear-gradient(to bottom, #0057b7 50%, #FFD700 50%);">
-                <img class="rounded-lg" src="{{ $challengeVersion->gallery_thumbnail_url }}" />
-                <div class="gallery-play-border absolute inset-0 mt-6">
+        <button wire:click="$set('showModalFlag', true)" class="w-full">
+            <div class="w-full flex items-center justify-center aspect-video w-full rounded-lg bg-fuse-teal-dk bg-cover"
+                 style="background-image: url({{ $challengeVersion->gallery_thumbnail_url }})">
+                <div class="gallery-play-border">
                     <div class="gallery-play-button">&nbsp;</div>
                 </div>
             </div>
