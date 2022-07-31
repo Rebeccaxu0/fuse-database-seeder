@@ -7,6 +7,7 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/**/*.blade.php',
         './resources/**/*.js',
+        './node_modules/tw-elements/dist/js/**/*.js',
         './config/*.php'
     ],
     theme: {
@@ -89,6 +90,7 @@ module.exports = {
     variants: {},
     plugins: [
         require('tailwindcss'),
+        require('tw-elements/dist/plugin'),
         require('autoprefixer'),
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
