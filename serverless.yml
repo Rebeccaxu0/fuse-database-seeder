@@ -21,17 +21,23 @@ params:
     public_route_table_id: ${ssm:/laravel/public_route_table_id}
     public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
     vpc_id: ${ssm:/laravel/vpc_id}
+    new_relic_log_file: /proc/self/fd/2
+    new_relic_license_key: ${ssm:/laravel/new_relic_license_key}
   dev:
     app_env: dev
     asset_bucket_name: dev.assets.fusestudio.net
     domain: dev.my.fusestudio.net
     profile: terraform-dev
+    new_relic_app_name: dev.my.fusestudio.net
+    # new_relic_license_key: 4260c1e5df82470f07fbe5abdb07ff91FFFFNRAL
   prod:
     app_env: production
     asset_bucket_name: assets.fusestudio.net
-    domain: my.fusestudio.net
+    domain: prod.my.fusestudio.net
     debug: false
     profile: terraform-prod
+    new_relic_app_name: my.fusestudio.net
+    # new_relic_license_key: 4d3230b800704bf20f51f37d54560541FFFFNRAL
   stage:
     app_env: stage
     asset_bucket_name: stage.assets.fusestudio.net
@@ -73,6 +79,11 @@ provider:
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
     SESSION_DRIVER: redis
     VIEW_COMPILED_PATH: /tmp/storage/framework/views
+    # New Relic Settings
+    NEW_RELIC_APP_NAME = ${param:new_relic_app_name}
+    NEW_RELIC_LICENSE_KEY = ${param:new_relic_license_key}
+    NEW_RELIC_DAEMON_ADDRESS = ${param:new_relic_daemon_address}
+    NEW_RELIC_LOG_FILE = ${param:new_relic_log_file}
 
 package:
   # Directories to exclude from deployment
