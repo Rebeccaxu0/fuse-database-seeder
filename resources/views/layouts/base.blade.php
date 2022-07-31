@@ -16,6 +16,7 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <script async defer data-website-id="{{ env('UMAMI_ID') }}" src="https://umami.fusestudio.net/umami.js"></script>
 </head>
 
 <body class="bg-fuse-gray-100 {{ $roleClass }}">
