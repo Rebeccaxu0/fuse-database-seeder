@@ -48,6 +48,12 @@
   .btn, button.submit, [type='reset'], [type='submit'] {
     @apply inline-block bg-emerald-700 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2 ring-transparent;
   }
+  .btn[disabled], button.submit[disabled], [type='reset'][disabled], [type='submit'][disabled] {
+    @apply bg-gray-600
+  }
+  .btn[disabled]:hover, button.submit[disabled]:hover, [type='reset'][disabled]:hover, [type='submit'][disabled]:hover {
+    @apply bg-gray-700
+  }
   .btn.destroy, button.destroy, [type='destroy'] {
     @apply inline-block bg-red-500 text-white rounded-lg shadow-lg uppercase tracking-wider font-semibold text-sm my-2 px-5 py-2;
   }
@@ -522,3 +528,5 @@ html.fac.docked {
 .fsp-picker {
     z-index: 1 !important;
 }
+
+[x-cloak] { display: none !important; }
