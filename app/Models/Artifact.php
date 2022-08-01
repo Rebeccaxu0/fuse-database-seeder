@@ -56,6 +56,9 @@ class Artifact extends Model
             else {
                 $challengeVersion = $this->level->levelable->inspiration->first();
             }
+            if (! $challengeVersion) {
+                return null;
+            }
             if (! $challengeVersion->gallery_thumbnail_url) {
                 $wistia = Http::get('http://fast.wistia.net/oembed?url=http://home.wistia.com/medias/' . $challengeVersion->gallery_wistia_video_id);
                 $challengeVersion->gallery_thumbnail_url = $wistia->json('thumbnail_url');
