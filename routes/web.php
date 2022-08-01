@@ -5,7 +5,6 @@ use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
 use App\Http\Controllers\DistrictController;
-use App\Http\Controllers\FacilitatorAnnouncementsController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
@@ -173,13 +172,9 @@ Route::middleware([
                 'settings/update-studio-name/{studio}',
                 [FacilitatorSettingsController::class, 'updateStudioName']
             )->name('update_studio_name');
-            Route::get(
-                'announcements', [FacilitatorAnnouncementsController::class, 'index']
-            )->name('announcements');
+            Route::get('support', fn() => view('facilitator.support'))
+                ->name('support');
         });
-    Route::get('support', function () {
-        return '<h1>' . __('TODO') . '</h1>';
-    })->name('support');
 
     /*
     |------------------------------------------------------------------------
