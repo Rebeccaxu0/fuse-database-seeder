@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\ArtifactController;
+use App\Http\Controllers\CacheController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
 use App\Http\Controllers\DistrictController;
@@ -189,13 +190,16 @@ Route::middleware([
                 'announcements' => AnnouncementController::class,
                 'challenges'    => ChallengeController::class,
                 'districts'     => DistrictController::class,
-                'ltiplatforms' => LTIPlatformController::class,
+                'ltiplatforms'  => LTIPlatformController::class,
                 'media'         => MediaController::class,
                 'packages'      => PackageController::class,
                 'schools'       => SchoolController::class,
                 'studios'       => StudioController::class,
                 'users'         => UserController::class,
             ]);
+
+            // Clear cache because, why not?
+            Route::get('cache/clear_all', [CacheController::class, 'clearAll'])->name('cache.clearall');
 
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');

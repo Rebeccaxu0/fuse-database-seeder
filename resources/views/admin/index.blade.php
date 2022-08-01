@@ -5,7 +5,7 @@
     <x-slot name="header">ADMIN</x-slot>
 
     <div class="md:grid md:grid-cols-2 lg:gr-cols-3 gap-2">
-        <fieldset class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
+        <fieldset class="border p-2">
             <legend class="font-bold">Challenges & Levels</legend>
             <ul>
                 <li><a href="{{ route('admin.challenges.index') }}">Meta Challenges</a></li>
@@ -14,7 +14,7 @@
             </ul>
         </fieldset>
 
-        <fieldset class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
+        <fieldset class="border p-2">
             <legend class="font-bold">Districts, Schools, Studios, Users</legend>
             <ul>
                 <li><a href="{{ route('admin.districts.index') }}">Districts</a></li>
@@ -24,13 +24,14 @@
             </ul>
         </fieldset>
 
-        <fieldset class="grid gap-x-4 grid-cols-2 md:grid-cols-3 border p-2">
+        <fieldset class="border p-2">
             <legend class="font-bold">Other</legend>
             <ul>
                 <li><a href="{{ route('admin.packages.index') }}">Packages</a></li>
                 <li><a href="{{ route('admin.media.index') }}">Files</a></li>
                 <li><a href="{{ route('admin.announcements.index') }}">Announcements</a></li>
                 <li><a href="{{ route('admin.ltiplatforms.index') }}">LTI</a></li>
+                <li><a href="{{ route('admin.cache.clearall') }}">Clear Cache</a></li>
             </ul>
         </fieldset>
     </div>
