@@ -41,7 +41,7 @@ class AlumniBlock
             }
             // Alumni users are allowed to see their My Stuff page, too.
             else if ($goingTo != 'lobby' && $goingTo != 'mystuff') {
-                session()->flash('flash.banner', 'Join a studio to access that page!');
+                session()->flash('flash.banner', __('Join a studio to access that page!'));
                 session()->flash('flash.bannerStyle', 'danger');
                 return redirect(route('lobby'));
             }
