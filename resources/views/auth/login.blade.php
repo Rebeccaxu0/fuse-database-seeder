@@ -3,8 +3,11 @@
 
     <h1 class="mt-6 text-fuse-teal text-3xl font-bold font-display text-left">{{ __('Sign In') }}</h1>
 
-    <div x-data="{ submitted: false }"
-    class="mt-6 grid grid-cols-1 gap-6 max-w-full">
+    <div x-data="{ submitted: false }" class="mt-6 grid grid-cols-1 gap-6 max-w-full">
+        @if (JoelButcher\Socialstream\Socialstream::show())
+            <x-socialstream-providers />
+        @endif
+
         <x-jet-validation-errors />
         <form x-ref="form" method="POST" action="{{ route('login') }}">
             @csrf
@@ -33,10 +36,6 @@
                 </button>
             </div>
         </form>
-
-        @if (JoelButcher\Socialstream\Socialstream::show())
-            <x-socialstream-providers />
-        @endif
 
         <p class="bg-white rounded py-2 text-fuse-dk-teal text-base md:text-sm text-center">
             <a class="underline" href="{{ route('lobby') }}">Sign up</a> | <a href="{{ route('password.request') }}" class="underline">Forgot username or password</a>
