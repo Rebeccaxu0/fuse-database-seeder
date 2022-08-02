@@ -36,7 +36,7 @@
                 <details>
                     <summary>{{ count($challengeVersion->levels) }} level(s)</summary>
                     <ol class="list-decimal">
-                        @foreach ($challengeVersion->levels as $level)
+                        @foreach ($challengeVersion->levels->sortBy('level_number') as $level)
                         <li class="list-decimal my-0">
                             <span class="flex">
                                 <a title="edit" href="{{ route('admin.levels.edit', $level->id) }}">

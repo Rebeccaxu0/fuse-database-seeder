@@ -88,7 +88,7 @@
             <p class="mt-0 mb-0">Levels</p>
             <p class="mt-0 mb-0 text-xs">Drag to reorder</p>
             <ol class="list-none" name="order" id="sortlevels">
-                @foreach ($challengeversion->levels as $i => $level)
+                @foreach ($challengeversion->levels->sortBy('level_number') as $i => $level)
                 <li class="text-left list-none border-2 bg-slate-200 rounded-lg m-6 p-4"> <input name="level[{{ $level->id }}]" value="{{ $i+1 }}" type="hidden" />
                     <a href="{{ route('admin.levels.edit', ['level' => $level]) }}" class="float-right"><x-icon icon="edit" /></a>
                     @if ($level->blurb)
