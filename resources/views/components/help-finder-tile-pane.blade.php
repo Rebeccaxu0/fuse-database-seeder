@@ -2,7 +2,7 @@
 
 <div class="@if($gallery)aspect-video @endif w-full rounded-lg bg-gradient-to-t from-fuse-teal to-fuse-teal-dk-800 text-white min-h-[5rem]">
     @if ($students->count() > 0)
-    <ul class="flex flex-wrap py-2 px-2 overflow-y-scroll items-center justify-items-center">
+    <ul class="flex flex-wrap p-8 overflow-y-scroll items-center justify-items-center">
         @foreach ($students as $student)
         <li class="list-none m-2">
             @if ($student->isOnline())
@@ -25,6 +25,6 @@
         @endforeach
     </ul>
     @elseif (! $gallery)
-    <div class="text-center pt-8">{{ __('No one else yet.') }}</div>
+    <div class="text-center p-8">{{ __('No one else yet.') }}</div>
     @endif
 </div>

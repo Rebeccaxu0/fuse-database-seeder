@@ -75,8 +75,10 @@
             </section>
 
             <section class="bg-white rounded-xl shadow mt-8 p-4">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('How to Complete This Level') }}</h2>
-                {!! $fields['how_to_complete_desc'] !!}
+                <div class="text-black text-lg font-bold m-0 text-left">{{ __('How to Complete This Level') }}</div>
+                <div>
+                    {!! $fields['how_to_complete_desc'] !!}
+                </div>
                 <a name="save-complete"></a>
                 <div x-show="! saveCompleteFormOpen"
                         x-transition:enter="transition ease-out duration-500"
@@ -132,13 +134,13 @@
             @endif
 
             <section class="">
-                <h5 class="ml-4 mt-4 mb-1 uppercase">{{ __('Help Finder') }}</h5>
+                <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __('Help Finder') }}</h5>
                 <x-help-finder-tile-pane :challengeVersion="$challengeVersion" :studio="$studio" gallery='0' />
             </section>
 
             <section class="">
-                <h5 class="ml-4 mt-4 mb-1 uppercase">{{ __("What's Next") }}</h5>
-                <a href="{{ $fields['whats_next_route'] }}" class="block py-4 rounded-xl bg-neutral-100 text-black p-4">
+                <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __("What's Next") }}</h5>
+                <a href="{{ $fields['whats_next_route'] }}" class="block rounded-xl bg-neutral-100 text-black p-8">
                     {{ $fields['whats_next_text'] }}
                 </a>
             </section>
