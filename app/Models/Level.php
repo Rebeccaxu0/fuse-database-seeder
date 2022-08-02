@@ -160,49 +160,49 @@ class Level extends Model
 
     public function isStartable(User $user): bool
     {
-        return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 3600, function () use ($user) {
-            $startable = false;
-
+        // return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 3600, function () use ($user) {
             // Levels of an Idea belonging to the User are always startable.
-            if ($this->levelable::class == Idea::class
-                && $this->levelable->users->contains($user)) {
-                $startable = true;
+            if ($this->levelable::class == Idea::class && $this->levelable->users->contains($user)) {
+                if ($this->level_number == 1 && $this->levelable->id == 61) { Log::debug('Sculpty idea level'); }
+                return true;
             }
-            else {
-                $activeLevels
-                    = $user
-                        ->activeStudio
-                        ->activeChallenges()
-                        ->map(fn($challengeVersion, $key) => $challengeVersion->levels)
-                        ->flatten()
-                        ->pluck('id');
-                // If this challenge is active in the user's studio
-                if ($activeLevels->contains($this->id)) {
-                    // Allow level start if user already has a start on this or any
-                    // later level of this ChallengeVersion (e.g. via a team complete).
-                    foreach ($this->levelable->levels->reverse() as $level) {
-                        if ($user->hasStartedLevel($this)) {
-                            $startable = true;
-                            break;
-                        }
-                        if ($this == $level) {
-                            break;
-                        }
+
+            $activeLevels = $user
+                ->activeStudio
+                ->activeChallenges()
+                ->map(fn ($challengeVersion, $key) => $challengeVersion->levels)
+                ->flatten()
+                ->pluck('id');
+            // If this challenge is active in the user's studio.
+            if ($activeLevels->contains($this->id)) {
+                if ($this->level_number == 1 && $this->levelable->id == 61) { Log::debug('Sculpty L1 in active levels'); }
+                // Allow level start if user already has a start on this or any
+                // later level of this ChallengeVersion (e.g. via a team complete).
+                foreach ($this->levelable->levels->reverse() as $level) {
+                    if ($user->hasStartedLevel($this)) {
+                        if ($this->level_number == 1 && $this->levelable->id == 61) { Log::debug('Sculpty L1 has a start'); }
+                        return true;
                     }
-                    // If parent Challenge is startable...
-                    if (! $startable && $this->levelable->challenge->isStartable($user)
-                        // ...and it's the first level...
-                        && ($this->id == $this->levelable->levels->first()->id
-                        // ...or the previous level is completed
-                        || ($this->previous() && $user->hasCompletedLevel($this->previous()))
-                        )) {
-                            $startable = true;
+                    if ($this == $level) {
+                        break;
                     }
+                }
+
+                // If Challenge is startable and it's the first level.
+                if ($this->levelable->challenge->isStartable($user)) {
+                    if ($this->level_number == 1 && $this->levelable->id == 61) { Log::debug('Sculpty ChallengeVersion startable'); }
+                    // If it's the first level.
+                    if ($this->level_number == 1) return true;
+                    // If previous level is completed.
+                    if ($this->previous() && $user->hasCompletedLevel($this->previous())) return true;
+                }
+                else {
+                    if ($this->level_number == 1 && $this->levelable->id == 61) { Log::debug('Sculpty ChallengeVersion NOT startable'); }
                 }
             }
 
-            return $startable;
-        });
+            return false;
+        // });
     }
 
     public function isStarted(User $user): bool
