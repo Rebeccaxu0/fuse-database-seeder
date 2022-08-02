@@ -20,9 +20,9 @@
             <label class="font-bold" for='to_date'>{{ __('To') }}</label>
             <input wire:model="endDate" class="w-40" type="date" min="2010-01-01" max="{{ date('Y-m-d') }}">
           </div>
-          <div class="float-right sm:flex-1">
+          {{-- <div class="float-right sm:flex-1">
             <button class="btn flex-1 bg-grey-200" disabled>{{ __('Download Activity CSV') }}</button>
-          </div>
+          </div> --}}
         </fieldset>
     </form>
 
