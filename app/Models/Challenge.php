@@ -56,7 +56,7 @@ class Challenge extends Model
     public function isStartable(User $user)
     {
       return $this->prerequisiteChallenge
-          ? $this->isCompleted($user)
+          ? $this->prerequisiteChallenge->isCompleted($user)
           : true;
     }
 
