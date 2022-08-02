@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Facades\Log;
+use Plank\Mediable\Mediable;
 
 class Level extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use HasTranslations;
+    use Mediable;
+    use SoftDeletes;
 
     public $translatable = [
         'blurb',

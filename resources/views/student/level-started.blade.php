@@ -59,6 +59,14 @@
                 <div class="lg:flex gap-4">
                     <div class="flex-1 border p-4">
                         {!! $level->stuff_you_need_desc !!}
+                    @if ($level->hasMedia('file_you_need'))
+                    <div class="font-bold mt-3">{{ __('Files:') }}</div>
+                    <ul>
+                    @foreach ($level->getMedia('file_you_need') as $file)
+                        <li><a href="{{ $file->getUrl() }}">{{ $file->basename }}</a></li>
+                    @endforeach
+                    </ul>
+                    @endif
                     </div>
                     @if ($level->levelable->chromebook_info)
                     <div class="flex-1 border p-4">

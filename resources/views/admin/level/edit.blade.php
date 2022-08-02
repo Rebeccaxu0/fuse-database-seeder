@@ -24,6 +24,19 @@
             label="Stuff You Need"
             sublabel="ex. 'Chromebook, LED lights.'"
             :value="old('stuffYouNeed', $level->stuff_you_need_desc)" />
+        <div class="text-gray-700">Files You Need</div>
+        @if ($level->hasMedia('file_you_need'))
+        <ol class="mb-4">
+        @foreach ($level->getMedia('file_you_need') as $file)
+        <li>
+            <a href="{{ $file->getUrl()}}">{{ $file->basename }}</a> (REMOVE)
+        </li>
+        @endforeach
+        </ol>
+        @endif
+        <div class="mb-4">
+        (ADD FILE)
+        </div>
         <x-form.textarea
             name="getStarted"
             label="Get Started"

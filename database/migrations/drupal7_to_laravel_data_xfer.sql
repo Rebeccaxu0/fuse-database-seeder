@@ -1337,6 +1337,24 @@ RIGHT JOIN fuse_laravel.artifacts a
   ON a.d7_id = proof.entity_id
 WHERE NOT ISNULL(m.id);
 
+-- Link Files You Need to Levels
+INSERT INTO fuse_laravel.mediables (
+    media_id,
+    mediable_type, mediable_id,
+    tag, `order`
+)
+SELECT
+  m.id as media_id,
+  'level' as m_type, levels.id as level_id,
+  'file_you_need' as tag, 1
+FROM fuse_laravel.media m
+RIGHT JOIN `d7-fuse`.field_data_field_files_you_need fdffyn
+  ON fdffyn.field_files_you_need_fid = m.d7_fid
+left JOIN `fuse_laravel`.levels levels
+  ON levels.d7_id = fdffyn.entity_id
+WHERE NOT ISNULL(m.id) AND NOT ISNULL(levels.id)
+order by level_id;
+
 -- TODO: Activity Log
 -- N.B. - This is likely to move out of the database sooner than later.
 -- This takes almost 9 minutes to run. Can we hasten it? 5.4M records.
