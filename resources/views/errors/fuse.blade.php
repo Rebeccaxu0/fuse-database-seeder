@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-slot name="title">@yield('title')</x-slot>
+    <x-slot name="login">true</x-slot>
 
     <main class="container flex-shrink flex-grow
                  min-h-screen mx-auto py-16
