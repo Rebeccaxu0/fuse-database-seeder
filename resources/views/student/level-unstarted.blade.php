@@ -27,6 +27,11 @@
             </div>
         </div>
         <div class="p-8 text-black text-center">
+            @if (session('status'))
+                <div class="status">
+                    {{ session('status') }}
+                </div>
+            @endif
             @if ($available)
                 @if ($startable)
                     <form action="{{ route('student.level_start', ['challengeVersion' => $level->levelable, 'level' => $level]) }}" method="POST">

@@ -119,6 +119,7 @@ class ArtifactController extends Controller
 
         switch ($validated['type']) {
         case 'save':
+            $message = __('Save successful!');
             $destination = URL::previous();
             break;
 
@@ -128,15 +129,17 @@ class ArtifactController extends Controller
                     'challengeVersion' => $level->next()->levelable,
                     'level' => $level->next(),
                 ];
+                $message = __("Great Job! You've leveled up!");
                 $destination = route('student.level', $params);
             }
             else {
+                $message = __("Great Job! You've finished a challenge!");
                 $destination = route('student.challenges');
             }
             break;
 
         }
-        return redirect($destination)->with('status', __('Save successful!'));
+        return redirect($destination)->with('status', $message);
     }
 
     /**

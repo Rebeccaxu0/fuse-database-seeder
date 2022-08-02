@@ -321,12 +321,11 @@ class LevelSaveOrCompleteForm extends Component
 
         switch ($validated['type']) {
         case 'save':
-            $statusMsg = __('Save added.');
+            $statusMsg = __('Save successful!');
             $destination = URL::previous();
             break;
 
         case 'complete':
-            $statusMsg = __('Level completed!');
             $level = Level::find($validated['lid']);
             foreach ($team as $teammate) {
                 Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true, 3600);
@@ -336,6 +335,7 @@ class LevelSaveOrCompleteForm extends Component
                 }
             }
             if ($level->next()) {
+                $statusMsg = __("Great Job! You've leveled up!");
                 $params = [
                     'challengeVersion' => $level->next()->levelable,
                     'level' => $level->next(),
@@ -343,6 +343,7 @@ class LevelSaveOrCompleteForm extends Component
                 $destination = route('student.level', $params);
             }
             else {
+                $statusMsg = __("Great Job! You've finished a challenge!");
                 $destination = route('student.challenges');
             }
             break;
