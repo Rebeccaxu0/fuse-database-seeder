@@ -4,20 +4,29 @@
 
     <x-slot name="title">{{ __('Create Studios for :name', ['name' => $school->name]) }}</x-slot>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <form class="w-full max-w-lg mt-6" action="{{ route('admin.schools.addstudios', $school) }}" method="POST">
         @csrf
-        <label for="number"> Number of studios to create </label>
-        <input id="number" class="form-control rounded required" type="text">
+        <label for="number">Number of studios to create</label>
+        <input id="number" class="form-control rounded required" type="number">
         <div class="col-sm-12">
             <br>
             <fieldset>
-                <legend> Names </legend>
+                <legend>Names</legend>
                 <div class="row">
                     <div id="studioslist" name="studioslist" class="input_fields_wrap" />
                 </div>
                 <div class="col-sm-12">
-                    <button class="btn btn-link btn-sm add_field_button" type="button" onclick="addNew();"> +
-                        Add</button>
+                    <button class="btn btn-link btn-sm add_field_button"
+                    type="button" onclick="addNew()">+ Add</button>
                 </div>
         </div>
         </fieldset>
@@ -38,13 +47,13 @@
             document.getElementById('number').addEventListener("keyup",
                 function addDefaults() {
                     var number = document.getElementById('number').value;
-                    if (number.length == 0){
+                    if (number == 0){
                         document.getElementById("studioslist").innerHTML = "";
                     }
                     for (let i = 0; i < number; i++) {
                         var newinput = document.createElement('div');
                         var string = "Studio " + (i+1);
-                        newinput.innerHTML = "<input class='form-control rounded' name='createstudios[]' type='text'>";
+                        newinput.innerHTML = "<input class='form-control rounded' name='createstudios[]' type='text' maxlength='32'>";
                         document.getElementById("studioslist").appendChild(newinput);
                         document.getElementsByName("createstudios[]")[i].value = string;
                     }

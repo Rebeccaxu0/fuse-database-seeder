@@ -19,6 +19,7 @@ class SchoolController extends Controller
     {
         $this->authorizeResource(School::class, 'school');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,6 +29,7 @@ class SchoolController extends Controller
     {
         // Full-page Livewire component - see App\Http\Livewire\Admin\SchoolsPage
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -42,6 +44,7 @@ class SchoolController extends Controller
             'packages' => Package::all()->sortBy('name'),
         ]);
     }
+
     /**
      *
      *
@@ -53,18 +56,23 @@ class SchoolController extends Controller
             'school' => $school,
         ]);
     }
+
     /**
-     *
+     * Create new studios for a school.
      *
      *
      */
     public function addstudios(Request $request, School $school)
     {
-        if (! empty($request->createstudios)) {
-            $school->createStudios($request->createstudios);
-        }
+        $validated = $request->validate([
+            'createstudios' => 'required|array',
+            'createstudios.*' => 'min:1|max:32',
+        ]);
+
+        $school->createStudios($validated['createstudios']);
         return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -107,6 +115,7 @@ class SchoolController extends Controller
 
         return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
+
     /**
      * Display the specified resource.
      *
@@ -117,6 +126,7 @@ class SchoolController extends Controller
     {
         //
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -172,6 +182,7 @@ class SchoolController extends Controller
 
         return redirect(route('admin.studios.index', ['school' => $school->id]));
     }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -47,7 +47,7 @@ class FacilitatorSettingsController extends Controller
     {
         Gate::allowIf(fn () => Auth::user()->deFactoStudios()->contains($studio));
 
-        $validated = $request->validate(['name' => 'required|max:25']);
+        $validated = $request->validate(['name' => 'required|max:32']);
 
         $studio->name = $validated['name'];
         $studio->save();

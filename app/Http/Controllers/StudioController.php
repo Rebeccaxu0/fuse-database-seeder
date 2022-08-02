@@ -112,8 +112,9 @@ class StudioController extends Controller
      */
     public function destroy(Studio $studio)
     {
+        $school_id = $studio->school->id;
         $studio->delete();
-        return redirect(route('admin.studios.index'));
+        return redirect(route('admin.studios.index', ['school' => $school_id]));
     }
 
     /**

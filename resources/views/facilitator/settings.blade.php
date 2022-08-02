@@ -9,7 +9,7 @@
         <form action="{{ route('facilitator.update_studio_name', ['studio' => $studio]) }}" method="POST">
             @csrf
             <div class="flex justify-items-center">
-                <input class="max-w-xs" type="text" name="name" value="{{ old('name', $studio->name) }}">
+                <input class="max-w-xs" type="text" maxlength="32" name="name" value="{{ old('name', $studio->name) }}">
                 <button class="btn">{{ __('Update') }}</button>
             </div>
             @error('name')
