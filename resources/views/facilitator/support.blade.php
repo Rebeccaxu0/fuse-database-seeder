@@ -10,7 +10,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('FUSE Community Slack') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Join to connect with other educators and reach a FUSE Team member 8am-4pm CST.') }}
                 </p>
             </a>
@@ -20,7 +20,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('Knowledge Base (Zendesk)') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Visit for in-depth information on Challenges, Re-supply, and more.') }}
                 </p>
             </a>
@@ -30,7 +30,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('Challenge Guides') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('In-depth information for each Challenge.') }}
                 </p>
             </a>
@@ -40,7 +40,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('Re-Supply Resources') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Need materials? Check out how to re-order.') }}
                 </p>
             </a>
@@ -50,7 +50,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('3D Printing') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Custom videos for FUSE Facilitators troubleshooting printers.') }}
                 </p>
             </a>
@@ -60,7 +60,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('Schedule a Call') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Meet one-on-one with our Studio Support Program Coordinator.') }}
                 </p>
             </a>
@@ -70,7 +70,7 @@
                 <h2 class="text-left text-xl m-0">
                     {{ __('Find us on Slack') }}
                 </h2>
-                <p>
+                <p class="m-0">
                 {{ __('Reach someone during school hours on Community Slack.') }}
                 </p>
             </a>
