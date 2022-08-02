@@ -136,10 +136,9 @@ class LevelController extends Controller
             $prerequisite_text = $prerequisite_route = '';
 
             if (! $startable) {
-                if (
-                    $challengeVersion->challenge->prerequisiteChallenge
-                    && ! $challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())
-                ) {
+                // If incomplete prerequisite challenge...
+                if ($challengeVersion->challenge->prerequisiteChallenge
+                    && ! $challengeVersion->challenge->prerequisiteChallenge->isCompleted(Auth::user())) {
                     $prerequisiteChallengeVersion
                         = Auth::user()
                             ->activeStudio
@@ -169,7 +168,7 @@ class LevelController extends Controller
                         );
                     }
                 }
-                else {
+                else if ($level->previous()) {
                     $prerequisite_text
                         = __(
                             'You must complete level :number to unlock this level.',
@@ -182,6 +181,10 @@ class LevelController extends Controller
                             'level' => $level->previous(),
                         ]
                     );
+                }
+                else {
+                    $prerequisite_text = __("Sorry, you can't start this level.");
+                    $prerequisite_route = route('student.challenges');
                 }
             }
             $view = 'student.level-unstarted';
