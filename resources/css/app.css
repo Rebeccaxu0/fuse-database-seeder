@@ -158,24 +158,24 @@
   /* Add padding depending on the size of the top-menu */
   @screen md {
     body.student #env {
-      padding-top: 6rem;
+      padding-top: 5rem;
     }
     body.fac #env {
-      padding-top: 8rem;
+      padding-top: 6rem;
     }
     body.admin #env {
-      padding-top: 10rem;
+      padding-top: 11rem;
     }
   }
 
-  /* Add padding for masquearde form */
+  /* Add padding for masquerade form */
   body.admin main {
     padding-bottom: 10rem;
   }
 
   nav > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
-    min-height: 3rem;
+    min-height: 2rem;
   }
   nav li {
     @apply flex-1 md:p-0 m-0 list-none md:h-full max-w-none border-fuse-teal-dk-500;
@@ -214,6 +214,7 @@
   nav #guest-navbar {
     min-height: 3rem;
   }
+  nav #facilitator-navbar,
   nav #student-navbar {
     @apply transition-all duration-300 md:h-12;
     min-height: 4rem;
@@ -221,25 +222,40 @@
   nav #profile-pic {
     @apply w-10 h-10;
   }
-  nav #student-navbar.docked {
-    min-height: 3rem;
-    max-height: 3rem;
+  nav.docked #facilitator-navbar,
+  nav.docked #student-navbar {
+    @apply min-h-[2.25rem] sm:max-h-[2.25rem];
   }
-  nav #student-navbar.docked:hover {
-    min-height: 4rem;
-    max-height: 4rem;
+  nav.docked #facilitator-navbar:hover,
+  nav.docked #student-navbar:hover {
+    @apply min-h-[4rem] sm:max-h-[4rem];
   }
-  nav #student-navbar.docked #profile-env {
-    @apply transition-all duration-300 h-8 mt-2;
+  nav.docked #student-navbar #profile-env {
+    @apply transition-all duration-300 h-8 mt-0.5;
   }
-  nav #student-navbar.docked #profile-pic {
+  nav #student-navbar #profile-env,
+  nav.docked #student-navbar:hover #profile-env {
+    @apply transition-all duration-300 h-16 mt-0;
+  }
+  nav.docked #student-navbar #profile-pic {
     @apply transition-all duration-300 h-7 w-7;
   }
-  nav #student-navbar.docked:hover #profile-env {
-    @apply h-16 mt-0;
+  nav #student-navbar #profile-pic,
+  nav.docked #student-navbar:hover #profile-pic {
+    @apply transition-all duration-300 h-10 w-10;
   }
-  nav #student-navbar.docked:hover #profile-pic {
-    @apply h-10 w-10;
+  nav.docked #student-navbar #logo {
+    left: 0;
+    top: 0;
+    @apply absolute z-10;
+    @apply transition-all duration-300 w-10 ml-8;
+  }
+  nav #student-navbar #logo,
+  nav.docked #student-navbar:hover #logo {
+    left: 0;
+    top: 0;
+    @apply absolute z-10;
+    @apply transition-all duration-300 w-20 mt-1 -ml-2;
   }
   nav #student-navbar li a {
     @apply text-xl md:text-sm lg:text-base;
@@ -250,7 +266,7 @@
   nav #student-navbar .burger-wrapper {
     @apply h-16;
   }
-  nav #student-navbar.docked .burger-wrapper {
+  nav.docked #student-navbar .burger-wrapper {
     @apply h-8;
   }
 

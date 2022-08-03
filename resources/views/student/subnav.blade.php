@@ -1,22 +1,8 @@
-@push('scripts')
-    <script>
-        window.onscroll = function() {
-            document.getElementById('student-navbar').classList.
-            toggle('docked', toggleDock());
-            document.getElementsByTagName('html')[0].classList.
-            toggle('docked', toggleDock());
-        };
-        function toggleDock() {
-            return document.documentElement.scrollTop > 50;
-        }
-    </script>
-@endpush
-
 <x-subnav id="student">
     <!-- Logo -->
-    <div class="absolute t-0 l-0 z-10 mt-3">
+    <div id="logo">
         <a href="{{ route('student.dashboard') }}">
-            <img src="{{ asset('/img/logo.png') }}" alt="logo" class="w-20">
+            <img src="{{ asset('/img/logo.png') }}" alt="logo" class="w-full">
         </a>
     </div>
     <x-subnav-ul id="student-menu" class="md:pl-3 md:pr-20 md:ml-16">

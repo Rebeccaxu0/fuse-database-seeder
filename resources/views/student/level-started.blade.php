@@ -27,9 +27,9 @@
 
     <div x-data="{ saveCompleteFormOpen: false}" >
 
-    <h1>
+    <h1 class="mt-0">
         <span class="font-bold">{{ $level->levelable->challenge->name }}</span>
-        <span class="font-medium">{{ __('Level :number', ['number' => $level->level_number]) }}</span>
+        <span class="font-medium">{{ __('L:number', ['number' => $level->level_number]) }}</span>
         @if(auth()->user()->isAdmin())
         (<a href="{{ route('admin.levels.edit', [$level]) }}">edit</a>)
         @endif
