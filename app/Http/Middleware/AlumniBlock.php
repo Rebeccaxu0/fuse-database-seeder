@@ -35,15 +35,15 @@ class AlumniBlock
             }
             // New SSO registrations need to stay in the lobby.
             if ($user->starts->count() == 0) {
-                if ($goingTo != 'lobby') {
-                    return redirect(route('lobby'));
+                if ($goingTo != 'lobby-auth') {
+                    return redirect(route('lobby-auth'));
                 }
             }
             // Alumni users are allowed to see their My Stuff page, too.
-            else if ($goingTo != 'lobby' && $goingTo != 'mystuff') {
+            else if ($goingTo != 'lobby-auth' && $goingTo != 'mystuff') {
                 session()->flash('flash.banner', __('Join a studio to access that page!'));
                 session()->flash('flash.bannerStyle', 'danger');
-                return redirect(route('lobby'));
+                return redirect(route('lobby-auth'));
             }
         }
         return $next($request);

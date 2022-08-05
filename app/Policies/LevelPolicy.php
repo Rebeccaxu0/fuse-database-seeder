@@ -19,7 +19,7 @@ class LevelPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return auth()->user()->isAdmin();
     }
 
     /**

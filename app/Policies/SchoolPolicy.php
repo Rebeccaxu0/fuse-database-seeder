@@ -30,7 +30,8 @@ class SchoolPolicy
      */
     public function view(User $user, School $school)
     {
-        return $user->isAdmin();
+        return $user->isAdmin() ||
+          ($user->isSuperFacilitator() && $user->schools->contains($school));
     }
 
     /**

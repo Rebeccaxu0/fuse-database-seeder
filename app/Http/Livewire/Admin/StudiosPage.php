@@ -2,15 +2,16 @@
 
 namespace App\Http\Livewire\Admin;
 
-use App\Models\District;
 use App\Models\School;
 use App\Models\Studio;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class StudiosPage extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public ?School $school;
@@ -25,8 +26,17 @@ class StudiosPage extends Component
 
     public function mount()
     {
+        $user = auth()->user();
+        if ($user->isSuperFacilitator()) {
+            $this->school = $user->activeStudio->school;
+            $this->schoolId = $this->school->id;
+        }
         if ($this->schoolId) {
             $this->setSchool($this->schoolId);
+            $this->authorize('view', $this->school);
+        }
+        else {
+            $this->authorize('viewAny', School::class);
         }
     }
 
