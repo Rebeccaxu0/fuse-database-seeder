@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Challenge;
 use App\Models\ChallengeCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class FacilitatorChallengesController extends Controller
 {
@@ -25,6 +26,7 @@ class FacilitatorChallengesController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(Auth::user()->isFacilitator());
         $studio = Auth::user()->activeStudio;
         $viewData = [
             'activeChallenges' => null,

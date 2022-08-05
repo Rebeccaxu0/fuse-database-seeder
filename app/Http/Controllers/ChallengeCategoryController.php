@@ -8,6 +8,16 @@ use Illuminate\Http\Request;
 class ChallengeCategoryController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(ChallengeCategory::class, 'challengecategory');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

@@ -6,7 +6,7 @@ use app\Models\Studio;
 use app\Models\User;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class StudioActivityPage extends Component
@@ -48,6 +48,7 @@ class StudioActivityPage extends Component
 
     public function mount()
     {
+        Gate::allowIf(auth()->user()->isFacilitator());
         if (! $this->startDate) {
             // Default to start of academic year - previous Aug 1.
             $now = new DateTime();
@@ -60,7 +61,7 @@ class StudioActivityPage extends Component
         if (! $this->endDate) {
             $this->endDate = date('Y-m-d');
         }
-        $this->studio = Auth::user()->activeStudio;
+        $this->studio = auth()->user()->activeStudio;
         $eager = [
           'artifacts',
           'startedLevels',

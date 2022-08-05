@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artifact;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class FacilitatorCommentsController extends Controller
 {
@@ -24,6 +25,8 @@ class FacilitatorCommentsController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        Gate::allowIf($user->isAdmin() || $user->isFacilitator() || $user->isSuperFacilitator());
         $studioUsers = Auth::user()->activeStudio->users->pluck('id');
         $artifacts = Artifact::whereHas(
             'users', function (Builder $query) use ($studioUsers) {

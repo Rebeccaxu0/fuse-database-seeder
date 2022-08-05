@@ -10,6 +10,16 @@ use Illuminate\Validation\Rule;
 class AnnouncementController extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Announcement::class, 'announcement');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

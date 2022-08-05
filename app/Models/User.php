@@ -362,7 +362,8 @@ class User extends Authenticatable
      */
     public function isReportViewer(): bool
     {
-        return $this->hasRole(Role::REPORT_VIEWER_ID);
+        return $this->hasRole(Role::REPORT_VIEWER_ID)
+            || $this->isAdmin();
     }
 
     /**
@@ -370,7 +371,8 @@ class User extends Authenticatable
      */
     public function isChallengeAuthor(): bool
     {
-        return $this->hasRole(Role::CHALLENGE_AUTHOR_ID);
+        return $this->hasRole(Role::CHALLENGE_AUTHOR_ID)
+            || $this->isAdmin();
     }
 
     /**
@@ -378,7 +380,8 @@ class User extends Authenticatable
      */
     public function isSuperFacilitator(): bool
     {
-        return $this->hasRole(Role::SUPER_FACILITATOR_ID);
+        return $this->hasRole(Role::SUPER_FACILITATOR_ID)
+            || $this->isAdmin();
     }
 
     /**
@@ -394,7 +397,9 @@ class User extends Authenticatable
      */
     public function isFacilitator(): bool
     {
-        return $this->hasRole(Role::FACILITATOR_ID);
+        return $this->hasRole(Role::FACILITATOR_ID)
+            || $this->isSuperFacilitator()
+            || $this->isAdmin();
     }
 
     /**
@@ -650,23 +655,24 @@ class User extends Authenticatable
      * param ?Studio $studio
      * return Level
      */
-    public function mostRecentLevel(?Studio $studio = null): Level
-    {
-        $studio ??= $this->activeStudio;
-        $studioLevels
-            = $studio->activeChallenges()
-                   ->map(fn($challengeversion, $key) => $challengeversion->levels)
-                   ->flatten()
-                   ->pluck('id');
-        $ideaLevels
-            = $this->ideas
-                   ->map(fn($idea, $key) => $idea->level)
-                   ->flatten()
-                   ->pluck('id');
-        $levels = $studioLevels->union($ideaLevels);
+    // public function mostRecentLevel(?Studio $studio = null): Level
+    // {
+    //     $studio ??= $this->activeStudio;
+    //     $studioLevels
+    //         = $studio->activeChallenges()
+    //                ->map(fn($challengeversion, $key) => $challengeversion->levels)
+    //                ->flatten()
+    //                ->pluck('id');
+    //     $ideaLevels
+    //         = $this->ideas
+    //                ->map(fn($idea, $key) => $idea->level)
+    //                ->flatten()
+    //                ->pluck('id');
+    //     $levels = $studioLevels->union($ideaLevels);
 
-        $starts = $this->starts->whereIn($levels)->sortDesc();
-    }
+    //     $starts = $this->starts->whereIn($levels)->sortDesc();
+
+    // }
 
     /**
      * Return a user's first or given name.

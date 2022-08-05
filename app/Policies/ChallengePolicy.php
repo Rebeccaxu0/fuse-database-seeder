@@ -18,7 +18,7 @@ class ChallengePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -30,7 +30,7 @@ class ChallengePolicy
      */
     public function view(User $user, Challenge $challenge)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -41,7 +41,7 @@ class ChallengePolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -53,7 +53,7 @@ class ChallengePolicy
      */
     public function update(User $user, Challenge $challenge)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -65,7 +65,7 @@ class ChallengePolicy
      */
     public function delete(User $user, Challenge $challenge)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -77,7 +77,7 @@ class ChallengePolicy
      */
     public function restore(User $user, Challenge $challenge)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -89,6 +89,6 @@ class ChallengePolicy
      */
     public function forceDelete(User $user, Challenge $challenge)
     {
-        //
+        return $user->isAdmin();
     }
 }

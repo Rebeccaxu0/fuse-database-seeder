@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Media;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,6 +31,11 @@ class MediaManagerPage extends Component
     public function updatedFileSearch()
     {
         $this->resetPage();
+    }
+
+    public function mount()
+    {
+        Gate::allowIf(auth()->user()->isAdmin());
     }
 
     public function render()

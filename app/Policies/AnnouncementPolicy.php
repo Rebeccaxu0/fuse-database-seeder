@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Level;
+use App\Models\Announcement;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
-class LevelPolicy
+class AnnouncementPolicy
 {
     use HandlesAuthorization;
 
@@ -19,19 +18,19 @@ class LevelPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
+     * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Level $level)
+    public function view(User $user, Announcement $announcement)
     {
-        return true;
+        return $user->isAdmin();
     }
 
     /**
@@ -49,10 +48,10 @@ class LevelPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
+     * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Level $level)
+    public function update(User $user, Announcement $announcement)
     {
         return $user->isAdmin();
     }
@@ -61,10 +60,10 @@ class LevelPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
+     * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Level $level)
+    public function delete(User $user, Announcement $announcement)
     {
         return $user->isAdmin();
     }
@@ -73,10 +72,10 @@ class LevelPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
+     * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Level $level)
+    public function restore(User $user, Announcement $announcement)
     {
         return $user->isAdmin();
     }
@@ -85,25 +84,11 @@ class LevelPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
+     * @param  \App\Models\Announcement  $announcement
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Level $level)
+    public function forceDelete(User $user, Announcement $announcement)
     {
         return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can start the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Level  $level
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function start(User $user, Level $level)
-    {
-        return $user->canStartLevel($level)
-            ? Response::allow()
-            : Response::deny(__('You are either not a facilitator or a member of this studio.'));
     }
 }

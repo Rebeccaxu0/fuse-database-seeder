@@ -12,20 +12,6 @@ class StudioPolicy
     use HandlesAuthorization;
 
     /**
-     * Perform pre-authorization checks.
-     *
-     * @param  \App\Models\User  $user
-     * @param  string  $ability
-     * @return void|bool
-     */
-    public function before(User $user, $ability)
-    {
-        if ($user->isAdmin()) {
-              return true;
-          }
-    }
-
-    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
@@ -33,7 +19,7 @@ class StudioPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -45,7 +31,8 @@ class StudioPolicy
      */
     public function view(User $user, Studio $studio)
     {
-        //
+        return $user->isAdmin()
+         || ($user->isSuperFacilitator() && $user->deFactoStudios()->contains($studio));
     }
 
     /**
@@ -56,7 +43,7 @@ class StudioPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isSuperFacilitator();
     }
 
     /**
@@ -68,7 +55,8 @@ class StudioPolicy
      */
     public function update(User $user, Studio $studio)
     {
-        //
+        return $user->isAdmin()
+         || ($user->isSuperFacilitator() && $user->deFactoStudios()->contains($studio));
     }
 
     /**
@@ -80,7 +68,8 @@ class StudioPolicy
      */
     public function delete(User $user, Studio $studio)
     {
-        //
+        return $user->isAdmin()
+         || ($user->isSuperFacilitator() && $user->deFactoStudios()->contains($studio));
     }
 
     /**
@@ -92,7 +81,8 @@ class StudioPolicy
      */
     public function restore(User $user, Studio $studio)
     {
-        //
+        return $user->isAdmin()
+         || ($user->isSuperFacilitator() && $user->deFactoStudios()->contains($studio));
     }
 
     /**
@@ -104,7 +94,7 @@ class StudioPolicy
      */
     public function forceDelete(User $user, Studio $studio)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -128,8 +118,8 @@ class StudioPolicy
      */
     public function exportActivity(User $user, Studio $studio)
     {
-        return ($user->isFacilitator() || $user->isSuperFacilitator())
-               && $user->deFactoStudios()->contains($studio)
+        return $user->isAdmin()
+            || ($user->isFacilitator() && $user->deFactoStudios()->contains($studio) )
           ? Response::allow()
           : Response::deny(__('You are either not a facilitator or a member of this studio.'));
     }
@@ -143,7 +133,7 @@ class StudioPolicy
      */
     public function updateDashboardMessage(User $user, Studio $studio)
     {
-        return ($user->isFacilitator() || $user->isSuperFacilitator())
-            && $user->deFactoStudios()->contains($studio);
+        return $user->isAdmin()
+            || ($user->isFacilitator() && $user->deFactoStudios()->contains($studio));
     }
 }

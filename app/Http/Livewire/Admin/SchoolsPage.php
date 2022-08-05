@@ -6,11 +6,13 @@ use App\Models\District;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class SchoolsPage extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
 
     public ?array $createSchoolQueryString;
@@ -27,6 +29,7 @@ class SchoolsPage extends Component
 
     public function mount()
     {
+        $this->authorize('viewAny', School::class);
         $this->districts = District::with('schools')->get()->sortBy('name');
     }
 

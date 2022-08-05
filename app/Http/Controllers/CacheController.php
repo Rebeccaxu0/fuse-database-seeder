@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 
 class CacheController extends Controller
 {
@@ -22,9 +24,11 @@ class CacheController extends Controller
      */
     public function clearAll()
     {
-      Cache::flush();
-      session()->flash('flash.banner', 'Cache cleared!');
+        Gate::allowIf(Auth::user()->isAdmin());
 
-      return redirect(route('admin'));
+        Cache::flush();
+        session()->flash('flash.banner', 'Cache cleared!');
+
+        return redirect(route('admin'));
     }
 }

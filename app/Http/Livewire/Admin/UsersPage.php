@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,6 +39,7 @@ class UsersPage extends Component
 
     public function mount()
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $this->districts = District::with('schools')->get()->sortBy('name');
         if ($this->districtFilter) {
             $this->district = $this->districts->find($this->districtFilter);
@@ -75,7 +77,13 @@ class UsersPage extends Component
 
           case 'facs':
               $users = $users->whereHas('roles', function (Builder $query) {
-                  $query->whereIn('id', [Role::PRE_FACILITATOR_ID, Role::PRE_SUPER_FACILITATOR_ID, Role::FACILITATOR_ID, Role::SUPER_FACILITATOR_ID]);
+                  $query->whereIn('id', [Role::PRE_FACILITATOR_ID, Role::FACILITATOR_ID]);
+              });
+              break;
+
+          case 'superfacs':
+              $users = $users->whereHas('roles', function (Builder $query) {
+                  $query->whereIn('id', [Role::PRE_SUPER_FACILITATOR_ID, Role::SUPER_FACILITATOR_ID]);
               });
               break;
 

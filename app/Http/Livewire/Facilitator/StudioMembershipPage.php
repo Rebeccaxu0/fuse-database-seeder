@@ -4,11 +4,14 @@ namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
 use App\View\Components\AppLayout;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class StudioMembershipPage extends Component
 {
+    use AuthorizesRequests;
+
     public $students;
     public Studio $studio;
 
@@ -32,6 +35,7 @@ class StudioMembershipPage extends Component
 
     public function mount()
     {
+        $this->authorize('viewAny', User::class);
         $this->studio = Auth::user()->activeStudio;
         $this->updateStudents();
         $this->updateFacilitators();
