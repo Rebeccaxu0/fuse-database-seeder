@@ -6,7 +6,6 @@ use App\Models\Announcement;
 use App\Models\Studio;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class FacilitatorSettingsController extends Controller
@@ -29,6 +28,7 @@ class FacilitatorSettingsController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(auth()->user()->isFacilitator());
         $now = new DateTime();
         $announcements
             = Announcement::where('start_at', '<=', $now->format('Y-m-d h:m:s'))
@@ -36,7 +36,7 @@ class FacilitatorSettingsController extends Controller
                 ->get();
         return view('facilitator.settings', [
             'announcements' => $announcements,
-            'studio' => Auth::user()->activeStudio,
+            'studio' => auth()->user()->activeStudio,
         ]);
     }
 
@@ -45,7 +45,9 @@ class FacilitatorSettingsController extends Controller
      */
     public function updateStudioName(Request $request, Studio $studio)
     {
-        Gate::allowIf(fn () => Auth::user()->deFactoStudios()->contains($studio));
+        Gate::allowIf(fn () => auth()->user()->isAdmin()
+            || (auth()->user()->isFacilitator() && auth()->user()->deFactoStudios()->contains($studio))
+        );
 
         $validated = $request->validate(['name' => 'required|max:32']);
 

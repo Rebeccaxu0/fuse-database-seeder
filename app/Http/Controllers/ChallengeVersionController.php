@@ -8,8 +8,9 @@ use App\Models\ChallengeVersion;
 use App\Rules\WistiaCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+// use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ChallengeVersionController extends Controller
@@ -42,6 +43,7 @@ class ChallengeVersionController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $challengeCategories = ChallengeCategory::with('challengeVersions')
             ->orderBy('name')
             ->get();
@@ -59,6 +61,7 @@ class ChallengeVersionController extends Controller
      */
     public function create(Challenge $challenge)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         return view('admin.challengeversion.create', [
             'challenge' => $challenge,
             'categories' => ChallengeCategory::all()->sortBy('name'),
@@ -75,6 +78,7 @@ class ChallengeVersionController extends Controller
      */
     public function store(Request $request, ChallengeVersion $challengeversion)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
@@ -127,6 +131,7 @@ class ChallengeVersionController extends Controller
      */
     public function edit(ChallengeVersion $challengeversion)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
             'categories' => ChallengeCategory::all()->sortBy('name'),
@@ -143,6 +148,7 @@ class ChallengeVersionController extends Controller
      */
     public function update(Request $request, ChallengeVersion $challengeversion)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $validated = $request->validate([
             'name' => 'required|unique:challenge_versions|max:255',
             'challenge_id' => 'required',
@@ -188,6 +194,7 @@ class ChallengeVersionController extends Controller
      */
     public function copy(Request $request, ChallengeVersion $challengeVersion)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $newChallengeVersion = $challengeVersion
             ->replicate(['id'])
             ->fill(['name' => $challengeVersion->name . ' COPY']);
@@ -205,6 +212,7 @@ class ChallengeVersionController extends Controller
      */
     public function destroy(ChallengeVersion $challengeversion)
     {
+        Gate::allowIf(auth()->user()->isAdmin());
         $challengeversion->delete();
         return redirect(route('admin.challenges.index'));
     }
