@@ -38,7 +38,7 @@
         </form>
 
         <p class="bg-white rounded py-2 text-fuse-dk-teal text-base md:text-sm text-center">
-            <a class="underline" href="{{ route('lobby') }}">Sign up</a> | <a href="{{ route('password.request') }}" class="underline">Forgot username or password</a>
+            <a class="underline" href="{{ route('lobby-guest') }}">Sign up</a> | <a href="{{ route('password.request') }}" class="underline">Forgot username or password</a>
         </p>
     </div>
 </x-guest-logo-layout>

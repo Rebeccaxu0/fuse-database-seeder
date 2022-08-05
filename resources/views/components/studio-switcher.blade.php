@@ -8,8 +8,7 @@
     @endpush
 @endif
 
-<div class="py-4 px-12 md:absolute md:right-0">
-    <div class="float-right uppercase flex items-center relative">
+<div class="float-right uppercase flex items-center relative mx-4 mt-2">
     @if ($activeStudio)
     <label for="studio-list-toggle" class="m-0 p-0 @if ($otherStudios->count()) cursor-pointer @endif">
         @if ($multipleSchools && $activeStudio->school)
@@ -47,5 +46,4 @@
     @else
     <livewire:join-studio-form />
     @endif
-    </div>
 </div>

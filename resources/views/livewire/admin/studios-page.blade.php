@@ -1,56 +1,70 @@
 <div class="relative">
-    <x-admin.district-subnav />
-
     <x-slot name="header">{{ __('Studios') }}</x-slot>
 
+    @if (auth()->user()->isAdmin())
+    <x-admin.district-subnav />
+    @endif
+
+    @if (auth()->user()->isAdmin())
     @livewire ('school-district-search-bar')
+    @endif
+
     @if ($school)
     <div>
         <a href="{{ route('admin.schools.createstudios', $school) }}">
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
     </div>
+
+    @if (auth()->user()->isAdmin())
     <fieldset class='border p-2'>
-    <legend class="font-semibold">{{ __('School & District') }}</legend>
-    <div class="">
-        <span class="float-right">
-            <a href="{{ route('admin.schools.edit', $school->id) }}"><button type="reset">{{ __('Edit School') }}</button></a>
-            <br>
-            <form method="post"
-                  action="{{ route('admin.schools.destroy', $school->id) }}"
-                  class="inline-block">
-                @method('delete')
-                @csrf
-                <button type="destroy">{{ __('Delete School') }}</button>
-            </form>
-        </span>
-        {{ $school->name }}
-    </div>
-    <div>
-        @if ($school->district)
-        {{ $school->district->name }}
-        @else
-        {{ __('No parent district') }}
-        @endif
-    </div>
-    <div>{{ __('Package: ') }}
-        @if ($school->package)
-        {{ __('":spackage" overrides district package ":dpackage"', [
-        'spackage' => $school->package->name,
-        'dpackage' => ($school->district && $school->district->package)
-          ? $school->district->package->name
-          : __('<none>')]) }}
-        @elseif ($school->district && $school->district->package)
-        {{ __('":package" inherited from district', ['package' => $school->district->package->name]) }}
-        @else
-        {{ __('No Package Set') }}
-        @endif
+        <legend class="font-semibold">{{ __('School & District') }}</legend>
+        <div class="">
+            <span class="float-right">
+                <a href="{{ route('admin.schools.edit', $school->id) }}"><button type="reset">{{ __('Edit School') }}</button></a>
+                <br>
+                <form method="post"
+                    action="{{ route('admin.schools.destroy', $school->id) }}"
+                    class="inline-block">
+                    @method('delete')
+                    @csrf
+                    <button type="destroy">{{ __('Delete School') }}</button>
+                </form>
+            </span>
+            {{ $school->name }}
+        </div>
+        <div>
+            @if ($school->district)
+            {{ $school->district->name }}
+            @else
+            {{ __('No parent district') }}
+            @endif
+        </div>
+        <div>{{ __('Package: ') }}
+            @if ($school->package)
+            {{ __('":spackage" overrides district package ":dpackage"', [
+            'spackage' => $school->package->name,
+            'dpackage' => ($school->district && $school->district->package)
+            ? $school->district->package->name
+            : __('<none>')]) }}
+            @elseif ($school->district && $school->district->package)
+            {{ __('":package" inherited from district', ['package' => $school->district->package->name]) }}
+            @else
+            {{ __('No Package Set') }}
+            @endif
+        </div>
     </fieldset>
+    @endif
+
     <fieldset class='border p-2'>
     <legend class="font-semibold">{{ __('Facilitators') }}</legend>
     <div class="text-sm">
         @foreach ($school->facilitators as $user)
-        <a href="{{ route('admin.users.show', $user) }}">{{ $user->full_name }} ({{ $user->name }})</a>,
+        @if(auth()->user()->isAdmin())
+            <a href="{{ route('admin.users.show', $user) }}">{{ $user->full_name }} ({{ $user->name }})</a>@if(! $loop->last),@endif
+        @else
+            {{ $user->full_name }} ({{ $user->name }})@if(! $loop->last),@endif
+        @endif
         @endforeach
     </div>
     </fieldset>

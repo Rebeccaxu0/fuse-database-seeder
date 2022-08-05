@@ -23,6 +23,7 @@ use App\Http\Livewire\Admin\StudiosPage;
 use App\Http\Livewire\Admin\UsersPage;
 use App\Http\Livewire\Facilitator\StudioActivityPage;
 use App\Http\Livewire\Facilitator\StudioMembershipPage;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
@@ -50,29 +51,15 @@ Route::get('logout', function () {
 | Registration routes
 |------------------------------------------------------------------------
 */
-// Lobby.
-Route::get('lobby', function () {
-    if (auth()->user()) {
-        if (auth()->user()->deFactoStudios()->count() == 0) {
-            return view('auth.lobby-auth');
-        }
-        else {
-            return redirect()->intended('dashboard');
-        }
-    }
-    else {
-        return view('auth.lobby-guest');
-    }
-})
-    // TODO: It would be nice (I _think_?) to conditionally add the middleware
-    // 'guest' or 'auth:sanctum', etc. based on user status.
-    // ->middleware('guest')
-    ->name('lobby');
+// Guest Lobby.
+Route::get('lobby-guest', fn () => view('auth.lobby-guest'))
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('lobby-guest');
 
 // Recreating Fortify registration routes.
-Route::get('register', [RegisteredUserController::class, 'create'])
-    ->middleware(['guest:' . config('fortify.guard')])
-    ->name('register');
+// Route::get('register', [RegisteredUserController::class, 'create'])
+//     ->middleware(['guest:' . config('fortify.guard')])
+//     ->name('register');
 
 Route::post('register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')]);
@@ -98,6 +85,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    Route::get('lobby-auth', function () {
+        if (auth()->user()->deFactoStudios()->count() == 0) {
+            return view('auth.lobby-auth');
+        } else {
+            return redirect()->intended('dashboard');
+        }
+    })->name('lobby-auth');
     Route::impersonate();
 
     Route::get('heartbeat', function () {
@@ -173,59 +167,68 @@ Route::middleware([
                 'settings/update-studio-name/{studio}',
                 [FacilitatorSettingsController::class, 'updateStudioName']
             )->name('update_studio_name');
-            Route::get('support', fn() => view('facilitator.support'))
+            Route::get('support', function () {
+                Gate::allowIf(Auth::user()->isFacilitator());
+                return view('facilitator.support');
+            })
                 ->name('support');
         });
 
     /*
     |------------------------------------------------------------------------
+    | Super Facilitator routes
+    |------------------------------------------------------------------------
+     */
+    Route::prefix('superfacilitator')
+        ->name('superfacilitator.')
+        ->group(function () {
+            Route::get('studios', StudiosPage::class)->name('studios.index');
+        });
+    /*
+    |------------------------------------------------------------------------
     | admin routes
     |------------------------------------------------------------------------
       */
-    Route::view('admin', 'admin.index')->name('admin');
     Route::prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::resources([
-                'announcements' => AnnouncementController::class,
-                'challenges'    => ChallengeController::class,
-                'districts'     => DistrictController::class,
-                'ltiplatforms'  => LTIPlatformController::class,
-                'media'         => MediaController::class,
-                'packages'      => PackageController::class,
-                'schools'       => SchoolController::class,
-                'studios'       => StudioController::class,
-                'users'         => UserController::class,
-            ]);
-
+            Route::get('/', function () {
+                Gate::allowIf(Auth::user()->isAdmin());
+                return view('admin.index');
+            })->name('index');
             // Clear cache because, why not?
             Route::get('cache/clear_all', [CacheController::class, 'clearAll'])->name('cache.clearall');
 
+            Route::resources([
+                'announcements'     => AnnouncementController::class,
+                'challenges'        => ChallengeController::class,
+                'challengeversions' => ChallengeVersionController::class,
+                'districts'         => DistrictController::class,
+                'levels'            => LevelController::class,
+                'ltiplatforms'      => LTIPlatformController::class,
+                'media'             => MediaController::class,
+                'packages'          => PackageController::class,
+                'schools'           => SchoolController::class,
+                'studios'           => StudioController::class,
+                'users'             => UserController::class,
+            ]);
+
+            // ChallengeVersion
+            Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');
+            
+            // School
             Route::post('schools/{school}/addstudios', [SchoolController::class, 'addstudios'])->name('schools.addstudios');
             Route::get('schools/{school}/createstudios', [SchoolController::class, 'createstudios'])->name('schools.createstudios');
 
-            Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
-            // Users
+            // User
             Route::post('users/{user}/make-admin', [UserController::class, 'makeAdmin'])->name('users.makeAdmin');
 
-            // Manual recreation of Challenge Version resource routes with added parameters.
-            Route::get('challengeversions/{challenge}/create', [ChallengeVersionController::class, 'create'])->name('challengeversions.create');
-            Route::post('challengeversions/', [ChallengeVersionController::class, 'store'])->name('challengeversions.store');
-            Route::get('challengeversions/', [ChallengeVersionController::class, 'index'])->name('challengeversions.index');
-            Route::get('challengeversions/{challengeversion}/edit', [ChallengeVersionController::class, 'edit'])->name('challengeversions.edit');
-            Route::put('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'update'])->name('challengeversions.update');
-            Route::delete('challengeversions/{challengeversion}', [ChallengeVersionController::class, 'destroy'])->name('challengeversions.destroy');
+            // Makin' Copies
             Route::post('challengeversions/{challengeversion}/copy', [ChallengeVersionController::class, 'copy'])->name('challengeversions.copy');
-
-            // Manual recreation of Levels resource routes with added parameters.
-            Route::get('levels/create', [LevelController::class, 'create'])->name('levels.create');
-            Route::post('levels/', [LevelController::class, 'store'])->name('levels.store');
-            Route::get('levels/', [LevelController::class, 'index'])->name('levels.index');
-            Route::get('levels/{level}/edit', [LevelController::class, 'edit'])->name('levels.edit');
-            Route::put('levels/{level}', [LevelController::class, 'update'])->name('levels.update');
-            Route::delete('levels/{level}', [LevelController::class, 'destroy'])->name('levels.destroy');
             Route::post('levels/{level}/copy', [LevelController::class, 'copy'])->name('levels.copy');
+            Route::post('packages/{package}/copy', [PackageController::class, 'copy'])->name('packages.copy');
 
+            // Livewire Full page
             Route::get('schools', SchoolsPage::class)->name('schools.index');
             Route::get('studios', StudiosPage::class)->name('studios.index');
             Route::get('users', UsersPage::class)->name('users.index');

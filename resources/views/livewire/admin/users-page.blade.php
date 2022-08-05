@@ -1,4 +1,5 @@
 <div>
+    <x-slot name="header">Users</x-slot>
 
     <x-admin.district-subnav />
 
@@ -19,6 +20,7 @@
     <option value="all">{{ __('All User Types') }}</option>
     <option value="students">{{ __('Only Students') }}</option>
     <option value="facs">{{ __('Only Facilitators') }}</option>
+    <option value="superfacs">{{ __('Only Super-Facilitators') }}</option>
     <option value="staff">{{ __('Only FUSE Staff') }}</option>
   </select>
   {{-- <h3>{{ $query }}</h3> --}}

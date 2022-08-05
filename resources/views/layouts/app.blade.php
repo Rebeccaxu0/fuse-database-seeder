@@ -22,11 +22,11 @@
         </div>
         @endImpersonating
 
-        <x-studio-switcher />
+        <header class="mt-2">
+            <x-studio-switcher />
 
-        @if (isset($header))
-        <header>
-            <h1 class="flex items-center text-fuse-teal-dk text-4xl font-black font-display max-w-7xl m-0 py-0 px-4 sm:px-6 lg:px-8">
+            @if (isset($header))
+            <h1 class="float-left flex items-center text-fuse-teal-dk text-4xl font-black font-display max-w-7xl m-0 py-0 px-4 sm:px-6 lg:px-8">
                 <span class="relative mr-2">
                 <x-avatar :user="$avatarUser" class="h-16 w-16" />
                     {{-- @if (! auth()->user()->profile_photo_path)
@@ -37,8 +37,8 @@
                 </span>
                 {{ $header }}
             </h1>
+            @endif
         </header>
-        @endif
 
         <main class="flex-grow relative pt-4 pb-10 px-8">
 

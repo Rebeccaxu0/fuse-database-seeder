@@ -24,8 +24,8 @@
         </li>
         @if (Auth::user()->isSuperFacilitator())
         <li>
-            <a class="px-2 {{ request()->routeIs('admin.studios.index') ? 'active' : '' }}"
-                href="{{ route('admin.studios.index') }}">{{ __('Super') }}</a>
+            <a class="px-2 {{ request()->routeIs('superfacilitator.studios.index') ? 'active' : '' }}"
+                href="{{ route('superfacilitator.studios.index') }}">{{ __('Super') }}</a>
         </li>
         @endif
         @if (Auth::user()->activeStudio->allow_comments)

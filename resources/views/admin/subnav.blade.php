@@ -10,7 +10,7 @@
         </li>
         <li>
             <a class="px-2 {{ request()->routeIs('admin') ? 'active' : '' }}"
-                href="{{ route('admin') }}">Administrivia</a>
+                href="{{ route('admin.index') }}">Administrivia</a>
         </li>
     </x-subnav-ul>
 </x-subnav>

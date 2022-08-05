@@ -8,8 +8,10 @@
         @method('PATCH')
         @csrf
         <x-form.input label="{{ __('Name') }}" name="name" required="true" :value="old('name', $studio->name)" />
+        @if (auth()->user()->isAdmin())
         <x-form.defaultdropdown label="{{ __('Package') }}" name="package" :value="old('package', $studio->package_id)"
             :inherited="$studio->school->deFactoPackage" :list="$packages" />
+        @endif
         <livewire:facilitator.studio-code :studio="$studio">
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit" id="btn-submit"
