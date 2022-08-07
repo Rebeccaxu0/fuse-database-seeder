@@ -2,9 +2,9 @@
     <x-slot name="title">{{ $title }}</x-slot>
     <x-slot name="header">{{ $title }}</x-slot>
 
-    <div class="my-6">
+    {{-- <div class="my-6">
       Knobs and dials - Filters and sorts
-    </div>
+    </div> --}}
 
     <div class="sm:hidden">
       {{ $artifacts->links() }}
