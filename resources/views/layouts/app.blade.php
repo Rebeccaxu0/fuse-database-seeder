@@ -13,7 +13,7 @@
 <x-base-layout>
     <x-slot name="title">{!! $title ?? null !!}</x-slot>
 
-    <div id='env' {{ $attributes(['class' => 'flex flex-col p-0 min-h-screen']) }} >
+    <div id='env' {{ $attributes(['class' => 'container flex flex-col p-0 min-h-screen']) }} >
         <x-jet-banner />
         <livewire:announcement-banner :user="auth()->user()" />
         @impersonating
