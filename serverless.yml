@@ -21,21 +21,37 @@ params:
     public_route_table_id: ${ssm:/laravel/public_route_table_id}
     public_subnet_1a_id: ${ssm:/laravel/public_subnet_1a_id}
     vpc_id: ${ssm:/laravel/vpc_id}
-    new_relic_log_file: /proc/self/fd/2
+    filestack_api_key: ${ssm:/laravel/filestack_api_key}
+    aws_access_key_id: ${ssm:/laravel/aws_access_key_id}
+    aws_secret_access_key: ${ssm:/laravel/aws_secret_access_key}
+    aws_default_region: us-east-2
+    aws_endpoint: https://s3.us-east-2.amazonaws.com
+    aws_artifact_access_key_id: ${ssm:/laravel/aws_artifact_access_key_id}
+    aws_artifact_secret_access_key: ${ssm:/laravel/aws_artifact_secret_access_key}
+    aws_artifact_default_region: us-east-2
+    aws_artifact_endpoint: https://s3.us-east-2.amazonaws.com
+    aws_artifact_bucket: ${ssm:/laravel/aws_artifact_bucket}
+    aws_artifact_url: ${ssm:/laravel/aws_artifact_url}
+    # new_relic_log_file: /proc/self/fd/2
     # new_relic_license_key: ${ssm:/laravel/new_relic_license_key}
+    wistia_token: ${ssm:/laravel/wistia_token}
   dev:
     app_env: dev
     asset_bucket_name: dev.assets.fusestudio.net
     domain: dev.my.fusestudio.net
     profile: terraform-dev
-    new_relic_app_name: dev.my.fusestudio.net
+    aws_public_bucket: fuse-stage-my-public
+    aws_public_url: https://.cloudfront.net
+    # new_relic_app_name: dev.my.fusestudio.net
   prod:
     app_env: production
     asset_bucket_name: assets.fusestudio.net
-    domain: prod.my.fusestudio.net
+    domain: my.fusestudio.net
     debug: false
     profile: terraform-prod
-    new_relic_app_name: my.fusestudio.net
+    aws_public_bucket: fuse-prod-my-public
+    aws_public_url: https://d1wrywqg8lniay.cloudfront.net
+    # new_relic_app_name: my.fusestudio.net
   stage:
     app_env: stage
     asset_bucket_name: stage.assets.fusestudio.net
@@ -78,11 +94,30 @@ provider:
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
     SESSION_DRIVER: redis
     VIEW_COMPILED_PATH: /tmp/storage/framework/views
+    # Filestack Settings
+    FILESTACK_API_KEY: ${param:filestack_api_key}
+    FILESTACK_SECURITY_SECRET:
+    # File Settings (S3)
+    # AWS_ACCESS_KEY_ID: ${param:aws_access_key_id}
+    # AWS_SECRET_ACCESS_KEY: ${param:aws_secret_access_key}
+    # AWS_DEFAULT_REGION: ${param:aws_default_region}
+    AWS_ENDPOINT: ${param:aws_endpoint}
+    # Public S3
+    AWS_PUBLIC_BUCKET: ${param:aws_public_bucket}
+    AWS_PUBLIC_URL: ${param:aws_public_url}
+    # Artifact S3
+    AWS_ARTIFACT_ACCESS_KEY_ID: ${param:aws_artifact_access_key_id}
+    AWS_ARTIFACT_SECRET_ACCESS_KEY: ${param:aws_artifact_secret_access_key}
+    AWS_ARTIFACT_DEFAULT_REGION: ${param:aws_artifact_default_region}
+    AWS_ARTIFACT_ENDPOINT: ${param:aws_artifact_endpoint}
+    AWS_ARTIFACT_BUCKET: ${param:aws_artifact_bucket}
+    AWS_ARTIFACT_URL: ${param:aws_artifact_url}
     # New Relic Settings
     # NEW_RELIC_DAEMON_ADDRESS = ${param:new_relic_daemon_address}
     # NEW_RELIC_APP_NAME = ${param:new_relic_app_name}
     # NEW_RELIC_LICENSE_KEY = ${param:new_relic_license_key}
     # NEW_RELIC_LOG_FILE = ${param:new_relic_log_file}
+    WISTIA_TOKEN: ${param:wistia_token}
 
 package:
   # Directories to exclude from deployment
@@ -92,6 +127,9 @@ package:
     - '!resources/assets/**'
     - '!storage/**'
     - '!tests/**'
+    - '!vendor/laravel/dusk/bin/**'
+    - '!vendor/**/docs/**'
+    - '!vendor/**/tests/**'
 
 functions:
 
@@ -123,7 +161,7 @@ functions:
     timeout: 120 # in seconds
     layers:
       - ${bref:layer.php-81} # PHP
-        # - ${bref-extra:pgsql-php-81}
+      # - ${bref-extra:pgsql-php-81}
       - ${bref-extra:redis-php-81}
       - ${bref:layer.console} # The "console" layer
     vpc:
