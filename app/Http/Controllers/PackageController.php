@@ -106,7 +106,7 @@ class PackageController extends Controller
             'student_activity_tab_access' => $request->boolean('student_activity_tab_access'),
         ]);
         $package->challenges()->sync($request->challenges);
-        Cache::tag('packages')->flush();
+        Cache::tags('packages')->flush();
 
         return redirect(route('admin.packages.index'));
     }
@@ -139,7 +139,7 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->delete();
-        Cache::tag('packages')->flush();
+        Cache::tags('packages')->flush();
         return redirect(route('admin.packages.index'));
     }
 }
