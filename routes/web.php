@@ -57,9 +57,9 @@ Route::get('lobby-guest', fn () => view('auth.lobby-guest'))
     ->name('lobby-guest');
 
 // Recreating Fortify registration routes.
-// Route::get('register', [RegisteredUserController::class, 'create'])
-//     ->middleware(['guest:' . config('fortify.guard')])
-//     ->name('register');
+Route::get('register', [RegisteredUserController::class, 'create'])
+    ->middleware(['guest:' . config('fortify.guard')])
+    ->name('register');
 
 Route::post('register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')]);
