@@ -33,6 +33,9 @@
                 </div>
             @endif
             @if ($available)
+            <div class="text-xl mb-4">
+                {!! $level->challenge_desc !!}
+            </div>
                 @if ($startable)
                     <form action="{{ route('student.level_start', ['challengeVersion' => $level->levelable, 'level' => $level]) }}" method="POST">
                     @csrf
