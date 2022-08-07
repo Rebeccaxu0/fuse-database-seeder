@@ -40,7 +40,7 @@
         {{ session('status') }}
     </div>
     @endif
-    <div class="bg-neutral-200 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3">
+    <div class="bg-neutral-200 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3 text-lg">
         <article id="main" class="lg:col-span-2">
             <section class="bg-white border rounded-xl shadow p-4">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('The Challenge') }}</div>
@@ -69,7 +69,7 @@
                     @endif
                     </div>
                     @if ($level->levelable->chromebook_info)
-                    <div class="flex-1 border p-4">
+                    <div class="flex-1 border p-4 bg-white">
                         {!! $level->levelable->chromebook_info !!}
                     </div>
                     @endif
@@ -79,7 +79,6 @@
             <section class="bg-white rounded-xl shadow mt-8 p-4">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('Get Started') }}</div>
                 {!! $fields['get_started_desc'] !!}
-                <x-icon icon="video" class="text-fuse-teal-dk"/>
             </section>
 
             <section class="bg-white rounded-xl shadow mt-8 p-4">
@@ -132,19 +131,19 @@
         </article>
 
         <aside id="sidebar" class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:block">
+            <section class="">
+                <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('Help Finder') }}</h5>
+                <x-help-finder-tile-pane :challengeVersion="$challengeVersion" :studio="$studio" gallery='0' />
+            </section>
+
             @if ($fields['get_help_desc'])
             <section class="">
-                <h5 class="ml-4 mt-4 mb-1 uppercase">{{ __('Help') }}</h5>
-                <div class="bg-neutral-100 border rounded-xl p-4">
+                <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __('Help') }}</h5>
+                <div class="bg-neutral-100 border rounded-xl p-4 text-base">
                     {!! $fields['get_help_desc'] !!}
                 </div>
             </section>
             @endif
-
-            <section class="">
-                <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __('Help Finder') }}</h5>
-                <x-help-finder-tile-pane :challengeVersion="$challengeVersion" :studio="$studio" gallery='0' />
-            </section>
 
             <section class="">
                 <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __("What's Next") }}</h5>
@@ -154,7 +153,7 @@
             </section>
 
             <section class="">
-                <h5 class="ml-4 mt-4 mb-1 uppercase">{{ __('Idea Project') }}</h5>
+                <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __('Idea Project') }}</h5>
                 <livewire:student.idea-edit :inspiration="$level->levelable" />
             </section>
 
@@ -171,12 +170,12 @@
                  aria-valuetext="{{ __('percentage of level page seen') }}"
                  ></div>
         </div>
-        <div class="pt-4 pb-8 px-4 flex flex-col sm:flex-row">
-            <span class="hidden md:inline-block md:flex-1">
-                <span class="font-light">{{ $level->levelable->challenge->name }}</span>
+        <div class="px-4 flex flex-col sm:flex-row">
+            <span class="hidden md:flex-1 md:flex items-center">
+                <span class="font-light mr-1">{{ $level->levelable->challenge->name }}</span>
                 <span class="font-extrabold">{{ __('Level :number', ['number' => $level->level_number]) }}</span>
             </span>
-            <div class="w-full sm:flex-1 mx-4">
+            <div class="w-full flex-1 mx-4 flex items-center">
                 <x-progress-bar :levelable="$level->levelable" :user="auth()->user()" class="h-4" />
             </div>
             <div class="flex-1 flex mx-auto">
