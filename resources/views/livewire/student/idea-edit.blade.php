@@ -3,7 +3,7 @@
         @if ($levelPage)
         <button wire:click="$set('showModalFlag', true)"
                 class="w-full flex flex-col items-center justify-center p-4 bg-neutral-100 border shadow rounded-xl text-fuse-teal-dk text-4xl">
-            <x-icon icon="idea-new" width="150" height="150"
+            <x-icon icon="idea-new" width="75" height="75"
                 fill="currentColor"
                 alt="{{ __('New Idea') }}" />
                 {{ __('Make your own!') }}
