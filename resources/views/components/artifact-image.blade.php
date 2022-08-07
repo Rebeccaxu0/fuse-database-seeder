@@ -1,7 +1,7 @@
 <div {{ $attributes->merge(
     ['class' => ($preview ? 'overflow-hidden aspect-video ' : 'w-full h-full ')
      . 'relative bg-gradient-to-t from-fuse-teal-dk to-fuse-teal']) }} >
-    @if ($aggregate_type == 'video')
+    @if ($aggregate_type == 'video' || $aggregate_type == 'audio')
     <video class="video-js vjs-default-skin" width="100%" height="300px" data-setup="{}"
      @if (! $preview) controls @endif >
         <source src="{{ $imageUrl }}" type="{{ $mime }}">
@@ -16,7 +16,11 @@
         </div>
     @endif
     @else
-        <img class="object-cover mx-auto" src="{{ $imageUrl }}" />
+        @if ($preview)
+        <div class="bg-cover h-full w-full" style="background-image: url({{ $imageUrl }})" ></div>
+        @else
+        <img class="mx-auto" src="{{ $imageUrl }}" />
+        @endif
 
         <div class="absolute inset-0 flex items-center justify-center
         @if ($needsScrim) bg-fuse-teal-dk bg-opacity-70 @endif ">
@@ -27,7 +31,7 @@
     @endif
 </div>
 
-<span class='text-sm'>{{ $artifact->id }}</span>
+{{-- <span class='text-sm'>{{ $artifact->id }}</span>
 <span class='text-sm'>{{ $preview }}</span>
 <span class='text-sm'>{{ $aggregate_type }}</span>
-<span class='text-sm'>{{ $filestackHandle }}</span>
+<span class='text-sm'>{{ $filestackHandle }}</span> --}}
