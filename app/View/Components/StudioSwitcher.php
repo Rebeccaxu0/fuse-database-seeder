@@ -3,7 +3,6 @@
 namespace App\View\Components;
 
 use App\Models\Studio;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
@@ -20,13 +19,12 @@ class StudioSwitcher extends Component
      */
     public function __construct()
     {
+        $user = auth()->user();
         $this->otherStudios = new Collection;
-        if (Auth::user()->deFactoStudios()->count() > 0) {
-            $this->activeStudio = Auth::user()->activeStudio;
-            $this->otherStudios =
-                Auth::user()
-                    ->deFactoStudios()
-                    ->except([$this->activeStudio->id]);
+        if ($user->deFactoStudios()->count() > 0) {
+            $this->activeStudio = $user->activeStudio;
+            $this->otherStudios = $user->deFactoStudios()
+                ->except([$this->activeStudio->id]);
             $this->multipleSchools =
                 $this->otherStudios->pluck('school_id')->unique()->count() > 1;
         }
