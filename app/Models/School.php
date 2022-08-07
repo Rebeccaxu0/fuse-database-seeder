@@ -2,17 +2,31 @@
 
 namespace App\Models;
 
+use App\Events\SchoolDeleted;
+use App\Events\SchoolSaved;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
 class School extends Organization
 {
     use HasFactory;
+    use Notifiable;
     use SoftDeletes;
-
+ 
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'saved' => SchoolSaved::class,
+        'deleting' => SchoolDeleting::class,
+    ];
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -278,6 +292,26 @@ class School extends Organization
                         ->forever("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID, false);
                 }
             }
+        }
+    }
+
+    public function clearDeFactoStudiosCaches()
+    {
+        // Find all users affected by the name change and clear their defactostudios.
+        foreach ($this->students() as $student) {
+            Cache::forget("u{$student->id}_studios");
+          }
+        foreach ($this->facilitators() as $facilitator) {
+            Cache::forget("u{$facilitator->id}_studios");
+        }
+        foreach ($this->superFacilitators() as $superFacilitator) {
+            Cache::forget("u{$superFacilitator->id}_studios");
+        }
+        $staffers = User::whereHas('roles', function (Builder $query) {
+                $query->whereIn('id', [Role::ROOT_ID, Role::ADMIN_ID, Role::REPORT_VIEWER_ID, Role::CHALLENGE_AUTHOR_ID]);
+            })->get();
+        foreach ($staffers as $staff) {
+            Cache::forget("u{$staff->id}_studios");
         }
     }
 }

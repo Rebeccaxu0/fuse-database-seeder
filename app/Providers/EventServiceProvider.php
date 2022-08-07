@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Auth\SocialiteProviders\Clever\CleverExtendSocialite;
 use App\Listeners\RestoreImpersonatorPassword;
 use App\Listeners\SaveImpersonatorPassword;
+use App\Listeners\StudioUpdateSubscriber;
 use App\Listeners\UserEventSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -21,17 +22,17 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-        TakeImpersonation::class => [
-            SaveImpersonatorPassword::class,
-        ],
         LeaveImpersonation::class => [
             RestoreImpersonatorPassword::class,
         ],
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
         SocialiteWasCalled::class => [
             CleverExtendSocialite::class,
+        ],
+        TakeImpersonation::class => [
+            SaveImpersonatorPassword::class,
         ],
     ];
 
@@ -42,6 +43,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $subscribe = [
         UserEventSubscriber::class,
+        StudioUpdateSubscriber::class,
     ];
     /**
      * Register any events for your application.
