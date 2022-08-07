@@ -29,6 +29,6 @@ class CacheController extends Controller
         Cache::flush();
         session()->flash('flash.banner', 'Cache cleared!');
 
-        return redirect(route('admin'));
+        return redirect(route('admin.index'));
     }
 }
