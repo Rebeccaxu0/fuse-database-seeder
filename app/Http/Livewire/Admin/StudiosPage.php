@@ -27,7 +27,7 @@ class StudiosPage extends Component
     public function mount()
     {
         $user = auth()->user();
-        if ($user->isSuperFacilitator()) {
+        if (! $user->isAdmin() && $user->isSuperFacilitator()) {
             $this->school = $user->activeStudio->school;
             $this->schoolId = $this->school->id;
         }
