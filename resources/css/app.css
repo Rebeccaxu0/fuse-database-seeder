@@ -41,8 +41,16 @@
     @apply font-semibold;
   }
 
-  li {
-    @apply ml-8 mt-3 leading-snug list-disc;
+  ol li, ul li {
+    @apply ml-8 mt-3 leading-snug;
+  }
+
+  ol li {
+    @apply list-decimal;
+  }
+
+  ul li {
+    @apply list-disc;
   }
 
   .btn, button.submit, [type='reset'], [type='submit'] {
