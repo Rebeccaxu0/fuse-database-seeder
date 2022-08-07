@@ -194,6 +194,9 @@ class ArtifactController extends Controller
      */
     public function destroy(Artifact $artifact)
     {
-        //
+        $message = "Artifact '{$artifact->name}' deleted";
+        $artifact->delete();
+        return redirect(URL::previous())
+            ->with('status', $message);
     }
 }

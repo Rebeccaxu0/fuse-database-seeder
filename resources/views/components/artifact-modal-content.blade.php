@@ -70,6 +70,13 @@
         </div>
         @endif
     </div>
+    @if (auth()->user()->isAdmin())
+    <form action="{{ route('admin.artifacts.destroy', $artifact) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="destroy"><x-icon icon="trash" /></button>
+    </form>
+    @endif
     {{-- @if ($related->count())
     <div class="uppercase font-semibold">
         {!! __('Saves &amp; completes from this level') !!}

@@ -201,6 +201,7 @@ Route::middleware([
 
             Route::resources([
                 'announcements'     => AnnouncementController::class,
+                'artifacts'         => ArtifactController::class,
                 'challenges'        => ChallengeController::class,
                 'challengeversions' => ChallengeVersionController::class,
                 'districts'         => DistrictController::class,
