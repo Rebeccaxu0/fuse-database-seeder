@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Events\SchoolDeleted;
+use App\Events\SchoolDeleting;
 use App\Events\SchoolSaved;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -79,9 +79,7 @@ class School extends Organization
         return User::whereHas('studios', function (Builder $query) use ($studios) {
             $query->whereIn('id', $studios);
         })
-            ->whereHas('roles', function (Builder $query) {
-                $query->where('name', '=', 'Student');
-            });
+            ->doesntHave('roles');
     }
 
     /**
@@ -90,14 +88,14 @@ class School extends Organization
     public function superFacilitators()
     {
         $district = $this->district()->first();
-        $superFacilitators = new Collection;
+        $superFacilitators = User::where('id', '<', 0);
         if ($district) {
             $superfacilitators = User::whereHas('districts',
               function (Builder $query) use ($district) {
                   $query->where('id', '=', $district->id);
               })
               ->whereHas('roles', function (Builder $query) {
-                  $query->where('name', '=', 'Super Facilitator');
+                  $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
               });
             }
         return $superFacilitators;
@@ -298,13 +296,13 @@ class School extends Organization
     public function clearDeFactoStudiosCaches()
     {
         // Find all users affected by the name change and clear their defactostudios.
-        foreach ($this->students() as $student) {
+        foreach ($this->students()->get() as $student) {
             Cache::forget("u{$student->id}_studios");
           }
-        foreach ($this->facilitators() as $facilitator) {
+        foreach ($this->facilitators as $facilitator) {
             Cache::forget("u{$facilitator->id}_studios");
         }
-        foreach ($this->superFacilitators() as $superFacilitator) {
+        foreach ($this->superFacilitators()->get() as $superFacilitator) {
             Cache::forget("u{$superFacilitator->id}_studios");
         }
         $staffers = User::whereHas('roles', function (Builder $query) {

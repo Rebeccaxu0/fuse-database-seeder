@@ -231,18 +231,22 @@ class Studio extends Organization
     public function clearDeFactoStudiosCaches()
     {
         // Find all users affected by the name change and clear their defactostudios.
-        foreach ($this->users as $student) {
+        foreach ($this->students as $student) {
             Cache::forget("u{$student->id}_studios");
-          }
-        foreach ($this->facilitators as $facilitator) {
-            Cache::forget("u{$facilitator->id}_studios");
         }
-        foreach ($this->superFacilitators as $superFacilitator) {
-            Cache::forget("u{$superFacilitator->id}_studios");
+        if ($this->school) {
+            foreach ($this->facilitators as $facilitator) {
+                Cache::forget("u{$facilitator->id}_studios");
+            }
+            if ($this->school->district) {
+                foreach ($this->superFacilitators as $superFacilitator) {
+                    Cache::forget("u{$superFacilitator->id}_studios");
+                }
+            }
         }
         $staffers = User::whereHas('roles', function (Builder $query) {
-                $query->whereIn('id', [Role::ROOT_ID, Role::ADMIN_ID, Role::REPORT_VIEWER_ID, Role::CHALLENGE_AUTHOR_ID]);
-            })->get();
+            $query->whereIn('id', [Role::ROOT_ID, Role::ADMIN_ID, Role::REPORT_VIEWER_ID, Role::CHALLENGE_AUTHOR_ID]);
+        })->get();
         foreach ($staffers as $staff) {
             Cache::forget("u{$staff->id}_studios");
         }
