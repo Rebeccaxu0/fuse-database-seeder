@@ -57,20 +57,27 @@ class ArtifactComponent extends Component
         //      ->where('level_id', $artifact->level->id)
         //      ->get()
         //      ->except([$artifact->id]);
-        if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
-            $this->artifact->level->type = 'level';
-            $this->level = $this->artifact->level;
-            $this->title = $this->level->levelable->challenge->name;
-            $this->title_modifier = __('L:number', ['number' => $this->level->level_number]);
-            $this->levelRoute = route('student.level', [$this->level->levelable, $this->level]);
+        if ($this->artifact->level && $this->artifact->level->levelable) {
+            if ($this->artifact->level->levelable::class == ChallengeVersion::class) {
+                $this->artifact->level->type = 'level';
+                $this->level = $this->artifact->level;
+                $this->title = $this->level->levelable->challenge->name;
+                $this->title_modifier = __('L:number', ['number' => $this->level->level_number]);
+                $this->levelRoute = route('student.level', [$this->level->levelable, $this->level]);
+            } else {
+                $this->artifact->level->type = 'idea';
+                $this->idea = $this->artifact->level->levelable;
+                $this->inspiration = $this->idea->inspirationListToStr();
+                $this->title = $this->idea->name;
+                $this->title_modifier = __('Idea');
+                $this->levelRoute = route('student.idea', $this->idea);
+            }
         }
         else {
-            $this->artifact->level->type = 'idea';
-            $this->idea = $this->artifact->level->levelable;
-            $this->inspiration = $this->idea->inspirationListToStr();
-            $this->title = $this->idea->name;
-            $this->title_modifier = __('Idea');
-            $this->levelRoute = route('student.idea', $this->idea);
+            $this->artifact->level->type = 'orphan';
+            $this->title = 'Orphan DJ ' . $this->artifact->id;
+            $this->title_modifier = '';
+            $this->levelRoute = '';
         }
     }
 
