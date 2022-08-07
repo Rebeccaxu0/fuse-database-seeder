@@ -57,7 +57,7 @@ Route::get('lobby-guest', fn () => view('auth.lobby-guest'))
     ->name('lobby-guest');
 
 // Recreating Fortify registration routes.
-Route::get('register', [RegisteredUserController::class, 'create'])
+Route::get('register', fn () => redirect()->intended('lobby-guest'))
     ->middleware(['guest:' . config('fortify.guard')])
     ->name('register');
 
