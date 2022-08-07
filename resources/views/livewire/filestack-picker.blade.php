@@ -19,6 +19,6 @@
 </script>
 @endpush
 
-<div id="Filestack-container" class="@if ($hidden) hidden @endif">
-    <div x-init="filestack_init()" id="Filestack-Picker" class="mb-4 aspect-[4/3] @if ($preview) hidden @endif"></div>
+<div id="Filestack-container" class="@if ($hidden) hidden @endif h-full">
+    <div x-init="filestack_init()" id="Filestack-Picker" class="mb-4 aspect-[4/3] @if ($preview) hidden @endif" style="height: 1px;"></div>
 </div>
