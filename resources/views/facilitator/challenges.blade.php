@@ -7,7 +7,7 @@
         <h2>{{ __('Your studio is misconfigured and we cannot show challenges. Please contact FUSE.') }}</h2>
     @else
     <div class="md:columns-2 lg:container md:gap-12">
-        @foreach ($primaryChallengeCategories as $category)
+        @foreach ($primaryChallengeCategories->sortBy('id') as $category)
             <div class="py-4 px-4 break-inside-avoid">
                 <h2 class="mt-0 text-left text-black">{{ $category->name }}</h2>
                 <p class="text-sm text-black">{{ $category->description }}</p>
