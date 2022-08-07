@@ -46,7 +46,10 @@ class FacilitatorSettingsController extends Controller
     public function updateStudioName(Request $request, Studio $studio)
     {
         Gate::allowIf(fn () => auth()->user()->isAdmin()
-            || (auth()->user()->isFacilitator() && auth()->user()->deFactoStudios()->contains($studio))
+            || (
+                auth()->user()->isFacilitator()
+                && auth()->user()->deFactoStudios()->contains($studio)
+            )
         );
 
         $validated = $request->validate(['name' => 'required|max:32']);
