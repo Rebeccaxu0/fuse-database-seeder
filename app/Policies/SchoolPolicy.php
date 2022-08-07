@@ -31,7 +31,7 @@ class SchoolPolicy
     public function view(User $user, School $school)
     {
         return $user->isAdmin() ||
-          ($user->isSuperFacilitator() && $user->schools->contains($school));
+          ($user->isSuperFacilitator() && $user->deFactoSchools()->contains($school));
     }
 
     /**
