@@ -152,10 +152,12 @@
                 </a>
             </section>
 
+            @if ($studio->allow_ideas)
             <section class="">
                 <h5 class="ml-4 mt-8 mb-1 uppercase">{{ __('Idea Project') }}</h5>
                 <livewire:student.idea-edit :inspiration="$level->levelable" />
             </section>
+            @endif
 
         </aside>
     </div>
