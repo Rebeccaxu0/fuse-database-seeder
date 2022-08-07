@@ -591,6 +591,7 @@ LEFT JOIN `fuse_laravel`.districts districts ON
 LEFT JOIN `d7-fuse`.field_data_field_salesforce_acct_id AS fdfsai ON
   (fdfsai.entity_type = 'node'
   AND fdfsai.bundle = 'organization'
+  AND fdfsai.deleted = 0
   AND fdfsai.entity_id = n.nid)
 WHERE n.type = 'organization' AND fdfot.field_organization_type_tid = 166;
 
