@@ -71,7 +71,7 @@ class StudiosPage extends Component
                 if ($studio->school->package) {
                     $studio->packageText = "{$studio->school->package->name} (Inherited)";
                 }
-                else if ($studio->school->district->package) {
+                else if ($studio->school->district && $studio->school->district->package) {
                     $studio->packageText = "{$studio->school->district->package->name} (Inherited)";
                 }
                 else {
