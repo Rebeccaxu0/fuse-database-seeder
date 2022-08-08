@@ -26,6 +26,7 @@ class ArtifactImage extends Component
      */
     public function __construct(Artifact $artifact, bool $preview = true)
     {
+        // TODO: make sure to use converted video/audio via filestack.
         $useChallengePreviewImage = true;
         $this->preview = $preview;
         $this->artifact = $artifact;
