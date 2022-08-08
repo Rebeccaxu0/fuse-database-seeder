@@ -21,7 +21,7 @@
                     {{ __('Knowledge Base (Zendesk)') }}
                 </h2>
                 <p class="m-0">
-                {{ __('Visit for in-depth information on Challenges, Re-supply, and more.') }}
+                {{ __('Visit for in-depth information on best practices, kits, and more.') }}
                 </p>
             </a>
         </li>
@@ -51,7 +51,7 @@
                     {{ __('3D Printing') }}
                 </h2>
                 <p class="m-0">
-                {{ __('Custom videos for FUSE Facilitators troubleshooting printers.') }}
+                {{ __('In-depth information for FUSE Facilitators troubleshooting printers.') }}
                 </p>
             </a>
         </li>
@@ -66,12 +66,12 @@
             </a>
         </li>
         <li class="bg-white rounded-lg border shadow-lg px-8 py-12 list-none m-0">
-            <a target="_blank" href="https://fusestudio.zendesk.com/hc/en-us/articles/360020869552-Contact-FUSE">
+            <a target="_blank" href="mailto:help@fusestudio.net">
                 <h2 class="text-left text-xl m-0">
-                    {{ __('Find us on Slack') }}
+                    {{ __('Email Us') }}
                 </h2>
                 <p class="m-0">
-                {{ __('Reach someone during school hours on Community Slack.') }}
+                {{ __('Email us directly at help@fusestudio.net') }}
                 </p>
             </a>
         </li>
