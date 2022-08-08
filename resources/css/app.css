@@ -310,7 +310,7 @@
     @apply text-neutral-900 bg-neutral-300;
   }
   nav #facilitator-navbar li a:hover {
-    @apply text-neutral-900 bg-neutral-300;
+    @apply text-neutral-900 bg-neutral-100;
   }
 
   @screen sm {
