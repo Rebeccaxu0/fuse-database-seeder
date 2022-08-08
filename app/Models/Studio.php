@@ -53,18 +53,10 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->assignedPackage()) {
-            return $this->package();
-        }
-        if ($this->assignedSchool()) {
+        if (! $this->assignedPackage() && $this->assignedSchool()) {
             return $this->school->deFactoPackage();
         }
-        else {
-            $this->package_id = 16;
-            $this->save();
-            $this->fresh();
-            return $this->package();
-        }
+        return $this->package();
     }
 
     /**
