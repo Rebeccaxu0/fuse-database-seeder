@@ -50,6 +50,29 @@
             name="getHelp"
             label="Get Help"
             :value="old('getHelp', $level->get_help_desc)" />
+        {{-- <div class="py-4">
+            <a href="{{ route('admin.helparticles.create') }}" class="float-right">
+                Make New Help Article
+            </a>
+            <p class="mt-0 mb-0">Help Articles</p>
+            @if (! $level->help_articles->count())
+            <span class="font-bold">No Help Articles linked yet</span>
+            @else
+            <p class="mt-0 mb-0 text-xs">Drag to reorder</p>
+            <ol class="list-none" name="order" id="sortlevels">
+                @foreach ($level->help_articles->sortBy('order') as $i => $helparticle)
+                <li class="text-left list-decimal border-2 bg-slate-200 rounded-lg m-6 p-4">
+                    <input name="helparticle[{{ $helparticle->id }}]" value="{{ $i+1 }}" type="hidden" />
+                    <span class="float-left">
+                        {{ $helparticle->name }}
+                    </span>
+                    <a href="{{ route('admin.helparticles.edit', $helparticle) }}" class="float-right"><x-icon icon="edit" /></a>
+                </li>
+                @endforeach
+            </ol>
+            @endif
+            <button class="btn">LW: add existing Help Article</button>
+        </div> --}}
         <x-form.textarea
             name="powerUp"
             label="Power Up"

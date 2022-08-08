@@ -11,6 +11,7 @@
                 <li><a href="{{ route('admin.challenges.index') }}">Meta Challenges</a></li>
                 <li><a href="{{ route('admin.challengeversions.index') }}">Challenges</a></li>
                 <li><a href="{{ route('admin.levels.index') }}">Levels</a></li>
+                <li><a href="{{ route('admin.helparticles.index') }}">Level Help Articles</a></li>
             </ul>
         </fieldset>
 

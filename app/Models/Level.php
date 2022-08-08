@@ -81,6 +81,15 @@ class Level extends Model
         return $this->hasMany(Artifact::class);
     }
 
+    // /**
+    //  * The help articles linked to this level.
+    //  */
+    // public function help_articles()
+    // {
+    //     return $this->belongsToMany(HelpArticle::class)
+    //         ->withPivot(['order']);
+    // }
+
     /**
      * Get the starts on this level.
      */
@@ -164,7 +173,9 @@ class Level extends Model
     {
         // return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 3600, function () use ($user) {
             // Levels of an Idea belonging to the User are always startable.
-            if ($this->levelable::class == Idea::class && $this->levelable->users->contains($user)) {
+            if ($user->isAdmin() || (
+                $this->levelable::class == Idea::class && $this->levelable->users->contains($user))
+                ) {
                 return true;
             }
 

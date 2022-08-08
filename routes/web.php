@@ -9,6 +9,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
 use App\Http\Controllers\FacilitatorSettingsController;
+use App\Http\Controllers\HelpArticleController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIController;
@@ -205,6 +206,7 @@ Route::middleware([
                 'challenges'        => ChallengeController::class,
                 'challengeversions' => ChallengeVersionController::class,
                 'districts'         => DistrictController::class,
+                'helparticles'      => HelpArticleController::class,
                 'levels'            => LevelController::class,
                 'ltiplatforms'      => LTIPlatformController::class,
                 'media'             => MediaController::class,
