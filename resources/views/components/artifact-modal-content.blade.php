@@ -1,6 +1,6 @@
 <div class="p-4">
     <div class="pb-4 relative text-center text-fuse-teal-dk text-3xl whitespace-nowrap">
-        @if ($artifact->level->levelable::class == App\Models\Idea::class)
+        @if ($artifact->level && $artifact->level->levelable && $artifact->level->levelable::class == App\Models\Idea::class)
         <span class="tracking-tight mr-1">{{ __('My Idea') }}</span> <span class="font-light">{{ $title }}</span>
         @else
         <span class="tracking-tight mr-1">{{ $title }}</span> <span class="font-light">{{ $title_modifier }}</span>
