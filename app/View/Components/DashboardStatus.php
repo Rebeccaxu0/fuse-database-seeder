@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\ChallengeVersion;
 use App\Models\Idea;
 use App\Models\Level;
 use App\Models\User;
@@ -13,6 +14,8 @@ class DashboardStatus extends Component
     public string $mostRecent = '';
     public string $buttonLink;
     public string $buttonText;
+    public ?ChallengeVersion $challengeVersion = null;
+    public User $user;
 
     /**
      * Create a new component instance.
@@ -49,6 +52,7 @@ class DashboardStatus extends Component
         //         challengeVersion that is active in this studio and use above
 
         // If the user has started any level...
+        $this->user = $user;
         if ($user->currentLevel) {
             $level = $user->currentLevel;
             // If the Current Level is completed...
@@ -106,11 +110,13 @@ class DashboardStatus extends Component
             ]);
             $this->buttonText = __('Continue');
             $this->buttonLink = route('student.level', [$level->levelable, $level]);
+            $this->challengeVersion = $level->levelable;
         }
     }
 
     private function start(Level $level, User $user)
     {
+        $this->challengeVersion = $level->levelable;
         $this->mostRecent = __(':challenge Level :number', [
             'challenge' => $level->levelable->challenge->name,
             'number' => $level->level_number,
