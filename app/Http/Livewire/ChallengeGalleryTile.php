@@ -27,7 +27,7 @@ class ChallengeGalleryTile extends Component
         // based on current level of the challenge version.
         $this->level = $challengeVersion->currentLevel($user);
         if (! $this->level) {
-            $this->level = $challengeVersion->levels->first();
+            $this->level = $challengeVersion->levels->firstWhere('level_number', '=', 1);
         }
         if ($this->level && $user->hasStartedLevel($this->level)) {
             $this->continue = true;

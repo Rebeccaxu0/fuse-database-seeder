@@ -163,7 +163,7 @@ class ChallengeVersion extends Model
      */
     public function currentLevel(User $user): ?Level
     {
-        return Cache::rememberForever("u{$user->id}_current_level_on_levelable_{$this->id}", function () use ($user) {
+        // return Cache::rememberForever("u{$user->id}_current_level_on_levelable_{$this->id}", function () use ($user) {
             $currentLevel = null;
             $levelIds = $this->levels()->pluck('id');
             // TODO: We could combine get these queries into one.
@@ -180,7 +180,7 @@ class ChallengeVersion extends Model
             // No activity
             if (is_null($mostRecentArtifact) && is_null($mostRecentStart)) {
                 if ($this->challenge->isStartable($user)) {
-                    $currentLevel = $this->levels()->first();
+                    $currentLevel = $this->levels()->firstWhere('level_number', '=', 1);
                 }
             }
 
@@ -211,19 +211,25 @@ class ChallengeVersion extends Model
                            ->where('level_id', $finalLevel->id)
                            ->oldest()
                            ->first();
-                if ($mostRecentStart->create_at > $CVCompletionArtifact->created_at
-                    || $mostRecentArtifact->created_at > $CVCompletionArtifact->create_at) {
-                    if ($mostRecentArtifact->created_at > $mostRecentStart->created_at) {
-                        $currentLevel = $mostRecentArtifact->level;
+                if ($mostRecentStart) {
+                    if ($mostRecentStart->create_at > $CVCompletionArtifact->created_at
+                        || $mostRecentArtifact->created_at > $CVCompletionArtifact->create_at
+                    ) {
+                        if ($mostRecentArtifact->created_at > $mostRecentStart->created_at) {
+                            $currentLevel = $mostRecentArtifact->level;
+                        } else {
+                            $currentLevel = $mostRecentStart->level;
+                        }
                     }
-                    else {
-                        $currentLevel = $mostRecentStart->level;
-                    }
+                }
+                // This is pathological - Complete w/o start? Oh well.
+                else {
+                    $currentLevel = $mostRecentArtifact->level;
                 }
             }
 
             return $currentLevel;
-        });
+        // });
     }
 
     /**
