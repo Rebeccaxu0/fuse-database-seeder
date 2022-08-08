@@ -45,10 +45,23 @@ class School extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->assignedPackage() || ! $this->assignedDistrict()) {
+        if ($this->assignedPackage()) {
             return $this->package();
         }
-        return $this->district->package();
+        if ($this->assignedDistrict()) {
+            if (! $this->district->package) {
+                $this->district->package_id = 16;
+                $this->district->save();
+                $this->district->fresh();
+            }
+            return $this->district->package();
+        }
+        else {
+            $this->package_id = 16;
+            $this->save();
+            $this->fresh();
+            return $this->package();
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\StudioDeleting;
 use App\Events\StudioSaved;
+use App\Models\Package;
 use App\Models\Role;
 use App\Models\User;
 use App\Util\StudioCode;
@@ -52,10 +53,18 @@ class Studio extends Organization
      */
     public function deFactoPackage()
     {
-        if ($this->assignedPackage() || ! $this->assignedSchool()) {
+        if ($this->assignedPackage()) {
             return $this->package();
         }
-        return $this->school->deFactoPackage();
+        if ($this->assignedSchool()) {
+            return $this->school->deFactoPackage();
+        }
+        else {
+            $this->package_id = 16;
+            $this->save();
+            $this->fresh();
+            return $this->package();
+        }
     }
 
     /**
