@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Fortify;
 use Selfsimilar\D7Password\Facades\D7Password as D7Hash;
@@ -68,6 +69,15 @@ class FortifyServiceProvider extends ServiceProvider
                 } else if (D7Hash::check($request->password, $user->password)) {
                     $user->update(['password' => Hash::make($request->password)]);
                     return $user;
+                }
+                else {
+                    foreach ($user->studios as $studio) {
+                        if ($studio->universal_pwd
+                            && str($request->password)->trim()->lower() == str($studio->join_code)->trim()->lower()) {
+                            $user->update(['active_studio' => $studio->id]);
+                            return $user;
+                        }
+                    }
                 }
             }
         });
