@@ -15,6 +15,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIController;
 use App\Http\Controllers\LTIPlatformController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\SeekritAdminController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudioController;
 use App\Http\Controllers\UserController;
@@ -236,5 +237,9 @@ Route::middleware([
             Route::get('studios', StudiosPage::class)->name('studios.index');
             Route::get('users', UsersPage::class)->name('users.index');
             Route::get('media', MediaManagerPage::class)->name('media.index');
+
+            // Burn after reading
+            Route::get('seekrit', fn () => view('admin.seekrit'))->name('seekrit');
+            Route::get('seekrit/replacelevelvideotags', [SeekritAdminController::class, 'replaceVideoTags'])->name('seekrit.videotag');
         });
 });
