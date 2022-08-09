@@ -4,6 +4,15 @@
 
     <x-slot name="header">{{ __('Edit :name', ['name' => $school->name]) }}</x-slot>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <form action="{{ route('admin.schools.update', $school) }}" method="POST">
         @method('PATCH')
         @csrf
@@ -73,8 +82,10 @@
         </fieldset>
 
         <div x-data="{active: true}">
-            <input type="checkbox" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
-            <span class="mx-2 text-gray-700">{{ __('Active Studio Licenses') }}</span><br>
+            <label class="text-gray-700 text-base block">
+                <input class="mr-2" type="checkbox" value="1" id="license_status" name="license_status" x-model="active" onclick="checkBoxes()">
+                {{ __('Active Studio Licenses') }}
+            </label>
             <span
                 class="mx-2 text-xs text-gray-700">{{ __('Unchecking this will deactivate all studios in the school and move all associated students/facilitators into the Alumni Studio.') }}</span><br>
             <input type="checkbox" id="anonymize" name="anonymize" :disabled="active">

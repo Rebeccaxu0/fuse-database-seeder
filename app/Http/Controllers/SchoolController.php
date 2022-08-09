@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\Package;
 use App\Models\School;
-use App\Models\Studio;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SchoolController extends Controller
 {
@@ -105,7 +105,7 @@ class SchoolController extends Controller
             $schoolValues['salesforce_acct_id'] = $validated['salesforce_acct_id'];
         }
         if (isset($validated['license_status'])) {
-            $schoolValues['license_status'] = 1;
+            $schoolValues['status'] = 1;
         }
         $school = School::create($schoolValues);
 
@@ -151,14 +151,42 @@ class SchoolController extends Controller
      */
     public function update(Request $request, School $school)
     {
-        $school->update([
-            'name' => $request->name,
-            'district_id' => $request->district,
-            'package_id' => $request->package,
-            'salesforce_acct_id' => $request->salesforce_acct_id,
-            'license_status' => $request->boolean('license_status'),
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                Rule::unique('schools')->ignore($school->id),
+                'max:255',
+            ],
+            'district' => 'required|exists:App\Models\District,id',
+            'package' => 'nullable|exists:App\Models\Package,id',
+            'partner.*' => 'nullable|exists:App\Models\Partner,id',
+            'gradelevels.*' => 'nullable|exists:App\Models\GradeLevel,id',
+            'salesforce_acct_id' => 'nullable|string',
+            'license_status' => 'nullable|boolean',
         ]);
-        $school->fresh();
+
+        $values = [];
+        if ($school->name != $validated['name']) {
+            dd($school->name, $validated['name']);
+            $values['name'] = $validated['name'];
+        }
+        if ($school->district_id != $validated['district']) {
+            $values['district_id'] = $validated['district'];
+        }
+        if ($school->package_id != $validated['package']) {
+            $values['package_id'] = $validated['package'];
+        }
+        if ($school->salesforce_acct_id != $validated['salesforce_acct_id']) {
+            $values['salesforce_acct_id'] = $validated['salesforce_acct_id'];
+        }
+        $license_status = ! array_key_exists('license_status', $validated);
+        if ($school->status != $license_status) {
+            $values['status'] = $license_status;
+        }
+        if (! empty($values)) {
+            $school->update($values);
+            $school->fresh();
+        }
 
         if (! empty($request->studiosToRemove)) {
             $school->removeStudios($request->studiosToRemove);
