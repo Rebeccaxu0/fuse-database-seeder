@@ -20,5 +20,5 @@
 @endpush
 
 <div id="Filestack-container" class="@if ($hidden) hidden @endif h-full">
-    <div x-init="filestack_init()" id="Filestack-Picker" class="mb-4 aspect-[4/3] @if ($preview) hidden @endif" style="height: 1px;"></div>
+    <div x-init="filestack_init()" id="Filestack-Picker" class="mb-4 aspect-[4/3] mx-auto @if ($preview) hidden @endif" style="height: 300px;"></div>
 </div>
