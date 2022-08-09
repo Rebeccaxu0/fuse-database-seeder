@@ -71,7 +71,7 @@
                     name="permission"
                     id="permission"
                     wire:model="permission" />
-                <label for="permission">{!! __('If this student is younger than thirteen, I attest that I have collected a <a href="">parental permission form</a> for them.') !!}</label>
+                <label for="permission">{!! __('If this student is younger than thirteen, I attest that I have collected a <a href="https://fusestudio.zendesk.com/hc/en-us/articles/360010468912-Permission-Slips-and-Accounts-for-students-under-13">parental permission form</a> for them.') !!}</label>
               </div>
             </x-slot>
 
