@@ -42,7 +42,7 @@
     @endif
     <div class="bg-neutral-200 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3 text-lg">
         <article id="main" class="lg:col-span-2">
-            <section class="bg-white border rounded-xl shadow p-4">
+            <section class="bg-white border rounded-xl shadow p-8">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('The Challenge') }}</div>
                 <div class="lg:flex">
                     <div class="m-4 flex-1">
@@ -54,7 +54,7 @@
                 </div>
             </section>
 
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-4">
+            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('Stuff You Need') }}</div>
                 <div class="lg:flex gap-4">
                     <div class="flex-1 border p-4">
@@ -76,12 +76,12 @@
                 </div>
             </section>
 
-            <section class="bg-white rounded-xl shadow mt-8 p-4">
+            <section class="bg-white rounded-xl shadow mt-8 p-8">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('Get Started') }}</div>
                 {!! $fields['get_started_desc'] !!}
             </section>
 
-            <section class="bg-white rounded-xl shadow mt-8 p-4">
+            <section class="bg-white rounded-xl shadow mt-8 p-8">
                 <div class="text-black text-lg font-bold m-0 text-left">{{ __('How to Complete This Level') }}</div>
                 <div>
                     {!! $fields['how_to_complete_desc'] !!}
@@ -116,15 +116,15 @@
             </section>
 
             @if ($fields['power_up_desc'])
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-4">
-                <h2 class="text-black text-lg font-bold">{{ __('Power-up') }}</h2>
+            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
+                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Power-up') }}</div>
                 {!! $fields['power_up_desc'] !!}
             </section>
             @endif
 
             @if ($fields['facilitator_notes_desc'] && ! auth()->user()->isStudent())
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-4">
-                <h2 class="text-black text-lg font-bold">{{ __('Facilitator Notes') }}</h2>
+            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
+                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Facilitator Notes') }}</div>
                 {!! $fields['facilitator_notes_desc'] !!}
             </section>
             @endif
