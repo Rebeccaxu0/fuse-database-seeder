@@ -103,7 +103,7 @@ class School extends Organization
         $district = $this->district()->first();
         $superFacilitators = User::where('id', '<', 0);
         if ($district) {
-            $superfacilitators = User::whereHas('districts',
+            $superFacilitators = User::whereHas('districts',
               function (Builder $query) use ($district) {
                   $query->where('id', '=', $district->id);
               })
