@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Facilitator;
 
 use App\Models\Studio;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
