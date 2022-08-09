@@ -106,9 +106,11 @@ class Studio extends Organization
      */
     public function facilitators()
     {
-        return $this->school->users()->whereHas('roles', function (Builder $query) {
-            $query->where('id', '=', Role::FACILITATOR_ID);
-        });
+        $base = $this->school ? $this->school : $this;
+        return $base->users()
+            ->whereHas('roles', function (Builder $query) {
+                $query->where('id', '=', Role::FACILITATOR_ID);
+            });
     }
 
     /**
@@ -126,7 +128,10 @@ class Studio extends Organization
      */
     public function superFacilitators()
     {
-        return $this->school->district->users()->whereHas('roles', function (Builder $query) {
+        $base = $this->school && $this->school->district
+            ? $this->school->district
+            : $this;
+        return $base->users()->whereHas('roles', function (Builder $query) {
             $query->where('id', '=', Role::SUPER_FACILITATOR_ID);
         });
     }
