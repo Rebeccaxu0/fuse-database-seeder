@@ -37,7 +37,6 @@ REGEX;
         foreach ($cvs as $challengeVersion) {
             foreach ($challengeVersion->levels as $level) {
                 $alltranslations = $originalxlation = $level->getTranslations();
-                // dd($alltranslations);
                 foreach ($alltranslations as $attr => $translations) {
                     foreach ($translations as $language => $value) {
                         $alltranslations[$attr][$language]
