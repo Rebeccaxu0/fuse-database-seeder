@@ -17,7 +17,7 @@
     @endif
     @else
         @if ($preview)
-        <div class="bg-cover h-full w-full" style="background-image: url({{ $imageUrl }})" ></div>
+        <div class="bg-cover h-full w-full" style="background-image: url('{{ $imageUrl }}')" ></div>
         @else
         <img class="mx-auto" src="{{ $imageUrl }}" />
         @endif
