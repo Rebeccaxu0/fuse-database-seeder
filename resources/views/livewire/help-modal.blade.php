@@ -13,7 +13,7 @@
                 {{ $name }}
             </div>
 
-            <div class="m-4">{{ $body }}</div>
+            <div class="m-4">{!! $body !!}</div>
 
         </x-jetmodal>
 </div>
