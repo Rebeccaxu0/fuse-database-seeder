@@ -241,5 +241,6 @@ Route::middleware([
             // Burn after reading
             Route::get('seekrit', fn () => view('admin.seekrit'))->name('seekrit');
             Route::get('seekrit/replacelevelvideotags', [SeekritAdminController::class, 'replaceVideoTags'])->name('seekrit.videotag');
+            Route::get('seekrit/replacehelppopups', [SeekritAdminController::class, 'replaceHelpPopupLinks'])->name('seekrit.popups');
         });
 });

@@ -8,9 +8,8 @@
 
         <fieldset class="border p-2">
             <legend class="font-bold">One Time, One Time</legend>
-            <ul>
-                <li><a href="{{ route('admin.seekrit.videotag') }}">Update Video Tag in Level Pages</a></li>
-            </ul>
+            <ul><li><a href="{{ route('admin.seekrit.videotag') }}">Update Video Tag in Level Pages</a></li></ul>
+            <ul><li><a href="{{ route('admin.seekrit.popups') }}">Update Help Article Popups in Level Pages</a></li></ul>
         </fieldset>
         
     </div>
