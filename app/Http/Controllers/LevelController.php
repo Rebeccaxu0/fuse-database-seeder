@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LevelStartRequest;
 use App\Models\ChallengeVersion;
 use App\Models\Level;
 use Illuminate\Http\Request;
@@ -213,9 +212,11 @@ class LevelController extends Controller
     /**
      * Start the requested level, if startable.
      */
-    public function start(LevelStartRequest $request, ChallengeVersion $challengeVersion, Level $level)
+    public function start(Request $request, ChallengeVersion $challengeVersion, Level $level)
     {
-        $level->start(Auth::user());
+        if ($level->isStartable(Auth::user())) {
+            $level->start(Auth::user());
+        }
         return redirect()->route('student.level', ['challengeVersion' => $challengeVersion, 'level' => $level]);
     }
 
