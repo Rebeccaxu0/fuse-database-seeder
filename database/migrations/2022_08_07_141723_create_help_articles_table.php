@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('help_articles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->longText('body');
+            $table->json('name');
+            $table->json('body');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
