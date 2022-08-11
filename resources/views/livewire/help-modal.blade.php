@@ -11,6 +11,9 @@
 
             <div class="mx-4 mb-4 text-3xl text-fuse-teal-dk text-center font-semibold">
                 {{ $name }}
+                @if (auth()->user()->isAdmin())
+                <a href="{{ route('admin.helparticles.edit', $helpArticleId) }}"><x-icon icon="edit" class="inline"/></a>
+                @endif
             </div>
 
             <div class="m-4">{!! $body !!}</div>
