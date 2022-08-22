@@ -24,8 +24,8 @@
             <x-jet-label for="password" value="{{ __('Password') }}" class="text-base mt-1" />
             <x-jet-input x-ref="password" id="password" type="password" name="password" class="border-none" required
                 autocomplete="current-password" />
-            <div class="mt-8">
-                <button type="submit" class="text-black w-full lg:max-w-xs"
+            <div class="mt-8 text-center">
+                <button type="submit" class="w-full lg:max-w-xs"
                     x-bind:disabled="submitted"
                     x-on:click="if ($refs.form.checkValidity()) {submitted = true; $refs.form.submit();}">
                     {{ __('Sign in') }}
