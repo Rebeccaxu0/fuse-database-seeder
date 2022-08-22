@@ -66,6 +66,16 @@
             </a>
         </li>
         <li class="bg-white rounded-lg border shadow-lg px-8 py-12 list-none m-0">
+            <a target="_blank" href="https://fusestudio.typeform.com/to/iN1PRcCG">
+                <h2 class="text-left text-xl m-0">
+                    {{ __('Studio Requests') }}
+                </h2>
+                <p class="m-0">
+                {{ __('Request additional studios or studio removal.') }}
+                </p>
+            </a>
+        </li>
+        <li class="bg-white rounded-lg border shadow-lg px-8 py-12 list-none m-0">
             <a target="_blank" href="mailto:help@fusestudio.net">
                 <h2 class="text-left text-xl m-0">
                     {{ __('Email Us') }}
