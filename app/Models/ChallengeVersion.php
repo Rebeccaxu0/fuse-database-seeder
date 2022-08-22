@@ -124,15 +124,15 @@ class ChallengeVersion extends Model
     {
         return 0;
         // TODO: convert code below from Legacy Drupal to Laravel.
-        $others_working = db_select('users', 'u');
-        $others_working->join('field_data_field_current_level', 'c_l', 'c_l.entity_id = u.uid');
-        $others_working->condition('c_l.field_current_level_nid', $list_of_challenge_levels, 'IN');
-        $others_working->join('og_membership', 'og', "og.etid = u.uid AND og.entity_type = 'user'");
-        $others_working
-          ->condition('u.uid', $exclude_uids_q, 'NOT IN')
-          ->condition('og.state', 1)
-          ->condition('og.gid', $studio_nid)
-          ->condition('og.group_type', 'node');
+        // $others_working = db_select('users', 'u');
+        // $others_working->join('field_data_field_current_level', 'c_l', 'c_l.entity_id = u.uid');
+        // $others_working->condition('c_l.field_current_level_nid', $list_of_challenge_levels, 'IN');
+        // $others_working->join('og_membership', 'og', "og.etid = u.uid AND og.entity_type = 'user'");
+        // $others_working
+        //   ->condition('u.uid', $exclude_uids_q, 'NOT IN')
+        //   ->condition('og.state', 1)
+        //   ->condition('og.gid', $studio_nid)
+        //   ->condition('og.group_type', 'node');
 
     }
 
