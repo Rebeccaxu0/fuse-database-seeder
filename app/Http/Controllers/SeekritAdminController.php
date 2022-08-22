@@ -197,7 +197,6 @@ REGEX;
                         }
                         if (preg_match_all('|<a class="ctools-use-modal ctools-modal-FUSE-complete-form-style" href="/popup_lightbox/nojs/(.+)" title="(.+)">(.+)</a>|U', $value, $matches)) {
                             foreach ($matches[1] as $k => $url_fragment) {
-                                dd($url_fragment);
                                 $url_fragment = urldecode($url_fragment);
                                 $article = HelpArticle::where('d7_alias', 'like', "%popup/{$url_fragment}%")->first();
                                 if ($article) {

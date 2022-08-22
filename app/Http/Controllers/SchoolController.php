@@ -167,7 +167,6 @@ class SchoolController extends Controller
 
         $values = [];
         if ($school->name != $validated['name']) {
-            dd($school->name, $validated['name']);
             $values['name'] = $validated['name'];
         }
         if ($school->district_id != $validated['district']) {
