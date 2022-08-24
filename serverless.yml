@@ -92,6 +92,7 @@ provider:
     LIVEWIRE_ASSET_URL: https://${param:domain}
     MIX_ASSET_URL: https://${param:domain}
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
+    SESSION_DOMAIN: ${param:domain}
     SESSION_DRIVER: redis
     VIEW_COMPILED_PATH: /tmp/storage/framework/views
     # Filestack Settings
