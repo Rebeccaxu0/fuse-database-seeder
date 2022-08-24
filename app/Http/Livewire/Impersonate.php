@@ -14,7 +14,7 @@ class Impersonate extends Component
 
     public function render()
     {
-        if (Auth::user()->canImpersonate()) {
+        if (Auth::user()->canImpersonate() && $this->search) {
             $users_q = User::with(['activeStudio', 'activeStudio.school'])
                 ->where(function ($query) {
                 $query->where('name', 'like', "%{$this->search}%")
