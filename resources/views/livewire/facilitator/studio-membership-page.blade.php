@@ -15,7 +15,6 @@
   </div>
   <livewire:facilitator.add-student-to-studio-by-search :studio="$studio" />
   <livewire:facilitator.add-student-to-studio-by-creation :studio="$studio" />
-  <livewire:facilitator.add-students-to-studio-by-csv :studio="$studio" />
   <livewire:facilitator.remove-all-students-from-studio :studio="$studio" />
 
   <h2 class="mb-8 text-left">{{ __('Facilitators (:count)', ['count' => $facilitators->count()]) }}</h2>
