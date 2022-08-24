@@ -37,8 +37,8 @@ class FUSEActivityLogHandler extends AbstractProcessingHandler
                     $school_id = $studio->school->id;
                     $school_name = $studio->school->name;
                     if ($studio->school->district) {
-                        $district_id = $studio->district->id;
-                        $district_name = $studio->district->name;
+                        $district_id = $studio->school->district->id;
+                        $district_name = $studio->school->district->name;
                     }
                 }
             }
@@ -50,8 +50,8 @@ class FUSEActivityLogHandler extends AbstractProcessingHandler
                     $school_id = $user->activeStudio->school->id;
                     $school_name = $user->activeStudio->school->name;
                     if ($user->activeStudio->school->district) {
-                        $district_id = $user->activeStudio->district->id;
-                        $district_name = $user->activeStudio->district->name;
+                        $district_id = $user->activeStudio->school->district->id;
+                        $district_name = $user->activeStudio->school->district->name;
                     }
                 }
             }
