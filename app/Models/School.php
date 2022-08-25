@@ -263,6 +263,41 @@ class School extends Organization
     }
 
     /**
+     * Update Facilitators to new list
+     *
+     * @param array $synclist
+     * @param array $removed
+     * @return void
+     */
+    public function syncFacilitators(array $synclist, ?array $removed)
+    {
+        $this->users()->sync($synclist);
+        $facs = User::whereIn('id', $synclist)->get();
+        foreach ($facs as $fac) {
+            Cache::forget("u{$fac->id}_studios");
+            // Update Role if necessary.
+            if (! $fac->isFacilitator()) {
+                $fac->roles()->attach(Role::FACILITATOR_ID);
+                Cache::tags(["u{$fac->id}_roles"])
+                ->forever("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, true);
+            }
+        }
+
+        if ($removed) {
+            $removedFacs = User::whereIn('id', $removed)->with('schools')->get();
+            foreach ($removedFacs as $fac) {
+                Cache::forget("u{$fac->id}_studios");
+                // Update Role if necessary.
+                if ($fac->schools->count() == 0) {
+                    $fac->roles()->detach(Role::FACILITATOR_ID);
+                    Cache::tags(["u{$fac->id}_roles"])
+                    ->forever("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, false);
+                }
+            }
+        }
+    }
+
+    /**
      * Add facilitators to a School.
      *
      * @param int[] $facilitatorId

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\Package;
 use App\Models\School;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -163,6 +164,10 @@ class SchoolController extends Controller
             'gradelevels.*' => 'nullable|exists:App\Models\GradeLevel,id',
             'salesforce_acct_id' => 'nullable|string',
             'license_status' => 'nullable|boolean',
+            'facilitatorsToAdd' => 'nullable|exists:App\Models\User,id',
+            'facilitatorsToRemove' => 'nullable|exists:App\Models\User,id',
+            'studiosToAdd' => 'nullable|exists:App\Models\Studio,id',
+            'studiosToRemove' => 'nullable|exists:App\Models\Studio,id',
         ]);
 
         $values = [];
@@ -187,21 +192,26 @@ class SchoolController extends Controller
             $school->fresh();
         }
 
-        if (! empty($request->studiosToRemove)) {
-            $school->removeStudios($request->studiosToRemove);
+        if (array_key_exists('studiosToRemove', $validated)) {
+            $school->removeStudios($validated['studiosToRemove']);
         }
 
-        if (! empty($request->studiosToAdd)) {
-            $school->addStudios($request->studiosToAdd);
+        if (array_key_exists('studiosToAdd', $validated)) {
+            $school->addStudios($validated['studiosToAdd']);
         }
 
-        if (! empty($request->facilitatorsToRemove)) {
-            $school->removeFacilitators($request->facilitatorsToRemove);
+        $facs = $school->users->pluck('id');
+        $facsToRemove = null;
+        if (array_key_exists('facilitatorsToRemove', $validated)) {
+            $facsToRemove = $validated['facilitatorsToRemove'];
+            $facs = $facs->filter(function ($value, $key) use ($facsToRemove) {
+                return ! in_array($value, $facsToRemove);
+            });
         }
-
-        if (! empty($request->facilitatorsToAdd)) {
-            $school->addFacilitators($request->facilitatorsToAdd);
+        if (array_key_exists('facilitatorsToAdd', $validated)) {
+            $facs = $facs->merge($validated['facilitatorsToAdd']);
         }
+        $school->syncFacilitators($facs->toArray(), $facsToRemove);
 
         if (! $request->boolean('license_status')) {
             School::destroy($school);
