@@ -424,6 +424,16 @@ class LevelSaveOrCompleteForm extends Component
         return $filemime;
     }
 
+    protected function messages()
+    {
+      $interdependencies_msg = __("Oops! You can't complete a level without either uploading an artifact or providing a URL.");
+      return [
+        'url.required_without_all' => $interdependencies_msg,
+        'filestackHandle.required_without_all' => $interdependencies_msg,
+        'uploadCode.required_without_all' => $interdependencies_msg,
+        ];
+    }
+
     protected function rules()
     {
         return [
