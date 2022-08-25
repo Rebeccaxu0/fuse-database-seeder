@@ -426,7 +426,7 @@ class LevelSaveOrCompleteForm extends Component
 
     protected function messages()
     {
-      $interdependencies_msg = __("Oops! You can't complete a level without either uploading an artifact or providing a URL.");
+      $interdependencies_msg = __("Oops! You can't submit without either uploading an artifact or providing a URL.");
       return [
         'url.required_without_all' => $interdependencies_msg,
         'filestackHandle.required_without_all' => $interdependencies_msg,
