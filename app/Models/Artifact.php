@@ -15,6 +15,8 @@ class Artifact extends Model
     use Mediable;
     use SoftDeletes;
 
+    protected $with = ['users'];
+
     /**
      * The users that created this artifact.
      */
@@ -90,17 +92,13 @@ class Artifact extends Model
      */
     public function getRawFileUrl(): string|null
     {
-        if ($this->url) {
-            return null;
-        }
-
-        if ($media = $this->firstMedia('file')) {
-            return $media->getUrl();
-        }
-
         // Return CDN URL if possible
-        if ($this->filestack_handle) {
+        if (! $this->url && $this->filestack_handle) {
             return 'https://cdn.filestackcontent.com/' . $this->filestack_handle;
+        }
+
+        if (! $this->url && $media = $this->firstMedia('file')) {
+            return $media->getUrl();
         }
 
         return null;
