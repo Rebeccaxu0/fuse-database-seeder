@@ -6,6 +6,7 @@ use App\Models\Artifact;
 use App\Models\Start;
 use App\Models\Studio;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\Component;
 
 class ActivityFeedCard extends Component
@@ -34,8 +35,13 @@ class ActivityFeedCard extends Component
      */
     public function render()
     {
-      return $this->activity::class === Start::class
-        ? view('student.activity-feed.start')
-        : view('student.activity-feed.artifact');
+        if (! $this->activity->level || ! $this->activity->level->levelable) {
+            Log::debug('Bad entry in Activity Feed', ['type' => $this->activity::class, 'id' => $this->activity->id]);
+            return;
+        }
+
+        return $this->activity::class === Start::class
+            ? view('student.activity-feed.start')
+            : view('student.activity-feed.artifact');
     }
 }
