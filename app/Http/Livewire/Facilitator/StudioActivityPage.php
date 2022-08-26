@@ -16,39 +16,63 @@ class StudioActivityPage extends Component
     public Collection $ideas;
     public Collection $students;
     public $activeChallenge = null;
+    public int $activeChallengeId = 0;
+    public string $activeChallengeType = '0';
     public Studio $studio;
     public User $activeStudent;
+    public int $activeStudentId = 0;
     public string $startDate = '';
     public string $endDate = '';
 
     protected $listeners = ['activateChallenge', 'activateStudent'];
     protected $queryString = [
-      'startDate' => ['except' => 0, 'as' => 'start'],
-      'endDate' => ['except' => 0, 'as' => 'end'],
+        'activeChallengeId' => ['except' => 0, 'as' => 'cid'],
+        'activeChallengeType' => ['except' => '0', 'as' => 'ct'],
+        'activeStudentId' => ['except' => 0, 'as' => 'u'],
+        'startDate' => ['except' => 0, 'as' => 'start'],
+        'endDate' => ['except' => 0, 'as' => 'end'],
     ];
 
     public function activateChallenge(string $levelableType, int $levelableId)
     {
+        $this->activeChallengeId = $levelableId;
         if ($levelableType == 'idea') {
+            $this->activeChallengeType = 'i';
             $this->activeChallenge = $this->ideas->find($levelableId);
         }
         else {
+            $this->activeChallengeType = 'c';
             $this->activeChallenge = $this->challenges->find($levelableId);
         }
         $this->populateArtifacts();
     }
 
-    public function activateStudent(int $id)
+    public function activateStudent(int $id, bool $reset = true)
     {
+        $this->activeStudentId = $id;
         $this->activeStudent = $this->students->find($id);
+        if ($reset) {
+            $this->resetChallenges();
+        }
         $this->populateChallenges();
         $this->populateArtifacts();
         $this->populateIdeas();
     }
 
+    public function updatedEndDate($value)
+    {
+        $this->activateStudent($this->activeStudent->id, false);
+    }
+
+    public function updatedStartDate($value)
+    {
+        $this->activateStudent($this->activeStudent->id, false);
+    }
+
     public function mount()
     {
         Gate::allowIf(auth()->user()->isFacilitator());
+
         if (! $this->startDate) {
             // Default to start of academic year - previous Aug 1.
             $now = new DateTime();
@@ -72,12 +96,18 @@ class StudioActivityPage extends Component
                                ->orderBy('full_name')
                                ->get();
         if ($this->students->count()) {
-            $this->activeStudent = $this->students->first();
+            if ($this->activeStudentId) {
+                $this->activeStudent = $this->students->find($this->activeStudentId);
+            }
+            else {
+                $this->activeStudent = $this->students->first();
+            }
             $this->populateIdeas();
             $this->populateChallenges();
             $this->populateArtifacts();
         }
     }
+
     public function render()
     {
         return view('livewire.facilitator.studio-activity-page');
@@ -85,17 +115,20 @@ class StudioActivityPage extends Component
 
     private function populateArtifacts()
     {
-        $levelIds = ! isset($this->activeChallenge) ? [] :
-            $this->activeChallenge
-                 ->levels
-                 ->keyBy('id')
-                 ->keys()
-                 ->all();
+        $levelIds = ! isset($this->activeChallenge)
+            ? []
+            : $this->activeChallenge
+                ->levels
+                ->keyBy('id')
+                ->keys()
+                ->all();
         $this->artifacts
             = $this->activeStudent
-                   ->artifacts
-                   ->whereIn('level_id', $levelIds)
-                   ->whereBetween('created_at', [$this->startDate . ' 00:00:00', $this->endDate . ' 23:59:59']);
+                ->artifacts()
+                ->with(['level', 'level.levelable'])
+                ->whereIn('level_id', $levelIds)
+                ->whereBetween('created_at', [$this->startDate . ' 00:00:00', $this->endDate . ' 23:59:59'])
+                ->get();
     }
 
     private function populateChallenges()
@@ -107,10 +140,15 @@ class StudioActivityPage extends Component
                                  ->sortBy('name');
 
         if ($this->challenges->count()) {
-            $this->activeChallenge = $this->challenges->first();
+            if ($this->activeChallengeType == 'c') {
+                $this->activeChallenge = $this->challenges->where('id', $this->activeChallengeId)->first();
+            }
+            else {
+                $this->activeChallenge = $this->challenges->first();
+            }
         }
         else {
-            unset($this->activeChallenge);
+          $this->resetChallenges();
         }
     }
 
@@ -118,7 +156,19 @@ class StudioActivityPage extends Component
     {
         $this->ideas = $this->activeStudent->ideas;
         if ($this->ideas->count() && ! $this->activeChallenge) {
-            $this->activeChallenge = $this->ideas->first();
+            if ($this->activeChallengeType == 'i') {
+                $this->activeChallenge = $this->challenges->where('id', $this->activeChallengeId)->first();
+            }
+            else {
+                $this->activeChallenge = $this->ideas->first();
+            }
         }
+    }
+
+    private function resetChallenges()
+    {
+        unset($this->activeChallenge);
+        $this->activeChallengeId = 0;
+        $this->activeChallengeType = '0';
     }
 }

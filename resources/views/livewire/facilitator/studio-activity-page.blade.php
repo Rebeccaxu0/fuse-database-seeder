@@ -48,54 +48,66 @@
             </div>
             @else
                 @foreach ($challenges as $challenge)
-                @if ($challenge->id == $activeChallenge->id)
-                <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
-                @else
-                <button wire:click="$emit('activateChallenge', 'challenge', {{ $challenge->id }})"
-                            class="bg-white hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase"/>
-                @endif
-                        {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
-                        <x-progress-bar :user="$activeStudent" :interactive="false" :levelable="$challenge" class="h-4" />
-                        {{ __('Last activity') }} ({{ $activeStudent->lastActivityOnChallengeVersionOrIdea($challenge) }})
-                      @if ($challenge->id == $activeChallenge->id)
-                          </div>
-                      @else
-                          </button>
-                      @endif
-                      @if ($challenge->id == $activeChallenge->id)
-                          @forelse ($artifacts as $artifact)
-                            <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
-                          @empty
-                              <div class="font-bold uppercase text-lg ml-4 py-2">
-                                {{ __('No artifacts in this time period') }}
-                              </div>
-                          @endforelse
-                      @endif
-                    @endforeach
-                    @foreach ($ideas as $idea)
-                        @if ($idea->id == $activeChallenge->id)
-                            <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
-                        @else
-                            <button wire:click="$emit('activateChallenge', 'idea', {{ $idea->id }})"
-                            class="bg-white hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
-                        @endif
-                        {{ $idea->name }} @if ($idea->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
-                        <x-progress-bar :user="$activeStudent" :interactive="false" :levelable="$idea" class="h-4" />
-                        {{ __('Last activity') }} ({{ $activeStudent->lastActivityOnChallengeVersionOrIdea($idea) }})
-                      @if ($idea->id == $activeChallenge->id)
-                          </div>
-                      @else
-                          </button>
-                      @endif
-                      @if ($idea->id == $activeChallenge->id)
-                          @forelse ($artifacts as $artifact)
-                            <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
-                          @empty
-                              <div class="font-bold uppercase text-lg ml-4 py-2">
-                                {{ __('No artifacts in this time period') }}
-                              </div>
-                          @endforelse
-                      @endif
+                    @if ($challenge->id == $activeChallenge->id)
+                    <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                    @else
+                    <button wire:click="$emit('activateChallenge', 'challenge', {{ $challenge->id }})"
+                                class="bg-white hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase"/>
+                    @endif
+                    {{ $challenge->name }} @if ($challenge->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
+                    <x-progress-bar :user="$activeStudent" :interactive="false" :levelable="$challenge" class="h-4" />
+                    {{ __('Last activity') }} ({{ $activeStudent->lastActivityOnChallengeVersionOrIdea($challenge) }})
+                    @if ($challenge->id == $activeChallenge->id)
+                        </div>
+                    @else
+                        </button>
+                    @endif
+                    @if ($challenge->id == $activeChallenge->id)
+                        <div wire:loading.delay class="text-center text-xl font-bold">
+                            {{ __('Looking for Artifacts...') }}
+                            <span class="spinner-grow inline-block w-4 h-4 bg-current rounded-full opacity-0 text-green-500" role="status"></span>
+                        </div>
+                        <div wire:loading.remove>
+                        @forelse ($artifacts as $artifact)
+                        <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="'inline-' . $artifact->id">
+                        @empty
+                            <div class="font-bold uppercase text-lg ml-4 py-2">
+                            {{ __('No artifacts in this time period') }}
+                            </div>
+                        @endforelse
+                        </div>
+                    @endif
+                @endforeach
+                @foreach ($ideas as $idea)
+                    @if ($idea->id == $activeChallenge->id)
+                        <div class="font-bold bg-fuse-green-50 cursor-default block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                    @else
+                        <button wire:click="$emit('activateChallenge', 'idea', {{ $idea->id }})"
+                        class="bg-white hover:bg-slate-50 block w-full text-left border border-slate-400 rounded-xl px-4 py-2 mb-1 uppercase">
+                    @endif
+                    {{ $idea->name }} @if ($idea->id == $activeChallenge->id)<span class="float-right">&gt;</span>@endif
+                    <x-progress-bar :user="$activeStudent" :interactive="false" :levelable="$idea" class="h-4" />
+                    {{ __('Last activity') }} ({{ $activeStudent->lastActivityOnChallengeVersionOrIdea($idea) }})
+                    @if ($idea->id == $activeChallenge->id)
+                        </div>
+                    @else
+                        </button>
+                    @endif
+                    @if ($idea->id == $activeChallenge->id)
+                        <div wire:loading.delay class="text-center text-xl font-bold">
+                            {{ __('Looking for Artifacts...') }}
+                            <span class="spinner-grow inline-block w-4 h-4 bg-current rounded-full opacity-0 text-green-500" role="status"></span>
+                        </div>
+                        <div wire:loading.remove>
+                        @forelse ($artifacts as $artifact)
+                        <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="'inline-' . $artifact->id">
+                        @empty
+                            <div class="font-bold uppercase text-lg ml-4 py-2">
+                            {{ __('No artifacts in this time period') }}
+                            </div>
+                        @endforelse
+                        </div>
+                    @endif
                   @endforeach
                 @endif
               @endif
@@ -147,15 +159,21 @@
             @endif
         </div>
         <div class="hidden lg:block col-start-3 scroll-box">
+            <div wire:loading.delay class="text-center text-xl font-bold">
+                {{ __('Looking for Artifacts...') }}
+                <span class="spinner-grow inline-block w-4 h-4 bg-current rounded-full opacity-0 text-green-500" role="status"></span>
+            </div>
+            <div wire:loading.remove>
             @if ($activeChallenge)
                 @forelse ($artifacts as $artifact)
-                    <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="$artifact->id">
+                    <livewire:artifact-modal-tile :artifact="$artifact" :studio="$studio" :wire:key="'side-' . $artifact->id">
                 @empty
-                <div class="font-bold uppercase text-lg ml-4 py-2">
+                <div class="text-center font-bold uppercase text-lg ml-4 py-2">
                   {{ __('No artifacts in this time period') }}
                 </div>
                 @endforelse
             @endif
+            </div>
         </div>
         @endif
     </div>
