@@ -48,8 +48,8 @@
                     <div class="m-4 flex-1">
                         {!! $level->challenge_desc !!}
                     </div>
-                    <div class="bg-blue-200 flex-1">
-                    <img src="{{ $level->levelable->gallery_thumbnail_url }}" />
+                    <div class="flex-1">
+                        <img src="{{ $levelPreviewImage }}" >
                     </div>
                 </div>
             </section>

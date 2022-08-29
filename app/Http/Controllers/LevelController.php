@@ -96,6 +96,17 @@ class LevelController extends Controller
      */
     public function show(ChallengeVersion $challengeVersion, Level $level)
     {
+        $media = $level->firstMedia('preview');
+        if ($media) {
+            $levelPreviewImage = $media->getUrl();
+        }
+        else {
+            $levelPreviewImage = $level->levelable->gallery_thumbnail_url;
+        }
+        $params = [];
+        $params['level'] = $level;
+        $params['levelPreviewImage'] = $levelPreviewImage;
+
         // If a student has started this level, use started level template.
         if (Auth::user()->hasStartedLevel($level)) {
             // Run certain fields through Blade::render() to get our icons.
@@ -130,12 +141,9 @@ class LevelController extends Controller
                 );
             }
             $view = 'student.level-started';
-            $params = [
-                'challengeVersion' => $challengeVersion,
-                'fields' => $fields,
-                'level' => $level,
-                'studio' => Auth::user()->activeStudio,
-            ];
+            $params['challengeVersion'] = $challengeVersion;
+            $params['fields'] = $fields;
+            $params['studio'] = Auth::user()->activeStudio;
         }
         else {
             // Default is to restrict the level.
@@ -197,13 +205,10 @@ class LevelController extends Controller
                 }
             }
             $view = 'student.level-unstarted';
-            $params = [
-                'level' => $level,
-                'available' => $available,
-                'startable' => $startable,
-                'prerequisite_text' => $prerequisite_text,
-                'prerequisite_route' => $prerequisite_route,
-            ];
+            $params['available'] = $available;
+            $params['startable'] = $startable;
+            $params['prerequisite_text'] = $prerequisite_text;
+            $params['prerequisite_route'] = $prerequisite_route;
         }
 
         return view($view, $params);
