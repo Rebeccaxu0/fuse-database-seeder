@@ -86,7 +86,7 @@ class PackageController extends Controller
     public function edit(Package $package)
     {
         return view('admin.package.edit', [
-            'challenges' => Challenge::all(),
+            'challenges' => Challenge::orderBy('name')->get(),
             'package' => $package,
         ]);
     }

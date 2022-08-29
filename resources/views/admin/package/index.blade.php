@@ -36,7 +36,7 @@
                 <summary class="cursor-pointer">
                     {{ __(':count challenges', ['count' => count($package->challenges)]) }}</summary>
                 <ul>
-                    @foreach ($package->challenges as $challenge)
+                    @foreach ($package->challenges->sortBy('name') as $challenge)
                     <li class="list-none text-xs">{{ $challenge->name }}</li>
                     @endforeach
                 </ul>

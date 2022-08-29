@@ -11,13 +11,13 @@
             <div class="py-4 px-4 break-inside-avoid">
                 <h2 class="mt-0 text-left text-black">{{ $category->name }}</h2>
                 <p class="text-sm text-black">{{ $category->description }}</p>
-                @foreach ($challenges as $challenge)
+                @foreach ($challenges->sortBy('name') as $challenge)
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
                                 @livewire ('studio-challenge-toggle', ['studio' => $studio, 'challengeVersion' => $challengeVersion], key("{$studio->id}-{$challengeVersion->id}"))
                                 <div class="inline-block border border-gray-400 rounded-lg py-2 pl-8 pr-1"
-                                    style="width: calc(100% - 3.5rem)">
+                                    style="width: calc(100% - 3.5rem)" title="{{ $challenge->name }}">
                                     {{ $challengeVersion->name }}
                                     <a class="border border-fuse-teal-500 rounded-xl mx-4 inline-block h-6 w-6 float-right text-center"
                                         href="{{ $challengeVersion->info_article_url }}" title="info" alt="info"
@@ -38,7 +38,7 @@
             <div class="py-4 px-4 break-inside-avoid">
                 <h2 class="mt-0 text-left text-black">{{ $category->name }}</h2>
                 <p class="text-sm text-black">{{ $category->description }}</p>
-                @foreach ($challenges as $challenge)
+                @foreach ($challenges->sortBy('name') as $challenge)
                     @foreach ($challenge->challengeVersions as $challengeVersion)
                         @if ($challengeVersion->challengeCategory == $category)
                             <div class="flex items-center mb-2 relative break-inside-avoid">
