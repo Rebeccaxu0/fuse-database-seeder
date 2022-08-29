@@ -42,22 +42,22 @@
     @endif
     <div class="bg-neutral-200 rounded-xl py-4 px-6 lg:grid lg:gap-8 lg:grid-cols-3 text-lg">
         <article id="main" class="lg:col-span-2">
-            <section class="bg-white border rounded-xl shadow p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('The Challenge') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('The Challenge') }}</h5>
+            <section class="bg-white border rounded-xl shadow overflow-hidden mb-8">
                 <div class="lg:flex">
                     <div class="m-4 flex-1">
                         {!! $level->challenge_desc !!}
                     </div>
-                    <div class="flex-1">
+                    <div class="flex-1 min-w-[60%]">
                         <img src="{{ $levelPreviewImage }}" >
                     </div>
                 </div>
             </section>
 
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Stuff You Need') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('Stuff You Need') }}</h5>
+            <section class="bg-neutral-100 border rounded-xl shadow overflow-hidden mb-8">
                 <div class="lg:flex gap-4">
-                    <div class="flex-1 border p-4">
+                    <div class="flex-1 p-4">
                         {!! $level->stuff_you_need_desc !!}
                     @if ($level->hasMedia('file_you_need'))
                     <div class="font-bold mt-3">{{ __('Files:') }}</div>
@@ -69,20 +69,20 @@
                     @endif
                     </div>
                     @if ($level->levelable->chromebook_info)
-                    <div class="flex-1 border p-4 bg-white">
+                    <div class="flex-1 p-4 bg-white min-w-[60%]">
                         {!! $level->levelable->chromebook_info !!}
                     </div>
                     @endif
                 </div>
             </section>
 
-            <section class="bg-white rounded-xl shadow mt-8 p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Get Started') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('Get Started') }}</h5>
+            <section class="bg-white border rounded-xl shadow overflow-hidden mb-8 p-8">
                 {!! $fields['get_started_desc'] !!}
             </section>
 
-            <section class="bg-white rounded-xl shadow mt-8 p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('How to Complete This Level') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('How to Complete This Level') }}</h5>
+            <section class="bg-white border rounded-xl shadow overflow-hidden mb-8 p-8">
                 <div>
                     {!! $fields['how_to_complete_desc'] !!}
                 </div>
@@ -116,15 +116,15 @@
             </section>
 
             @if ($fields['power_up_desc'])
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Power-up') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('Power-up') }}</h5>
+            <section class="bg-neutral-100 border rounded-xl shadow overflow-hidden mb-8 p-8">
                 {!! $fields['power_up_desc'] !!}
             </section>
             @endif
 
             @if ($fields['facilitator_notes_desc'] && ! auth()->user()->isStudent())
-            <section class="bg-neutral-100 rounded-xl shadow mt-8 p-8">
-                <div class="text-black text-lg font-bold m-0 text-left">{{ __('Facilitator Notes') }}</div>
+            <h5 class="mt-8 ml-4 mb-1 uppercase lg:mt-0">{{ __('Facilitator Notes') }}</h5>
+            <section class="bg-neutral-100 border rounded-xl shadow overflow-hidden mb-8 p-8">
                 {!! $fields['facilitator_notes_desc'] !!}
             </section>
             @endif
