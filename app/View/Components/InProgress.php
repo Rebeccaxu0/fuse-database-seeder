@@ -22,7 +22,7 @@ class InProgress extends Component
 
         $activeChallengeVersions = $user->activeStudio->activeChallenges();
         $this->startedChallengeVersions =
-            Cache::remember("u{$user->id}_in_progress_challenge_versions", 3600, function () use ($user, $activeChallengeVersions) {
+            Cache::remember("u{$user->id}_in_progress_challenge_versions", 1800, function () use ($user, $activeChallengeVersions) {
                 return $user->activeStudio->activeChallenges()
                    ->filter(fn($cv, $key) => $user->hasStartedChallengeVersion($cv))
                    ->filter(fn($cv, $key) => ! $user->hasCompletedChallengeVersion($cv))

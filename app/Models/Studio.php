@@ -149,7 +149,7 @@ class Studio extends Organization
      */
     public function assignedSchool() : bool
     {
-        return Cache::remember("s{$this->id}_has_school", 3600, fn () => (bool) $this->school );
+        return Cache::remember("s{$this->id}_has_school", 1800, fn () => (bool) $this->school );
     }
 
     /**
@@ -173,7 +173,7 @@ class Studio extends Organization
      */
     public function assignedPackage() : bool
     {
-        return Cache::remember("studio_{$this->id}_has_package", 3600, fn () => (bool) $this->package );
+        return Cache::remember("studio_{$this->id}_has_package", 1800, fn () => (bool) $this->package );
     }
 
     /**
@@ -191,7 +191,7 @@ class Studio extends Organization
     public function activeChallenges()
     {
         return Cache::tags(['packages'])
-            ->remember("studio_{$this->id}_active_challenges", 3600, function () {
+            ->remember("studio_{$this->id}_active_challenges", 1800, function () {
                 // Only show challengeversions that are allowed by assigned package.
                 $challengeVersions = new Collection;
                 if ($this->deFactoPackage) {

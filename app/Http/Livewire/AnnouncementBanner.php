@@ -18,7 +18,7 @@ class AnnouncementBanner extends Component
         if (! $user->isStudent()) {
             // $unread_announcement_ids = Cache::tags(['announcements'])
             //     ->remember(
-            //     "u{$user->id}_unseen_announcement_ids", 3600, function () use ($user) {
+            //     "u{$user->id}_unseen_announcement_ids", 1800, function () use ($user) {
                     $now = new DateTime();
             //         return
             $unread_announcement_ids =

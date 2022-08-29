@@ -42,15 +42,15 @@ class Footer extends Component
      */
     public function __construct()
     {
-        $students = Cache::rememberForever('student_count', function () {
-            return User::count();
-        });
-        $schools = Cache::rememberForever('school_count', function () {
-            return School::count();
-        });
-        $ordinal = NumberFormatter::create(App::currentLocale(), NumberFormatter::DEFAULT_STYLE);
-        $this->students = $ordinal->format($students);
-        $this->schools = $ordinal->format($schools);
+        // $students = Cache::rememberForever('student_count', function () {
+        //     return User::count();
+        // });
+        // $schools = Cache::rememberForever('school_count', function () {
+        //     return School::count();
+        // });
+        // $ordinal = NumberFormatter::create(App::currentLocale(), NumberFormatter::DEFAULT_STYLE);
+        // $this->students = $ordinal->format($students);
+        // $this->schools = $ordinal->format($schools);
     }
 
     /**

@@ -127,7 +127,7 @@ class School extends Organization
      */
     public function assignedDistrict() : bool
     {
-        return Cache::remember("s{$this->id}_has_district", 3600, fn () => (bool) $this->district );
+        return Cache::remember("s{$this->id}_has_district", 1800, fn () => (bool) $this->district );
     }
 
     /**
@@ -159,7 +159,7 @@ class School extends Organization
      */
     public function assignedPackage() : bool
     {
-        return Cache::remember("school_{$this->id}_has_package", 3600, fn () => (bool) $this->package );
+        return Cache::remember("school_{$this->id}_has_package", 1800, fn () => (bool) $this->package );
     }
 
     /**
@@ -279,7 +279,7 @@ class School extends Organization
             if (! $fac->isFacilitator()) {
                 $fac->roles()->attach(Role::FACILITATOR_ID);
                 Cache::tags(["u{$fac->id}_roles"])
-                ->forever("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, true);
+                ->put("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, true, 1800);
             }
         }
 
@@ -291,7 +291,7 @@ class School extends Organization
                 if ($fac->schools->count() == 0) {
                     $fac->roles()->detach(Role::FACILITATOR_ID);
                     Cache::tags(["u{$fac->id}_roles"])
-                    ->forever("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, false);
+                    ->put("u{$fac->id}_has_role_" . Role::FACILITATOR_ID, false, 1800);
                 }
             }
         }
@@ -314,7 +314,7 @@ class School extends Organization
                 if (! $facilitator->isFacilitator()) {
                     $facilitator->roles()->attach(Role::FACILITATOR_ID);
                     Cache::tags(["u{$id}_roles"])
-                        ->forever("u{$id}_has_role_" . Role::FACILITATOR_ID, true);
+                        ->put("u{$id}_has_role_" . Role::FACILITATOR_ID, true, 1800);
                 }
             }
         }
@@ -335,7 +335,7 @@ class School extends Organization
                 if ($facilitator->schools->count() == 0) {
                     $facilitator->roles()->detach(Role::FACILITATOR_ID);
                     Cache::tags(["u{$facilitator->id}_roles"])
-                        ->forever("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID, false);
+                        ->put("u{$facilitator->id}_has_role_" . Role::FACILITATOR_ID, false, 1800);
                 }
             }
         }

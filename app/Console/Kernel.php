@@ -29,8 +29,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('telescope:prune')->daily()->onOneServer();
         $schedule->call(function () {
             // Update unimportant forever caches.
-            Cache::forever('student_count', User::count());
-            Cache::forever('school_count', School::count());
+            // Cache::forever('student_count', User::count());
+            // Cache::forever('school_count', School::count());
         })->daily();
     }
 

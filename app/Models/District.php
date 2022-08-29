@@ -144,7 +144,7 @@ class District extends Organization
             if (! $sfuser->isSuperFacilitator()) {
                 $sfuser->roles()->attach(Role::SUPER_FACILITATOR_ID);
                 Cache::tags(["u{$id}_roles"])
-                    ->forever("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, true);
+                    ->put("u{$id}_has_role_" . Role::SUPER_FACILITATOR_ID, true, 1800);
             }
         }
     }
@@ -165,7 +165,7 @@ class District extends Organization
                 if ($sf->districts->count() == 0) {
                     $sf->roles()->detach(Role::SUPER_FACILITATOR_ID);
                     Cache::tags(["u{$sf->id}_roles"])
-                        ->forever("u{$sf->id}_has_role_" . Role::SUPER_FACILITATOR_ID, false);
+                        ->put("u{$sf->id}_has_role_" . Role::SUPER_FACILITATOR_ID, false, 1800);
                 }
             }
         }

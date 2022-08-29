@@ -287,7 +287,7 @@ class User extends Authenticatable
      */
     public function startedChallengeVersions()
     {
-        return Cache::remember("u{$this->id}_started_challenge_versions", 3600, function () {
+        return Cache::remember("u{$this->id}_started_challenge_versions", 1800, function () {
 
             return $this->startedChallengeVersionLevels()
                         ->get()
@@ -344,7 +344,7 @@ class User extends Authenticatable
     public function hasRole(int $roleId): bool
     {
         return Cache::tags(["u{$this->id}_roles"])
-            ->rememberForever("u{$this->id}_has_role_{$roleId}", function () use ($roleId) {
+            ->remember("u{$this->id}_has_role_{$roleId}", 1800, function () use ($roleId) {
                 return (bool) $this->roles()->where('role_id', $roleId)->count();
             });
     }
@@ -416,7 +416,7 @@ class User extends Authenticatable
     public function isStudent()
     {
         return Cache::tags(["u{$this->id}_roles"])
-            ->rememberForever("u{$this->id}_is_student", function () {
+            ->remember("u{$this->id}_is_student", 1800, function () {
                 return $this->isAnonymousStudent()
                     || ! (bool) $this->roles->count();
             });
@@ -465,7 +465,7 @@ class User extends Authenticatable
     {
         return Cache::remember(
             "u{$this->id}_has_started_level_{$level->id}",
-            3600,
+            1800,
             fn() => $this->startedLevels->contains($level),
         );
     }
@@ -481,7 +481,7 @@ class User extends Authenticatable
     {
         return Cache::remember(
             "u{$this->id}_has_completed_level_{$level->id}",
-            3600,
+            1800,
             fn() => Artifact::whereRelation('users', 'id', $this->id)
                 ->where('type', 'complete')
                 ->where('level_id', $level->id)
@@ -493,7 +493,7 @@ class User extends Authenticatable
     {
         $class = class_basename($levelable::class);
         $cacheKey = "u{$this->id}_last_activity_on_{$class}_{$levelable->id}";
-        return Cache::remember($cacheKey, 3600, function () use ($levelable) {
+        return Cache::remember($cacheKey, 1800, function () use ($levelable) {
             $mostRecent = $base = Carbon::createFromDate(2000, 1, 1);
             foreach ($levelable->levels as $level) {
                 if ($artifact = $level->mostRecentArtifact($this)) {
@@ -578,7 +578,7 @@ class User extends Authenticatable
      */
     public function deFactoStudios()
     {
-        return Cache::remember("u{$this->id}_studios", 3600, function () {
+        return Cache::remember("u{$this->id}_studios", 1800, function () {
             $studios = new Collection;
 
             if ($this->isSuperFacilitator() || $this->isAdmin()) {

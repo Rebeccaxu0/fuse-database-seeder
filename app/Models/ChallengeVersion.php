@@ -163,7 +163,7 @@ class ChallengeVersion extends Model
      */
     public function currentLevel(User $user): ?Level
     {
-        return Cache::rememberForever("u{$user->id}_current_level_on_levelable_{$this->id}", function () use ($user) {
+        return Cache::remember("u{$user->id}_current_level_on_levelable_{$this->id}", 1800, function () use ($user) {
             $currentLevel = null;
             $levelIds = $this->levels()->pluck('id');
             // TODO: We could combine get these queries into one.

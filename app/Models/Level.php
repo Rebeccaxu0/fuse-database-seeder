@@ -171,7 +171,7 @@ class Level extends Model
 
     public function isStartable(User $user): bool
     {
-        // return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 3600, function () use ($user) {
+        return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 1800, function () use ($user) {
             // Levels of an Idea belonging to the User are always startable.
             if ($user->isAdmin() || (
                 $this->levelable::class == Idea::class && $this->levelable->users->contains($user))
@@ -208,7 +208,7 @@ class Level extends Model
             }
 
             return false;
-        // });
+        });
     }
 
     public function isStarted(User $user): bool
@@ -241,8 +241,8 @@ class Level extends Model
             ->info('start_level', ['user' => $user, 'level' => $this]);
         Cache::forget("u{$user->id}_in_progress_challenge_versions");
         Cache::forget("u{$user->id}_started_challenge_versions");
-        Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 3600);
-        Cache::forever("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this);
+        Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 1800);
+        Cache::put("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this, 1800);
         return $start;
       }
       return false;

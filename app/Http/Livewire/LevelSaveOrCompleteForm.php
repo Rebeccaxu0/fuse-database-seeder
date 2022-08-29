@@ -328,7 +328,7 @@ class LevelSaveOrCompleteForm extends Component
         case 'complete':
             $level = Level::find($validated['lid']);
             foreach ($team as $teammate) {
-                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true, 3600);
+                Cache::put("u{$teammate->id}_has_completed_level_{$level->id}", true, 1800);
                 // Remove from dashboard 'In Progress' if last level.
                 if (! $level->next()) {
                     Cache::forget("u{$teammate->id}_in_progress_challenge_versions");
