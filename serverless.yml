@@ -3,7 +3,7 @@ service: laravel
 params:
   default:
     app_key: ${ssm:/laravel/app_key}
-    cache_instance_size: cache.t3.small
+    cache_instance_size: cache.t3.medium
     clever_client_id: ${ssm:/laravel/clever_client_id}
     clever_client_secret: ${ssm:/laravel/clever_client_secret}
     certificate_arn: ${ssm:/laravel/certificate_arn}
