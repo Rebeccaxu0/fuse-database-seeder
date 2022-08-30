@@ -150,10 +150,14 @@ class ChallengeVersionController extends Controller
     {
         Gate::allowIf(auth()->user()->isAdmin());
         $validated = $request->validate([
+            'blurb' => 'required|max:255',
+            'challenge_category_id' => 'required|exists:App\Models\ChallengeCategory,id',
+            'challenge_id' => 'required|exists:App\Models\Challenge,id',
+            'chromebook_info' => 'nullable|max:2048',
+            'gallery_note' => 'nullable|max:128',
+            'info_article_url' => 'nullable|url',
             'name' => 'required|unique:challenge_versions|max:255',
-            'challenge_id' => 'required',
-            'category_id' => 'required',
-            'infoUrl' => 'nullable|url',
+            'prerequisite_challenge_version_id' => 'nullable|exists:App\Models\ChallengeVersion,id',
             'wistiaId' => ['nullable', new WistiaCode],
         ]);
 
@@ -161,23 +165,12 @@ class ChallengeVersionController extends Controller
         if ($request->wistiaId) {
             $wistia = Http::acceptJson()
                 ->withToken(config('wistia.token'))
-                ->get('https://api.wistia.com/v1/medias/' . $request->wistiaId);
-            $gallery_thumbnail_url = $wistia->json('thumbnail.url');
+                ->get('https://api.wistia.com/v1/medias/' . $validated['wistiaId']);
+            $validated['gallery_thumbnail_url'] = $wistia->json('thumbnail.url');
         }
 
-        $challengeversion->update([
-            'blurb' => $request->blurb,
-            'challenge_category_id' => $request->category_id,
-            'challenge_id' => $request->challenge_id,
-            'chromebook_info' => $request->chromeInfo,
-            'gallery_note' => $request->galleryNote,
-            'gallery_wistia_video_id' => $request->wistiaId,
-            'gallery_thumbnail_url' => $gallery_thumbnail_url,
-            'info_article_url' => $request->infoUrl,
-            'name' => $request->name,
-            'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
-            'slug' => Str::of($request->name)->slug('-'),
-        ]);
+        $validated['slug'] = Str::of($validated['name'])->slug('-');
+        $challengeversion->update($validated);
 
         if ($request->level) {
             $challengeversion->setLevelsOrder($request->level);

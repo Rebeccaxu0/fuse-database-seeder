@@ -71,13 +71,14 @@
     <form class="mt-6" id="editform" action="{{ route('admin.challengeversions.update', $challengeversion) }}" method="POST">
         @method('PUT')
         @csrf
-        <input type="hidden" name="challenge_id" value="{{ $challengeversion->challenge_id }}">
 
         <x-form.input label="Name" name="name" required="true" :value="old('name', $challengeversion->name)" />
 
-        <x-form.input label="Challenge Gallery version suffix" name="galleryNote" :value="old('galleryNote', $challengeversion->gallery_note)" />
+        <x-form.input label="Challenge Gallery version suffix" name="gallery_note" :value="old('gallery_note', $challengeversion->gallery_note)" />
 
-        <x-form.dropdown label="Category" required="true" name="category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />
+        <x-form.dropdown label="Parent MetaChallege" required="true" name="challenge_id" :value="old('challenge_id', $challengeversion->challenge_id)" :list="$challenges" />
+
+        <x-form.dropdown label="Category" required="true" name="challenge_category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />
 
         <livewire:admin.wistia-picker name="wistiaId" label="Challenge Gallery Preview Video - Wistia ID" :wistiaId="$challengeversion->gallery_wistia_video_id" />
 
@@ -104,16 +105,16 @@
             label="Gallery Blurb"
             sublabel="ex. 'Design your own 3D balance toy.'"
             :value="old('blurb', $challengeversion->blurb)" />
-        <x-form.textarea name="chromeInfo"
+        <x-form.textarea name="chromebook_info"
             label="Chromebook Info"
-            :value="old('chromeInfo', $challengeversion->chromebook_info)" />
+            :value="old('chromebook_info', $challengeversion->chromebook_info)" />
         <x-form.dropdown label="Prerequisite Challenge"
-            :value="old('prereqChallengeVersion', $challengeversion->prerequisite_challenge_version_id)"
-            name="prereqChallengeVersion"
+            :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)"
+            name="prerequisite_challenge_version_id"
             :list="$challenges" />
         <x-form.input label="Information Article URL"
-                name="infoUrl"
-                :value="old('infoUrl', $challengeversion->info_article_url)" />
+                name="info_article_url"
+                :value="old('info_article_url', $challengeversion->info_article_url)" />
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit" id="btn-submit" class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Save Challenge Version</button>
         </div>
