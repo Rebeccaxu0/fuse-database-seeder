@@ -42,6 +42,7 @@ return new class extends Migration
                   ->default(false);
             $table->string('join_code', 255)
                   ->nullable();
+            $table->unique('join_code');
             $table->text('dashboard_message')
                   ->nullable();
         });
