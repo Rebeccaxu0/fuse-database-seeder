@@ -230,21 +230,22 @@ class Level extends Model
      */
     public function start(User $user, bool $synthetic = false): Start|bool
     {
-      if ($synthetic || $this->isStartable($user)) {
-        $start = Start::firstOrCreate([
-            'level_id' => $this->id,
-            'user_id' => $user->id,
-        ]);
-        $user->currentLevel()->associate($this);
-        $user->save();
-        Log::channel('fuse_activity_log')
-            ->info('start_level', ['user' => $user, 'level' => $this]);
-        Cache::forget("u{$user->id}_in_progress_challenge_versions");
-        Cache::forget("u{$user->id}_started_challenge_versions");
-        Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 1800);
-        Cache::put("u{$user->id}_current_level_on_levelable_{$this->levelable->id}", $this, 1800);
-        return $start;
-      }
-      return false;
+        if ($synthetic || $this->isStartable($user)) {
+            $start = Start::firstOrCreate([
+                'level_id' => $this->id,
+                'user_id' => $user->id,
+            ]);
+            $user->currentLevel()->associate($this);
+            $user->save();
+            Log::channel('fuse_activity_log')->info('start_level', ['user' => $user, 'level' => $this]);
+            Cache::forget("u{$user->id}_in_progress_challenge_versions");
+            Cache::forget("u{$user->id}_started_challenge_versions");
+            Cache::put("u{$user->id}_has_started_level_{$this->id}", true, 1800);
+            if ($this->levelable::class == ChallengeVersion::class) {
+                Cache::put("u{$user->id}_current_level_on_challengeversion_{$this->levelable->id}", $this, 1800);
+            }
+            return $start;
+        }
+        return false;
     }
 }
