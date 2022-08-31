@@ -5,6 +5,7 @@ use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\CacheController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\ChallengeVersionController;
+use App\Http\Controllers\CleverSSOController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\FacilitatorChallengesController;
 use App\Http\Controllers\FacilitatorCommentsController;
@@ -66,6 +67,13 @@ Route::get('register', fn () => redirect()->intended('lobby-guest'))
 Route::post('register', [RegisteredUserController::class, 'store'])
     ->middleware(['guest:' . config('fortify.guard')]);
 
+
+/*
+|------------------------------------------------------------------------
+| Clever route
+|------------------------------------------------------------------------
+ */
+Route::get('clever-launch', [CleverSSOController::class, 'launch'])->name('clever-launch');
 
 /*
 |------------------------------------------------------------------------
