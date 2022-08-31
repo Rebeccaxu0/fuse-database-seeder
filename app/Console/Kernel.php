@@ -4,7 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,9 +27,6 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('telescope:prune')->daily()->onOneServer();
         $schedule->call(function () {
-            // Update unimportant forever caches.
-            // Cache::forever('student_count', User::count());
-            // Cache::forever('school_count', School::count());
         })->daily();
     }
 
