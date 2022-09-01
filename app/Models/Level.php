@@ -172,6 +172,10 @@ class Level extends Model
     public function isStartable(User $user): bool
     {
         // return Cache::remember("u{$user->id}_can_start_level_{$this->id}", 1800, function () use ($user) {
+            // If there's no parent ChallengeVersion or Idea (missing or soft-deleted), return false.
+            if (! $this->levelable) {
+                return false;
+            }
             // Levels of an Idea belonging to the User are always startable.
             if ($user->isAdmin() || (
                 $this->levelable::class == Idea::class && $this->levelable->users->contains($user))
