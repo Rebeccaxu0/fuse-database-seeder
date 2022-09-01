@@ -7,6 +7,7 @@ use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
+use Plank\Mediable\Media;
 
 class LevelController extends Controller
 {
@@ -233,8 +234,14 @@ class LevelController extends Controller
      */
     public function edit(Request $request, Level $level)
     {
+        $previewImage = $level->firstMedia('preview');
+        $previewImageId = $level->hasMedia('preview')
+            ? $level->firstMedia('preview')->id
+            : null;
         return view('admin.level.edit', [
             'level' => $level,
+            'previewImage' => $previewImage,
+            'previewImageMediaId' => $previewImageId,
             'copy' => $request->session()->get('prev'),
         ]);
     }
@@ -257,6 +264,7 @@ class LevelController extends Controller
             'howToComplete' => 'nullable|string',
             'powerUp' => 'nullable|string',
             'stuffYouNeed' => 'nullable|string',
+            'previewImageMediaId' => 'nullable|exists:media,id',
         ]);
 
         $level->update([
@@ -270,6 +278,13 @@ class LevelController extends Controller
             'power_up_desc' => $request->powerUp,
             'stuff_you_need_desc' => $request->stuffYouNeed,
         ]);
+
+        if ($validated['previewImageMediaId']) {
+            $level->detachMediaTags('preview');
+            $media = Media::find($validated['previewImageMediaId']);
+            $level->attachMedia($media, ['preview']);
+        }
+
         if ($request->session()->get('prev') == 'Copy of') {
             $request->session()->forget('prev');
             return redirect(route('admin.challengeversions.edit', $request->levelable_id));

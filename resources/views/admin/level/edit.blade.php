@@ -9,7 +9,6 @@
         @csrf
         <input type="hidden" name="levelable_id" value="{{ $level->levelable->id }}">
 
-        <p> //preview image </p>
         <x-form.textarea
             name="challengeDesc"
             label="The Challenge"
@@ -18,6 +17,18 @@
             name="blurb"
             label="Blurb"
             :value="old('blurb', $level->blurb)" />
+        <x-form.input name="previewImageMediaId"
+            label="Preview Image ID"
+            :value="old('previewImageMediaId', $previewImageMediaId)" />
+        @if ($level->hasMedia('preview'))
+        <ol class="mb-4">
+        @foreach ($level->getMedia('preview') as $file)
+        <li>
+            <a href="{{ $file->getUrl()}}">{{ $file->basename }}</a>
+        </li>
+        @endforeach
+        </ol>
+        @endif
         <p> //stuff you need images </p>
         <x-form.textarea
             name="stuffYouNeed"
