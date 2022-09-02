@@ -49,7 +49,7 @@
                         {!! $level->challenge_desc !!}
                     </div>
                     <div class="flex-1 min-w-[60%]">
-                        <img src="{{ $levelPreviewImage }}" >
+                        <img class="w-full" src="{{ $levelPreviewImage }}" >
                     </div>
                 </div>
             </section>
