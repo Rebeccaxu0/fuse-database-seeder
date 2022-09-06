@@ -177,8 +177,8 @@ class Level extends Model
                 return false;
             }
             // Levels of an Idea belonging to the User are always startable.
-            if ($user->isAdmin() || (
-                $this->levelable::class == Idea::class && $this->levelable->users->contains($user))
+            if ($user->isAdmin() || $user->isFacilitator() || $user->isSuperFacilitator()
+                || ($this->levelable::class == Idea::class && $this->levelable->users->contains($user))
                 ) {
                 return true;
             }
