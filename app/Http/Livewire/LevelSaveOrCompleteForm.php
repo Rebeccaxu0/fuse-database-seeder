@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use MediaUploader;
 
@@ -84,7 +84,9 @@ class LevelSaveOrCompleteForm extends Component
 
     public function updatedUploadCode($code)
     {
-        if ($code == '') {
+        $validated = $this->validateOnly('uploadCode');
+        $this->uploadCode = Str::of($validated['uploadCode'])->upper()->remove(' ');
+        if ($this->uploadCode == '') {
             $this->emit('filestackAppear');
             $this->urlDisabled = false;
         }
@@ -93,14 +95,15 @@ class LevelSaveOrCompleteForm extends Component
             $this->urlDisabled = true;
             // Validate here.
             $response = Http::acceptJson()
-                ->get('https://api.fusestudio.net/validate/' . urlencode($code));
+                ->get('https://api.fusestudio.net/validate/' . urlencode($this->uploadCode));
             if ($response->ok()) {
                 $status = $response->json()['status'];
+                $this->ucstatus = $status;
                 if ($status == 'ready') {
                     $this->emit('filestackDisappear');
-                    $location = $response->json()['location'];
-                    $mimetype = $response->json()['mimetype'];
-                    $this->emit('makePreviewImage', 'mobile upload code', ['mime' => $mimetype, 'file_url' => $location]);
+                    $filename = $response->json()['location'];
+                    $mimetype = $this->mimetype('', $filename);
+                    $this->emit('makePreviewImage', 'mobile upload code', ['mime' => $mimetype, 'filename' => $filename]);
                 }
             }
         }
@@ -143,7 +146,7 @@ class LevelSaveOrCompleteForm extends Component
      * @param array $details
      *   Contents vary based on type.
      *   'filestack' implies key of 'handle' to hydrate a Filestack\Filelink object.
-     *   'mobile upload code' implies keys of 'mime' and 'file_url'
+     *   'mobile upload code' implies keys of 'mime' and 'filename'
      *   'url' implies key of 'url'
      */
     public function makePreviewImage(string $type, array $details)
@@ -214,9 +217,7 @@ class LevelSaveOrCompleteForm extends Component
         }
         else if ($type == 'mobile upload code') {
             $mime = $details['mime'];
-            $url = $details['file_url'];
-            $exploded_url = explode('/', $url);
-            $this->previewName = $filename = array_pop($exploded_url);
+            $this->previewName = $filename = $details['filename'];
         }
 
         $mimetype = explode('/', $this->mimetype($mime, $filename));
@@ -237,7 +238,9 @@ class LevelSaveOrCompleteForm extends Component
                 $this->previewUrl = $filelink->resize(100, 75, 'crop')->transform_url;
             }
             else {
-                $this->previewUrl = "https://cdn.art.fusestudio.net/{$fskey}/resize=w:100,h:75,fit:crop/src://fuse/{$details['file_url']}";
+                $this->previewUrl = "https://up-temp.fusestudio.net/{$filename}";
+                // Eventually the initial upload location will be someplace we can use Filestack, but not today.
+                // $this->previewUrl = "https://cdn.art.fusestudio.net/{$fskey}/resize=w:100,h:75,fit:crop/src://fuse/{$details['file_url']}";
             }
             break;
 
@@ -269,20 +272,36 @@ class LevelSaveOrCompleteForm extends Component
         }
 
         if ($validated['uploadCode']) {
-            $src = '/tmp/' . $this->previewName;
-            // We should probably use the upload code to remove the prefix.
-            // For now we just assume 6 char code plus dash is 7 char offset.
-            $newFilename = substr($this->previewName, 7);
-            $dest = '/' . Auth::user()->id . "/{$newFilename}";
-            if (Storage::disk('artifacts')->exists($src)) {
-                Storage::disk('artifacts')->copy($src, $dest);
-                Storage::disk('artifacts')->delete($src);
-                // TODO: convert to a media instance.
-            }
-            else {
+            $data = ['uid' => $user->id];
+            $code = urlencode($this->uploadCode);
+            $response = Http::acceptJson()
+                ->asForm()
+                ->post("https://api.fusestudio.net/claim/{$code}", $data);
+            if ($response->ok()) {
+                $status = $response->json()['status'];
+                if ($status == 'claimed') {
+                    $this->emit('filestackDisappear');
+                    $filename = $response->json()['filename'];
+                    $mimetype = $response->json()['mimetype'];
+                    $s3filename = $response->json()['s3filename'];
+                    $file = MediaUploader::importPath('artifacts', $s3filename);
+                    $mimeshrapnel = explode('/', $mimetype);
+                    if (strtolower($mimeshrapnel[0]) == 'video') {
+                        $transformations = '/video_convert=p:h264';
+                        $alias = 'student-uploads';
+                        $api_key = config('filestack.api_key', '');
+                        $domain = 'https://cdn.filestackcontent.com';
+                        $xform_uri = "{$domain}/{$api_key}{$transformations}/src://{$alias}/{$s3filenamej}";
+                        $response = Http::get($xform_uri);
+                    }
+                }
             }
         }
+
         $artifact->save();
+        if ($validated['uploadCode']) {
+            $artifact->attachMedia($file, 'file');
+        }
         $artifact->users()->saveMany($team);
         $level = Level::find($validated['lid']);
         $is_team_artifact = (bool) (count($team) > 1);
@@ -315,8 +334,8 @@ class LevelSaveOrCompleteForm extends Component
                 $path = $filelink->getMetaData()['path'];
             }
             // $media = MediaUploader::importPath('artifacts', $path);
-            $media = Media::find($this->mediaId);
-            $artifact->attachMedia($media, 'file');
+            // $media = Media::find($this->mediaId);
+            // $artifact->attachMedia($media, 'file');
         }
 
         switch ($validated['type']) {
@@ -393,6 +412,9 @@ class LevelSaveOrCompleteForm extends Component
         $ext = strtolower(array_pop($name_boom));
         if ('jpg' == $ext || 'jpeg' == $ext) {
             $filemime = 'image/jpeg';
+        }
+        else if ('svg' == $ext) {
+            $filemime = 'image/svg';
         }
         else if ('gif' == $ext) {
             $filemime = 'image/gif';

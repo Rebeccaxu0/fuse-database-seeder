@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class UploadCode implements Rule
 {
@@ -26,8 +27,9 @@ class UploadCode implements Rule
      */
     public function passes($attribute, $value)
     {
+        $code = Str::of($value)->upper()->remove(' ');
         $response = Http::acceptJson()
-            ->get('https://api.fusestudio.net/validate/' . urlencode($value));
+            ->get('https://api.fusestudio.net/validate/' . urlencode($code));
         return $response->ok()
             && $response->json()['status'] == 'ready';
     }

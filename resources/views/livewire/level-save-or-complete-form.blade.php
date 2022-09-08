@@ -45,10 +45,9 @@
                 <div class="alert text-sm">{{ $message }}</div>
             @enderror
         </div>
-        {{-- <livewire:upload-code /> --}}
     {{-- @if (! $uploadCodeDisappear) --}}
         <div>
-            @if (false)
+            {{-- <livewire:upload-code /> --}}
             <label class="pt-0" for="uploadcode">{{ __('Mobile Upload Code') }}</label>
             @error('uploadCode')
             <span class="alert text-sm">{{ $message }}</span>
@@ -57,11 +56,10 @@
                 id="uploadCode"
                 placeholder="{{ __('e.g. ABC123') }}"
                 value="{{ old('uploadCode') }}"
-                class="px-1 placeholder-gray-300 h-12 border border-neutral-600 mb-4"
-                {{-- @error('uploadCode') border border-red-500 @enderror --}}
+                class="px-1 placeholder-gray-300 h-12 border @error('uploadCode') border-red-500 @else border-neutral-600 @enderror mb-4"
+                
                 @if ($uploadCodeDisabled) disabled @endif
                 />
-            @endif
             @if (! $urlDisappear)
             <label class="pt-0" for="url">{{ __('URL') }}</label>
             @error('url')
@@ -77,6 +75,7 @@
                 @if ($urlDisabled) disabled @endif
                 />
             @endif
+            @if ($studioMembers->count())
             <div>
                 <label class="p-0">{{ __('I worked with') }}</label>
                 @foreach ($teamNames as $name)
@@ -97,6 +96,7 @@
                     @endforeach
                 </div>
             </div>
+            @endif
             <label for="notes" class="p-0">{{ __('Notes (optional)') }}</label>
             @error('notes')
                 <div class="alert text-sm">{{ $message }}</div>
