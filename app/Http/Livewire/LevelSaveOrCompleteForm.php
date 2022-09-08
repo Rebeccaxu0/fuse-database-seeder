@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\Artifact;
 use App\Models\Level;
-use App\Models\Media;
 use App\Models\User;
 use App\Rules\UploadCode;
 use Filestack\Filelink;
@@ -84,8 +83,13 @@ class LevelSaveOrCompleteForm extends Component
 
     public function updatedUploadCode($code)
     {
+        $code = Str::of($code)->upper()->remove(' ');
+        if ($code->length < 6) {
+            $this->resetErrorBag('uploadCode');
+            return;
+        }
         $validated = $this->validateOnly('uploadCode');
-        $this->uploadCode = Str::of($validated['uploadCode'])->upper()->remove(' ');
+        $this->uploadCode = $code;
         if ($this->uploadCode == '') {
             $this->emit('filestackAppear');
             $this->urlDisabled = false;
@@ -119,6 +123,8 @@ class LevelSaveOrCompleteForm extends Component
         else {
             $this->validateOnly('url');
             $this->emit('filestackDisappear');
+            $this->resetErrorBag('uploadCode');
+            $this->uploadCode = '';
             $this->uploadCodeDisabled = true;
             $this->makePreviewImage('url', ['url' => $url]);
         }
@@ -291,7 +297,7 @@ class LevelSaveOrCompleteForm extends Component
                         $alias = 'student-uploads';
                         $api_key = config('filestack.api_key', '');
                         $domain = 'https://cdn.filestackcontent.com';
-                        $xform_uri = "{$domain}/{$api_key}{$transformations}/src://{$alias}/{$s3filenamej}";
+                        $xform_uri = "{$domain}/{$api_key}{$transformations}/src://{$alias}/{$s3filename}";
                         $response = Http::get($xform_uri);
                     }
                 }
@@ -462,7 +468,16 @@ class LevelSaveOrCompleteForm extends Component
             'lid' => 'int|exists:App\Models\Level,id',
             'type' => ['required', 'regex:/^(save)|(complete)$/'],
             'filestackHandle' => 'required_without_all:url,uploadCode',
-            'uploadCode' => ['required_without_all:filestackHandle,url', 'max:10', new UploadCode],
+            'uploadCode' => [
+                'required_without_all:filestackHandle,url',
+                'max:10', 
+                function ($attribute, $value, $fail) {
+                    if (preg_match('/^\s*[a-z]{3}\s*\d{3}\s*$/i', $value) !== 1) {
+                        $fail(__('An upload code must be three letters followed by three numbers.'));
+                    }
+                },
+                new UploadCode,
+            ],
             'url' => 'required_without_all:filestackHandle,uploadCode|nullable|url|max:2048',
             'artifactName' => 'max:255',
             'notes' => 'max:4098',

@@ -45,10 +45,8 @@
                 <div class="alert text-sm">{{ $message }}</div>
             @enderror
         </div>
-    {{-- @if (! $uploadCodeDisappear) --}}
         <div>
-            {{-- <livewire:upload-code /> --}}
-            <label class="pt-0" for="uploadcode">{{ __('Mobile Upload Code') }}</label>
+            <label class="pt-0" for="uploadcode">{{ __('Mobile Upload Code') }} (<a target="_blank" href="https://up.fusestudio.net">up.fusestudio.net</a>) <livewire:help-modal helpArticleId="738" linkText="<span title='info' class='border text-fuse-teal-500 border-fuse-teal-500 rounded-xl inline-block h-6 w-6 text-center'>i</span>" /></label>
             @error('uploadCode')
             <span class="alert text-sm">{{ $message }}</span>
             @enderror
