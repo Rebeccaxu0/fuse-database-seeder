@@ -10,6 +10,20 @@
         <button class="text-md h-12 px-6 m-2 mb-6 bg-fuse-green rounded-lg text-white">Add Help Article</button>
     </a>
 
+    <details>
+        <summary>
+            How to embed in level:
+        </summary>
+        The following will display a link that uses the Help Article title as the link text.
+        <code class="m-4 p-4 bg-slate-700 rounded-lg block text-white">
+            &lt;livewire:help-modal helpArticleId="738" /&gt;
+        </code>
+        You can override the link text with this:
+        <code class="m-4 p-4 bg-slate-700 rounded-lg block text-white">
+        &lt;livewire:help-modal helpArticleId="738" linkText="More Info" /&gt;
+        </code>
+    </details>
+
     <div class="md:grid md:grid-cols-2 xl:grid-cols-4 gap-6">
         @foreach ($helpArticles as $helpArticle)
 

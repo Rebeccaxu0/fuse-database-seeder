@@ -21,6 +21,10 @@ class HelpModal extends Component
             if (! $this->linkText) {
                 $this->linkText = $helpArticle->name;
             }
+            else {
+                // LinkText needs to be passed in pre-translation.
+                $this->linkText = __($this->linkText);
+            }
         }
         else {
             $this->body = $this->linkText = $this->name = __('Bad Article ID :id', ['id' => $this->helpArticleId]);

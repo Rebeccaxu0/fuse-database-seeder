@@ -1,6 +1,6 @@
 <div class="inline">
     <a class="cursor-pointer" wire:click="$set('showModalFlag', true)">
-        {{ $linkText }}
+        {!! $linkText !!}
     </a>
     <x-jet-modal wire:model="showModalFlag">
             <div class="py-4 text-center text-fuse-teal-dk text-3xl whitespace-nowrap">
