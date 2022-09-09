@@ -11,8 +11,8 @@ use Illuminate\View\Component;
 class ProgressBar extends Component
 {
     public bool $interactive = true;
-    public ChallengeVersion|Idea $levelable;
-    public Collection $levels;
+    public ChallengeVersion|Idea|null $levelable = null;
+    public ?Collection $levels = null;
 
     /**
      * Create a new component instance.
@@ -21,21 +21,21 @@ class ProgressBar extends Component
      *
      * @return void
      */
-    public function __construct(ChallengeVersion|Idea $levelable, User $user, bool $interactive = true)
+    public function __construct(ChallengeVersion|Idea|null $levelable, User $user, bool $interactive = true)
     {
-        $this->interactive = $interactive;
-        $this->levelable = $levelable;
-        $this->levels = $this->levelable->levels->sortBy('level_number');
-        foreach ($this->levels as $level) {
-          if ($user->hasCompletedLevel($level)) {
-              $level->status = 'completed';
-          }
-          else if ($user->hasStartedLevel($level)) {
-              $level->status = 'started';
-          }
-          else {
-              $level->status = 'unstarted';
-          }
+        if (! is_null($levelable)) {
+            $this->interactive = $interactive;
+            $this->levelable = $levelable;
+            $this->levels = $this->levelable->levels->sortBy('level_number');
+            foreach ($this->levels as $level) {
+                if ($user->hasCompletedLevel($level)) {
+                    $level->status = 'completed';
+                } else if ($user->hasStartedLevel($level)) {
+                    $level->status = 'started';
+                } else {
+                    $level->status = 'unstarted';
+                }
+            }
         }
     }
 
@@ -46,6 +46,10 @@ class ProgressBar extends Component
      */
     public function render()
     {
+        if (is_null($this->levelable) || is_null($this->levels)) {
+            return;
+        }
+
         return view('components.progress-bar');
     }
 }
