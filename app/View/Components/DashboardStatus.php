@@ -53,7 +53,7 @@ class DashboardStatus extends Component
 
         // If the user has started any level...
         $this->user = $user;
-        if ($user->currentLevel) {
+        if ($user->currentLevel && ! is_null($user->currentLevel->levelable)) {
             $level = $user->currentLevel;
             // If the Current Level is completed...
             if ($level->isCompleted($user)) {
