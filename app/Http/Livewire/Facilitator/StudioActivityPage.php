@@ -2,17 +2,19 @@
 
 namespace App\Http\Livewire\Facilitator;
 
+use App\Models\ChallengeVersion;
 use app\Models\Studio;
 use app\Models\User;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SCollection;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class StudioActivityPage extends Component
 {
     public Collection $artifacts;
-    public Collection $challenges;
+    public Collection|SCollection $challenges;
     public Collection $ideas;
     public Collection $students;
     public $activeChallenge = null;
@@ -133,12 +135,23 @@ class StudioActivityPage extends Component
 
     private function populateChallenges()
     {
-        $this->challenges = $this->activeStudent
+        $artifactsChallenges = $this->activeStudent->artifacts
+                                 ->reject(fn($artifact) => is_null($artifact->level->levelable))
+                                 ->map(fn($artifact) => $artifact->level->levelable::class == ChallengeVersion::class ? $artifact->level->levelable : null)
+                                 ->whereNotNull()
+                                 ->reject(fn($levelable) => is_null($levelable))
+                                 ->unique()
+                                 ->sortBy('name');
+        $startedChallenges = $this->activeStudent
                                  ->startedChallengeVersionLevels
-                                 ->map(fn($level) => $level->levelable)
+                                 ->reject(fn($level) => is_null($level->levelable))
+                                 ->map(fn($level) => $level->levelable::class == ChallengeVersion::class ? $level->levelable : null)
+                                 ->whereNotNull()
+                                 ->reject(fn($levelable) => is_null($levelable))
                                  ->unique()
                                  ->sortBy('name');
 
+        $this->challenges = $artifactsChallenges->merge($startedChallenges);
         if ($this->challenges->count()) {
             if ($this->activeChallengeType == 'c') {
                 $this->activeChallenge = $this->challenges->where('id', $this->activeChallengeId)->first();
