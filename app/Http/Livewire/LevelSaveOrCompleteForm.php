@@ -277,6 +277,7 @@ class LevelSaveOrCompleteForm extends Component
             }
         }
 
+        $file = null;
         if ($validated['uploadCode']) {
             $data = ['uid' => $user->id];
             $code = urlencode($this->uploadCode);
@@ -301,11 +302,21 @@ class LevelSaveOrCompleteForm extends Component
                         $response = Http::get($xform_uri);
                     }
                 }
+                else {
+                    $this->uploadCode = '';
+                    $this->addError('uploadCode', __('There was an error claiming your upload code. Please try again, or try a different code.'));
+                    return;
+                }
+            }
+            else {
+                $this->uploadCode = '';
+                $this->addError('uploadCode', __('There was an error claiming your upload code. Please try again, or try a different code.'));
+                return;
             }
         }
 
         $artifact->save();
-        if ($validated['uploadCode']) {
+        if ($validated['uploadCode'] && $file) {
             $artifact->attachMedia($file, 'file');
         }
         $artifact->users()->saveMany($team);
