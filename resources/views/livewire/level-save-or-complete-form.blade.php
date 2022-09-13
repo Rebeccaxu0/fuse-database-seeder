@@ -11,7 +11,7 @@
     @error('lid')
     <div class="alert text-sm">{{ $message }}</div>
     @enderror
-    <div class="grid gap-4 grid-cols-1 2xl:grid-cols-2">
+    <div class="grid gap-4 grid-cols-1 2xl:grid-cols-1">
         <div class="overflow-hidden" style="min-width: 400px">
             <div x-show="previewOpen"
                 x-transition:enter="transition ease-out duration-500"
