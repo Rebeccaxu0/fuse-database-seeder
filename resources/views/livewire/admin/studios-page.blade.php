@@ -2,78 +2,115 @@
     <x-slot name="header">{{ __('Studios') }}</x-slot>
 
     @if (auth()->user()->isAdmin())
-    <x-admin.district-subnav />
+        <x-admin.district-subnav />
     @endif
 
     @if (auth()->user()->isAdmin())
-    @livewire ('school-district-search-bar')
+        <livewire:school-district-search-bar />
     @endif
 
-    @if ($school)
+    <div class="text-fuse-teal-dk text-lg font-bold">{{ __('District: ')}}
+    @if (auth()->user()->isAdmin())
+        <select wire:model='activeDistrictId'>
+        @foreach ($districts as $district)
+            <option value="{{ $district->id }}" wire:key='{{ $district->id }}'>
+                {{ $district->name }}
+            </option>
+        @endforeach
+        </select>
+    @else 
+        {{ $activeDistrictName }}
+    @endif
+
+    <span class="">{{ __('School: ')}}
+        @if ($schools->count())
+            <select wire:model='activeSchoolId'>
+            @foreach ($schools as $school)
+                <option value="{{ $school->id }}" wire:key='{{ $school->id }}'>
+                    {{ $school->name }}
+                </option>
+            @endforeach
+            </select>
+        @else
+            {{ __('No schools in this District.') }}
+        @endif
+    </span>
+    </div>
+
+    @if ($activeSchool)
     <div>
-        <a href="{{ route('admin.schools.createstudios', $school) }}">
+        <a href="{{ route('admin.schools.createstudios', $activeSchool) }}">
             <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
         </a>
     </div>
 
     @if (auth()->user()->isAdmin())
+        <fieldset class='border p-2'>
+            <legend class="font-semibold">{{ __('School & District') }}</legend>
+            <div class="">
+                <span class="float-right">
+                    <a href="{{ route('admin.schools.edit', $activeSchool->id) }}"><button type="reset">{{ __('Edit School') }}</button></a>
+                    <br>
+                    <form method="post"
+                        action="{{ route('admin.schools.destroy', $activeSchool->id) }}"
+                        class="inline-block">
+                        @method('delete')
+                        @csrf
+                        <button type="destroy">{{ __('Delete School') }}</button>
+                    </form>
+                </span>
+                {{ $activeSchool->name }}
+            </div>
+            <div>
+                @if ($activeSchool->district)
+                {{ $activeSchool->district->name }}
+                @else
+                {{ __('No parent district') }}
+                @endif
+            </div>
+            <div>{{ __('Package: ') }}
+                @if ($activeSchool->package)
+                {{ __('":spackage" overrides district package ":dpackage"', [
+                'spackage' => $activeSchool->package->name,
+                'dpackage' => ($activeSchool->district && $activeSchool->district->package)
+                ? $activeSchool->district->package->name
+                : __('<none>')]) }}
+                @elseif ($activeSchool->district && $activeSchool->district->package)
+                {{ __('":package" inherited from district', ['package' => $activeSchool->district->package->name]) }}
+                @else
+                {{ __('No Package Set') }}
+                @endif
+            </div>
+        </fieldset>
+    @endif
+
     <fieldset class='border p-2'>
-        <legend class="font-semibold">{{ __('School & District') }}</legend>
-        <div class="">
-            <span class="float-right">
-                <a href="{{ route('admin.schools.edit', $school->id) }}"><button type="reset">{{ __('Edit School') }}</button></a>
-                <br>
-                <form method="post"
-                    action="{{ route('admin.schools.destroy', $school->id) }}"
-                    class="inline-block">
-                    @method('delete')
-                    @csrf
-                    <button type="destroy">{{ __('Delete School') }}</button>
-                </form>
-            </span>
-            {{ $school->name }}
+        <legend class="font-semibold">{{ __('Facilitators') }}</legend>
+        <div class="text-sm">
+            @foreach ($facilitators as $facilitator)
+            @if(auth()->user()->isAdmin())
+                <a href="{{ route('admin.facilitators.show', $facilitator) }}">{{ $facilitator->full_name }} ({{ $facilitator->name }})</a>@if(! $loop->last),@endif
+            @else
+                {{ $facilitator->full_name }} ({{ $facilitator->name }})@if(! $loop->last),@endif
+            @endif
+            <x-jet-danger-button class="p-1" wire:click="removeFacilitator({{ $facilitator->id }}); refresh();" wire:key="s{{ $activeSchoolId}}-u{{ $facilitator->id }}" wire:loading.attr='disabled'>
+            <x-icon icon="trash" width=15 height=15 />
+            </x-jet-danger-button>
+            @endforeach
         </div>
+
         <div>
-            @if ($school->district)
-            {{ $school->district->name }}
-            @else
-            {{ __('No parent district') }}
-            @endif
-        </div>
-        <div>{{ __('Package: ') }}
-            @if ($school->package)
-            {{ __('":spackage" overrides district package ":dpackage"', [
-            'spackage' => $school->package->name,
-            'dpackage' => ($school->district && $school->district->package)
-            ? $school->district->package->name
-            : __('<none>')]) }}
-            @elseif ($school->district && $school->district->package)
-            {{ __('":package" inherited from district', ['package' => $school->district->package->name]) }}
-            @else
-            {{ __('No Package Set') }}
-            @endif
+            {{ __('Add Facilitator') }}
+            <livewire:user-search-bar >
         </div>
     </fieldset>
     @endif
 
-    <fieldset class='border p-2'>
-    <legend class="font-semibold">{{ __('Facilitators') }}</legend>
-    <div class="text-sm">
-        @foreach ($school->facilitators as $user)
-        @if(auth()->user()->isAdmin())
-            <a href="{{ route('admin.users.show', $user) }}">{{ $user->full_name }} ({{ $user->name }})</a>@if(! $loop->last),@endif
-        @else
-            {{ $user->full_name }} ({{ $user->name }})@if(! $loop->last),@endif
-        @endif
-        @endforeach
-    </div>
-    </fieldset>
-    @endif
     <div class="mt-8">
         <table class="min-w-full leading-normal">
             <thead>
                 <tr>
-                    @if (! $school)
+                    @if (! $activeSchool)
                     <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('District') }}
                     </th>
@@ -82,11 +119,13 @@
                     </th>
                     @endif
                     <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
-                        {{ __('Name') }}
+                        {{ __('Studio') }}
                     </th>
+                    @if (auth()->user()->isAdmin())
                     <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Package') }}
                     </th>
+                    @endif
                     <th scope="col" class="bg-white border-gray-200 text-left text-gray-700 bold">
                         {{ __('Code') }}
                     </th>
@@ -98,7 +137,7 @@
             <tbody>
                 @foreach ($studios as $studio)
                     <tr class="odd:bg-white even:bg-gray-100">
-                        @if (! $school)
+                        @if (! $activeSchool)
                         <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 @if ($studio->school && $studio->school->district)
@@ -125,11 +164,13 @@
                                 </p>
                             </div>
                         </td>
+                        @if (auth()->user()->isAdmin())
                         <td class="border-gray-200 text-sm">
                             <p class="text-gray-900 whitespace-no-wrap">
                             {{ $studio->packageText }}
                             </p>
                         </td>
+                        @endif
                         <td class="border-gray-200 text-sm">
                             <div class="flex items-center">
                                 <p class="ml-3 text-gray whitespace-no-wrap">
@@ -156,7 +197,7 @@
                 @endforeach
             </tbody>
         </table>
-        @if (! $schoolId)
+        @if (! $activeSchoolId)
         {{ $studios->links() }}
         @endif
     </div>

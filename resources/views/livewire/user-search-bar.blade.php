@@ -10,7 +10,7 @@
 
         <div class="relative z-10 w-full bg-white rounded-t-none shadow-lg list-group">
             @forelse ($users as $user)
-                <div class="mb-6" wire:click="selectUser({{ $user->id }})">{{ $user->name }}</div>
+                <div class="mb-6" wire:click="selectUser({{ $user->id }})">{{ $user->full_name }} ({{ $user->name }}) @if ($user->email) <{{ $user->email }}>@endif</div>
             @empty
                 <div>No results</div>
             @endforelse
