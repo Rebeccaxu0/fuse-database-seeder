@@ -552,5 +552,12 @@ html.fac.docked {
 .fsp-picker {
     z-index: 1 !important;
 }
+.fsp-picker .fsp-modal .fsp-modal__sidebar {
+    min-height: 300px;
+}
+.fsp-picker .fsp-modal .fsp-modal__body {
+    min-height: 300px;
+    overflow: scroll;
+}
 
 [x-cloak] { display: none !important; }
