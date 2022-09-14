@@ -44,8 +44,8 @@ return [
 
         'public' => [
             'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'key' => env('AWS_PUBLIC_ACCESS_KEY_ID'),
+            'secret' => env('AWS_PUBLIC_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_PUBLIC_BUCKET'),
             'url' => env('AWS_PUBLIC_URL'),
