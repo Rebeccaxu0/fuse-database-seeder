@@ -49,8 +49,8 @@ class District extends Organization
     {
         $schools = $this->schools()->get()->pluck('id');
         return User::whereHas('schools', function (Builder $query) use ($schools) {
-            $query->whereIn('id', $schools);
-        })
+                $query->whereIn('id', $schools);
+            })
             ->whereHas('roles', function (Builder $query) {
                 $query->where('name', '=', 'Facilitator');
             });
@@ -63,11 +63,9 @@ class District extends Organization
     {
         $studios = $this->studios()->get()->pluck('id');
         return User::whereHas('studios', function (Builder $query) use ($studios) {
-            $query->whereIn('id', $studios);
-        })
-            ->whereHas('roles', function (Builder $query) {
-                $query->where('name', '=', 'Student');
-            });
+                $query->whereIn('id', $studios);
+            })
+            ->whereDoesntHave('roles');
     }
 
     /**
