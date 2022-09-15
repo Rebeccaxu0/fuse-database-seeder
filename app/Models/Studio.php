@@ -16,6 +16,72 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * App\Models\Studio
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $name
+ * @property int $status
+ * @property int|null $school_id
+ * @property int|null $package_id
+ * @property int $active
+ * @property int $require_email
+ * @property int $allow_non_binary_gender_options
+ * @property int $allow_comments
+ * @property int $allow_ideas
+ * @property int $universal_pwd
+ * @property int $research_site
+ * @property int $in_school
+ * @property int $demo_studio
+ * @property string|null $join_code
+ * @property string|null $dashboard_message
+ * @property int|null $l_t_i_platform_id
+ * @property int|null $d7_id
+ * @property int|null $d7_school_id
+ * @property int|null $d7_package_id
+ * @property-read \Plank\Mediable\MediableCollection|\App\Models\ChallengeVersion[] $challengeVersions
+ * @property-read int|null $challenge_versions_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Package|null $package
+ * @property-read \App\Models\School|null $school
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\StudioFactory factory(...$parameters)
+ * @method static Builder|Studio newModelQuery()
+ * @method static Builder|Studio newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Studio onlyTrashed()
+ * @method static Builder|Studio query()
+ * @method static Builder|Studio whereActive($value)
+ * @method static Builder|Studio whereAllowComments($value)
+ * @method static Builder|Studio whereAllowIdeas($value)
+ * @method static Builder|Studio whereAllowNonBinaryGenderOptions($value)
+ * @method static Builder|Studio whereCreatedAt($value)
+ * @method static Builder|Studio whereD7Id($value)
+ * @method static Builder|Studio whereD7PackageId($value)
+ * @method static Builder|Studio whereD7SchoolId($value)
+ * @method static Builder|Studio whereDashboardMessage($value)
+ * @method static Builder|Studio whereDeletedAt($value)
+ * @method static Builder|Studio whereDemoStudio($value)
+ * @method static Builder|Studio whereId($value)
+ * @method static Builder|Studio whereInSchool($value)
+ * @method static Builder|Studio whereJoinCode($value)
+ * @method static Builder|Studio whereLTIPlatformId($value)
+ * @method static Builder|Studio whereName($value)
+ * @method static Builder|Studio wherePackageId($value)
+ * @method static Builder|Studio whereRequireEmail($value)
+ * @method static Builder|Studio whereResearchSite($value)
+ * @method static Builder|Studio whereSchoolId($value)
+ * @method static Builder|Studio whereStatus($value)
+ * @method static Builder|Studio whereUniversalPwd($value)
+ * @method static Builder|Studio whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Studio withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Studio withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Studio extends Organization
 {
     use HasFactory;

@@ -17,6 +17,133 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $email
+ * @property Carbon|null $email_verified_at
+ * @property string|null $password
+ * @property string|null $two_factor_secret
+ * @property string|null $two_factor_recovery_codes
+ * @property string|null $remember_token
+ * @property int|null $current_team_id
+ * @property int|null $current_connected_account_id
+ * @property string|null $profile_photo_path
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Carbon|null $deleted_at
+ * @property int $status
+ * @property string|null $timezone User's preferred TZ
+ * @property string $language Users's preferred language
+ * @property string|null $reporting_id Anonymized reporting ID
+ * @property string|null $avatar_config FUSE Avatar configuration/generator
+ * @property int $seen_idea_trailer
+ * @property string|null $last_access
+ * @property string|null $login
+ * @property string|null $full_name
+ * @property string|null $gender Allowed values: 'M', 'F', 'NB' (non-binary), 'U' (prefer not to say)
+ * @property string|null $ethnicity Allowed values: african_american, asian, hispanic_latino, middle_eastern, indigenous_american, pacific_islander, caucasian, multiracial, rather_not_say, international (added for Finland)
+ * @property string|null $birthday Date of Birth
+ * @property string|null $csv_header
+ * @property string|null $csv_values
+ * @property string|null $guardian
+ * @property string|null $email_of_guardian
+ * @property string|null $irb_consent
+ * @property string|null $photo_consent
+ * @property string|null $guardian_irb_consent
+ * @property string|null $guardian_photo_consent
+ * @property string|null $consent_email_last_sent
+ * @property int|null $allow_survey
+ * @property int|null $current_level The last level a student is interacted with  (start/save/complete).
+ * @property int|null $active_studio The studio a student is currently active within. This is used to determine contents of the challenge gallery among other things.
+ * @property int|null $d7_id
+ * @property-read \App\Models\Studio|null $activeStudio
+ * @property-read Collection|\App\Models\Announcement[] $announcementsSeen
+ * @property-read int|null $announcements_seen_count
+ * @property-read \Plank\Mediable\MediableCollection|\App\Models\Artifact[] $artifacts
+ * @property-read int|null $artifacts_count
+ * @property-read Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read Collection|\App\Models\Comment[] $commentsSeen
+ * @property-read int|null $comments_seen_count
+ * @property-read Collection|\App\Models\ConnectedAccount[] $connectedAccounts
+ * @property-read int|null $connected_accounts_count
+ * @property-read \App\Models\ConnectedAccount|null $currentConnectedAccount
+ * @property-read \App\Models\Level|null $currentLevel
+ * @property-read Collection|\App\Models\District[] $districts
+ * @property-read int|null $districts_count
+ * @property-read string $profile_photo_url
+ * @property-read Collection|\App\Models\Start[] $ideaStarts
+ * @property-read int|null $idea_starts_count
+ * @property-read Collection|\App\Models\Idea[] $ideas
+ * @property-read int|null $ideas_count
+ * @property-read \App\Models\Start|null $latestStart
+ * @property-read Collection|\App\Models\Start[] $levelStarts
+ * @property-read int|null $level_starts_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Collection|\App\Models\Role[] $roles
+ * @property-read int|null $roles_count
+ * @property-read Collection|\App\Models\School[] $schools
+ * @property-read int|null $schools_count
+ * @property-read \Plank\Mediable\MediableCollection|\App\Models\Level[] $startedLevels
+ * @property-read int|null $started_levels_count
+ * @property-read Collection|\App\Models\Start[] $starts
+ * @property-read int|null $starts_count
+ * @property-read Collection|\App\Models\Studio[] $studios
+ * @property-read int|null $studios_count
+ * @property-read Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereActiveStudio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAllowSurvey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatarConfig($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthday($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereConsentEmailLastSent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCsvHeader($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCsvValues($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCurrentConnectedAccountId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCurrentLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCurrentTeamId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereD7Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailOfGuardian($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEthnicity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFullName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGuardian($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGuardianIrbConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereGuardianPhotoConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIrbConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLanguage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastAccess($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLogin($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePhotoConsent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePhotoPath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereReportingId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSeenIdeaTrailer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTimezone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorRecoveryCodes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereTwoFactorSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|User withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;

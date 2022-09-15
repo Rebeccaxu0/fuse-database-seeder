@@ -7,6 +7,45 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * App\Models\District
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $name
+ * @property int $license_status Active License
+ * @property int|null $package_id
+ * @property string|null $salesforce_acct_id
+ * @property int|null $l_t_i_platform_id
+ * @property int|null $d7_id
+ * @property-read \App\Models\Package|null $package
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\School[] $schools
+ * @property-read int|null $schools_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Studio[] $studios
+ * @property-read int|null $studios_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\DistrictFactory factory(...$parameters)
+ * @method static Builder|District newModelQuery()
+ * @method static Builder|District newQuery()
+ * @method static \Illuminate\Database\Query\Builder|District onlyTrashed()
+ * @method static Builder|District query()
+ * @method static Builder|District whereCreatedAt($value)
+ * @method static Builder|District whereD7Id($value)
+ * @method static Builder|District whereDeletedAt($value)
+ * @method static Builder|District whereId($value)
+ * @method static Builder|District whereLTIPlatformId($value)
+ * @method static Builder|District whereLicenseStatus($value)
+ * @method static Builder|District whereName($value)
+ * @method static Builder|District wherePackageId($value)
+ * @method static Builder|District whereSalesforceAcctId($value)
+ * @method static Builder|District whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|District withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|District withoutTrashed()
+ * @mixin \Eloquent
+ */
 class District extends Organization
 {
     use HasFactory;

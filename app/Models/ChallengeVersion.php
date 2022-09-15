@@ -11,6 +11,76 @@ use Illuminate\Support\Facades\Cache;
 use Plank\Mediable\Mediable;
 use Spatie\Translatable\HasTranslations;
 
+/**
+ * App\Models\ChallengeVersion
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $challenge_id
+ * @property int $challenge_category_id
+ * @property array $name
+ * @property array|null $blurb
+ * @property array|null $gallery_note
+ * @property array|null $chromebook_info
+ * @property string|null $gallery_wistia_video_id
+ * @property string|null $gallery_thumbnail_url Wistia video Thumbnail
+ * @property string $slug
+ * @property int|null $prerequisite_challenge_version_id
+ * @property string|null $info_article_url ZenDesk Article URL for facilitators
+ * @property int|null $d7_id
+ * @property int|null $d7_challenge_id
+ * @property int|null $d7_challenge_category_id
+ * @property int|null $d7_prereq_challenge_id
+ * @property-read \App\Models\Challenge $challenge
+ * @property-read \App\Models\ChallengeCategory $challengeCategory
+ * @property-read array $translations
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Idea[] $ideas
+ * @property-read int|null $ideas_count
+ * @property-read \Plank\Mediable\MediableCollection|\App\Models\Level[] $levels
+ * @property-read int|null $levels_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Plank\Mediable\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read ChallengeVersion|null $prerequisiteChallengeVersion
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Studio[] $studios
+ * @property-read int|null $studios_count
+ * @method static \Plank\Mediable\MediableCollection|static[] all($columns = ['*'])
+ * @method static \Database\Factories\ChallengeVersionFactory factory(...$parameters)
+ * @method static \Plank\Mediable\MediableCollection|static[] get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion newQuery()
+ * @method static \Illuminate\Database\Query\Builder|ChallengeVersion onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereBlurb($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereChallengeCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereChallengeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereChromebookInfo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7ChallengeCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7ChallengeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7PrereqChallengeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereGalleryNote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereGalleryThumbnailUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereGalleryWistiaVideoId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereHasMedia($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereHasMediaMatchAll(array $tags)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereInfoArticleUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion wherePrerequisiteChallengeVersionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion withMedia($tags = [], bool $matchAll = false, bool $withVariants = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion withMediaAndVariants($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion withMediaAndVariantsMatchAll($tags = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion withMediaMatchAll(bool $tags = [], bool $withVariants = false)
+ * @method static \Illuminate\Database\Query\Builder|ChallengeVersion withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|ChallengeVersion withoutTrashed()
+ * @mixin \Eloquent
+ */
 class ChallengeVersion extends Model
 {
     use HasFactory;

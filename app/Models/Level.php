@@ -14,6 +14,78 @@ use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Facades\Log;
 use Plank\Mediable\Mediable;
 
+/**
+ * App\Models\Level
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $levelable_type
+ * @property int $levelable_id
+ * @property int|null $level_number Level number must be unique per ChallengeVersion or Idea.
+ * 
+ * Currently Ideas are limited to one level. To update level number, first
+ * set any affected other level number values to NULL, then set them in bulk with:
+ * `UPDATE levels SET level_number CASE id WHEN <id> THEN <order> [...] END WHERE id in (<id>, ...)`
+ * @property array|null $blurb
+ * @property array|null $challenge_desc
+ * @property array|null $stuff_you_need_desc
+ * @property array|null $get_started_desc
+ * @property array|null $how_to_complete_desc
+ * @property array|null $get_help_desc
+ * @property array|null $power_up_desc
+ * @property array|null $facilitator_notes_desc
+ * @property int|null $d7_id
+ * @property int|null $d7_challenge_version_id
+ * @property int|null $d7_prereq_level_id
+ * @property int|null $prerequisite_level
+ * @property-read \Plank\Mediable\MediableCollection|\App\Models\Artifact[] $artifacts
+ * @property-read int|null $artifacts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $currentUsers
+ * @property-read int|null $current_users_count
+ * @property-read array $translations
+ * @property-read Model|\Eloquent $levelable
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Plank\Mediable\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Start[] $starts
+ * @property-read int|null $starts_count
+ * @method static \Plank\Mediable\MediableCollection|static[] all($columns = ['*'])
+ * @method static \Database\Factories\LevelFactory factory(...$parameters)
+ * @method static \Plank\Mediable\MediableCollection|static[] get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|Level newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Level newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Level onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Level query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereBlurb($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereChallengeDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereD7ChallengeVersionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereD7Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereD7PrereqLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereFacilitatorNotesDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereGetHelpDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereGetStartedDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereHasMedia($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereHasMediaMatchAll(array $tags)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereHowToCompleteDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereLevelNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereLevelableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereLevelableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level wherePowerUpDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level wherePrerequisiteLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereStuffYouNeedDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level withMedia($tags = [], bool $matchAll = false, bool $withVariants = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level withMediaAndVariants($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Level withMediaAndVariantsMatchAll($tags = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Level withMediaMatchAll(bool $tags = [], bool $withVariants = false)
+ * @method static \Illuminate\Database\Query\Builder|Level withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Level withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Level extends Model
 {
     use HasFactory;

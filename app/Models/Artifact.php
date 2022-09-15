@@ -9,6 +9,61 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Http;
 use Plank\Mediable\Mediable;
 
+/**
+ * App\Models\Artifact
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property int $level_id
+ * @property string $type Valid values: 'save', 'complete'
+ * @property string|null $name
+ * @property string|null $notes
+ * @property string|null $filestack_handle
+ * @property string|null $url
+ * @property string|null $url_title
+ * @property int|null $d7_id
+ * @property int|null $d7_comment_id
+ * @property int|null $d7_filestack_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \App\Models\Level|null $level
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Plank\Mediable\Media[] $media
+ * @property-read int|null $media_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Plank\Mediable\MediableCollection|static[] all($columns = ['*'])
+ * @method static \Database\Factories\ArtifactFactory factory(...$parameters)
+ * @method static \Plank\Mediable\MediableCollection|static[] get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Artifact onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereD7CommentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereD7FilestackId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereD7Id($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereFilestackHandle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereHasMedia($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereHasMediaMatchAll(array $tags)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact whereUrlTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact withMedia($tags = [], bool $matchAll = false, bool $withVariants = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact withMediaAndVariants($tags = [], bool $matchAll = false)
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact withMediaAndVariantsMatchAll($tags = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Artifact withMediaMatchAll(bool $tags = [], bool $withVariants = false)
+ * @method static \Illuminate\Database\Query\Builder|Artifact withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Artifact withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Artifact extends Model
 {
     use HasFactory;

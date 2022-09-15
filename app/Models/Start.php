@@ -5,6 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Start
+ *
+ * @property int $id
+ * @property int $level_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon $created_at When user started this level.
+ * @property-read \App\Models\Level $level
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\StartFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Start newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Start newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Start query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Start whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Start whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Start whereLevelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Start whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Start extends Model
 {
     use HasFactory;

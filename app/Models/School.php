@@ -11,6 +11,55 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * App\Models\School
+ *
+ * @property int $id
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string $name
+ * @property int $status
+ * @property int|null $district_id
+ * @property int|null $package_id
+ * @property string|null $salesforce_acct_id
+ * @property int|null $partner_id
+ * @property int|null $l_t_i_platform_id
+ * @property int|null $d7_id
+ * @property int|null $d7_partner_id
+ * @property-read \App\Models\District|null $district
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\GradeLevel[] $gradelevels
+ * @property-read int|null $gradelevels_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \App\Models\Package|null $package
+ * @property-read \App\Models\Partner|null $partner
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Studio[] $studios
+ * @property-read int|null $studios_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\SchoolFactory factory(...$parameters)
+ * @method static Builder|School newModelQuery()
+ * @method static Builder|School newQuery()
+ * @method static \Illuminate\Database\Query\Builder|School onlyTrashed()
+ * @method static Builder|School query()
+ * @method static Builder|School whereCreatedAt($value)
+ * @method static Builder|School whereD7Id($value)
+ * @method static Builder|School whereD7PartnerId($value)
+ * @method static Builder|School whereDeletedAt($value)
+ * @method static Builder|School whereDistrictId($value)
+ * @method static Builder|School whereId($value)
+ * @method static Builder|School whereLTIPlatformId($value)
+ * @method static Builder|School whereName($value)
+ * @method static Builder|School wherePackageId($value)
+ * @method static Builder|School wherePartnerId($value)
+ * @method static Builder|School whereSalesforceAcctId($value)
+ * @method static Builder|School whereStatus($value)
+ * @method static Builder|School whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|School withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|School withoutTrashed()
+ * @mixin \Eloquent
+ */
 class School extends Organization
 {
     use HasFactory;
