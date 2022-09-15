@@ -80,17 +80,26 @@
 
     <fieldset class='border p-2'>
         <legend class="font-semibold">{{ __('Facilitators') }}</legend>
-        <div class="text-sm">
-            @foreach ($facilitators as $facilitator)
-            @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.users.show', $facilitator) }}">{{ $facilitator->full_name }} ({{ $facilitator->name }})</a>@if(! $loop->last),@endif
-            @else
-                {{ $facilitator->full_name }} ({{ $facilitator->name }})@if(! $loop->last),@endif
-            @endif
-            <x-jet-danger-button class="p-1" wire:click="removeFacilitator({{ $facilitator->id }}); refresh();" wire:key="s{{ $activeSchoolId}}-u{{ $facilitator->id }}" wire:loading.attr='disabled'>
-            <x-icon icon="trash" width=15 height=15 />
-            </x-jet-danger-button>
-            @endforeach
+        <div class="text-sm lg:grid grid-cols-2 gap-4">
+            @forelse ($facilitators as $facilitator)
+            <div class="border rounded-xl px-4 py-2 relative">
+                @if(auth()->user()->isAdmin())
+                    <a href="{{ route('admin.users.show', $facilitator) }}">
+                @endif
+                    <span class="font-bold">{{ $facilitator->full_name }}</span> <span>{{ $facilitator->name }}</span> <span>&lt;{{ $facilitator->email }}&gt;</span>
+                @if(auth()->user()->isAdmin())
+                    </a>
+                @endif
+                <x-jet-danger-button class="float-right p-1" wire:click="removeFacilitator({{ $facilitator->id }}); refresh();" wire:key="s{{ $activeSchoolId}}-u{{ $facilitator->id }}" wire:loading.attr='disabled'>
+                    <x-icon icon="trash" width=15 height=15 />
+                </x-jet-danger-button>
+                <div class="float-right rounded-xl overflow-hidden mx-2">
+                    <livewire:facilitator.user-edit-modal :user="$facilitator" :wire:key="'edit-' . $facilitator->id" />
+                </div>
+            </div>
+            @empty
+                {{ __('No Facilitators assigned to this school.') }}
+            @endforelse
         </div>
 
         <div>
