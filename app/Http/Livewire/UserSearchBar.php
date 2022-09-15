@@ -3,7 +3,9 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class UserSearchBar extends Component
@@ -19,24 +21,34 @@ class UserSearchBar extends Component
 
     public function updatedQuery()
     {
-        $user = auth()->user();
-        if ($user->isAdmin()) {
-        $this->users = User::where('name', 'like', "%{$this->query}%")
+        $user = Auth::user();
+        $users = User::where('status', 1);
+        $users = $users->where(function ($query) {
+            $query->orWhere('name', 'like', "%{$this->query}%")
             ->orWhere('full_name', 'like', "%{$this->query}%")
-            ->orWhere('email', 'like', "%{$this->query}%")
+            ->orWhere('email', 'like', "%{$this->query}%");
+        });
+        if (! $user->isAdmin() && $user->isSuperFacilitator()) {
+            $district = $user->activeStudio->school->district;
+            $users = $users->where(function ($outerQuery) use ($district) {
+                $outerQuery
+                    ->orWhereHas('districts', function (Builder $innerQuery) use ($district) {
+                        $innerQuery->where('id', $district->id);
+                    })
+                    ->orWhereHas('schools', function (Builder $innerQuery) use ($district) {
+                        $innerQuery->whereIn('id', $district->schools->pluck('id'));
+                    })
+                    ->orWhereHas('studios', function (Builder $innerQuery) use ($district) {
+                        $innerQuery->whereIn('id', $district->studios->pluck('id'));
+                    });
+            });
+        }
+        $this->users = $users
             ->orderBy('name', 'asc')
             ->orderBy('full_name', 'asc')
             ->orderBy('email', 'asc')
             ->limit(15)
             ->get();
-        }
-        else {
-            if ($user->isSuperFacilitator()) {
-                $district = $user->activeStudio->school->district;
-                $this->users = $district->students()->get();
-                // ->limit(15);
-            }
-        }
     }
 
     public function render()

@@ -38,12 +38,6 @@
     </div>
 
     @if ($activeSchool)
-    <div>
-        <a href="{{ route('admin.schools.createstudios', $activeSchool) }}">
-            <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
-        </a>
-    </div>
-
     @if (auth()->user()->isAdmin())
         <fieldset class='border p-2'>
             <legend class="font-semibold">{{ __('School & District') }}</legend>
@@ -89,7 +83,7 @@
         <div class="text-sm">
             @foreach ($facilitators as $facilitator)
             @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.facilitators.show', $facilitator) }}">{{ $facilitator->full_name }} ({{ $facilitator->name }})</a>@if(! $loop->last),@endif
+                <a href="{{ route('admin.users.show', $facilitator) }}">{{ $facilitator->full_name }} ({{ $facilitator->name }})</a>@if(! $loop->last),@endif
             @else
                 {{ $facilitator->full_name }} ({{ $facilitator->name }})@if(! $loop->last),@endif
             @endif
@@ -104,6 +98,14 @@
             <livewire:user-search-bar >
         </div>
     </fieldset>
+    @endif
+
+    @if ($activeSchool)
+    <div>
+        <a href="{{ route('admin.schools.createstudios', $activeSchool) }}">
+            <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Studios</button>
+        </a>
+    </div>
     @endif
 
     <div class="mt-8">
@@ -197,7 +199,7 @@
                 @endforeach
             </tbody>
         </table>
-        @if (! $activeSchoolId)
+        @if (! $activeSchoolId && $studios->count())
         {{ $studios->links() }}
         @endif
     </div>

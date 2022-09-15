@@ -8,6 +8,7 @@ use App\Models\Studio;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,11 +19,12 @@ class StudiosPage extends Component
 
     public bool $showAddFacModalFlag = false;
     public bool $showFSPickerModalFlag = false;
-    public ?District $activeDistrict;
-    public ?School $activeSchool;
+    public ?District $activeDistrict = null;
+    public ?School $activeSchool = null;
     public ?Collection $districts = null;
-    public ?Collection $schools;
-    public ?Collection $studios;
+    public ?Collection $schools = null;
+    public Collection $facilitators;
+    public Collection $studios;
     public string $activeDistrictName = '<none>';
     public string $activeSchoolName = '<none>';
     public ?int $activeDistrictId = null;
@@ -34,34 +36,39 @@ class StudiosPage extends Component
         'page' => ['except' => 1, 'as' => 'p'],
     ];
 
-    protected $listeners = ['schoolSelected' => 'setSchool'];
+    protected $listeners = [
+        'schoolSelected' => 'setSchool',
+        'userSelected' => 'addFacilitator',
+    ];
 
     public function mount()
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        $this->facilitators = $this->studios = new Collection;
 
-        if (! $this->activeSchoolId) {
-            $this->activeSchoolId = $user->activeStudio->school->id;
+        $district = null;
+        if ($this->activeDistrictId) {
+            $district = District::find($this->activeDistrictId);
         }
-        $this->setSchool(School::find($this->activeSchoolId));
+        else if ($user->activeStudio->school && $user->activeStudio->school->district) {
+            $district = $user->activeStudio->school->district;
+        }
+        $this->setDistrict($district);
+
+        if ($this->activeSchoolId) {
+            if ($this->schools->contains($this->activeSchoolId)) {
+                $this->setSchool(School::find($this->activeSchoolId));
+            }
+        }
+        else {
+            $this->setSchool($user->activeStudio->school);
+        }
 
         if ($user->isAdmin()) {
             $this->districts = District::all();
-            if ($this->activeDistrictId) {
-                $this->setDistrict(District::find($this->activeDistrictId), false);
-            }
-            else {
-                $this->setDistrict(District::first(), false);
-            }
-        }
-        elseif ($user->isSuperFacilitator()) {
-            $this->activeDistrict = $this->activeSchool->district;
-            $this->activeDistrictId = $this->activeDistrict->id;
-            $this->activeDistrictName = $this->activeDistrict->name;
-            $this->schools = $user->defactoSchools();
         }
 
-        if ($this->activeSchoolId) {
+        if ($this->activeSchool) {
             $this->authorize('view', $this->activeSchool);
         }
         else {
@@ -80,19 +87,12 @@ class StudiosPage extends Component
         $this->setSchool(School::find($activeSchoolId));
     }
 
-    public function setDistrict(District $district)
+    public function setDistrict(?District $district)
     {
         $this->activeDistrict = $district;
         $this->activeDistrictId = $district->id;
+        $this->activeDistrictName = $district->name;
         $this->schools = $district->schools;
-        if (! $this->schools->empty()) {
-            $this->activeSchool = $this->activeDistrict->schools->first();
-            $this->activeSchoolName = $this->activeSchool->name;
-        }
-        else {
-            $this->activeSchool = null;
-            $this->activeSchoolName = 'no schools in this district';
-        }
     }
 
     public function setSchool(?School $school)
@@ -101,28 +101,34 @@ class StudiosPage extends Component
             $this->activeSchool = null;
             $this->activeSchoolId = null;
             $this->activeSchoolName = __('no schools in district.');
-            $this->studios = null;
-        } else {
-            $this->setDistrict($school->district);
-            $this->activeSchool = $school;
-            $this->activeSchoolId = $school->id;
-            $this->activeSchoolName = $school->name;
-            $this->studios = Studio::with(
-                [
-                    'package',
-                    'school',
-                    'school.package',
-                    'school.district',
-                    'school.district.package',
-                ])
-                ->whereHas('school', function (Builder $query) {
-                    $query->where('id', $this->activeSchoolId);
-                })
-                ->orderBy('name')
-                ->get();
-            $this->facilitators = $this->activeSchool->users;
+            $this->facilitators = $this->studios = new Collection;
         }
-        if (auth()->user()->isAdmin()) {
+        else {
+            if (Auth::user()->isAdmin() && $school->district) {
+                $this->setDistrict($school->district);
+            }
+            if ($this->schools->contains($school->id)) {
+                $this->activeSchool = $school;
+                $this->activeSchoolId = $school->id;
+                $this->activeSchoolName = $school->name;
+                $this->studios = Studio::with(
+                    [
+                        'package',
+                        'school',
+                        'school.package',
+                        'school.district',
+                        'school.district.package',
+                    ]
+                )
+                    ->whereHas('school', function (Builder $query) {
+                        $query->where('id', $this->activeSchoolId);
+                    })
+                    ->orderBy('name')
+                    ->get();
+                $this->facilitators = $this->activeSchool->users;
+            }
+        }
+        if (Auth::user()->isAdmin()) {
             foreach ($this->studios as $studio) {
                 if (! $studio->package) {
                     if ($studio->school && $studio->school->package) {
@@ -143,10 +149,18 @@ class StudiosPage extends Component
         }
     }
 
+    public function addFacilitator(int $facilitatorId)
+    {
+        $this->activeSchool->addFacilitators([$facilitatorId]);
+        $this->activeSchool->refresh();
+        $this->facilitators = $this->activeSchool->users;
+    }
+
     public function removeFacilitator(int $facilitatorId)
     {
         $this->activeSchool->removeFacilitators([$facilitatorId]);
-        $this->setSchool($this->activeSchool);
+        $this->activeSchool->refresh();
+        $this->facilitators = $this->activeSchool->users;
     }
 
     public function render()
