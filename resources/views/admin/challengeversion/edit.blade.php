@@ -80,7 +80,7 @@
 
         <x-form.dropdown label="Category" required="true" name="challenge_category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />
 
-        <livewire:admin.wistia-picker name="wistiaId" label="Challenge Gallery Preview Video - Wistia ID" :wistiaId="$challengeversion->gallery_wistia_video_id" />
+        <livewire:admin.wistia-picker name="gallery_wistia_video_id" label="Challenge Gallery Preview Video - Wistia ID" :wistiaId="$challengeversion->gallery_wistia_video_id" />
 
         <div>
             <a href="{{ route('admin.levels.create', ['challengeVersion' => $challengeversion]) }}" class="float-right">

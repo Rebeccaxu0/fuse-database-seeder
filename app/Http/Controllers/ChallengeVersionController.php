@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrUpdateChallengeVersionRequest as SaveCVRequest;
 use App\Models\Challenge;
 use App\Models\ChallengeCategory;
 use App\Models\ChallengeVersion;
-use App\Rules\WistiaCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -43,7 +43,7 @@ class ChallengeVersionController extends Controller
      */
     public function index()
     {
-        Gate::allowIf(auth()->user()->isAdmin());
+        Gate::allowIf(Auth::user()->isAdmin());
         $challengeCategories = ChallengeCategory::with('challengeVersions')
             ->orderBy('name')
             ->get();
@@ -61,7 +61,7 @@ class ChallengeVersionController extends Controller
      */
     public function create(Challenge $challenge)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
+        Gate::allowIf(Auth::user()->isAdmin());
         return view('admin.challengeversion.create', [
             'challenge' => $challenge,
             'categories' => ChallengeCategory::all()->sortBy('name'),
@@ -72,42 +72,16 @@ class ChallengeVersionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\ChallengeVersion $request
+     * @param  \App\http\Requests\StoreOrUpdateChallengeVersionRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, ChallengeVersion $challengeversion)
+    public function store(SaveCVRequest $request)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
-        $validated = $request->validate([
-            'name' => 'required|unique:challenge_versions|max:255',
-            'challenge_id' => 'required',
-            'category_id' => 'required',
-            'infoUrl' => 'nullable|url',
-            'wistiaId' => ['nullable', new WistiaCode],
-        ]);
+        $validated = $request->validated();
 
-        $gallery_thumbnail_url = null;
-        if ($request->wistiaId) {
-            $wistia = Http::acceptJson()
-                ->withToken(config('wistia.token'))
-                ->get('https://api.wistia.com/v1/medias/' . $request->wistiaId);
-            $gallery_thumbnail_url = $wistia->json('thumbnail.url');
-        }
+        $validated = $this->populateDependentFields($validated);
 
-        $challengeversion = ChallengeVersion::create([
-            'blurb' => $request->blurb,
-            'challenge_category_id' => $request->category_id,
-            'challenge_id' => $request->challenge_id,
-            'chromebook_info' => $request->chromebookInfo,
-            'gallery_note' => $request->galleryNote,
-            'gallery_wistia_video_id' => $request->wistiaId,
-            'gallery_thumbnail_url' => $gallery_thumbnail_url,
-            'info_article_url' => $request->infoUrl,
-            'name' => $request->name,
-            'prerequisite_challenge_version_id' => $request->prereqChallengeVersion,
-            'slug' => Str::of($request->name)->slug('-'),
-        ]);
+        ChallengeVersion::create($validated);
 
         return redirect(route('admin.challengeversions.index'));
     }
@@ -131,7 +105,7 @@ class ChallengeVersionController extends Controller
      */
     public function edit(ChallengeVersion $challengeversion)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
+        Gate::allowIf(Auth::user()->isAdmin());
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
             'categories' => ChallengeCategory::all()->sortBy('name'),
@@ -142,34 +116,16 @@ class ChallengeVersionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreOrUpdateChallengeVersionRequest  $request
      * @param  \App\Models\ChallengeVersion  $challengeVersion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ChallengeVersion $challengeversion)
+    public function update(SaveCVRequest $request, ChallengeVersion $challengeversion)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
-        $validated = $request->validate([
-            'blurb' => 'required|max:255',
-            'challenge_category_id' => 'required|exists:App\Models\ChallengeCategory,id',
-            'challenge_id' => 'required|exists:App\Models\Challenge,id',
-            'chromebook_info' => 'nullable|max:2048',
-            'gallery_note' => 'nullable|max:128',
-            'info_article_url' => 'nullable|url',
-            'name' => 'required|unique:challenge_versions|max:255',
-            'prerequisite_challenge_version_id' => 'nullable|exists:App\Models\ChallengeVersion,id',
-            'wistiaId' => ['nullable', new WistiaCode],
-        ]);
+        $validated = $request->validated();
 
-        $gallery_thumbnail_url = null;
-        if ($request->wistiaId) {
-            $wistia = Http::acceptJson()
-                ->withToken(config('wistia.token'))
-                ->get('https://api.wistia.com/v1/medias/' . $validated['wistiaId']);
-            $validated['gallery_thumbnail_url'] = $wistia->json('thumbnail.url');
-        }
+        $validated = $this->populateDependentFields($validated);
 
-        $validated['slug'] = Str::of($validated['name'])->slug('-');
         $challengeversion->update($validated);
 
         if ($request->level) {
@@ -187,7 +143,7 @@ class ChallengeVersionController extends Controller
      */
     public function copy(Request $request, ChallengeVersion $challengeVersion)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
+        Gate::allowIf(Auth::user()->isAdmin());
         $newChallengeVersion = $challengeVersion
             ->replicate(['id'])
             ->fill(['name' => $challengeVersion->name . ' COPY']);
@@ -205,8 +161,27 @@ class ChallengeVersionController extends Controller
      */
     public function destroy(ChallengeVersion $challengeversion)
     {
-        Gate::allowIf(auth()->user()->isAdmin());
+        Gate::allowIf(Auth::user()->isAdmin());
         $challengeversion->delete();
         return redirect(route('admin.challenges.index'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  array $validated
+     * @return array
+     */
+    private function populateDependentFields($validated)
+    {
+        $validated['slug'] = Str::slug($validated['name']);
+        $validated['gallery_thumbnail_url'] = null;
+        if ($validated['gallery_wistia_video_id']) {
+            $wistiaResponse = Http::acceptJson()
+                ->withToken(config('wistia.token'))
+                ->get('https://api.wistia.com/v1/medias/' . $validated['gallery_wistia_video_id']);
+            $validated['gallery_thumbnail_url'] = $wistiaResponse->json('thumbnail.url');
+        }
+        return $validated;
     }
 }
