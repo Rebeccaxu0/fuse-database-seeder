@@ -87,7 +87,7 @@ class ChallengeVersion extends Model
     use HasFactory;
     use HasTranslations;
     use Mediable;
-    use SoftDeletes;
+    // use SoftDeletes;
 
     public $translatable = [
         'blurb',
