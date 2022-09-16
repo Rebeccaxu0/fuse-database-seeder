@@ -161,9 +161,6 @@ class ChallengeVersionController extends Controller
      */
     public function destroy(ChallengeVersion $challengeversion)
     {
-        Gate::allowIf(Auth::user()->isAdmin());
-        $challengeversion->delete();
-        return redirect(route('admin.challenges.index'));
     }
 
     /**

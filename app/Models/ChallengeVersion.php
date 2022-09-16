@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\ChallengeVersionStatus;
 use App\Models\User;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Cache;
 use Plank\Mediable\Mediable;
 use Spatie\Translatable\HasTranslations;
 
@@ -99,6 +100,15 @@ class ChallengeVersion extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ChallengeVersionStatus::class,
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -115,6 +125,7 @@ class ChallengeVersion extends Model
         'name',
         'prerequisite_challenge_version_id',
         'slug',
+        'status',
     ];
 
     /**
