@@ -76,6 +76,8 @@
 
         <x-form.input label="Challenge Gallery version suffix" name="gallery_note" :value="old('gallery_note', $challengeversion->gallery_note)" />
 
+        <x-form.dropdown label="Status" required="true" name="status" :value="old('status', $challengeversion->status->value)" :list="$statuses" />
+
         <x-form.dropdown label="Parent MetaChallege" required="true" name="challenge_id" :value="old('challenge_id', $challengeversion->challenge_id)" :list="$challenges" />
 
         <x-form.dropdown label="Category" required="true" name="challenge_category_id" :value="old('challenge_category_id', $challengeversion->challenge_category_id)" :list="$categories" />

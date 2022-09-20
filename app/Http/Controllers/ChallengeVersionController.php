@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ChallengeStatus as Status;
 use App\Http\Requests\StoreOrUpdateChallengeVersionRequest as SaveCVRequest;
 use App\Models\Challenge;
 use App\Models\ChallengeCategory;
@@ -44,13 +45,9 @@ class ChallengeVersionController extends Controller
     public function index()
     {
         Gate::allowIf(Auth::user()->isAdmin());
-        $challengeCategories = ChallengeCategory::with('challengeVersions')
+        $categories = ChallengeCategory::with('challengeVersions')
             ->orderBy('name')
             ->get();
-        [$disapproved, $approved] = $challengeCategories->partition(function($category) {
-            return $category->disapproved;
-        });
-        $categories = $approved->union($disapproved);
         return view('admin.challengeversion.index', ['categories' => $categories]);
     }
 
@@ -106,10 +103,12 @@ class ChallengeVersionController extends Controller
     public function edit(ChallengeVersion $challengeversion)
     {
         Gate::allowIf(Auth::user()->isAdmin());
+        $statuses = array_map(fn($status) => (object) ['id' => $status->value, 'name' => $status->label()], Status::cases());
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
             'categories' => ChallengeCategory::all()->sortBy('name'),
             'challenges' => Challenge::all()->sortBy('name'),
+            'statuses' => $statuses,
         ]);
     }
 

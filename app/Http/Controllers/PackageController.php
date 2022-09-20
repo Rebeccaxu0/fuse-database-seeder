@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ChallengeStatus as Status;
 use App\Models\Challenge;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -86,7 +87,18 @@ class PackageController extends Controller
     public function edit(Package $package)
     {
         return view('admin.package.edit', [
-            'challenges' => Challenge::orderBy('name')->get(),
+            'betaChallenges' => Challenge::where('status', Status::Beta)
+                ->orderBy('status')
+                ->orderBy('name')
+                ->get(),
+            'challenges' => Challenge::where('status', Status::Current)
+                ->orderBy('status')
+                ->orderBy('name')
+                ->get(),
+            'legacyChallenges' => Challenge::where('status', Status::Legacy)
+                ->orderBy('status')
+                ->orderBy('name')
+                ->get(),
             'package' => $package,
         ]);
     }

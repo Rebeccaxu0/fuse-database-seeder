@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\ChallengeVersionStatus;
+use App\Enums\ChallengeStatus;
 use App\Models\User;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -105,7 +105,7 @@ class ChallengeVersion extends Model
      * @var array
      */
     protected $casts = [
-        'status' => ChallengeVersionStatus::class,
+        'status' => ChallengeStatus::class,
     ];
 
     /**

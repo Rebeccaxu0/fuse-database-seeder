@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ChallengeStatus as Status;
 use App\Models\Challenge;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class ChallengeController extends Controller
 {
@@ -24,10 +26,28 @@ class ChallengeController extends Controller
      */
     public function index()
     {
-        $challenges = Challenge::all()->sortBy('name');
-        $legacy = $challenges->shift();
-        $challenges->push($legacy);
-        return view('admin.challenge.index', ['challenges' => $challenges]);
+        $betaChallenges = Challenge::with(['challengeVersions'])
+            ->where('status', Status::Beta)
+            ->get()
+            ->sortBy('name');
+        $challenges = Challenge::with(['challengeVersions'])
+            ->where('status', Status::Current)
+            ->get()
+            ->sortBy('name');
+        $legacyChallenges = Challenge::with(['challengeVersions'])
+            ->where('status', Status::Legacy)
+            ->get()
+            ->sortBy('name');
+        $archiveChallenges = Challenge::with(['challengeVersions'])
+            ->where('status', Status::Archive)
+            ->get()
+            ->sortBy('name');
+        return view('admin.challenge.index', [
+            'betaChallenges' => $betaChallenges,
+            'challenges' => $challenges,
+            'legacyChallenges' => $legacyChallenges,
+            'archiveChallenges' => $archiveChallenges,
+            ]);
     }
 
     /**
@@ -80,8 +100,16 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
+        $statuses = array_map(
+            fn($status) => (object) [
+                    'id' => $status->value,
+                    'name' => $status->label(),
+                ],
+                Status::cases()
+            );
         return view('admin.challenge.edit', [
             'challenge' => $challenge,
+            'statuses' => $statuses,
         ]);
     }
 
@@ -94,10 +122,12 @@ class ChallengeController extends Controller
      */
     public function update(Request $request, Challenge $challenge)
     {
-        $challenge->update([
-            'name' => $request->name,
-            'description' => $request->description,
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => [new Enum(Status::class)],
         ]);
+        $challenge->update($validated);
 
         return redirect(route('admin.challenges.index'));
     }

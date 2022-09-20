@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ChallengeStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -44,7 +45,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Challenge extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => ChallengeStatus::class,
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -54,6 +64,7 @@ class Challenge extends Model
     protected $fillable = [
         'name',
         'description',
+        'status',
     ];
 
     /**

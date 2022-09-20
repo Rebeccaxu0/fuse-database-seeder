@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ChallengeStatus as Status;
 use App\Rules\WistiaCode;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class StoreOrUpdateChallengeVersionRequest extends FormRequest
 {
@@ -35,6 +37,7 @@ class StoreOrUpdateChallengeVersionRequest extends FormRequest
             'info_article_url' => 'nullable|url',
             'name' => 'required|unique:challenge_versions|max:255',
             'prerequisite_challenge_version_id' => 'nullable|exists:App\Models\ChallengeVersion,id',
+            'status' => [new Enum(Status::class)],
         ];
     }
 }

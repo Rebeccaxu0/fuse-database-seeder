@@ -1,3 +1,7 @@
+@php
+    use App\Enums\ChallengeStatus as Status;
+@endphp
+
 <x-app-layout>
 
     <x-slot name="title">Meta Challenges</x-slot>
@@ -10,46 +14,28 @@
         <button class="text-md h-12 px-6 m-2 bg-fuse-green rounded-lg text-white">Add Meta Challenge</button>
     </a>
 
+    <h2 class="m-0 p-0">{{ Status::Beta->label() }}</h2>
+    <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+        @foreach ($betaChallenges as $challenge)
+        <x-admin.challenge.card :challenge="$challenge" />
+        @endforeach
+    </div>
+    <h2 class="m-0 p-0">{{ Status::Current->label() }}</h2>
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
         @foreach ($challenges as $challenge)
-        <div class="bg-gray-200 rounded-md p-2 mb-2">
-            <div class="pl-2">
-                <div class="flex">
-                    <a class="flex font-bold text-2xl" href="{{ route('admin.challenges.edit', $challenge->id) }}">
-                        {{ $challenge->name }}
-                        <x-icon icon="edit" width=25 height=25 class="inline ml-2 text-fuse-teal-dk" />
-                    </a>
-                    <form class="inline" method="post" action="{{ route('admin.challenges.destroy', $challenge->id) }}">
-                        @method('delete')
-                        @csrf
-                        <button><x-icon icon="trash" width=25 height=25 class="inline ml-2 text-fuse-teal-dk" /></button>
-                    </form>
-                </div>
-                <details>
-                    <summary>{{ count($challenge->challengeVersions) }} version(s)</summary>
-                    <ul>
-                        @foreach ($challenge->challengeVersions as $version)
-                        <li>
-                            <span class="flex">{{ $version->name }}
-                                <a href="{{ route('admin.challengeversions.edit', $version->id) }}">
-                                    <x-icon icon="edit" width=18 height=18 class="ml-2 text-black" />
-                                </a>
-                                <form method="post" action="{{ route('admin.challengeversions.copy', $version) }}" class="inline-block">
-                                    @csrf
-                                    <button>
-                                        <x-icon icon="copy" width=18 height=18 class="ml-2 text-black" />
-                                    </button>
-                                </form>
-                            </span>
-                        </li>
-                        @endforeach
-                    </ul>
-                    <a href="{{ route('admin.challengeversions.create', $challenge->id) }}">
-                        <button class="text-sm h-6 px-2 m-2 bg-fuse-green rounded-lg text-white">add version</button>
-                    </a>
-                </details>
-            </div>
-        </div>
+        <x-admin.challenge.card :challenge="$challenge" />
+        @endforeach
+    </div>
+    <h2 class="m-0 p-0">{{ Status::Legacy->label() }}</h2>
+    <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+        @foreach ($legacyChallenges as $challenge)
+        <x-admin.challenge.card :challenge="$challenge" />
+        @endforeach
+    </div>
+    <h2 class="m-0 p-0">{{ Status::Archive->label() }}</h2>
+    <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+        @foreach ($archiveChallenges as $challenge)
+        <x-admin.challenge.card :challenge="$challenge" />
         @endforeach
     </div>
 </x-app-layout>
