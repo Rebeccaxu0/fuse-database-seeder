@@ -23,7 +23,9 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        $challengeVersions = Auth::user()->activeStudio->activeChallenges();
+        $activeChallengeVersions = Auth::user()->activeStudio->activeChallenges();
+        $packageChallenges = Auth::user()->activeStudio->deFactoPackage->challenges->pluck('id')->all();
+        $challengeVersions = $activeChallengeVersions->whereIn('challenge.id', $packageChallenges);
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
