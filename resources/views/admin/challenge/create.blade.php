@@ -8,8 +8,17 @@
         @csrf
         <x-form.input label="Name"
             name="name"
-            required="true" />
-        <x-form.textarea name="description" label="Description"/>
+            required="true"
+            :value="old('name')" />
+        <x-form.textarea name="description"
+            label="Description"
+            :value="old('description')" />
+        <x-form.dropdown label="Status"
+            required="true"
+            name="status"
+            :value="old('status')"
+            :list="$statuses" />
+
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
             <button type="submit"
                 id="btn-submit"

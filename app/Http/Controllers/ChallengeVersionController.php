@@ -45,9 +45,19 @@ class ChallengeVersionController extends Controller
     public function index()
     {
         Gate::allowIf(Auth::user()->isAdmin());
-        $categories = ChallengeCategory::with('challengeVersions')
-            ->orderBy('name')
-            ->get();
+
+        $challengeVersionsQ = ChallengeVersion::with(['levels', 'challengeCategory']);
+        if (request()->query('show_archived') != 1) {
+            $challengeVersionsQ = $challengeVersionsQ
+                ->whereIn('status', [Status::Beta, Status::Current, Status::Legacy]);
+        }
+        $challengeVersions = $challengeVersionsQ->get();
+        $categories = ChallengeCategory::orderBy('name')->get();
+        foreach ($categories as $category) {
+            $category->cvlist = $challengeVersions->filter(function ($v, $k) use ($category) {
+                return $v->challengeCategory == $category;
+            });
+        }
         return view('admin.challengeversion.index', ['categories' => $categories]);
     }
 
@@ -63,6 +73,7 @@ class ChallengeVersionController extends Controller
             'challenge' => $challenge,
             'categories' => ChallengeCategory::all()->sortBy('name'),
             'challenges' => Challenge::all()->sortBy('name'),
+            'statuses' => Status::dropdownList(),
         ]);
     }
 
@@ -103,12 +114,11 @@ class ChallengeVersionController extends Controller
     public function edit(ChallengeVersion $challengeversion)
     {
         Gate::allowIf(Auth::user()->isAdmin());
-        $statuses = array_map(fn($status) => (object) ['id' => $status->value, 'name' => $status->label()], Status::cases());
         return view('admin.challengeversion.edit', [
             'challengeversion' => $challengeversion,
             'categories' => ChallengeCategory::all()->sortBy('name'),
             'challenges' => Challenge::all()->sortBy('name'),
-            'statuses' => $statuses,
+            'statuses' => Status::dropdownList(),
         ]);
     }
 

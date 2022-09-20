@@ -25,4 +25,12 @@ enum ChallengeStatus: string
             static::Legacy => __('These are older versions of Challenges. We strongly discourage using these versions. These may rely on older physical kits, or on software that does not run in a browser. Sketchup is not recommended for 3D printing challenges.'),
         };
     }
+
+    public static function dropdownList(): array
+    {
+        return array_map(fn($status) => (object) [
+            'id' => $status->value,
+            'name' => $status->label(),
+        ], self::cases());
+    }
 }

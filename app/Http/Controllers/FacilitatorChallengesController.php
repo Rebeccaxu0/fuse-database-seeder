@@ -38,20 +38,29 @@ class FacilitatorChallengesController extends Controller
         ];
 
         if ($studio->deFactoPackage) {
-            $eager = ['challengeVersions', 'challengeVersions.challengeCategory'];
+            $packageChallenges = $studio->deFactoPackage->challenges;
+            $packageChallegeIds = $packageChallenges->pluck('id')->all();
+            $packageChallengeVersions = ChallengeVersion::with(['challenge', 'challengeCategory'])
+                ->whereHas('challenge', function ($q) use ($packageChallegeIds) {
+                    $q->whereIn('id', $packageChallegeIds);
+                })
+                ->get();
 
             $viewData['activeChallenges'] = $studio
                 ->activeChallenges()
                 ->pluck('id')
                 ->all();
-            $viewData['challengeCategories'] = ChallengeCategory::with($eager)
-                ->get();
-            $viewData['betaChallenges'] = ChallengeVersion::with(['challenge'])
-                ->where('status', Status::Beta)
-                ->get();
-            $viewData['legacyChallenges'] = ChallengeVersion::with(['challenge'])
-                ->where('status', Status::Legacy)
-                ->get();
+            $viewData['challengeCategories'] = ChallengeCategory::all();
+            foreach ($viewData['challengeCategories'] as $category) {
+                $category->cvlist = $packageChallengeVersions->filter(function ($v, $k) use ($category) {
+                    return $v->challengeCategory == $category && $v->status == Status::Current;
+                })
+                ->sortBy('challenge.name');
+            }
+            $viewData['betaChallenges'] = $packageChallengeVersions->where('status', Status::Beta)
+                ->sortBy('challenge.name');
+            $viewData['legacyChallenges'] = $packageChallengeVersions->where('status', Status::Legacy)
+                ->sortBy('challenge.name');
         }
 
         return view('facilitator.challenges', $viewData);

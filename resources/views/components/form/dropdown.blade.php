@@ -6,7 +6,9 @@
             <span class="form-required" title="This field is required.">*</span>
     @endif
     <select name="{{ $name }}" id="{{ $name }}" {!! $attributes->merge(['class' => 'mt-1 block w-full rounded']) !!}>
+        @if (! $required)
         <option value="">{{ $none_label }}</option>
+        @endif
         @foreach ($list as $item)
             <option value="{{ $item->id }}" @if ($item->id == $value) selected @endif> {{ $item->name }}
             </option>

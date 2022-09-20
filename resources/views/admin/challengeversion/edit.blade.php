@@ -1,3 +1,8 @@
+@php
+    use App\Enums\ChallengeStatus as Status;
+@endphp
+
+@if ($challengeversion->status == Status::Beta)
 @push('scripts')
     <script>
         window.addEventListener("DOMContentLoaded", () => {
@@ -51,6 +56,7 @@
         }
     </script>
 @endpush
+@endif
 
 <x-app-layout>
 
@@ -85,11 +91,19 @@
         <livewire:admin.wistia-picker name="gallery_wistia_video_id" label="Challenge Gallery Preview Video - Wistia ID" :wistiaId="$challengeversion->gallery_wistia_video_id" />
 
         <div>
+            @if ($challengeversion->status == Status::Beta)
             <a href="{{ route('admin.levels.create', ['challengeVersion' => $challengeversion]) }}" class="float-right">
                 Add Level
             </a>
+            @endif
             <p class="mt-0 mb-0">Levels</p>
-            <p class="mt-0 mb-0 text-xs">Drag to reorder</p>
+            <p class="mt-0 mb-0 text-xs">
+                @if ($challengeversion->status == Status::Beta)
+                Drag to reorder
+                @else
+                Change status to "Beta" to add a level or change order.
+                @endif
+            </p>
             <ol class="list-none" name="order" id="sortlevels">
                 @foreach ($challengeversion->levels->sortBy('level_number') as $i => $level)
                 <li class="text-left list-none border-2 bg-slate-200 rounded-lg m-6 p-4"> <input name="level[{{ $level->id }}]" value="{{ $i+1 }}" type="hidden" />

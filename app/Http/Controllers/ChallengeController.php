@@ -57,7 +57,7 @@ class ChallengeController extends Controller
      */
     public function create()
     {
-        return view('admin.challenge.create');
+        return view('admin.challenge.create', ['statuses' => Status::dropdownList()]);
     }
 
     /**
@@ -68,15 +68,13 @@ class ChallengeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
         $validated = $request->validate([
             'name' => 'required|unique:challenges|max:255',
+            'description' => 'nullable|max:4092',
+            'status' => [new Enum(Status::class)],
         ]);
 
-        $challenge = Challenge::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        Challenge::create($validated);
 
         return redirect(route('admin.challenges.index'));
     }
@@ -100,16 +98,9 @@ class ChallengeController extends Controller
      */
     public function edit(Challenge $challenge)
     {
-        $statuses = array_map(
-            fn($status) => (object) [
-                    'id' => $status->value,
-                    'name' => $status->label(),
-                ],
-                Status::cases()
-            );
         return view('admin.challenge.edit', [
             'challenge' => $challenge,
-            'statuses' => $statuses,
+            'statuses' => Status::dropdownList(),
         ]);
     }
 
@@ -128,6 +119,10 @@ class ChallengeController extends Controller
             'status' => [new Enum(Status::class)],
         ]);
         $challenge->update($validated);
+        if ($challenge->status == Status::Archive) {
+            $challenge->packages()->detach();
+        }
+        // Gonna need to clear some caches, methinks...
 
         return redirect(route('admin.challenges.index'));
     }

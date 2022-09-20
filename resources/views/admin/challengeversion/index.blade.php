@@ -1,3 +1,7 @@
+@php
+    use App\Enums\ChallengeStatus as Status;
+@endphp
+
 <x-app-layout>
 
     <x-slot name="title">Challenges</x-slot>
@@ -6,18 +10,17 @@
 
     <x-admin.challenge-subnav />
 
-    @foreach ($categories as $category)
-    @if ($category->disapproved)
-    <details>
-        <summary>
-            {{ $category->name }}
-        </summary>
+    @if (request()->query('show_archived') == 1)
+    <a href="{{ route('admin.challengeversions.index') }}">Hide Archived Challenges</a>
     @else
-    <h2>{{ $category->name }}</h2>
+    <a href="{{ route('admin.challengeversions.index', ['show_archived' => 1]) }}">Show Archived Challenges</a>
     @endif
+
+    @foreach ($categories as $category)
+    <h2>{{ $category->name }}</h2>
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-        @foreach ($category->challengeVersions->sortBy('name') as $challengeVersion)
-        <div class="bg-gray-200 rounded-md p-2 mb-2">
+        @foreach ($category->cvlist->sortBy('name') as $challengeVersion)
+        <div class="@if ($challengeVersion->status == Status::Archive) bg-red-400 text-white @else bg-gray-200 @endif rounded-md p-2 mb-2">
             <div class="pl-2">
                 <div class="flex">
                     <a class="flex font-bold text-2xl" href="{{ route('admin.challengeversions.edit', $challengeVersion->id) }}">
@@ -62,8 +65,5 @@
         </div>
         @endforeach
     </div>
-    @if ($category->disapproved)
-    </details>
-    @endif
     @endforeach
 </x-app-layout>

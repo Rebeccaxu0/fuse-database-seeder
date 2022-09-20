@@ -15,7 +15,7 @@ use App\Enums\ChallengeStatus as Status;
             <div class="py-4 px-4 break-inside-avoid">
                 <h2 class="mt-0 text-left text-black">{{ $category->name }}</h2>
                 <p class="text-sm text-black">{{ $category->description }}</p>
-                @foreach ($category->challengeVersions as $challengeVersion)
+                @foreach ($category->cvlist as $challengeVersion)
                     @if ($challengeVersion->status == Status::Current)
                     <div class="flex items-center mb-2 relative break-inside-avoid">
                         @livewire ('studio-challenge-toggle', ['studio' => $studio, 'challengeVersion' => $challengeVersion], key("{$studio->id}-{$challengeVersion->id}"))

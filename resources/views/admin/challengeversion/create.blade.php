@@ -1,3 +1,7 @@
+@php
+    use App\Enums\ChallengeStatus as Status;
+@endphp
+
 <x-app-layout>
 
     <x-slot name="title">Create Version of Challenge {{ $challenge->name }}</x-slot>
@@ -9,6 +13,7 @@
         <input type="hidden" name="challenge_id" value="{{ $challenge->id }}">
         <x-form.input label="Name" name="name" required="true" :value="old('name')" />
         <x-form.input label="Challenge Gallery version suffix" name="gallery_note" :value="old('gallery_note')" />
+        <x-form.dropdown label="Status" required="true" name="status" :value="old('status', Status::Beta)" :list="$statuses" />
         <x-form.dropdown label="Category" required="true" name="challenge_category_id" :value="old('challenge_category_id')" :list="$categories" />
         <livewire:admin.wistia-picker name="gallery_wistia_video_id" label="Challenge Gallery Preview Video - Wistia ID" :wistiaId="old('gallery_wistia_video_id')" />
         <x-form.textarea name="blurb"
