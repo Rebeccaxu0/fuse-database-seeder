@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ChallengeStatus;
 use App\Exceptions\LevelException;
 use App\Models\ChallengeVersion;
 use App\Models\Idea;
@@ -10,9 +11,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Facades\Log;
 use Plank\Mediable\Mediable;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * App\Models\Level
@@ -255,6 +256,12 @@ class Level extends Model
                 return true;
             }
 
+            // For Challenge Levels, the Challenge and MetaChallenge
+            // must NOT have the status of 'Archive'
+            if ($this->levelable->status == ChallengeStatus::Archive
+                || $this->levelable->challenge->status == ChallengeStatus::Archive) {
+                return false;
+            }
             $activeLevels = $user
                 ->activeStudio
                 ->activeChallenges()
