@@ -14,7 +14,7 @@ class HelpArticleController extends Controller
      */
     public function index()
     {
-        $helpArticles = HelpArticle::all();
+        $helpArticles = HelpArticle::paginate(20);
         return view('admin.helparticle.index', ['helpArticles' => $helpArticles]);
     }
 

@@ -25,8 +25,8 @@
     </details>
 
     <div class="md:grid md:grid-cols-2 xl:grid-cols-4 gap-6">
-        @foreach ($helpArticles as $helpArticle)
 
+        @foreach ($helpArticles as $helpArticle)
         <div class="bg-gray-200 rounded-md p-2 mb-2">
             <h4 class="mt-2 mb-2">
                 <a href="{{ route('admin.helparticles.edit', $helpArticle->id) }}" class="float-left">
@@ -55,7 +55,9 @@
                 @endif --}}
             </div>
         </div>
-
         @endforeach
+
+    </div>
+    {{ $helpArticles->links() }}
 
 </x-app-layout>
