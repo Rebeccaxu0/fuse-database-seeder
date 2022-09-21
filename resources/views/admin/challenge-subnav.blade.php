@@ -22,16 +22,6 @@
             @endif
         </li>
         <li class="m-0 p-4 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
-            @if (request()->routeIs('admin.levels.index')) bg-neutral-100 font-bold @endif ">
-            @if (request()->routeIs('admin.levels.index'))
-                Levels
-            @else
-            <a class="m-0 p-0" href="{{ route('admin.levels.index') }}">
-                Levels
-            </a>
-            @endif
-        </li>
-        <li class="m-0 p-4 inline-block border-zinc-300 border border-b-0 rounded-t-xl relative
             @if (request()->routeIs('admin.helparticles.index')) bg-neutral-100 font-bold @endif ">
             @if (request()->routeIs('admin.helparticles.index'))
                 Help Articles
