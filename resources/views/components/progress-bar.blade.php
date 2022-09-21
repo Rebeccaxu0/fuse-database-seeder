@@ -1,4 +1,4 @@
-<ol {{ $attributes->merge(['class' => 'my-2 mx-[1px] flex gap-6 rounded-lg overflow-x-hidden w-full']) }} >
+<ol {{ $attributes->merge(['class' => 'my-2 mx-[1px] flex gap-6 rounded-lg overflow-x-hidden w-full bg-white']) }} >
 @foreach ($levels as $level)
     <li class="mt-0 -ml-2 -mr-2 h-full flex-1 inline-block -skew-x-45
       @if ($level->status == 'completed')
