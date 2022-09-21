@@ -181,7 +181,7 @@
     padding-bottom: 10rem;
   }
 
-  nav > div {
+  #navbar > div {
     @apply md:h-8 bg-fuse-teal-dk relative;
     min-height: 2rem;
   }
