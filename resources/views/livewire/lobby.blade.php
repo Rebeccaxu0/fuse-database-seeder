@@ -1,25 +1,29 @@
 <x-slot name="title">{{ $title }}</x-slot>
 
-<div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal lg:p-24">
-    <div class="md:container p-12 md:p-24">
+<div class="bg-gradient-to-t from-fuse-teal-dk to-fuse-teal lg:px-24">
+    <div class="md:container px-4 py-12 md:py-24">
         <div style="box-shadow:-10px 5px 20px rgb(0 0 0 / 35%)"
-             class="md:container md:flex md:flex-row bg-gradient-to-t from-fuse-teal-100 to-white rounded-xl py-8 px-1 mx-auto">
+             class="md:container md:flex md:flex-row bg-gradient-to-t from-fuse-teal-100 to-white rounded-xl py-8 px-4 mx-auto">
 
             <div class="hidden lg:visible lg:block mx-auto">
                 <img class="object-contain h-96" src="{{ asset('/img/interest.svg') }}">
             </div>
 
             <div class="grid grid-cols-1 max-w-full">
-                <div class="p-12 md:pt-8 pb-8 mx-auto">
+                <div class="p-0 sm:p-12 md:pt-8 pb-8 mx-auto">
 
                     @auth
-                    <div>
-                        <span><img class="h-16 rounded-full" src="{{ auth()->user()->getPhotoUrl() }}"></span>
-                        <span class="text-xl">{{ auth()->user()->name }}</span>
+                    <div class="flex gap-4 items-center">
+                        <div class="text-center p-2 border-2 border-fuse-teal-dk rounded-lg shadow-lg">
+                            <img class="h-16 mx-auto rounded-full" src="{{ auth()->user()->getPhotoUrl() }}">
+                            <span class="text-xl">{{ str(auth()->user()->name)->limit(10) }}</span>
+                        </div>
+                        <h1 class="m-0 text-center">{{ $title }}</h1>
                     </div>
+                    @else
+                    <h1>{{ $title }}</h1>
                     @endauth
 
-                    <h1>{{ $title }}</h1>
                     <div>
                         <h3>{{ __('Please enter your Studio Code') }}</h3>
                         <input type="text"
