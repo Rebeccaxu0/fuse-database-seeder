@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\ChallengeVersion;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class ChallengeGalleryTile extends Component
@@ -31,6 +32,9 @@ class ChallengeGalleryTile extends Component
         }
         if ($this->level && $user->hasStartedLevel($this->level)) {
             $this->continue = true;
+        }
+        if (! $this->level) {
+            Log::debug("ChallengeVersion {$challengeVersion->id} missing levels?");
         }
     }
 
