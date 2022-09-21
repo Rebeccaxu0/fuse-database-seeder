@@ -23,9 +23,18 @@ class ChallengeVersionController extends Controller
      */
     public function student_index()
     {
-        $activeChallengeVersions = Auth::user()->activeStudio->activeChallenges();
-        $packageChallenges = Auth::user()->activeStudio->deFactoPackage->challenges->pluck('id')->all();
-        $challengeVersions = $activeChallengeVersions->whereIn('challenge.id', $packageChallenges);
+        $activeChallengeVersions = Auth::user()
+            ->activeStudio
+            ->activeChallenges()
+            ->whereNotIn('status', Status::Archive);
+        $packageChallenges = Auth::user()
+            ->activeStudio
+            ->deFactoPackage
+            ->challenges
+            ->pluck('id')
+            ->all();
+        $challengeVersions = $activeChallengeVersions
+            ->whereIn('challenge.id', $packageChallenges);
         return view('student.challenges', ['challengeVersions' => $challengeVersions]);
     }
 
@@ -50,10 +59,28 @@ class ChallengeVersionController extends Controller
 
         $challengeVersionsQ = ChallengeVersion::with(['levels', 'challengeCategory']);
         if (request()->query('show_archived') != 1) {
-            $challengeVersionsQ = $challengeVersionsQ
-                ->whereIn('status', [Status::Beta, Status::Current, Status::Legacy]);
+            $challengeVersionsQ = $challengeVersionsQ->whereNot('status', Status::Archive);
         }
         $challengeVersions = $challengeVersionsQ->get();
+        $challengeVersions = $challengeVersions->map(function ($item, $key) {
+            switch ($item->status) {
+                case Status::Beta:
+                    $item->cardClass = "bg-gray-200 border-blue-700 border-4";
+                    break;
+
+                case Status::Legacy:
+                    $item->cardClass = "bg-gray-200 border-red-400 border-4";
+                    break;
+
+                case Status::Archive:
+                    $item->cardClass = "bg-red-400 text-white";
+                    break;
+
+                default:
+                    $item->cardClass = "bg-gray-200";
+            }
+            return $item;
+        });
         $categories = ChallengeCategory::orderBy('name')->get();
         foreach ($categories as $category) {
             $category->cvlist = $challengeVersions->filter(function ($v, $k) use ($category) {
