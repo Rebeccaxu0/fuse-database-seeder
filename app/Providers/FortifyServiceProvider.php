@@ -31,13 +31,13 @@ class FortifyServiceProvider extends ServiceProvider
         // This is just here to facilitate debugging why login intermittently
         // doesn't redirect properly and leaves a body stranded on the login
         // page with a stale form that throws a 419 on resubmit.
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                Log::debug('Login Redirect for user ' . Auth::user()->name);
-                return redirect('/dashboard');
-            }
-        });
+        // $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+        //     public function toResponse($request)
+        //     {
+        //         Log::debug('Login Redirect for user ' . Auth::user()->name);
+        //         return redirect('/dashboard');
+        //     }
+        // });
     }
 
     /**
