@@ -29,13 +29,6 @@
                         <x-icon icon="copy" width=25 height=25 class="ml-2 text-black" />
                         </button>
                     </form>
-                    <form method="post" action="{{ route('admin.levels.destroy', $level->id) }}">
-                        @method('delete')
-                        @csrf
-                        <button>
-                            <x-icon icon="trash" width=25 height=25 class="ml-2 text-black" />
-                        </button>
-                    </form>
                 </span>
             </div>
         </div>
