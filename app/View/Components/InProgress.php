@@ -2,8 +2,9 @@
 
 namespace App\View\Components;
 
+use App\Enums\ChallengeStatus as Status;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
+// use Illuminate\Support\Facades\Cache;
 use Illuminate\View\Component;
 
 class InProgress extends Component
@@ -20,15 +21,17 @@ class InProgress extends Component
     {
         $this->user = $user;
 
-        $activeChallengeVersions = $user->activeStudio->activeChallenges();
+        // $activeChallengeVersions = $user->activeStudio->activeChallenges();
         $this->startedChallengeVersions =
-            Cache::remember("u{$user->id}_in_progress_challenge_versions", 1800, function () use ($user, $activeChallengeVersions) {
-                return $user->activeStudio->activeChallenges()
+            // Cache::remember("u{$user->id}_in_progress_challenge_versions", 1800, function () use ($user, $activeChallengeVersions) {
+                // return 
+                $user->activeStudio->activeChallenges()
+                   ->whereNotIn('status', Status::Archive)
                    ->filter(fn($cv, $key) => $user->hasStartedChallengeVersion($cv))
                    ->filter(fn($cv, $key) => ! $user->hasCompletedChallengeVersion($cv))
                    ->sortBy('name');
         // TODO: Add ideas?
-        });
+        // });
     }
 
     /**
