@@ -40,8 +40,8 @@ params:
     asset_bucket_name: dev.assets.fusestudio.net
     domain: dev.my.fusestudio.net
     profile: terraform-dev
-    aws_public_bucket: fuse-stage-my-public
-    aws_public_url: https://.cloudfront.net
+    aws_public_bucket: fuse-dev-public-my
+    aws_public_url: https://d3vc7d7pwxrv22.cloudfront.net
     # new_relic_app_name: dev.my.fusestudio.net
   prod:
     app_env: production
