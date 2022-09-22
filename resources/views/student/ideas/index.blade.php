@@ -13,5 +13,5 @@
             <x-idea-tile :idea="$idea" />
         @endforeach
     </div>
+    <livewire:ideas-trailer />
 </x-app-layout>
-
