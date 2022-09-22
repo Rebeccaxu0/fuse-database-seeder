@@ -2,7 +2,7 @@
     <x-slot name="title">{{ __('My Studio Activity') }}</x-slot>
     <x-slot name="header">{{ __('My Studio Activity') }}</x-slot>
 
-    <form action="{{ route('facilitator.export_activity', $studio) }}" method="GET">
+    <form action="{{ route('facilitator.export_activity', $studio) }}" method="GET" class="sm:flex items-center gap-4">
         @if ($errors->any())
             <ul>
               @foreach ($errors->all() as $error)
@@ -11,19 +11,15 @@
             </ul>
         @endif
 
-        <fieldset class="sm:flex max-w-xl items-center justify-center border border-black p-2">
-          <div class="float-left sm:flex-1 m-2">
-            <label class="font-bold" for='from_date'>{{ __('From') }}</label>
-            <input wire:model="startDate" class="w-40" type="date" min="2010-01-01" max="{{ date('Y-m-d') }}" >
-          </div>
-          <div class="float-left sm:flex-1 m-2">
-            <label class="font-bold" for='to_date'>{{ __('To') }}</label>
-            <input wire:model="endDate" class="w-40" type="date" min="2010-01-01" max="{{ date('Y-m-d') }}">
-          </div>
-          {{-- <div class="float-right sm:flex-1">
-            <button class="btn flex-1 bg-grey-200" disabled>{{ __('Download Activity CSV') }}</button>
-          </div> --}}
+        <fieldset class="flex max-w-xl items-center justify-center border border-black p-2">
+            <legend>{{ __('All activity between the following dates') }}</legend>
+            <input wire:model="startDate" name="from_date" class="w-40" type="date" min="2010-01-01" max="{{ date('Y-m-d') }}" >
+            <span class="mx-4">{{ __('to') }}</span>
+            <input wire:model="endDate" name="to_date" class="w-40" type="date" min="2010-01-01" max="{{ date('Y-m-d') }}">
         </fieldset>
+        <div class="sm:flex-1">
+            <button type="submit" class="btn flex-1 bg-grey-200" >{{ __('Download Activity CSV') }}</button>
+        </div>
     </form>
 
     <div class="bg-gray-100 p-2 mt-8 lg:grid lg:grid-cols-3 gap-4">
