@@ -259,7 +259,8 @@ class Level extends Model
             // For Challenge Levels, the Challenge and MetaChallenge
             // must NOT have the status of 'Archive'
             if ($this->levelable->status == ChallengeStatus::Archive
-                || $this->levelable->challenge->status == ChallengeStatus::Archive) {
+                || ($this->levelable::class == ChallengeVersion::class
+                  && $this->levelable->challenge->status == ChallengeStatus::Archive)) {
                 return false;
             }
             $activeLevels = $user
