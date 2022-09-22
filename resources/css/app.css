@@ -100,6 +100,9 @@
   input {
     @apply block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm;
   }
+  [type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+    @apply border-fuse-teal-dk ring-fuse-teal-dk ring-1;
+  }
 
   input[type~="email"],
   input[type~="required"],

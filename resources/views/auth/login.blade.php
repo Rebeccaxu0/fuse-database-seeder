@@ -16,13 +16,18 @@
                 id="name"
                 type="text"
                 name="name"
-                class="border-none"
                 value="{{ old('name') }}"
+                class="border-gray-700 rounded-lg focus:ring-fuse-teal-dk"
                 required
                 autofocus
                 autocomplete="name" />
             <x-jet-label for="password" value="{{ __('Password') }}" class="text-base mt-1" />
-            <x-jet-input x-ref="password" id="password" type="password" name="password" class="border-none" required
+            <x-jet-input x-ref="password"
+                id="password"
+                type="password"
+                name="password"
+                class="border-gray-700 rounded-lg"
+                required
                 autocomplete="current-password" />
             <div class="mt-8 text-center">
                 <button type="submit" class="w-full lg:max-w-xs"
