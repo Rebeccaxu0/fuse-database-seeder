@@ -1,7 +1,7 @@
 <div class="bg-white shadow-tile rounded-xl border border-gray-300">
     <div class="w-full relative rounded-lg p-4 text-left">
         <button wire:click="$set('showModalFlag', true)" class="w-full">
-            <div class="w-full flex items-center justify-center aspect-video w-full rounded-lg bg-fuse-teal-dk bg-cover"
+            <div class="w-full flex items-center justify-center aspect-video rounded-lg bg-fuse-teal-dk bg-cover"
                  style="background-image: url({{ $challengeVersion->gallery_thumbnail_url }})">
                 <div class="gallery-play-border">
                     <div class="gallery-play-button">&nbsp;</div>
