@@ -28,10 +28,10 @@
     <div class="pt-12 bg-gradient-to-t from-fuse-teal-dk to-fuse-teal">
         {{ $slot }}
     </div>
+
     <x-footer />
 
     @stack('modals')
-
     @stack('scripts')
     @livewireScripts
 </body>
