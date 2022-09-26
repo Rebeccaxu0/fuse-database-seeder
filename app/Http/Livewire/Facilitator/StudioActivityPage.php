@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Facilitator;
 
 use App\Models\ChallengeVersion;
+use App\Models\Idea;
 use app\Models\Studio;
 use app\Models\User;
 use DateTime;
@@ -117,13 +118,14 @@ class StudioActivityPage extends Component
 
     private function populateArtifacts()
     {
-        $levelIds = ! isset($this->activeChallenge)
-            ? []
-            : $this->activeChallenge
+        $levelIds = $this->activeChallenge instanceof ChallengeVersion
+                 || $this->activeChallenge instanceof Idea
+            ? $this->activeChallenge
                 ->levels
                 ->keyBy('id')
                 ->keys()
-                ->all();
+                ->all()
+            : [];
         $this->artifacts
             = $this->activeStudent
                 ->artifacts()
