@@ -40,11 +40,11 @@ class StudioActivityPage extends Component
         $this->activeChallengeId = $levelableId;
         if ($levelableType == 'idea') {
             $this->activeChallengeType = 'i';
-            $this->activeChallenge = $this->ideas->find($levelableId);
+            $this->activeChallenge = $this->ideas->firstWhere('id', $levelableId);
         }
         else {
             $this->activeChallengeType = 'c';
-            $this->activeChallenge = $this->challenges->find($levelableId);
+            $this->activeChallenge = $this->challenges->firstWhere('id', $levelableId);
         }
         $this->populateArtifacts();
     }
