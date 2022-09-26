@@ -8,14 +8,14 @@ use app\Models\Studio;
 use app\Models\User;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as SCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class StudioActivityPage extends Component
 {
     public Collection $artifacts;
-    public Collection|SCollection $challenges;
+    public Collection $challenges;
     public Collection $ideas;
     public Collection $students;
     public $activeChallenge = null;
@@ -74,7 +74,7 @@ class StudioActivityPage extends Component
 
     public function mount()
     {
-        Gate::allowIf(auth()->user()->isFacilitator());
+        Gate::allowIf(Auth::user()->isFacilitator());
 
         if (! $this->startDate) {
             // Default to start of academic year - previous Aug 1.
@@ -105,8 +105,8 @@ class StudioActivityPage extends Component
             else {
                 $this->activeStudent = $this->students->first();
             }
-            $this->populateIdeas();
             $this->populateChallenges();
+            $this->populateIdeas();
             $this->populateArtifacts();
         }
     }
@@ -153,7 +153,7 @@ class StudioActivityPage extends Component
                                  ->unique()
                                  ->sortBy('name');
 
-        $this->challenges = $artifactsChallenges->merge($startedChallenges);
+        $this->challenges = $startedChallenges->merge($artifactsChallenges);
         if ($this->challenges->count()) {
             if ($this->activeChallengeType == 'c') {
                 $this->activeChallenge = $this->challenges->where('id', $this->activeChallengeId)->first();
