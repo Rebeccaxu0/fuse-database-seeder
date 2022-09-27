@@ -118,21 +118,24 @@ class StudioActivityPage extends Component
 
     private function populateArtifacts()
     {
-        $levelIds = $this->activeChallenge instanceof ChallengeVersion
-                 || $this->activeChallenge instanceof Idea
-            ? $this->activeChallenge
+        $levelIds = [];
+        if (
+            $this->activeChallenge instanceof ChallengeVersion
+            || $this->activeChallenge instanceof Idea
+        ) {
+            $levelIds = $this->activeChallenge
                 ->levels
                 ->keyBy('id')
                 ->keys()
-                ->all()
-            : [];
+                ->all();
+        }
         $this->artifacts
             = $this->activeStudent
-                ->artifacts()
-                ->with(['level', 'level.levelable'])
-                ->whereIn('level_id', $levelIds)
-                ->whereBetween('created_at', [$this->startDate . ' 00:00:00', $this->endDate . ' 23:59:59'])
-                ->get();
+            ->artifacts()
+            ->with(['level', 'level.levelable'])
+            ->whereIn('level_id', $levelIds)
+            ->whereBetween('created_at', [$this->startDate . ' 00:00:00', $this->endDate . ' 23:59:59'])
+            ->get();
     }
 
     private function populateChallenges()
@@ -182,7 +185,7 @@ class StudioActivityPage extends Component
 
     private function resetChallenges()
     {
-        unset($this->activeChallenge);
+        $this->activeChallenge = null;
         $this->activeChallengeId = 0;
         $this->activeChallengeType = '0';
     }
