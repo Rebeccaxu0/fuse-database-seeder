@@ -10,23 +10,23 @@
 
     <x-admin.challenge-subnav />
 
-    @if (request()->query('show_archived') == 1)
-    <a href="{{ route('admin.challengeversions.index') }}">Hide Archived Challenges</a>
-    @else
-    <a href="{{ route('admin.challengeversions.index', ['show_archived' => 1]) }}">Show Archived Challenges</a>
-    @endif
-
-    {{-- These classes are here to help Tailwind make sure all classes are available
-        because we assign the card classes in the controller where TW can't see. --}}
-    <h4>Status Legend</h4>
-    <div class="max-w-sm grid gap-4 grid-cols-4">
+    <fieldset class="border border-black rounded-lg p-3">
+        <legend class="text-lg font-bold">Filter by status</legend>
+        <a class="@if ($status == 'all') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'all']) }}">All</a> |
+        <a class="@if ($status == 'beta') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'beta']) }}">Beta</a> |
+        <a class="@if ($status == 'current') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'current']) }}">Current</a> |
+        <a class="@if ($status == 'legacy') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'legacy']) }}">Legacy</a> |
+        <a class="@if ($status == 'archive') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'archive']) }}">Archive</a>
+    </fieldset>
+    @if ($status == 'all')
+    <fieldset class="border border-black border-2 rounded-lg p-3 max-w-sm grid gap-4 grid-cols-4">
+        <legend class="text-lg font-bold">Legend</legend>
         <div class="rounded-md p-2 bg-gray-200 border-blue-700 border-4" id="tw-hint-beta">Beta</div>
-        <div class="rounded-md p-2 bg-gray-200 " id="tw-hint-current">Current</div>
+        <div class="rounded-md p-2 bg-gray-200 border-gray-200 border-4" id="tw-hint-current">Current</div>
         <div class="rounded-md p-2 bg-gray-200 border-red-400 border-4" id="tw-hint-legacy">Legacy</div>
-        @if (request()->query('show_archived') == 1)
-        <div class="rounded-md p-2 bg-red-400 text-white" id="tw-hint-archive">Archive</div>
-        @endif
-    </div>
+        <div class="rounded-md p-2 bg-red-400 border-red-400 border-4 text-white" id="tw-hint-archive">Archive</div>
+    </fieldset>
+    @endif
     @foreach ($categories as $category)
     <h2>{{ $category->name }}</h2>
     <div class="md:grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">

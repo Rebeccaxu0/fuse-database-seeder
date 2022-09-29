@@ -58,8 +58,16 @@ class ChallengeVersionController extends Controller
         Gate::allowIf(Auth::user()->isAdmin());
 
         $challengeVersionsQ = ChallengeVersion::with(['levels', 'challengeCategory']);
-        if (request()->query('show_archived') != 1) {
-            $challengeVersionsQ = $challengeVersionsQ->whereNot('status', Status::Archive);
+        $statusFilter = request()->query('show');
+        $statusFilter ??= 'current';
+        $statuses = [
+            'beta' => Status::Beta,
+            'current' => Status::Current,
+            'legacy' => Status::Legacy,
+            'archive' => Status::Archive,
+        ];
+        if (in_array($statusFilter, array_keys($statuses))) {
+            $challengeVersionsQ = $challengeVersionsQ->where('status', $statuses[$statusFilter]);
         }
         $challengeVersions = $challengeVersionsQ->get();
         $challengeVersions = $challengeVersions->map(function ($item, $key) {
@@ -87,7 +95,7 @@ class ChallengeVersionController extends Controller
                 return $v->challengeCategory == $category;
             });
         }
-        return view('admin.challengeversion.index', ['categories' => $categories]);
+        return view('admin.challengeversion.index', ['categories' => $categories, 'status' => $statusFilter]);
     }
 
     /**
