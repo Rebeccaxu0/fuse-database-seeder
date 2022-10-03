@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Enums\ChallengeStatus;
+use App\Models\Level;
 use App\Models\User;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 // use Illuminate\Support\Facades\Cache;
 use Plank\Mediable\Mediable;
 use Spatie\Translatable\HasTranslations;
@@ -87,7 +87,6 @@ class ChallengeVersion extends Model
     use HasFactory;
     use HasTranslations;
     use Mediable;
-    // use SoftDeletes;
 
     public $translatable = [
         'blurb',
@@ -222,21 +221,13 @@ class ChallengeVersion extends Model
      * Usually this is just the level with the most recent activity, but with
      * the following exceptions.
      *
-     * If there's no activity then:
-     *   If the parent challenge is startable, return Level 1
-     *   Else return NULL.
-     *
+     * If the parent challenge is not startable, return NULL.
+     * Else if there's no activity (start/save/complete) then return Level 1.
      * Else
-     *   If ChallengeVersion is uncompleted (no 'complete' on last level):
-     *     Select the lowest uncompleted level AFTER any completed level
-     *     or Level 1.
-     *   Else
-     *     If ChallengeVersion was just completed, return Level 1
-     *        "just completed" means the most recent activity (start or artifact)
-     *        for any level of the ChallengeVersion is the challenge-completing
-     *        artifact.
-     *     Else return the level associated with the most recent activity (start
-     *     of artifact).
+     *   - if the level of most recent activity is complete
+     *   - AND the next level is unstarted
+     *   - return the next level.
+     * Else return the level of most recent activity.
      *
      * @param User $user
      *
@@ -245,71 +236,47 @@ class ChallengeVersion extends Model
     public function currentLevel(User $user): ?Level
     {
         // return Cache::remember("u{$user->id}_current_level_on_challengeversion_{$this->id}", 1800, function () use ($user) {
-            $currentLevel = null;
-            $levelIds = $this->levels()->pluck('id');
-            // TODO: We could combine get these queries into one.
-            $mostRecentArtifact = $user->artifacts()
-                                       ->whereIn('level_id', $levelIds)
-                                       ->latest()
-                                       ->first();
-            // Get most recent start from any level in this challenge
-            $mostRecentStart    = $user->starts()
-                                       ->whereIn('level_id', $levelIds)
-                                       ->latest()
-                                       ->first();
+        $currentLevel = null;
+        $levelIds = $this->levels()->pluck('id')->all();
+        $mostRecentStartLevel = DB::table('starts')
+            ->select('created_at', 'level_id')
+            ->where('user_id', $user->id)
+            ->whereIn('level_id', $levelIds)
+            ->orderBy('created_at', 'desc')
+            ->limit(1);
+        $mostRecenttArtifactLevel = DB::table('artifacts', 'a')
+            ->leftJoin('artifact_user', 'a.id', '=', 'artifact_user.artifact_id')
+            ->select('a.created_at', 'a.level_id')
+            ->where('artifact_user.user_id', $user->id)
+            ->whereIn('a.level_id', $levelIds)
+            ->orderBy('created_at', 'desc')
+            ->limit(1);
+        $mostRecentLevel = $mostRecentStartLevel
+            ->union($mostRecenttArtifactLevel)
+            ->orderBy('created_at', 'desc')
+            ->limit(1)
+            ->get();
 
-            // No activity
-            if (is_null($mostRecentArtifact) && is_null($mostRecentStart)) {
-                if ($this->challenge->isStartable($user)) {
-                    $currentLevel = $this->levels()->firstWhere('level_number', '=', 1);
-                }
+        // If there's any activity, return the associated most recent level.
+        if ($mostRecentLevel->count() > 0) {
+            $currentLevel = $this->levels->find($mostRecentLevel->first()->level_id);
+            $next = $currentLevel->next();
+            // Return most recent level UNLESS this level is completed
+            // AND there's a next level AND the next level is unstarted
+            if (
+                $currentLevel->isCompleted($user)
+                && $next instanceof Level
+                && ! $user->hasStartedLevel($next)
+            ) {
+                $currentLevel = $next;
             }
+        }
+        // Otherwise, just return level 1.
+        else {
+            $currentLevel = $this->levels()->firstWhere('level_number', '=', 1);
+        }
 
-            // Uncompleted
-            else if (! $this->isCompleted($user)) {
-                // Uncompleted ChallengeVersion guarantees us at least the final
-                // level is uncompleted. Continue to backtrack until we find a
-                // completed level then break.
-                foreach ($this->levels->reverse() as $level) {
-                    if (! $level->isCompleted($user)) {
-                        $currentLevel = $level;
-                    }
-                    else break;
-                }
-            }
-
-            // Completed
-            else {
-                // Default is first level.
-                $currentLevel = $this->levels()->first();
-
-                // If the most recent activity is NOT the ChallengeVersion
-                // completion artifact, then use most recent activity level.
-                $finalLevel = $this->levels()->latest('level_number')->first();
-                $CVCompletionArtifact
-                    = $user->artifacts()
-                           ->where('type', 'Complete')
-                           ->where('level_id', $finalLevel->id)
-                           ->oldest()
-                           ->first();
-                if ($mostRecentStart) {
-                    if ($mostRecentStart->create_at > $CVCompletionArtifact->created_at
-                        || $mostRecentArtifact->created_at > $CVCompletionArtifact->create_at
-                    ) {
-                        if ($mostRecentArtifact->created_at > $mostRecentStart->created_at) {
-                            $currentLevel = $mostRecentArtifact->level;
-                        } else {
-                            $currentLevel = $mostRecentStart->level;
-                        }
-                    }
-                }
-                // This is pathological - Complete w/o start? Oh well.
-                else {
-                    $currentLevel = $mostRecentArtifact->level;
-                }
-            }
-
-            return $currentLevel;
+        return $currentLevel;
         // });
     }
 
@@ -342,4 +309,3 @@ class ChallengeVersion extends Model
         return $this->levels()->latest('level_number')->first()->isCompleted($user);
     }
 }
-
