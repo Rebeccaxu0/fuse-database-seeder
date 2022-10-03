@@ -98,8 +98,8 @@ class StudioActivityPage extends Component
                                ->with($eager)
                                ->orderBy('full_name')
                                ->get();
-        if ($this->students->count()) {
-            if ($this->activeStudentId) {
+        if ($this->students->count() > 0) {
+            if ($this->students->find($this->activeStudentId)) {
                 $this->activeStudent = $this->students->find($this->activeStudentId);
             }
             else {
