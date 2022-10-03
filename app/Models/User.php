@@ -590,11 +590,11 @@ class User extends Authenticatable
      */
     public function hasStartedLevel(Level $level): bool
     {
-        return Cache::remember(
-            "u{$this->id}_has_started_level_{$level->id}",
-            1800,
-            fn() => $this->startedLevels->contains($level),
-        );
+        return
+            // Cache::remember("u{$this->id}_has_started_level_{$level->id}", 1800,
+            // fn() => 
+            $this->startedLevels->contains($level);
+        // );
     }
 
     /**
