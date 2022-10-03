@@ -34,7 +34,7 @@
     <x-app-layout>
         <x-slot name="title">@yield('title')</x-slot>
 
-        <div class="border border-2 rounded-xl p-4 shadow-md">
+        <div class="border rounded-xl p-4 shadow-md">
             <div class="px-4 text-lg tracking-wider">
                 @yield('code')
             </div>

@@ -19,7 +19,7 @@
         <a class="@if ($status == 'archive') font-bold underline @else font-light @endif" href="{{ route('admin.challengeversions.index', ['show' => 'archive']) }}">Archive</a>
     </fieldset>
     @if ($status == 'all')
-    <fieldset class="border border-black border-2 rounded-lg p-3 max-w-sm grid gap-4 grid-cols-4">
+    <fieldset class="border-black border-2 rounded-lg p-3 max-w-sm grid gap-4 grid-cols-4">
         <legend class="text-lg font-bold">Legend</legend>
         <div class="rounded-md p-2 bg-gray-200 border-blue-700 border-4" id="tw-hint-beta">Beta</div>
         <div class="rounded-md p-2 bg-gray-200 border-gray-200 border-4" id="tw-hint-current">Current</div>
