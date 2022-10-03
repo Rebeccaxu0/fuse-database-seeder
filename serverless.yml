@@ -94,6 +94,7 @@ provider:
     REDIS_HOST: !GetAtt ElasticCacheCluster.RedisEndpoint.Address
     SESSION_DOMAIN: ${param:domain}
     SESSION_DRIVER: redis
+    SESSION_SECURE_COOKIES: true
     VIEW_COMPILED_PATH: /tmp/storage/framework/views
     # Filestack Settings
     FILESTACK_API_KEY: ${param:filestack_api_key}
