@@ -147,61 +147,6 @@ class StudioController extends Controller
         $validated = $request->validated();
         $start = $validated['from_date'] . ' 00:00:00';
         $end = $validated['to_date'] . ' 23:59:59';
-        // $studioUsers = $studio->users;
-        // $studioUsersIds = $studioUsers->pluck('id')->all();
-        // $levels = Level::with(['levelable', 'levelable.levels'])
-        //     ->whereHasMorph('levelable', [ChallengeVersion::class])
-        //     ->get();
-        // $artifacts = Artifact::with('level', 'level.levelable', 'level.levelable.levels', 'users')
-        //     ->whereBetween('created_at', [$start, $end])
-        //     ->whereHas('users', function (Builder $query) use ($studioUsersIds) {
-        //         $query->whereIn('id', $studioUsersIds);
-        //     })
-        //     ->get();
-        // $result = DB::table('activity_log')
-        //     ->whereBetween('created_at', [$start, $end])
-        //     ->whereIn('user_id', $studioUsersIds)
-        //     ->orderBy('created_at')
-            // ->chunk(500, function ($activity) use ($studioUsers, $artifacts, $levels) {
-            //     foreach ($activity as $act) {
-            //         $user = $studioUsers->find($act->user_id);
-            //         $artifactNotes = $team = $totalLevels = '';
-            //         if ($level = $levels->find($act->level_id)) {
-            //             $totalLevels = $level->levelable->levels->count();
-            //         }
-            //         if ($act->artifact_id) {
-            //             $totalLevels = 1;
-            //             $artifact = $artifacts->find($act->artifact_id);
-            //             $artifactNotes = $artifact->notes;
-            //             if ($artifact->users->count() > 1) {
-            //                 $team = $artifact->users
-            //                     ->except($act->user_id)
-            //                     ->pluck('full_name')
-            //                     ->join(',', ' and ');
-            //             }
-            //         }
-            //         $cols = [
-            //             $user->name,
-            //             $user->full_name,
-            //             $user->email,
-            //             $act->created_at,
-            //             $act->activity_type,
-            //             $act->challenge_title,
-            //             $act->level_number,
-            //             $totalLevels,
-            //             $act->artifact_name,
-            //             $act->artifact_url,
-            //             $artifactNotes,
-            //             $team,
-            //         ];
-            //         if ($act->level_id) {
-            //         dd($cols);
-            //         }
-            //     }
-            // });
-            // ->get();
-            // ->dd();
-            // dd($result);
 
         $filenamePrefix = Auth::user()->isAdmin() || Auth::user()->isSuperFacilitator()
             ? $studio->school->name . '_'
@@ -228,8 +173,6 @@ class StudioController extends Controller
                     __('Team Members'),
                 ];
                 fputcsv($handle, $cols);
-                // This is demonstration code to show how to properly stream large CSV
-                // files.
                 // TODO: query offline Athena logs directly.
                 // For now, query tightly-bound activity_log and get more info as needed.
                 $studioUsers = $studio->users;
