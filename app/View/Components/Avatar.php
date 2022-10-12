@@ -14,11 +14,9 @@ class Avatar extends Component
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(?User $user = null)
     {
-        $this->user = $user;
-        if ($user->profile_photo_path) {
-        }
+        $this->user = $user ? $user : Auth::user();
     }
 
     /**
@@ -28,6 +26,6 @@ class Avatar extends Component
      */
     public function render()
     {
-        return view('components.avatar');
+        return view('components.avatar', ['user' => $this->user]);
     }
 }
