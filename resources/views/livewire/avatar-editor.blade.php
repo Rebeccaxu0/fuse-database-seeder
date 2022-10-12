@@ -1,372 +1,196 @@
-<div>
-    <div class="float-left w-64 h-64 mr-4 mb-4">
-        <img src="{{ $api_url }}{{ urlencode($seed) }}.svg?b={{ urlencode($bgColor) }}&radius=50&{{ $beard }}&eyes[]={{ $eyes }}&eyebrows[]={{ $eyebrows }}&mouth[]={{ $mouth }}&{{ $hair }}&skinColor[]={{ urlencode($skinColor) }}&hairColor[]={{ urlencode($hairColor) }}&clothesColor[]={{ urlencode($clothesColor) }}&glassesColor[]={{ urlencode($glassesColor) }}&mouthColor[]={{ urlencode($mouthColor) }}&hatColor[]={{ urlencode($hatColor) }}">
+<div class="md:grid md:grid-cols-3 md:gap-6">
+    <div>
+        <img class="mx-auto w-1/2 md:w-full" src="{{ $profileAvatarUrl }}">
+        <h3 class="text-lg font-medium text-gray-900">Profile Picture</h3>
+        <p class="mt-1 text-sm text-gray-600">
+            {{ __('Customize your profile picture.') }}
+        </p>
     </div>
-    <details>
-        <summary>{{ __('Edit Your Profile Picture') }}</summary>
-    <fieldset class="border border-neutral-700 px-4 pb-4 grid grid-cols-2 gap-4">
-        <legend>{{ __('Colors') }}</legend>
-        <label>{{ __('Background') }}
-            <input wire:model="bgColor" type="color">
+
+    <div class="mt-5 md:mt-0 md:col-span-2 px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md overflow-y-scroll max-h-96">
+        <label class="whitespace-nowrap">
+            {{ __('Background Color') }}
+            <input wire:model="backgroundColor" type="color" class="inline w-16" list="backgroundTones">
+            <datalist id="backgroundTones">
+                @foreach ($backgroundColorOptions as $color)
+                    <option>{{ $color }}</option>
+                @endforeach
+            </datalist>
         </label>
-        <label>{{ __('Hair') }}
-            <input wire:model="hairColor" type="color">
+        <label class="whitespace-nowrap">
+            {{ __('Skin Color') }}
+            <input wire:model="skinColor" type="color" class="inline w-16" list="skinTones">
+            <datalist id="skinTones">
+                @foreach ($skinColorOptions as $color)
+                    <option>{{ $color }}</option>
+                @endforeach
+            </datalist>
         </label>
-        <label>{{ __('Mouth') }}
-            <input wire:model="mouthColor" type="color">
-        </label>
-        <label>{{ __('Accessories') }}
-            <input wire:model="AccessoriesColor" type="color">
-        </label>
-        <label>{{ __('Clothes') }}
-            <input wire:model="clothesColor" type="color">
-        </label>
-        <label>{{ __('Hat') }}
-            <input wire:model="hatColor" type="color">
-        </label>
-        <label>{{ __('Glasses') }}
-            <input wire:model="glassesColor" type="color">
-        </label>
-    </fieldset>
-    <fieldset class="border-neutral-700 border p-4">
-        <legend>{{ __('Eyes') }}</legend>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant01">
-            {{ __('Type 1') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant02">
-            {{ __('Type 2') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant03">
-            {{ __('Type 3') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant04">
-            {{ __('Type 4') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant05">
-            {{ __('Type 5') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant06">
-            {{ __('Type 6') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant07">
-            {{ __('Type 7') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant08">
-            {{ __('Type 8') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant09">
-            {{ __('Type 9') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant10">
-            {{ __('Type 10') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant11">
-            {{ __('Type 11') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant12">
-            {{ __('Type 12') }}
-        </label>
-        <label>
-            <input wire:model="eyes" type="radio" value="variant13">
-            {{ __('Type 13') }}
-        </label>
-    </fieldset>
-    <fieldset class="border-neutral-700 border p-4">
-        <legend>{{ __('Eyebrows') }}</legend>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant01">
-            {{ __('Type 1') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant02">
-            {{ __('Type 2') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant03">
-            {{ __('Type 3') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant04">
-            {{ __('Type 4') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant05">
-            {{ __('Type 5') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant06">
-            {{ __('Type 6') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant07">
-            {{ __('Type 7') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant08">
-            {{ __('Type 8') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant09">
-            {{ __('Type 9') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant10">
-            {{ __('Type 10') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant11">
-            {{ __('Type 11') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant12">
-            {{ __('Type 12') }}
-        </label>
-        <label>
-            <input wire:model="eyebrows" type="radio" value="variant13">
-            {{ __('Type 13') }}
-        </label>
-    </fieldset>
-    <fieldset class="border-neutral-700 border p-2 md:flex gap-2">
-        <legend>{{ __('Mouth') }}</legend>
-        <fieldset class="border border-neutral-500 p-2">
-            <legend>{{ __('Happy') }}</legend>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy01">
-                {{ __('Happy 1') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy02">
-                {{ __('Happy 2') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy03">
-                {{ __('Happy 3') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy04">
-                {{ __('Happy 4') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy05">
-                {{ __('Happy 5') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy06">
-                {{ __('Happy 6') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy07">
-                {{ __('Happy 7') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy08">
-                {{ __('Happy 8') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="happy09">
-                {{ __('Happy 9') }}
-            </label>
+
+        <div class="lg:grid grid-cols-2 gap-2">
+        <fieldset class="border-neutral-700 border p-4 grid grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1">
+            <legend>{{ __('Eyes') }}</legend>
+            @foreach ($eyesOptions as $eye)
+                <label class="whitespace-nowrap">
+                    <input wire:model="eyes" type="radio" value="{{ $eye['value'] }}">
+                    {{ $eye['label'] }}
+                </label>
+            @endforeach
         </fieldset>
-        <fieldset class="border border-neutral-500 p-2">
-            <legend>{{ __('Sad') }}</legend>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad01">
-                {{ __('Sad 1') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad02">
-                {{ __('Sad 2') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad03">
-                {{ __('Sad 3') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad04">
-                {{ __('Sad 4') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad05">
-                {{ __('Sad 5') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad06">
-                {{ __('Sad 6') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad07">
-                {{ __('Sad 7') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="sad08">
-                {{ __('Sad 8') }}
-            </label>
+
+        <fieldset class="border-neutral-700 border p-4 grid grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1">
+            <legend>{{ __('Eyebrows') }}</legend>
+            @foreach ($eyebrowsOptions as $eyebrow)
+                <label class="whitespace-nowrap">
+                    <input wire:model="eyebrows" type="radio" value="{{ $eyebrow['value'] }}">
+                    {{ $eyebrow['label'] }}
+                </label>
+            @endforeach
         </fieldset>
-        <fieldset class="border border-neutral-500 p-2">
-            <legend>{{ __('Surprised') }}</legend>
-            <label>
-                <input wire:model="mouth" type="radio" value="surprised01">
-                {{ __('Surprised 1') }}
+        </div>
+
+        <fieldset class="border-neutral-700 border p-2">
+            <legend>{{ __('Mouth') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color: ') }}
+                <input wire:model="mouthColor" type="color" class="inline w-16" list="mouthTones">
+                <datalist id="mouthTones">
+                    @foreach ($mouthColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
             </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="surprised02">
-                {{ __('Surprised 2') }}
-            </label>
-            <label>
-                <input wire:model="mouth" type="radio" value="surprised03">
-                {{ __('Surprised 3') }}
-            </label>
+            <div class="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($mouthOptions as $mouth)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="mouth" type="radio" value="{{ $mouth['value'] }}">
+                        {{ $mouth['label'] }}
+                    </label>
+                @endforeach
+            </div>
         </fieldset>
-    </fieldset>
-    <fieldset class="border-neutral-700 border p-2">
-        <legend>{{ __('Hair') }}</legend>
-        <div class="md:flex gap-2">
-        <fieldset class="border border-neutral-500 p-2">
-            <legend>{{ __('Short') }}</legend>
-            <label>
-                <input wire:model="hairType" type="radio" value="short01">
-                {{ __('Type 1') }}
+
+        <fieldset class="border-neutral-700 border p-2">
+            <legend>{{ __('Hair') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color') }}
+                <input wire:model="hairColor" type="color" class="inline w-16" list="hairTones">
+                <datalist id="hairTones">
+                    @foreach ($hairColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
             </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short02">
-                {{ __('Type 2') }}
+            <label class="block whitespace-nowrap">
+                <input wire:model="hair" type="radio" value="hairProbability=0">
+                {{ __('None') }}
             </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short03">
-                {{ __('Type 3') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short04">
-                {{ __('Type 4') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short05">
-                {{ __('Type 5') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short06">
-                {{ __('Type 6') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short07">
-                {{ __('Type 7') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short08">
-                {{ __('Type 8') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short09">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short10">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="short11">
-                {{ __('Type 9') }}
-            </label>
+            @foreach ($hairOptions as $length)
+            <hr class="my-2">
+            <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($length['values'] as $hair)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="hair" type="radio" value="{{ $hair['value'] }}">
+                        {{ $hair['label'] }}
+                    </label>
+                @endforeach
+            </div>
+            @endforeach
         </fieldset>
-        <fieldset class="border border-neutral-500 p-2">
-            <legend>{{ __('Long') }}</legend>
-            <label>
-                <input wire:model="hairType" type="radio" value="long01">
-                {{ __('Type 1') }}
+
+        <fieldset class="border-neutral-700 border p-4">
+            <legend>{{ __('Clothing') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color: ') }}
+                <input wire:model="clothesColor" type="color" class="inline w-16" list="fabricTones">
+                <datalist id="fabricTones">
+                    @foreach ($clothesColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
             </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long02">
-                {{ __('Type 2') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long03">
-                {{ __('Type 3') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long04">
-                {{ __('Type 4') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long05">
-                {{ __('Type 5') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long06">
-                {{ __('Type 6') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long07">
-                {{ __('Type 7') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long08">
-                {{ __('Type 8') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long09">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long10">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long11">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long12">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long13">
-                {{ __('Type 9') }}
-            </label>
-            <label>
-                <input wire:model="hairType" type="radio" value="long14">
-                {{ __('Type 9') }}
-            </label>
+            <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($clothingOptions as $clothing)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="clothing" type="radio" value="{{ $clothing['value'] }}">
+                        {{ $clothing['label'] }}
+                    </label>
+                @endforeach
+            </div>
         </fieldset>
+
+        <fieldset class="border-neutral-700 border p-4">
+            <legend>{{ __('Hat') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color') }}
+                <input wire:model="hatColor" type="color" class="inline w-16" list="hatTones">
+                <datalist id="hatTones">
+                    @foreach ($hatColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
+            </label>
+            <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($hatOptions as $hat)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="hat" type="radio" value="{{ $hat['value'] }}">
+                        {{ $hat['label'] }}
+                    </label>
+                @endforeach
+            </div>
+        </fieldset>
+
+        <fieldset class="border-neutral-700 border p-4">
+            <legend>{{ __('Glasses') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color') }}
+                <input wire:model="glassesColor" type="color" class="inline w-16" list="glassesTones">
+                <datalist id="glassesTones">
+                    @foreach ($glassesColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
+            </label>
+            <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($glassesOptions as $glasses)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="glasses" type="radio" value="{{ $glasses['value'] }}">
+                        {{ $glasses['label'] }}
+                    </label>
+                @endforeach
+            </div>
+        </fieldset>
+
+        <fieldset class="border-neutral-700 border p-4">
+            <legend>{{ __('Earrings') }}</legend>
+            <label class="whitespace-nowrap">
+                {{ __('Color') }}
+                <input wire:model="accessoriesColor" type="color" class="inline w-16" list="accessoriesTones">
+                <datalist id="accessoriesTones">
+                    @foreach ($accessoriesColorOptions as $color)
+                        <option>{{ $color }}</option>
+                    @endforeach
+                </datalist>
+            </label>
+            <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
+                @foreach ($accessoryOptions as $accessory)
+                    <label class="whitespace-nowrap">
+                        <input wire:model="accessories" type="radio" value="{{ $accessory['value'] }}">
+                        {{ $accessory['label'] }}
+                    </label>
+                @endforeach
+            </div>
+        </fieldset>
+
+        <fieldset class="border-neutral-700 border p-4 grid grid-cols-4">
+            <legend>{{ __('Beard') }}</legend>
+            @foreach ($beardOptions as $beard)
+                <label class="whitespace-nowrap">
+                    <input wire:model="beard" type="radio" value="{{ $beard['value'] }}">
+                    {{ $beard['label'] }}
+                </label>
+            @endforeach
+        </fieldset>
+
     </div>
-        <label>
-            <input wire:model="hairType" type="radio" value="none">
-            {{ __('None') }}
-        </label>
-    </fieldset>
-    <fieldset class="border-neutral-700 border p-4">
-        <legend>{{ __('Beard') }}</legend>
-        <label>
-            <input wire:model="beard" type="radio" value="beardProbability=0">
-            {{ __('No Beard') }}
-        </label>
-        <label>
-            <input wire:model="beard" type="radio" value="beardProbability=100&beard[]=variant01">
-            {{ __('Type 1') }}
-        </label>
-        <label>
-            <input wire:model="beard" type="radio" value="beardProbability=100&beard[]=variant02">
-            {{ __('Type 2') }}
-        </label>
-        <label>
-            <input wire:model="beard" type="radio" value="beardProbability=100&beard[]=variant03">
-            {{ __('Type 3') }}
-        </label>
-        <label>
-            <input wire:model="beard" type="radio" value="beardProbability=100&beard[]=variant04">
-            {{ __('Type 4') }}
-        </label>
-    </fieldset>
-    </details>
 </div>
