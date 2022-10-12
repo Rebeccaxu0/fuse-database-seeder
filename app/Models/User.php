@@ -266,13 +266,13 @@ class User extends Authenticatable
      */
     protected function defaultProfilePhotoUrl()
     {
-        return 'https://avatars.dicebear.com/api/pixel-art/fuse.svg'
-        . '?radius=50&b=%23adacac&skinColor[]=%23e0e0e0'
-        . '&hairColor[]=%23707070&hair[]=long06'
-        . '&eyes[]=variant06&eyebrows[]=variant09'
-        . '&mouthColor[]=%23c9c9c9&mouth[]=sad05&'
-        . 'clothesColor[]=%235c5c5c&clothing[]=variant06'
-        . '&beardProbability=0&glassesProbability=0&hatProbability=0&accessoriesProbability=0';
+        return 'https://avatar.fusestudio.net/fe5b117085efc2df754012bc2a1e7ba9.png';
+        // . '?radius=50&b=%23adacac&skinColor[]=%23e0e0e0'
+        // . '&hairColor[]=%23707070&hair[]=long06'
+        // . '&eyes[]=variant06&eyebrows[]=variant09'
+        // . '&mouthColor[]=%23c9c9c9&mouth[]=sad05&'
+        // . 'clothesColor[]=%235c5c5c&clothing[]=variant06'
+        // . '&beardProbability=0&glassesProbability=0&hatProbability=0&accessoriesProbability=0';
     }
 
     /**

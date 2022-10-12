@@ -53,6 +53,17 @@ return [
             'use_path_style_endpoint' => env('AWS_USER_PATH_STYLE_ENDPOINT'),
         ],
 
+        'avatars' => [
+            'driver' => 's3',
+            'key' => env('AWS_AVATAR_ACCESS_KEY_ID'),
+            'secret' => env('AWS_AVATAR_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_AVATAR_BUCKET'),
+            'url' => env('AWS_AVATAR_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+            'use_path_style_endpoint' => env('AWS_USER_PATH_STYLE_ENDPOINT'),
+        ],
+
         'artifacts' => [
             'driver' => 's3',
             'key' => env('AWS_ARTIFACT_ACCESS_KEY_ID'),

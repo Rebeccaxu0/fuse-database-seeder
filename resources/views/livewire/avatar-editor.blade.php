@@ -1,13 +1,15 @@
-<div class="md:grid md:grid-cols-3 md:gap-6">
-    <div>
-        <img class="mx-auto w-1/2 md:w-full" src="{{ $profileAvatarUrl }}">
-        <h3 class="text-lg font-medium text-gray-900">Profile Picture</h3>
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Customize your profile picture.') }}
-        </p>
-    </div>
+<x-jet-form-section submit="saveAvatar">
+        <x-slot name="title">
+        <img class="mx-auto w-1/2 md:w-full lg:w-3/4 xl:w-1/2" src="{{ $previewAvatarUrl }}" alt="{{ __('8-bit cartoon of human head') }}">
+            {{ __('Profile Picture') }}
+        </x-slot>
 
-    <div class="mt-5 md:mt-0 md:col-span-2 px-4 py-5 bg-white sm:p-6 shadow sm:rounded-tl-md sm:rounded-tr-md overflow-y-scroll max-h-96">
+        <x-slot name="description">
+            {{ __('Customize your profile picture.') }}
+        </x-slot>
+
+        <x-slot name="form">
+        <div class="col-span-6 max-h-96 overflow-y-scroll">
         <label class="whitespace-nowrap">
             {{ __('Background Color') }}
             <input wire:model="backgroundColor" type="color" class="inline w-16" list="backgroundTones">
@@ -191,6 +193,18 @@
                 </label>
             @endforeach
         </fieldset>
+        </div>
 
-    </div>
-</div>
+        </x-slot>
+
+        <x-slot name="actions">
+            <x-jet-action-message class="mr-3" on="saved">
+                {{ __('Saved.') }}
+            </x-jet-action-message>
+
+            <x-jet-button wire:loading.attr="disabled" wire:target="previewAvatarUrl">
+                {{ __('Save') }}
+            </x-jet-button>
+        </x-slot>
+
+</x-jet-form-section>

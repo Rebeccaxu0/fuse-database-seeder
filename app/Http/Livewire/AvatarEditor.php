@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class AvatarEditor extends Component
@@ -28,7 +29,7 @@ class AvatarEditor extends Component
     public string $hat = 'hatProbability=0';
     public string $mouth = 'happy07';
     public string $hair = 'hair[]=short09';
-    public string $profileAvatarUrl;
+    public string $previewAvatarUrl;
 
     public array $accessoriesColorOptions = ['#DAA520', '#FFD700', '#FAFAD2', '#D3D3D3', '#A9A9A9'];
     public array $accessoryOptions = [];
@@ -46,7 +47,7 @@ class AvatarEditor extends Component
     public array $hatOptions = [];
     public array $mouthColorOptions = ['#D29985', '#C98276', '#E35D6A', '#DE0F0D'];
     public array $mouthOptions = [];
-    public array $skinColorOptions = ['#FFDBAC', '#F5CFA0', '#EAC393', '#E0B687', '#CB9E6E', '#B68655', '#A26D3D', '#8D5524'];
+    public array $skinColorOptions = ['#FFDBAC', '#F5CFA0', '#EAC393', '#E0B687', '#CB9E6E', '#B68655', '#A26D3D', '#8D5524', '#5D3818', '#341A04'];
 
     public function mount()
     {
@@ -63,33 +64,33 @@ class AvatarEditor extends Component
         // Eyes.
         $this->eyes = urldecode($params['eyes[]']);
         $this->eyesOptions = [
-            ['label' => __('Style 1'),  'value' => 'variant01'],
-            ['label' => __('Style 2'),  'value' => 'variant02'],
-            ['label' => __('Style 3'),  'value' => 'variant03'],
-            ['label' => __('Style 4'),  'value' => 'variant04'],
-            ['label' => __('Style 5'),  'value' => 'variant05'],
-            ['label' => __('Style 6'),  'value' => 'variant06'],
-            ['label' => __('Style 7'),  'value' => 'variant07'],
-            ['label' => __('Style 8'),  'value' => 'variant09'],
-            ['label' => __('Style 9'),  'value' => 'variant10'],
-            ['label' => __('Style 10'), 'value' => 'variant12'],
-            ['label' => __('Style 11'), 'value' => 'variant13'],
+            ['label' => __('Peek'),  'value' => 'variant01'],
+            ['label' => __('Wide 1'),  'value' => 'variant02'],
+            ['label' => __('Anime'),  'value' => 'variant03'],
+            ['label' => __('Wide 2'),  'value' => 'variant04'],
+            ['label' => __('Sly'),  'value' => 'variant05'],
+            ['label' => __('Sleepy'),  'value' => 'variant06'],
+            ['label' => __('Dazzle'),  'value' => 'variant07'],
+            ['label' => __('Sleepy Side'),  'value' => 'variant09'],
+            ['label' => __('Darts'),  'value' => 'variant10'],
+            ['label' => __('Wide 3'), 'value' => 'variant12'],
+            ['label' => __('Wide 3 Side'), 'value' => 'variant13'],
         ];
 
         // Eyebrows.
         $this->eyebrows = urldecode($params['eyebrows[]']);
         $this->eyebrowsOptions = [
-            ['label' => __('Style 1'),  'value' => 'variant01'],
-            ['label' => __('Style 2'),  'value' => 'variant02'],
-            ['label' => __('Style 3'),  'value' => 'variant03'],
-            ['label' => __('Style 4'),  'value' => 'variant04'],
-            ['label' => __('Style 5'),  'value' => 'variant06'],
-            ['label' => __('Style 6'),  'value' => 'variant07'],
-            ['label' => __('Style 7'),  'value' => 'variant08'],
-            ['label' => __('Style 8'),  'value' => 'variant09'],
-            ['label' => __('Style 9'),  'value' => 'variant11'],
-            ['label' => __('Style 10'), 'value' => 'variant12'],
-            ['label' => __('Style 11'), 'value' => 'variant13'],
+            ['label' => __('Glance'),  'value' => 'variant01'],
+            ['label' => __('Wide 1'),  'value' => 'variant02'],
+            ['label' => __('Furrow 1'),  'value' => 'variant03'],
+            ['label' => __('Wide 2'),  'value' => 'variant04'],
+            ['label' => __('Arched'),  'value' => 'variant06'],
+            ['label' => __('Furrow 2'),  'value' => 'variant07'],
+            ['label' => __('Big'),  'value' => 'variant08'],
+            ['label' => __('Thin'),  'value' => 'variant09'],
+            ['label' => __('Furrow 3'),  'value' => 'variant11'],
+            ['label' => __('Furrow 4'), 'value' => 'variant12'],
+            ['label' => __('Concerned'), 'value' => 'variant13'],
         ];
 
         // Mouths.
@@ -157,9 +158,10 @@ class AvatarEditor extends Component
             'label' => __('None'),
             'value' => 'accessoriesProbability=0',
         ];
+        $accessoryLabels = [__('Big'), __('Dangle 1'), __('Dangle 2'), __('Studs')];
         for ($i = 1; $i < 5; $i++) {
             $this->accessoryOptions[] = [
-                'label' => __('Style :number', ['number' => $i]),
+                'label' => $accessoryLabels[$i - 1],
                 'value' => sprintf("accessoriesProbability=100&accessories[]=variant%'.02d", $i),
             ];
         }
@@ -176,9 +178,10 @@ class AvatarEditor extends Component
             'label' => __('None'),
             'value' => 'glassesProbability=0',
         ];
+        $glassesLabels = [__('Hearts'), __('Narrow'), __('Rectangle'), __('Oval'), __('Half-Moon'), __('Half-Circle'), __('Square')];
         for ($i = 1; $i < 8; $i++) {
             $this->glassesOptions[] = [
-                'label' => __('Style :number', ['number' => $i]),
+                'label' => $glassesLabels[$i - 1],
                 'value' => sprintf("glassesProbability=100&glasses[]=variant%'.02d", $i),
             ];
         }
@@ -187,19 +190,17 @@ class AvatarEditor extends Component
         $this->clothesColor = urldecode($params['clothesColor[]']);
         $this->clothing = urldecode($params['clothing[]']);
         $this->clothingOptions = [
-            ['label' => __('Style 1'), 'value' => 'variant01'],
-            ['label' => __('Style 2'), 'value' => 'variant02'],
-            ['label' => __('Style 3'), 'value' => 'variant05'],
-            ['label' => __('Style 4'), 'value' => 'variant10'],
-            ['label' => __('Style 5'), 'value' => 'variant13'],
-            ['label' => __('Style 6'), 'value' => 'variant14'],
-            ['label' => __('Style 7'), 'value' => 'variant15'],
-            ['label' => __('Style 8'), 'value' => 'variant19'],
-            ['label' => __('Style 9'), 'value' => 'variant20'],
-            ['label' => __('Style 10'), 'value' => 'variant21'],
-            ['label' => __('Style 11'), 'value' => 'variant22'],
-            ['label' => __('Style 12'), 'value' => 'variant24'],
-            ['label' => __('Style 13'), 'value' => 'variant25'],
+            ['label' => __('Stripes'), 'value' => 'variant01'],
+            ['label' => __('Vee 1'), 'value' => 'variant02'],
+            ['label' => __('Vee 2'), 'value' => 'variant05'],
+            ['label' => __('Sleeveless'), 'value' => 'variant10'],
+            ['label' => __('Sweater'), 'value' => 'variant13'],
+            ['label' => __('Turtleneck'), 'value' => 'variant14'],
+            ['label' => __('Crew 1'), 'value' => 'variant15'],
+            ['label' => __('Overalls'), 'value' => 'variant19'],
+            ['label' => __('Cardigan'), 'value' => 'variant20'],
+            ['label' => __('Crew 2'), 'value' => 'variant21'],
+            ['label' => __('Scoop'), 'value' => 'variant22'],
         ];
 
         // Hat.
@@ -214,16 +215,29 @@ class AvatarEditor extends Component
             'label' => __('None'),
             'value' => 'hatProbability=0',
         ];
+        $hatLabels = [
+            __('Boater'),
+            __('Porkpie'),
+            __('Beanie 1'),
+            __('Cap 1'),
+            __('Cloche'),
+            __('Boho'),
+            __('Beanie 2'),
+            __('Cap 2'),
+            __('Bowler'),
+            __('Stovetop'),
+            __('Beanie 3'),
+            __('Cap 3'),
+        ];
         for ($i = 1; $i < 13; $i++) {
             $this->hatOptions[] = [
-                'label' => __('Style :number', ['number' => $i]),
+                'label' => $hatLabels[$i - 1],
                 'value' => sprintf("hatProbability=100&hat[]=variant%'.02d", $i),
             ];
         }
 
         // Beard.
         if (array_key_exists('beard[]', $params)) {
-            $this->beardColor = urldecode($params['beardColor[]']);
             $this->beard = 'beardProbability=100&beard[]=' . urldecode($params['beard[]']);
         }
         else {
@@ -245,34 +259,28 @@ class AvatarEditor extends Component
             ],
         ];
 
-        $this->setProfileAvatar();
+        $this->setPreviewAvatar();
     }
-
-    // public function updatedHairType($value)
-    // {
-    //     if ($value == 'none') {
-    //         $this->hair = 'hairProbability=0';
-    //     }
-    //     else {
-    //         $this->hair = 'hair[]=' . $value;
-    //     }
-    //     $this->setProfileAvatar();
-
-    //     $this->user->profile_photo_path = $this->profileAvatarUrl;
-    //     $this->user->save();
-    // }
 
     public function updated()
     {
-        $this->setProfileAvatar();
-
-        $this->user->profile_photo_path = $this->profileAvatarUrl;
-        $this->user->save();
+        $this->setPreviewAvatar();
     }
 
-    public function setProfileAvatar()
+    public function saveAvatar()
     {
-        $this->profileAvatarUrl = $this->api_url . 'fuse.svg?radius=50'
+        $options = explode('?', $this->previewAvatarUrl)[1];
+        $hash = md5($options);
+        Storage::disk('avatars')
+            ->put("{$hash}.png", fopen($this->previewAvatarUrl, 'r'));
+        $this->user->profile_photo_path = "https://avatar.fusestudio.net/{$hash}.png?{$options}";
+        $this->user->save();
+        $this->emit('saved');
+    }
+
+    public function setPreviewAvatar()
+    {
+        $this->previewAvatarUrl = $this->api_url . 'fuse.png?radius=50'
         . '&b=' . urlencode($this->backgroundColor)
         . '&skinColor[]=' . urlencode($this->skinColor)
         . '&hairColor[]=' . urlencode($this->hairColor)
