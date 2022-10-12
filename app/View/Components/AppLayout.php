@@ -2,16 +2,13 @@
 
 namespace App\View\Components;
 
-use App\Models\User;
 use Illuminate\View\Component;
 
 class AppLayout extends Component
-{ 
-    public ?User $avatarUser = null;
+{
 
-    public function __construct(?User $avatarUser = null)
+    public function __construct()
     {
-        $this->avatarUser = $avatarUser;
     }
 
     /**
@@ -21,6 +18,6 @@ class AppLayout extends Component
      */
     public function render()
     {
-        return view('layouts.app', ['avatarUser' => $this->avatarUser]);
+        return view('layouts.app');
     }
 }

@@ -24,7 +24,12 @@
 <x-app-layout>
     <x-slot name="title">{{ __('My Idea') }} | {{ $idea->name }}</x-slot>
 
-    <x-slot name="header">{{ __('My Idea') }} | <span class="font-light">{{ $idea->name }}</span></x-slot>
+    <x-slot name="header">
+        <span class="relative mr-2">
+            <x-avatar :user="auth()->user()" class="h-16 w-16"/>
+        </span>
+        {{ __('My Idea') }} | <span class="font-light">{{ $idea->name }}</span>
+    </x-slot>
 
     <div x-data="{ saveCompleteFormOpen: false}" >
 

@@ -1,6 +1,11 @@
-<x-app-layout :avatarUser="$mystuffUser" >
+<x-app-layout>
     <x-slot name="title">{{ $title }}</x-slot>
-    <x-slot name="header">{{ $title }}</x-slot>
+    <x-slot name="header">
+        <span class="relative mr-2">
+            <x-avatar :user="$mystuffUser" class="h-16 w-16"/>
+        </span>
+        {{ $title }}
+    </x-slot>
 
     {{-- <div class="my-6">
       Knobs and dials - Filters and sorts

@@ -6,7 +6,12 @@
 
     <x-slot name="title">{{ __('My Dashboard') }}</x-slot>
 
-    <x-slot name="header">{{ __('My Dashboard') }}</x-slot>
+    <x-slot name="header">
+        <span class="relative mr-2">
+            <x-avatar :user="auth()->user()" class="h-16 w-16"/>
+        </span>
+        {{ __('My Dashboard') }}
+    </x-slot>
 
     <div class="md:bg-neutral-200 rounded-xl py-4 md:px-4">
         <div class="lg:grid lg:grid-cols-3 lg:gap-12 max-w-7xl mx-auto sm:px-6 lg:px-8">

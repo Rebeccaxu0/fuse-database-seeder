@@ -2,7 +2,12 @@
 
     <x-slot name="title">{{ __('Help Finder') }}</x-slot>
 
-    <x-slot name="header">{{ __('Help Finder') }}</x-slot>
+    <x-slot name="header">
+        <span class="relative mr-2">
+            <x-avatar :user="auth()->user()" class="h-16 w-16"/>
+        </span>
+        {{ __('Help Finder') }}
+    </x-slot>
 
     <x-challenge-gallery-menu />
 
