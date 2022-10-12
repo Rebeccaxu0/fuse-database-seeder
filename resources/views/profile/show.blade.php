@@ -1,10 +1,17 @@
 <x-app-layout>
     <x-slot name="title">{{ __('Profile') }}</x-slot>
-    <x-slot name="header">{{ __('Profile') }}</x-slot>
+    <x-slot name="header">
+        <span class="relative mr-2">
+            <x-avatar :user="auth()->user()" class="h-16 w-16"/>
+        </span>
+        {{ __('Profile') }}
+    </x-slot>
 
     <div>
-        <livewire:avatar-editor :user="$user" />
         <div class="clear-both max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <livewire:avatar-editor :user="$user" />
+
+            <x-jet-section-border />
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 @livewire('profile.update-profile-information-form')
 
