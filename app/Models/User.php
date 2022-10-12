@@ -254,7 +254,8 @@ class User extends Authenticatable
     public function getPhotoUrl()
     {
         return $this->profile_photo_path
-                    ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
+                    ? $this->profile_photo_path
+                    // ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
                     : $this->defaultProfilePhotoUrl();
     }
 
@@ -265,31 +266,13 @@ class User extends Authenticatable
      */
     protected function defaultProfilePhotoUrl()
     {
-        switch ($this->id % 6) {
-        case 0:
-            $icon = 'drop-brown.svg';
-            break;
-
-        case 1:
-            $icon = 'drop-emerald.svg';
-            break;
-
-        case 2:
-            $icon = 'drop-orange.svg';
-            break;
-
-        case 3:
-            $icon = 'drop-teal.svg';
-            break;
-
-        case 4:
-            $icon = 'drop-violet.svg';
-            break;
-
-        default:
-            $icon = 'drop-green.svg';
-        }
-        return asset("/img/{$icon}");
+        return 'https://avatars.dicebear.com/api/pixel-art/fuse.svg'
+        . '?radius=50&b=%23adacac&skinColor[]=%23e0e0e0'
+        . '&hairColor[]=%23707070&hair[]=long06'
+        . '&eyes[]=variant06&eyebrows[]=variant09'
+        . '&mouthColor[]=%23c9c9c9&mouth[]=sad05&'
+        . 'clothesColor[]=%235c5c5c&clothing[]=variant06'
+        . '&beardProbability=0&glassesProbability=0&hatProbability=0&accessoriesProbability=0';
     }
 
     /**
@@ -592,7 +575,7 @@ class User extends Authenticatable
     {
         return
             // Cache::remember("u{$this->id}_has_started_level_{$level->id}", 1800,
-            // fn() => 
+            // fn() =>
             $this->startedLevels->contains($level);
         // );
     }
