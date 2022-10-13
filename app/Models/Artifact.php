@@ -159,6 +159,31 @@ class Artifact extends Model
         return null;
     }
 
+    /**
+     * Get a URL to the artifact, if a file,
+     * and set Content-Disposition to "Attachment" to force download.
+     *
+     * @return string
+     */
+    public function getDownloadUrl(): string|null
+    {
+        // Return CDN URL if possible
+        if (! $this->url && $this->filestack_handle) {
+            return 'https://cdn.filestackcontent.com/'
+            . config('filestack.api_key')
+            . '/content=t:attachment/'
+            . $this->filestack_handle;
+        }
+
+        // We should try to guarantee that the below is on the same domain for
+        // the 'download' HTML link attribute to work.
+        if (! $this->url && $media = $this->firstMedia('file')) {
+            return $media->getUrl();
+        }
+
+        return null;
+    }
+
     public function getAggregateMimeType()
     {
         if ($this->url) {

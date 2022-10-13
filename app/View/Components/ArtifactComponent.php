@@ -40,7 +40,7 @@ class ArtifactComponent extends Component
         $this->timeAgo = Carbon::create($artifact->created_at)->diffForHumans();
         $this->comments = (bool) ($studio) ? $studio->allow_comments : false;
         $this->commentCount = $artifact->comments->count();
-        $this->downloadUrl = $artifact->getRawFileUrl();
+        $this->downloadUrl = $artifact->getDownloadUrl();
         foreach ($artifact->users as $teammate) {
             if ($teammate->full_name) {
                 $teammates[] = $teammate->full_name;
