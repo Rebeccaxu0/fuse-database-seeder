@@ -673,7 +673,7 @@ class User extends Authenticatable
             || $this->isFacilitator()
             || (! $challengeVersion->challenge->prerequisiteChallenge)
             || $this->hasStartedChallengeVersion($challengeVersion)
-            || $challengeVersion->challenge->prerequisiteChallenge->isCompleted($this)
+            || $challengeVersion->challenge->prerequisiteChallenge->isCompleted($this);
     }
 
     public function canStartLevel(Level $level)
