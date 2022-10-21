@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class AvatarEditor extends Component
 {
-    public string $api_url = 'https://avatars.dicebear.com/api/pixel-art/';
+    public string $api_url = 'https://avatar-api.fusestudio.net/api/pixel-art/';
     public User $user;
 
     public string $accessoriesColor = '#DAA520';
