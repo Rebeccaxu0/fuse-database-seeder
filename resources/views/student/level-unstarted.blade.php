@@ -1,6 +1,7 @@
-<x-app-layout class="bg-neutral-100">
-    <div class="border border-black shadow-lg">
-        <div class="p-8 text-shadow shadow-black bg-blue-100 bg-cover"
+<x-app-layout>
+    <div class="bg-neutral-200 rounded-lg p-8 pb-44">
+    <div class="rounded-lg bg-white shadow-lg">
+        <div class="rounded-t-lg p-8 text-shadow shadow-black bg-blue-100 bg-cover"
      style="background-image: linear-gradient(to bottom, #297f9eaa, #086384dd), url('{{ $level->levelable->gallery_thumbnail_url }}')">
             <a class="text-white" href="{{ route('student.challenges') }}">
             <x-icon icon="chevron-left" class="border rounded-full inline-block text-white h-8 w-8 drop-shadow-contrast" /> {{ __('Challenge Gallery') }}
@@ -51,4 +52,5 @@
             @endif
         </div>
     </div>
+</div>
 </x-app-layout>
