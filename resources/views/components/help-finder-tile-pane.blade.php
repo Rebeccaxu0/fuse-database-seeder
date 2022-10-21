@@ -2,7 +2,7 @@
 
 <div class="@if($gallery)aspect-video @endif overflow-y-scroll w-full rounded-lg bg-gradient-to-t from-fuse-teal to-fuse-teal-dk-800 text-white min-h-[5rem]">
     @if ($students->count() > 0)
-    <ul class="flex flex-wrap p-8 items-center justify-items-center">
+    <ul class="flex flex-wrap p-4 items-center justify-items-center gap-2">
         @foreach ($students as $student)
         <li class="list-none m-2">
             @if ($student->isOnline())

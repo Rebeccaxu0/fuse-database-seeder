@@ -47,8 +47,13 @@ class HelpFinderTilePane extends Component
                 ->get();
         foreach ($this->students as $student) {
             $hcl = $challengeVersion->highestCompletedLevel($student);
+            $student->highestCompletedLevel =
             $this->completedLevel[$student->id] = $hcl ? $hcl->level_number : null;
         }
+        $this->students = $this->students->sortByDesc([
+            fn($a, $b) => $b->isOnline() <=> $a->isOnline(),
+            ['highestCompletedLevel', 'desc'],
+        ]);
     }
 
     /**
