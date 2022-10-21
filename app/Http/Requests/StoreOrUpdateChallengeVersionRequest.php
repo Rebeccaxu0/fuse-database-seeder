@@ -36,7 +36,6 @@ class StoreOrUpdateChallengeVersionRequest extends FormRequest
             'gallery_wistia_video_id' => ['nullable', new WistiaCode],
             'info_article_url' => 'nullable|url',
             'name' => 'required|unique:challenge_versions|max:255',
-            'prerequisite_challenge_version_id' => 'nullable|exists:App\Models\ChallengeVersion,id',
             'status' => [new Enum(Status::class)],
         ];
     }

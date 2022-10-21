@@ -28,12 +28,10 @@ use Spatie\Translatable\HasTranslations;
  * @property string|null $gallery_wistia_video_id
  * @property string|null $gallery_thumbnail_url Wistia video Thumbnail
  * @property string $slug
- * @property int|null $prerequisite_challenge_version_id
  * @property string|null $info_article_url ZenDesk Article URL for facilitators
  * @property int|null $d7_id
  * @property int|null $d7_challenge_id
  * @property int|null $d7_challenge_category_id
- * @property int|null $d7_prereq_challenge_id
  * @property-read \App\Models\Challenge $challenge
  * @property-read \App\Models\ChallengeCategory $challengeCategory
  * @property-read array $translations
@@ -43,7 +41,6 @@ use Spatie\Translatable\HasTranslations;
  * @property-read int|null $levels_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Plank\Mediable\Media[] $media
  * @property-read int|null $media_count
- * @property-read ChallengeVersion|null $prerequisiteChallengeVersion
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Studio[] $studios
  * @property-read int|null $studios_count
  * @method static \Plank\Mediable\MediableCollection|static[] all($columns = ['*'])
@@ -61,7 +58,6 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7ChallengeCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7ChallengeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7Id($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereD7PrereqChallengeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereGalleryNote($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereGalleryThumbnailUrl($value)
@@ -71,7 +67,6 @@ use Spatie\Translatable\HasTranslations;
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereInfoArticleUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion wherePrerequisiteChallengeVersionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChallengeVersion withMedia($tags = [], bool $matchAll = false, bool $withVariants = false)
@@ -122,7 +117,6 @@ class ChallengeVersion extends Model
         'gallery_thumbnail_url',
         'info_article_url',
         'name',
-        'prerequisite_challenge_version_id',
         'slug',
         'status',
     ];
@@ -157,14 +151,6 @@ class ChallengeVersion extends Model
     public function challengeCategory()
     {
         return $this->belongsTo(ChallengeCategory::class, 'challenge_category_id');
-    }
-
-    /**
-     * Prerequisite ChallengeVersion, if any, usually previous level in sequence.
-     */
-    public function prerequisiteChallengeVersion()
-    {
-        return $this->belongsTo(ChallengeVersion::class, 'prerequisite_challenge_version_id');
     }
 
     /**

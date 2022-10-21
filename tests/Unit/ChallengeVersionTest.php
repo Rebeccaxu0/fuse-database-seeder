@@ -41,7 +41,6 @@ class ChallengeVersionTest extends TestCase
             'gallery_version_desc_long',
             'gallery_version_desc_short',
             'slug',
-            'prerequisite_challenge_version_id',
             'info_article_url',
         ]), 1);
     }
@@ -64,11 +63,6 @@ class ChallengeVersionTest extends TestCase
     public function testChallengeVersionBelongsToManyInspiredIdeas()
     {
         $this->assertRelationship($this->challengeVersion, 'ideas', 'belongsToMany');
-    }
-
-    public function testChallengeVersionHasOnePrerequisiteChallengeVersion()
-    {
-        $this->assertRelationship($this->challengeVersion, 'prerequisiteChallengeVersion', 'hasOne');
     }
 
 }

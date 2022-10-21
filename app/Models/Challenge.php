@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\ChallengeStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Challenge
@@ -65,6 +64,7 @@ class Challenge extends Model
         'name',
         'description',
         'status',
+        'prerequisite_challenge_id',
     ];
 
     /**

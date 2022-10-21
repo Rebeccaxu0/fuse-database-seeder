@@ -124,10 +124,6 @@
         <x-form.textarea name="chromebook_info"
             label="Chromebook Info"
             :value="old('chromebook_info', $challengeversion->chromebook_info)" />
-        <x-form.dropdown label="Prerequisite Challenge"
-            :value="old('prerequisite_challenge_version_id', $challengeversion->prerequisite_challenge_version_id)"
-            name="prerequisite_challenge_version_id"
-            :list="$challenges" />
         <x-form.input label="Information Article URL"
                 name="info_article_url"
                 :value="old('info_article_url', $challengeversion->info_article_url)" />

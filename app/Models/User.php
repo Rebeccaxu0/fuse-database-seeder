@@ -671,9 +671,9 @@ class User extends Authenticatable
             $this->isAdmin()
             || $this->isSuperFacilitator()
             || $this->isFacilitator()
-            || (! $challengeVersion->prerequisiteChallengeVersion)
+            || (! $challengeVersion->challenge->prerequisiteChallenge)
             || $this->hasStartedChallengeVersion($challengeVersion)
-            || $this->hasCompletedChallengeVersion($challengeVersion->prerequisiteChallengeVersion);
+            || $challengeVersion->challenge->prerequisiteChallenge->isCompleted($this)
     }
 
     public function canStartLevel(Level $level)

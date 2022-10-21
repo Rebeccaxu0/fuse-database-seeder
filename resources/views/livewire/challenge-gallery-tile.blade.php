@@ -42,7 +42,7 @@
         <div class="text-right mx-4 mb-8">
             @if (! auth()->user()->canStartChallengeVersion($challengeVersion))
             <x-icon icon="lock" />
-            {{ __('Complete :requirement to unlock', ['requirement' => $challengeVersion->prerequisiteChallengeVersion->challenge->name]) }}
+            {{ __('Complete :requirement to unlock', ['requirement' => $challengeVersion->challenge->prerequisiteChallenge->name]) }}
             @else
                 @if ($continue)
                 <a class="btn border rounded-xl uppercase p-2 text-xl font-bold text-slate-400" href="{{ route('student.level', ['challengeVersion' => $challengeVersion, 'level' => $level]) }}">{{ __('Continue') }}</a>
