@@ -13,6 +13,11 @@
         <x-form.textarea name="description"
             label="Description"
             :value="old('description')" />
+        <x-form.dropdown label="Prerequisite Challenge"
+            name="prerequisite_challenge_id"
+            none_label="<none>"
+            :value="old('prerequisite_challenge_id')"
+            :list="$challenges" />
         <x-form.dropdown label="Status"
             required="true"
             name="status"

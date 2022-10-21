@@ -57,7 +57,10 @@ class ChallengeController extends Controller
      */
     public function create()
     {
-        return view('admin.challenge.create', ['statuses' => Status::dropdownList()]);
+        return view('admin.challenge.create', [
+            'challenges' => Challenge::all(),
+            'statuses' => Status::dropdownList(),
+        ]);
     }
 
     /**
@@ -71,6 +74,7 @@ class ChallengeController extends Controller
         $validated = $request->validate([
             'name' => 'required|unique:challenges|max:255',
             'description' => 'nullable|max:4092',
+            'prerequisite_challenge_id' => 'nullable|exists:challenges,id',
             'status' => [new Enum(Status::class)],
         ]);
 
@@ -101,6 +105,7 @@ class ChallengeController extends Controller
         return view('admin.challenge.edit', [
             'challenge' => $challenge,
             'statuses' => Status::dropdownList(),
+            'challenges' => Challenge::all(),
         ]);
     }
 
@@ -116,6 +121,7 @@ class ChallengeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'prerequisite_challenge_id' => 'nullable|exists:challenges,id',
             'status' => [new Enum(Status::class)],
         ]);
         $challenge->update($validated);

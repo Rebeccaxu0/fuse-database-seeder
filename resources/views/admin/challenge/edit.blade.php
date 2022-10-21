@@ -7,15 +7,25 @@
     <form class="mt-6" action="{{ route('admin.challenges.update', $challenge) }}" method="POST">
         @method('PATCH')
         @csrf
-        <x-form.input label="Name"
-            name="name"
+        <x-form.input name="name"
+            label="Name"
             required="true"
             :value="old('name', $challenge->name)" />
         <x-form.textarea name="description"
             label="Description"
             :value="old('description', $challenge->description)" />
 
-        <x-form.dropdown label="Status" required="true" name="status" :value="old('status', $challenge->status->value)" :list="$statuses" />
+        <x-form.dropdown name="prerequisite_challenge_id"
+            label="Prerequisite Challenge"
+            none_label="<none>"
+            :value="old('prerequisite_challenge_id', $challenge->prerequisite_challenge_id)"
+            :list="$challenges" />
+
+        <x-form.dropdown name="status"
+            label="Status"
+            required="true"
+            :value="old('status', $challenge->status->value)"
+            :list="$statuses" />
         <div class="italic">N.B. - Setting this to "Archive" will remove this Challenge from all Packages it's on.</div>
 
         <div class="flex flex-wrap mt-4 -mx-3 mb-2">
