@@ -12,23 +12,24 @@ class AvatarEditor extends Component
     public string $api_url = 'https://avatar-api.fusestudio.net/api/pixel-art/';
     public User $user;
 
-    public string $accessoriesColor = '#DAA520';
-    public string $backgroundColor = '#6e59ac';
-    public string $clothesColor = '#FF6F69';
-    public string $glassesColor = '#5F705C';
-    public string $hairColor = '#603A14';
-    public string $hatColor = '#CC6192';
-    public string $mouthColor = '#C98276';
-    public string $skinColor = '#F5CFA0';
+    // Default Grayscale values
     public string $accessories = 'accessoriesProbability=0';
+    public string $accessoriesColor = '#d3d3d3';
+    public string $backgroundColor = '#adacac';
     public string $beard = 'beardProbability=0';
     public string $clothing = 'variant06';
+    public string $clothesColor = '#5c5c5c';
     public string $eyes = 'variant06';
-    public string $eyebrows = 'variant08';
+    public string $eyebrows = 'variant09';
     public string $glasses = 'glassesProbability=0';
+    public string $glassesColor = '#43677d';
+    public string $hair = 'hair[]=long06';
+    public string $hairColor = '#707070';
     public string $hat = 'hatProbability=0';
-    public string $mouth = 'happy07';
-    public string $hair = 'hair[]=short09';
+    public string $hatColor = '#614f8a';
+    public string $mouth = 'sad05';
+    public string $mouthColor = '#c9c9c9';
+    public string $skinColor = '#e0e0e0';
     public string $previewAvatarUrl;
 
     public array $accessoriesColorOptions = ['#DAA520', '#FFD700', '#FAFAD2', '#D3D3D3', '#A9A9A9'];
@@ -53,16 +54,35 @@ class AvatarEditor extends Component
     {
         $this->user = Auth::user();
         $url = explode('?', $this->user->profile_photo_url);
-        foreach (explode('&', $url[1]) as $chunk) {
-            [$k, $v] = explode('=', $chunk);
-            $params[$k] = $v;
+        // Set values to non-default if URL is parseable.
+        if (count($url) > 1) {
+            foreach (explode('&', $url[1]) as $chunk) {
+                [$k, $v] = explode('=', $chunk);
+                $params[$k] = $v;
+            }
+
+            $this->backgroundColor = urldecode($params['b']);
+            $requiredParamVars = ['skinColor', 'eyes', 'eyebrows', 'mouthColor', 'mouth', 'clothesColor', 'clothing'];
+            foreach ($requiredParamVars as $param) {
+                $this->{$param} = urldecode($params["{$param}[]"]);
+            }
+            $optionalColoredParamVars = ['hair', 'accessories', 'glasses', 'hat'];
+            foreach ($optionalColoredParamVars as $param) {
+                if (array_key_exists("{$param}[]", $params)) {
+                    $this->{$param . 'Color'} = urldecode($params["{$param}Color[]"]);
+                    $this->{$param} = "{$param}Probability=100&{$param}[]=" . urldecode($params["{$param}[]"]);
+                } else {
+                    $this->{$param} = "{$param}Probability=0";
+                }
+            }
+            if (array_key_exists('beard[]', $params)) {
+                $this->beard = 'beardProbability=100&beard[]=' . urldecode($params['beard[]']);
+            } else {
+                $this->beard = 'beardProbability=0';
+            }
         }
 
-        $this->backgroundColor = urldecode($params['b']);
-        $this->skinColor = urldecode($params['skinColor[]']);
-
         // Eyes.
-        $this->eyes = urldecode($params['eyes[]']);
         $this->eyesOptions = [
             ['label' => __('Peek'),  'value' => 'variant01'],
             ['label' => __('Wide 1'),  'value' => 'variant02'],
@@ -78,7 +98,6 @@ class AvatarEditor extends Component
         ];
 
         // Eyebrows.
-        $this->eyebrows = urldecode($params['eyebrows[]']);
         $this->eyebrowsOptions = [
             ['label' => __('Glance'),  'value' => 'variant01'],
             ['label' => __('Wide 1'),  'value' => 'variant02'],
@@ -94,8 +113,6 @@ class AvatarEditor extends Component
         ];
 
         // Mouths.
-        $this->mouthColor = urldecode($params['mouthColor[]']);
-        $this->mouth = urldecode($params['mouth[]']);
         $this->mouthOptions = [
             // Happy.
             ['label' => __('Smile 1'),  'value' => 'happy02'],
@@ -122,13 +139,6 @@ class AvatarEditor extends Component
         ];
 
         // Hair (Short).
-        if (array_key_exists('hair[]', $params)) {
-            $this->hairColor = urldecode($params['hairColor[]']);
-            $this->hair = 'hair[]=' . urldecode($params['hair[]']);
-        }
-        else {
-            $this->hair = 'hairProbability=0';
-        }
         for ($i = 1; $i < 12; $i++) {
             $shortVals[] = [
                 'label' => __('Short :number', ['number' => $i]),
@@ -147,13 +157,6 @@ class AvatarEditor extends Component
         $this->hairOptions[] = ['legend' => __('Long'), 'values' => $longVals];
 
         // Earrings.
-        if (array_key_exists('accessories[]', $params)) {
-            $this->accessoriesColor = urldecode($params['accessoriesColor[]']);
-            $this->accessories = 'accessoriesProbability=100&accessories[]=' . urldecode($params['accessories[]']);
-        }
-        else {
-            $this->accessories = 'accessoriesProbability=0';
-        }
         $this->accessoryOptions[] = [
             'label' => __('None'),
             'value' => 'accessoriesProbability=0',
@@ -167,13 +170,6 @@ class AvatarEditor extends Component
         }
 
         // Glasses.
-        if (array_key_exists('glasses[]', $params)) {
-            $this->glassesColor = urldecode($params['glassesColor[]']);
-            $this->glasses = 'glassesProbability=100&glasses[]=' . urldecode($params['glasses[]']);
-        }
-        else {
-            $this->glasses = 'glassesProbability=0';
-        }
         $this->glassesOptions[] = [
             'label' => __('None'),
             'value' => 'glassesProbability=0',
@@ -187,8 +183,6 @@ class AvatarEditor extends Component
         }
 
         // Clothing.
-        $this->clothesColor = urldecode($params['clothesColor[]']);
-        $this->clothing = urldecode($params['clothing[]']);
         $this->clothingOptions = [
             ['label' => __('Stripes'), 'value' => 'variant01'],
             ['label' => __('Vee 1'), 'value' => 'variant02'],
@@ -204,13 +198,6 @@ class AvatarEditor extends Component
         ];
 
         // Hat.
-        if (array_key_exists('hat[]', $params)) {
-            $this->hatColor = urldecode($params['hatColor[]']);
-            $this->hat = 'hatProbability=100&hat[]=' . urldecode($params['hat[]']);
-        }
-        else {
-            $this->hat = 'hatProbability=0';
-        }
         $this->hatOptions[] = [
             'label' => __('None'),
             'value' => 'hatProbability=0',
@@ -237,12 +224,6 @@ class AvatarEditor extends Component
         }
 
         // Beard.
-        if (array_key_exists('beard[]', $params)) {
-            $this->beard = 'beardProbability=100&beard[]=' . urldecode($params['beard[]']);
-        }
-        else {
-            $this->beard = 'beardProbability=0';
-        }
         $this->beardOptions = [
             ['label' => __('None'), 'value' => 'beardProbability=0'],
             [
