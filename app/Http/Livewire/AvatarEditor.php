@@ -257,6 +257,7 @@ class AvatarEditor extends Component
         $this->user->profile_photo_path = "https://avatar.fusestudio.net/{$hash}.png?{$options}";
         $this->user->save();
         $this->emit('saved');
+        return redirect('/user/profile');
     }
 
     public function setPreviewAvatar()
