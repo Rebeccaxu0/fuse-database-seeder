@@ -34,7 +34,7 @@ class AvatarEditor extends Component
 
     public array $accessoriesColorOptions = ['#DAA520', '#FFD700', '#FAFAD2', '#D3D3D3', '#A9A9A9'];
     public array $accessoryOptions = [];
-    public array $backgroundColorOptions = ['#EBEBEB', '#83C9E3', '#6CB306', '#E46634', '#E22659', '#6E59AC', '#C10000', '#297F9E', '#086384', '#F7E70B'];
+    public array $backgroundColorOptions = ['#C10000', '#E22659', '#E46634', '#F7E70B', '#6CB306', '#83C9E3', '#297F9E', '#086384', '#6E59AC', '#EBEBEB'];
     public array $beardOptions = [];
     public array $clothesColorOptions = ['#FF6F69', '#D11141', '#AE0001', '#FFEEAD', '#FFD969', '#FFC425', '#88D8B0', '#44C585', '#00B159', '#5BC0DE', '#428BCA', '#03396C'];
     public array $clothingOptions = [];
@@ -84,45 +84,36 @@ class AvatarEditor extends Component
 
         // Eyes.
         $this->eyesOptions = [
-            ['label' => __('Peek'),  'value' => 'variant01'],
-            ['label' => __('Wide 1'),  'value' => 'variant02'],
             ['label' => __('Anime'),  'value' => 'variant03'],
-            ['label' => __('Wide 2'),  'value' => 'variant04'],
-            ['label' => __('Sly'),  'value' => 'variant05'],
-            ['label' => __('Sleepy'),  'value' => 'variant06'],
-            ['label' => __('Dazzle'),  'value' => 'variant07'],
-            ['label' => __('Sleepy Side'),  'value' => 'variant09'],
             ['label' => __('Darts'),  'value' => 'variant10'],
+            ['label' => __('Dazzle'),  'value' => 'variant07'],
+            ['label' => __('Peek'),  'value' => 'variant01'],
+            ['label' => __('Side 2'), 'value' => 'variant13'],
+            ['label' => __('Side'),  'value' => 'variant09'],
+            ['label' => __('Sleepy'),  'value' => 'variant06'],
+            ['label' => __('Sly'),  'value' => 'variant05'],
+            ['label' => __('Wide 1'),  'value' => 'variant02'],
+            ['label' => __('Wide 2'),  'value' => 'variant04'],
             ['label' => __('Wide 3'), 'value' => 'variant12'],
-            ['label' => __('Wide 3 Side'), 'value' => 'variant13'],
         ];
 
         // Eyebrows.
         $this->eyebrowsOptions = [
-            ['label' => __('Glance'),  'value' => 'variant01'],
-            ['label' => __('Wide 1'),  'value' => 'variant02'],
-            ['label' => __('Furrow 1'),  'value' => 'variant03'],
-            ['label' => __('Wide 2'),  'value' => 'variant04'],
             ['label' => __('Arched'),  'value' => 'variant06'],
-            ['label' => __('Furrow 2'),  'value' => 'variant07'],
             ['label' => __('Big'),  'value' => 'variant08'],
-            ['label' => __('Thin'),  'value' => 'variant09'],
+            ['label' => __('Concern'), 'value' => 'variant13'],
+            ['label' => __('Furrow 1'),  'value' => 'variant03'],
+            ['label' => __('Furrow 2'),  'value' => 'variant07'],
             ['label' => __('Furrow 3'),  'value' => 'variant11'],
             ['label' => __('Furrow 4'), 'value' => 'variant12'],
-            ['label' => __('Concerned'), 'value' => 'variant13'],
+            ['label' => __('Glance'),  'value' => 'variant01'],
+            ['label' => __('Thin'),  'value' => 'variant09'],
+            ['label' => __('Wide 1'),  'value' => 'variant02'],
+            ['label' => __('Wide 2'),  'value' => 'variant04'],
         ];
 
         // Mouths.
         $this->mouthOptions = [
-            // Happy.
-            ['label' => __('Smile 1'),  'value' => 'happy02'],
-            ['label' => __('Smile 2'),  'value' => 'happy03'],
-            ['label' => __('Smile 3'),  'value' => 'happy04'],
-            ['label' => __('Smile 4'),  'value' => 'happy05'],
-            ['label' => __('Smile 5'),  'value' => 'happy06'],
-            ['label' => __('Smile 6'),  'value' => 'happy07'],
-            ['label' => __('Smile 7'),  'value' => 'happy08'],
-            ['label' => __('Smile 8'),  'value' => 'happy09'],
             // Sad.
             ['label' => __('Serious 1'),  'value' => 'sad01'],
             ['label' => __('Serious 2'),  'value' => 'sad02'],
@@ -132,100 +123,107 @@ class AvatarEditor extends Component
             ['label' => __('Serious 6'),  'value' => 'sad06'],
             ['label' => __('Serious 7'),  'value' => 'sad07'],
             ['label' => __('Serious 8'),  'value' => 'sad08'],
+            // Happy.
+            ['label' => __('Smile 1'),  'value' => 'happy02'],
+            ['label' => __('Smile 2'),  'value' => 'happy03'],
+            ['label' => __('Smile 3'),  'value' => 'happy04'],
+            ['label' => __('Smile 4'),  'value' => 'happy05'],
+            ['label' => __('Smile 5'),  'value' => 'happy06'],
+            ['label' => __('Smile 6'),  'value' => 'happy07'],
+            ['label' => __('Smile 7'),  'value' => 'happy08'],
+            ['label' => __('Smile 8'),  'value' => 'happy09'],
             // Surprised.
             ['label' => __('Surprised 1'), 'value' => 'surprised01'],
             ['label' => __('Surprised 2'), 'value' => 'surprised02'],
             ['label' => __('Surprised 3'), 'value' => 'surprised03'],
         ];
 
-        // Hair (Short).
-        for ($i = 1; $i < 12; $i++) {
-            $shortVals[] = [
-                'label' => __('Short :number', ['number' => $i]),
-                'value' => 'hair[]=' . sprintf("short%'.02d", $i),
-            ];
-        }
-        $this->hairOptions[] = ['legend' => __('Short'), 'values' => $shortVals];
-
-        // Hair (Long).
-        for ($i = 1; $i < 15; $i++) {
-            $longVals[] = [
-                'label' => __('Long :number', ['number' => $i]),
-                'value' => 'hair[]=' . sprintf("long%'.02d", $i),
-            ];
-        }
-        $this->hairOptions[] = ['legend' => __('Long'), 'values' => $longVals];
+        // Hair.
+        $this->hairOptions = [
+            ['label' => __('None'),     'value' => 'hairProbability=0'],
+            ['label' => __('Bob 1'),    'value' => 'hairProbability=100&hair[]=long04'],
+            ['label' => __('Bob 2'),    'value' => 'hairProbability=100&hair[]=long08'],
+            ['label' => __('Bob 4'),    'value' => 'hairProbability=100&hair[]=long12'],
+            ['label' => __('Braid'),    'value' => 'hairProbability=100&hair[]=long03'],
+            ['label' => __('Buns'),     'value' => 'hairProbability=100&hair[]=long07'],
+            ['label' => __('Buzz'),     'value' => 'hairProbability=100&hair[]=short03'],
+            ['label' => __('Curly'),    'value' => 'hairProbability=100&hair[]=short02'],
+            ['label' => __('Long 1'),   'value' => 'hairProbability=100&hair[]=long05'],
+            ['label' => __('Long 2'),   'value' => 'hairProbability=100&hair[]=long11'],
+            ['label' => __('Long 3'),   'value' => 'hairProbability=100&hair[]=long14'],
+            ['label' => __('Medium'),   'value' => 'hairProbability=100&hair[]=short04'],
+            ['label' => __('Pigtails'), 'value' => 'hairProbability=100&hair[]=long01'],
+            ['label' => __('Shaved'),   'value' => 'hairProbability=100&hair[]=short05'],
+            ['label' => __('Short 1'),  'value' => 'hairProbability=100&hair[]=short01'],
+            ['label' => __('Short 2'),  'value' => 'hairProbability=100&hair[]=short09'],
+            ['label' => __('Short 3'),  'value' => 'hairProbability=100&hair[]=short10'],
+            ['label' => __('Short 4'),  'value' => 'hairProbability=100&hair[]=short11'],
+            ['label' => __('Short 5'),  'value' => 'hairProbability=100&hair[]=long06'],
+            ['label' => __('Shoulder'), 'value' => 'hairProbability=100&hair[]=long02'],
+            ['label' => __('Spiky'),    'value' => 'hairProbability=100&hair[]=short06'],
+            ['label' => __('Wavy'),     'value' => 'hairProbability=100&hair[]=short08'],
+        ];
 
         // Earrings.
-        $this->accessoryOptions[] = [
-            'label' => __('None'),
-            'value' => 'accessoriesProbability=0',
+        $this->accessoryOptions = [
+            ['label' => __('None'),     'value' => 'accessoriesProbability=0'],
+            ['label' => __('Big'),      'value' => 'accessoriesProbability=100&accessories[]=variant01'],
+            ['label' => __('Dangle 1'), 'value' => 'accessoriesProbability=100&accessories[]=variant02'],
+            ['label' => __('Dangle 2'), 'value' => 'accessoriesProbability=100&accessories[]=variant03'],
+            ['label' => __('Studs'),    'value' => 'accessoriesProbability=100&accessories[]=variant04'],
         ];
-        $accessoryLabels = [__('Big'), __('Dangle 1'), __('Dangle 2'), __('Studs')];
-        for ($i = 1; $i < 5; $i++) {
-            $this->accessoryOptions[] = [
-                'label' => $accessoryLabels[$i - 1],
-                'value' => sprintf("accessoriesProbability=100&accessories[]=variant%'.02d", $i),
-            ];
-        }
 
         // Glasses.
-        $this->glassesOptions[] = [
-            'label' => __('None'),
-            'value' => 'glassesProbability=0',
+        $this->glassesOptions = [
+            ['label' => __('None'), 'value' => 'glassesProbability=0'],
+            ['label' => __('Half-Circle'), 'value' => 'glassesProbability=100&glasses[]=variant06'],
+            ['label' => __('Half-moon'), 'value' => 'glassesProbability=100&glasses[]=variant05'],
+            ['label' => __('Hearts'), 'value' => 'glassesProbability=100&glasses[]=variant01'],
+            ['label' => __('Narrow'), 'value' => 'glassesProbability=100&glasses[]=variant02'],
+            ['label' => __('Oval'), 'value' => 'glassesProbability=100&glasses[]=variant04'],
+            ['label' => __('Rectangle'), 'value' => 'glassesProbability=100&glasses[]=variant03'],
+            ['label' => __('Square'), 'value' => 'glassesProbability=100&glasses[]=variant07'],
         ];
-        $glassesLabels = [__('Hearts'), __('Narrow'), __('Rectangle'), __('Oval'), __('Half-Moon'), __('Half-Circle'), __('Square')];
-        for ($i = 1; $i < 8; $i++) {
-            $this->glassesOptions[] = [
-                'label' => $glassesLabels[$i - 1],
-                'value' => sprintf("glassesProbability=100&glasses[]=variant%'.02d", $i),
-            ];
-        }
 
         // Clothing.
         $this->clothingOptions = [
-            ['label' => __('Stripes'), 'value' => 'variant01'],
-            ['label' => __('Vee 1'), 'value' => 'variant02'],
-            ['label' => __('Vee 2'), 'value' => 'variant05'],
+            ['label' => __('Cardigan'), 'value' => 'variant20'],
+            ['label' => __('Crew 1'), 'value' => 'variant15'],
+            ['label' => __('Crew 2'), 'value' => 'variant21'],
+            ['label' => __('Overalls'), 'value' => 'variant19'],
+            ['label' => __('Scoop'), 'value' => 'variant22'],
             ['label' => __('Sleeveless'), 'value' => 'variant10'],
+            ['label' => __('Stripes'), 'value' => 'variant01'],
             ['label' => __('Sweater'), 'value' => 'variant13'],
             ['label' => __('Turtleneck'), 'value' => 'variant14'],
-            ['label' => __('Crew 1'), 'value' => 'variant15'],
-            ['label' => __('Overalls'), 'value' => 'variant19'],
-            ['label' => __('Cardigan'), 'value' => 'variant20'],
-            ['label' => __('Crew 2'), 'value' => 'variant21'],
-            ['label' => __('Scoop'), 'value' => 'variant22'],
+            ['label' => __('Vee 1'), 'value' => 'variant02'],
+            ['label' => __('Vee 2'), 'value' => 'variant05'],
         ];
 
         // Hat.
-        $this->hatOptions[] = [
-            'label' => __('None'),
-            'value' => 'hatProbability=0',
+        $this->hatOptions = [
+            ['label' => __('None'), 'value' => 'hatProbability=0'],
+            ['label' => __('Beanie 1'), 'value' => 'hatProbability=100&hat[]=variant03'],
+            ['label' => __('Beanie 2'), 'value' => 'hatProbability=100&hat[]=variant07'],
+            ['label' => __('Beanie 3'), 'value' => 'hatProbability=100&hat[]=variant11'],
+            ['label' => __('Boater'), 'value' => 'hatProbability=100&hat[]=variant01'],
+            ['label' => __('Boho'), 'value' => 'hatProbability=100&hat[]=variant06'],
+            ['label' => __('Bowler'), 'value' => 'hatProbability=100&hat[]=variant09'],
+            ['label' => __('Cap 1'), 'value' => 'hatProbability=100&hat[]=variant04'],
+            ['label' => __('Cap 2'), 'value' => 'hatProbability=100&hat[]=variant08'],
+            ['label' => __('Cap 3'), 'value' => 'hatProbability=100&hat[]=variant12'],
+            ['label' => __('Cloche'), 'value' => 'hatProbability=100&hat[]=variant05'],
+            ['label' => __('Porkpie'), 'value' => 'hatProbability=100&hat[]=variant02'],
+            ['label' => __('Stovetop'), 'value' => 'hatProbability=100&hat[]=variant10'],
         ];
-        $hatLabels = [
-            __('Boater'),
-            __('Porkpie'),
-            __('Beanie 1'),
-            __('Cap 1'),
-            __('Cloche'),
-            __('Boho'),
-            __('Beanie 2'),
-            __('Cap 2'),
-            __('Bowler'),
-            __('Stovetop'),
-            __('Beanie 3'),
-            __('Cap 3'),
-        ];
-        for ($i = 1; $i < 13; $i++) {
-            $this->hatOptions[] = [
-                'label' => $hatLabels[$i - 1],
-                'value' => sprintf("hatProbability=100&hat[]=variant%'.02d", $i),
-            ];
-        }
 
         // Beard.
         $this->beardOptions = [
             ['label' => __('None'), 'value' => 'beardProbability=0'],
+            [
+                'label' => __('Bushy'),
+                'value' => 'beardProbability=100&beard[]=variant04',
+            ],
             [
                 'label' => __('Full'),
                 'value' => 'beardProbability=100&beard[]=variant01',
@@ -233,10 +231,6 @@ class AvatarEditor extends Component
             [
                 'label' => __('Trim'),
                 'value' => 'beardProbability=100&beard[]=variant03',
-            ],
-            [
-                'label' => __('Bushy'),
-                'value' => 'beardProbability=100&beard[]=variant04',
             ],
         ];
 

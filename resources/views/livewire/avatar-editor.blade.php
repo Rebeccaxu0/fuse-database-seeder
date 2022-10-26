@@ -10,24 +10,40 @@
 
         <x-slot name="form">
         <div class="col-span-6 max-h-96 overflow-y-scroll">
-        <label class="whitespace-nowrap">
-            {{ __('Background Color') }}
-            <input wire:model="backgroundColor" type="color" class="inline w-16" list="backgroundTones">
-            <datalist id="backgroundTones">
-                @foreach ($backgroundColorOptions as $color)
-                    <option>{{ $color }}</option>
-                @endforeach
-            </datalist>
-        </label>
-        <label class="whitespace-nowrap">
-            {{ __('Skin Color') }}
-            <input wire:model="skinColor" type="color" class="inline w-16" list="skinTones">
-            <datalist id="skinTones">
-                @foreach ($skinColorOptions as $color)
-                    <option>{{ $color }}</option>
-                @endforeach
-            </datalist>
-        </label>
+        <div class="grid grid-cols-3 gap-2 mb-1">
+            <div class="text-right">
+                <div class="text-sm">{{ __('Background Color Picker:') }}</div>
+                <input wire:model="backgroundColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+            </div>
+            <div class="col-span-2">
+                <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                    <legend class="text-sm">{{ __('Presets:')}}</legend>
+                    @foreach ($backgroundColorOptions as $color)
+                        <label class="m-0">
+                            <input type="radio" wire:model="backgroundColor" value="{{ $color }}" class="hidden"/>
+                            <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                        </label>
+                    @endforeach
+                </fieldset>
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mb-1">
+            <div class="text-right">
+                <div class="text-sm">{{ __('Skin Color Picker:') }}</div>
+                <input wire:model="skinColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+            </div>
+            <div class="col-span-2">
+                <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                    <legend class="text-sm">{{ __('Presets:')}}</legend>
+                    @foreach ($skinColorOptions as $color)
+                        <label class="m-0">
+                            <input type="radio" wire:model="skinColor" value="{{ $color }}" class="hidden"/>
+                            <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                        </label>
+                    @endforeach
+                </fieldset>
+            </div>
+        </div>
 
         <div class="lg:grid grid-cols-2 gap-2">
         <fieldset class="border-neutral-700 border p-4 grid grid-cols-4 lg:grid-cols-3 xl:grid-cols-4 gap-1">
@@ -53,15 +69,23 @@
 
         <fieldset class="border-neutral-700 border p-2">
             <legend>{{ __('Mouth') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color: ') }}
-                <input wire:model="mouthColor" type="color" class="inline w-16" list="mouthTones">
-                <datalist id="mouthTones">
-                    @foreach ($mouthColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="mouthColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($mouthColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="mouthColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
                 @foreach ($mouthOptions as $mouth)
                     <label class="whitespace-nowrap">
@@ -74,43 +98,52 @@
 
         <fieldset class="border-neutral-700 border p-2">
             <legend>{{ __('Hair') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color') }}
-                <input wire:model="hairColor" type="color" class="inline w-16" list="hairTones">
-                <datalist id="hairTones">
-                    @foreach ($hairColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
-            <label class="block whitespace-nowrap">
-                <input wire:model="hair" type="radio" value="hairProbability=0">
-                {{ __('None') }}
-            </label>
-            @foreach ($hairOptions as $length)
-            <hr class="my-2">
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="hairColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($hairColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="hairColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
-                @foreach ($length['values'] as $hair)
+                @foreach ($hairOptions as $hair)
                     <label class="whitespace-nowrap">
                         <input wire:model="hair" type="radio" value="{{ $hair['value'] }}">
                         {{ $hair['label'] }}
                     </label>
                 @endforeach
             </div>
-            @endforeach
         </fieldset>
 
         <fieldset class="border-neutral-700 border p-4">
             <legend>{{ __('Clothing') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color: ') }}
-                <input wire:model="clothesColor" type="color" class="inline w-16" list="fabricTones">
-                <datalist id="fabricTones">
-                    @foreach ($clothesColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="clothesColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($clothesColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="clothesColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
                 @foreach ($clothingOptions as $clothing)
                     <label class="whitespace-nowrap">
@@ -123,15 +156,23 @@
 
         <fieldset class="border-neutral-700 border p-4">
             <legend>{{ __('Hat') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color') }}
-                <input wire:model="hatColor" type="color" class="inline w-16" list="hatTones">
-                <datalist id="hatTones">
-                    @foreach ($hatColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="hatColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($hatColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="hatColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
                 @foreach ($hatOptions as $hat)
                     <label class="whitespace-nowrap">
@@ -144,15 +185,23 @@
 
         <fieldset class="border-neutral-700 border p-4">
             <legend>{{ __('Glasses') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color') }}
-                <input wire:model="glassesColor" type="color" class="inline w-16" list="glassesTones">
-                <datalist id="glassesTones">
-                    @foreach ($glassesColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="glassesColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($glassesColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="glassesColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
                 @foreach ($glassesOptions as $glasses)
                     <label class="whitespace-nowrap">
@@ -165,15 +214,23 @@
 
         <fieldset class="border-neutral-700 border p-4">
             <legend>{{ __('Earrings') }}</legend>
-            <label class="whitespace-nowrap">
-                {{ __('Color') }}
-                <input wire:model="accessoriesColor" type="color" class="inline w-16" list="accessoriesTones">
-                <datalist id="accessoriesTones">
-                    @foreach ($accessoriesColorOptions as $color)
-                        <option>{{ $color }}</option>
-                    @endforeach
-                </datalist>
-            </label>
+            <div class="grid grid-cols-3 gap-2 mb-1">
+                <div class="text-right">
+                    <div class="text-sm">{{ __('Color Picker:') }}</div>
+                    <input wire:model="accessoriesColor" type="color" class="inline-block h-8 w-10 cursor-crosshair">
+                </div>
+                <div class="col-span-2">
+                    <fieldset class="inline-block border border-neutral-700 rounded-xl p-2 pt-0">
+                        <legend class="text-sm">{{ __('Presets:')}}</legend>
+                        @foreach ($accessoriesColorOptions as $color)
+                            <label class="m-0">
+                                <input type="radio" wire:model="accessoriesColor" value="{{ $color }}" class="hidden"/>
+                                <span class="w-6 h-6 inline-block cursor-pointer" style="background-color:{{ $color }}">&nbsp;</span>
+                            </label>
+                        @endforeach
+                    </fieldset>
+                </div>
+            </div>
             <div class="grid grid-cols-4 xl:grid-cols-5 gap-1">
                 @foreach ($accessoryOptions as $accessory)
                     <label class="whitespace-nowrap">
