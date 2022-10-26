@@ -6,6 +6,8 @@ use App\Http\Requests\StoreFileRequest;
 use App\Http\Requests\UpdateFileRequest;
 use App\Models\Media;
 use Illuminate\Http\Request;
+// use MediaUploader;
+// use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -64,7 +66,18 @@ class MediaController extends Controller
      */
     public function store(StoreFileRequest $request)
     {
-        //
+        // $huh = Storage::disk('public')->put('tmp/beep', 'fillerup');
+        // dd($huh);
+        // $file = $request->file('upload');
+        // // dd($file->getClientOriginalName());
+        // $path = $file->storeAs($request->directory, $file->getClientOriginalName(), $request->fsDisk);
+        // dd($path);
+        // // $media = MediaUploader::fromSource($request->file('upload'))
+        // //     ->toDestination($request->fsDisk, $request->directory)
+        // //     ->onDuplicateIncrement()
+        // //     ->upload();
+        // // dd($media);
+        // return redirect(route('admin.media.index'));
     }
 
     /**

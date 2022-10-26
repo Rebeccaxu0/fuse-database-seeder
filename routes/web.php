@@ -15,6 +15,7 @@ use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\LTIController;
 use App\Http\Controllers\LTIPlatformController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SeekritAdminController;
