@@ -49,7 +49,7 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_PUBLIC_BUCKET'),
             'url' => env('AWS_PUBLIC_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
+            'endpoint' => env('AWS_PUBLIC_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USER_PATH_STYLE_ENDPOINT'),
         ],
 
