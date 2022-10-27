@@ -20,6 +20,12 @@ class MediaManagerPage extends Component
     use WithFileUploads;
     use WithPagination;
 
+    public bool $showFileEditModal = false;
+    public bool $showFileDeleteModal = false;
+    public ?int $targetFileId = null;
+    public ?string $targetFileFilename = null;
+    public ?string $targetFileExtension = null;
+    public ?string $targetFileAltText = null;
     public string $currentLocation = '';
     public array $currentLocationArray = [];
     public array $subdirectories = [];
@@ -38,6 +44,7 @@ class MediaManagerPage extends Component
         'onlyImages' => ['except' => false, 'as' => 'images'],
         'page' => ['except' => 1, 'as' => 'p'],
         'fileSearch' => ['except' => '', 'as' => 's'],
+        'currentLocation' => ['except' => '', 'as' => 'folder'],
     ];
 
     public function toggleImages() {
@@ -52,17 +59,54 @@ class MediaManagerPage extends Component
     public function mount()
     {
         Gate::allowIf(Auth::user()->isAdmin());
+        if ($this->currentLocation != '') {
+            $this->currentLocationArray = explode('/', $this->currentLocation);
+        }
+    }
+
+    public function deleteModal(int $mediaId)
+    {
+        $this->setTargetFile($mediaId);
+        $this->targetFileId = $mediaId;
+        $this->showFileDeleteModal = true;
+    }
+
+    public function editModal(int $mediaId)
+    {
+        $this->setTargetFile($mediaId);
+        $this->showFileEditModal = true;
+    }
+
+    public function saveEdits()
+    {
+        $file = Media::find($this->targetFileId);
+        $file->alt = $this->targetFileAltText;
+        $file->save();
+        $this->resetTargetFile();
+        $this->showFileEditModal = false;
+    }
+
+    public function updatedShowFileEditModal($value)
+    {
+        if (! $value) { $this->resetTargetFile(); }
     }
 
     public function makeSubdir()
     {
         if (Str::of($this->newSubdir)->test('/[\w\d]+/')) {
-            $directory = $this->currentLocation . '/' . $this->newSubdir;
-            Storage::disk($this->fsdisk)->makeDirectory($directory);
+            $directory = $this->currentLocation . '/' . $this->newSubdir . '/.temp';
+            Storage::disk($this->fsdisk)->put($directory, '');
             $this->newSubdir = '';
         }
     }
 
+    public function delete()
+    {
+        $media = Media::find($this->targetFileId);
+        $media->forceDelete();
+        $this->resetTargetFile();
+        $this->showFileDeleteModal = false;
+    }
     public function upload()
     {
         $file = $this->fileToUpload
@@ -196,5 +240,22 @@ class MediaManagerPage extends Component
         $files = $files->orderBy('filename')
                        ->paginate(15);
         return view('livewire.admin.media-manager', ['files' => $files]);
+    }
+
+    private function resetTargetFile()
+    {
+        $this->targetFileId = null;
+        $this->targetFileFilename = null;
+        $this->targetFileExtension = null;
+        $this->targetFileAltText = null;
+    }
+
+    private function setTargetFile(int $mediaId)
+    {
+        $file = Media::find($mediaId);
+        $this->targetFileId = $mediaId;
+        $this->targetFileFilename = $file->filename;
+        $this->targetFileExtension = $file->extension;
+        $this->targetFileAltText = $file->alt;
     }
 }
