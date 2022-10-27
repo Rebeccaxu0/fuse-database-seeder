@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Plank\Mediable\Media as MediableMedia;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * App\Models\Media
@@ -63,5 +64,11 @@ use Plank\Mediable\Media as MediableMedia;
 class Media extends MediableMedia
 {
     use HasFactory;
+    use HasTranslations;
     use SoftDeletes;
+
+    public $translatable = ['alt'];
+
+    protected $fillable = ['alt'];
+    // protected $guarded = ['alt'];
 }
