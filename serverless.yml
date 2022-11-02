@@ -50,7 +50,7 @@ params:
     debug: false
     profile: terraform-prod
     aws_public_bucket: fuse-prod-my-public
-    aws_public_url: https://d1wrywqg8lniay.cloudfront.net
+    aws_public_url: https://cdn.fusestudio.net
     # new_relic_app_name: my.fusestudio.net
   stage:
     app_env: stage
