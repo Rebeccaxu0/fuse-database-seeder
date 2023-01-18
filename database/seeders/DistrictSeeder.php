@@ -17,17 +17,17 @@ class DistrictSeeder extends Seeder
      */
     public function run()
     {
-        $districts = District::factory()->count(30)
+        $districts = District::factory()->count(10) //should be 30
             ->has(
-                School::factory()->count(3)
+                School::factory()->count(2) // should be 3
                     ->has(
-                        Studio::factory()->count(5)
+                        Studio::factory()->count(3) // should be 5
                     )
             )
             ->create(['package_id' => Package::all()->random()]);
 
         foreach (Studio::all() as $studio) {
-            $studio->activeChallenges()->sync($studio->deFactoPackage->challenges->random(4));
+            $studio->challengeVersions()->sync($studio->deFactoPackage->challenges->random(4));
         }
     }
 }

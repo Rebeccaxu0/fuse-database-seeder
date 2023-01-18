@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             IdeaSeeder::class,
-            StartSeeder::class,
+            //StartSeeder::class,
             ArtifactSeeder::class,
         ]);
     }

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
-            $table->string('name', 1023);
+            $table->string('name', 766);
             $table->boolean('status')
                   ->default(true);
             $table->foreignId('district_id')

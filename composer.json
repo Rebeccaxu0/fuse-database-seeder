@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "algolia/algoliasearch-client-php": "^3.3",
         "bref/bref": "^1.5",
         "bref/extra-php-extensions": "^0.11.30",
         "bref/laravel-bridge": "^1.2",
@@ -26,6 +27,7 @@
         "livewire/livewire": "^2.5",
         "packbackbooks/lti-1p3-tool": "^5.1",
         "plank/laravel-mediable": "^5.4",
+        "predis/predis": "^2.0",
         "selfsimilar/laravel-d7-password": "^0.1.2",
         "socialiteproviders/generators": "^4.6",
         "socialiteproviders/manager": "^4.1",

@@ -33,7 +33,7 @@ class StartSeeder extends Seeder
         foreach (User::doesntHave('roles')->get() as $student) {
             // A few Challenges get a start.
             $startedChallengeVersions
-                = $student->deFactoStudios()->first()->activeChallenges->random(3);
+                = $student->deFactoStudios()->first()->challengeVersions->random(3);
             $startedLevels = $firstLevels->filter(fn($value, $key) => $startedChallengeVersions->contains($value->levelable));
             foreach ($startedLevels as $level) {
                 Start::factory()
@@ -41,13 +41,13 @@ class StartSeeder extends Seeder
                     ->for($student)
                     ->create();
                 // Start level 2 at 33% likelihood.
-                if ($level->next() && rand(1, 100) < 34) {
+                if ($level->next() && rand(1, 100) < 20) {
                     Start::factory()
                         ->for($level->next())
                         ->for($student)
                         ->create();
                     // Start level 3 at 33% likelihood.
-                    if ($level->next()->next() && rand(1, 100) < 34) {
+                    if ($level->next()->next() && rand(1, 100) < 20) {
                         Start::factory()
                             ->for($level->next()->next())
                             ->for($student)
